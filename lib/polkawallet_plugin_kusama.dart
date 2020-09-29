@@ -1,5 +1,7 @@
 library polkawallet_plugin_kusama;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance.dart';
@@ -8,27 +10,35 @@ import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
 import 'package:polkawallet_sdk/polkawallet_sdk.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
+import 'package:polkawallet_sdk/service/webViewRunner.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 
-enum NetworkName { kusama, polkadot }
-
-class PluginKusama implements PolkawalletPlugin {
+class PluginKusama extends PolkawalletPlugin {
   /// the kusama plugin support two networks: kusama & polkadot,
   /// so we need to identify the active network to connect & display UI.
-  NetworkName activeNetwork = NetworkName.kusama;
-  List<NetworkParams> _getNodeList() {
-    if (activeNetwork == NetworkName.polkadot) {
+  PluginKusama({this.name = 'kusama'});
+
+  @override
+  final String name;
+
+  @override
+  final WalletSDK sdk = WalletSDK();
+
+  @override
+  MaterialColor get primaryColor =>
+      name == 'polkadot' ? Colors.pink : kusama_black;
+
+  @override
+  List<NetworkParams> get nodeList {
+    if (name == 'polkadot') {
       return node_list_polkadot.map((e) => NetworkParams.fromJson(e)).toList();
     }
     return node_list_kusama.map((e) => NetworkParams.fromJson(e)).toList();
   }
 
-  final name = 'kusama';
-
-  final WalletSDK sdk = WalletSDK();
-
+  @override
   List<HomeNavItem> get navItems {
-    final color = activeNetwork == NetworkName.polkadot ? 'pink' : 'black';
+    final color = name == 'polkadot' ? 'pink' : 'black';
     return home_nav_items.map((e) {
       final nav = e.toLowerCase();
       return HomeNavItem(
@@ -44,17 +54,16 @@ class PluginKusama implements PolkawalletPlugin {
     }).toList();
   }
 
-  /// init the plugin runtime & connect to nodes
-  Future<NetworkParams> start(Keyring keyring, {String network}) async {
-    activeNetwork =
-        network == 'polkadot' ? NetworkName.polkadot : NetworkName.kusama;
-
-    sdk.init(keyring);
-
-    return sdk.api.connectNodeAll(keyring, _getNodeList());
+  @override
+  Map<String, WidgetBuilder> get routes {
+    return {};
   }
 
-  Future<void> dispose() async {
-    // do nothing.
+  /// init the plugin runtime & connect to nodes
+  @override
+  Future<NetworkParams> start(Keyring keyring, {WebViewRunner webView}) async {
+    await sdk.init(keyring, webView: webView);
+    final res = await sdk.api.connectNodeAll(keyring, nodeList);
+    return res;
   }
 }
