@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:polkawallet_plugin_kusama_example/pages/assetsContent.dart';
-import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
-import 'package:polkawallet_sdk/storage/keyring.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage(
+  MyHomePage({
     this.network,
-    this.keyring,
-    this.plugins,
-    this.connectedNode,
-    this.setNetwork,
-    this.setConnectedNode,
-  );
+    this.assetsContent,
+    this.profileContent,
+  });
 
   final PolkawalletPlugin network;
-  final Keyring keyring;
-  final List<PolkawalletPlugin> plugins;
-  final NetworkParams connectedNode;
-  final Function(PolkawalletPlugin) setNetwork;
-  final Function(NetworkParams) setConnectedNode;
+  final Widget assetsContent;
+  final Widget profileContent;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -66,14 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
           color: widget.network.primaryColor,
           size: 32,
         ),
-        content: AssetsContent(
-          widget.network,
-          widget.keyring,
-          widget.plugins,
-          widget.connectedNode,
-          widget.setNetwork,
-          widget.setConnectedNode,
-        ),
+        content: widget.assetsContent,
       )
     ];
     pages.addAll(widget.network.navItems);
@@ -89,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         color: widget.network.primaryColor,
         size: 34,
       ),
-      content: Text('profile'),
+      content: widget.profileContent,
     ));
     return Scaffold(
       body: PageView(
