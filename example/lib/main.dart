@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:polkawallet_plugin_kusama_example/pages/assetsContent.dart';
 import 'package:polkawallet_plugin_kusama_example/pages/profileContent.dart';
 import 'package:polkawallet_plugin_kusama_example/pages/selectListPage.dart';
@@ -9,6 +10,7 @@ import 'package:polkawallet_sdk/api/types/networkStateData.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
+import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama_example/pages/homePage.dart';
 
@@ -36,6 +38,8 @@ class _MyAppState extends State<MyApp> {
 
   ThemeData _theme;
 
+  Locale _locale;
+
   NetworkParams _connectedNode;
 
   NetworkStateData _networkState = NetworkStateData();
@@ -59,6 +63,23 @@ class _MyAppState extends State<MyApp> {
             fontSize: 18,
           )),
     );
+  }
+
+  void _changeLang(String code) {
+    Locale res;
+    switch (code) {
+      case 'zh':
+        res = const Locale('zh', '');
+        break;
+      case 'en':
+        res = const Locale('en', '');
+        break;
+      default:
+        res = null;
+    }
+    setState(() {
+      _locale = res;
+    });
   }
 
   void _setNetwork(PolkawalletPlugin network) {
@@ -125,7 +146,8 @@ class _MyAppState extends State<MyApp> {
 
   Map<String, Widget Function(BuildContext)> _createRoutes() {
     final res = _network != null
-        ? _network.routes
+        ? _network
+            .getRoutes(_keyring)
             .map((key, value) => MapEntry('${_network.name}$key', value))
         : {};
     return {
@@ -145,18 +167,31 @@ class _MyAppState extends State<MyApp> {
     final ProfileContent profile = ProfileContent(
         _network,
         _keyring,
+        _locale,
         widget.plugins,
         _connectedNode,
         _networkState,
         _setNetwork,
-        _setConnectedNode);
+        _setConnectedNode,
+        _changeLang);
     final AssetsContent assets =
         AssetsContent(_network, _keyring, _networkState);
     return MaterialApp(
       title: 'Polkawallet Plugin Kusama Demo',
       theme: _theme ?? _getAppTheme(widget.plugins[0].primaryColor),
+      localizationsDelegates: [
+        AppLocalizationsDelegate(_locale ?? Locale('en', '')),
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('zh', ''),
+      ],
       home: MyHomePage(
         network: _network,
+        keyring: _keyring,
         assetsContent: assets,
         profileContent: profile,
       ),

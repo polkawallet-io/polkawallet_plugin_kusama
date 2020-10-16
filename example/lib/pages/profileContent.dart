@@ -1,36 +1,95 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama_example/pages/selectListPage.dart';
+import 'package:polkawallet_plugin_kusama_example/utils/i18n.dart';
+import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/api/types/networkStateData.dart';
 import 'package:polkawallet_sdk/api/apiKeyring.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
+import 'package:polkawallet_ui/components/roundedButton.dart';
 
 class ProfileContent extends StatefulWidget {
   ProfileContent(
     this.network,
     this.keyring,
+    this.locale,
     this.plugins,
     this.connectedNode,
     this.networkState,
     this.setNetwork,
     this.setConnectedNode,
+    this.changeLang,
   );
   final PolkawalletPlugin network;
   final Keyring keyring;
+  final Locale locale;
   final List<PolkawalletPlugin> plugins;
   final NetworkParams connectedNode;
   final NetworkStateData networkState;
   final Function(PolkawalletPlugin) setNetwork;
   final Function(NetworkParams) setConnectedNode;
+  final Function(String) changeLang;
   @override
   _ProfileContentState createState() => _ProfileContentState();
 }
 
 class _ProfileContentState extends State<ProfileContent> {
   bool _loading = false;
+
+  final _langOptions = [null, 'en', 'zh'];
+  int _langSelected;
+
+  String _getLang(String code) {
+    final dic = I18n.of(context).getDic(i18n_full_dic, 'profile');
+    switch (code) {
+      case 'zh':
+        return '简体中文';
+      case 'en':
+        return 'English';
+      default:
+        return dic['setting.lang.auto'];
+    }
+  }
+
+  void _onChangeLang() {
+    final langCurrent = widget.locale.toString();
+    print('current: $langCurrent');
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => Container(
+        height: MediaQuery.of(context).copyWith().size.height / 3,
+        child: WillPopScope(
+          child: CupertinoPicker(
+            backgroundColor: Colors.white,
+            itemExtent: 58,
+            scrollController: FixedExtentScrollController(
+                initialItem: _langOptions.indexOf(langCurrent)),
+            children: _langOptions.map((i) {
+              return Padding(
+                  padding: EdgeInsets.all(16), child: Text(_getLang(i)));
+            }).toList(),
+            onSelectedItemChanged: (v) {
+              setState(() {
+                _langSelected = v;
+              });
+            },
+          ),
+          onWillPop: () async {
+            print(_langSelected);
+            if (_langSelected == null) return true;
+            String code = _langOptions[_langSelected];
+            if (code != langCurrent) {
+              widget.changeLang(code);
+            }
+            return true;
+          },
+        ),
+      ),
+    );
+  }
 
   Future<void> _onChangeNetwork() async {
     final selected = await Navigator.of(context).pushNamed(SelectListPage.route,
@@ -107,10 +166,51 @@ class _ProfileContentState extends State<ProfileContent> {
     }
   }
 
+  Future<void> _removeExternal() async {
+    if (widget.keyring.externals.length > 0) {
+      setState(() {
+        _loading = true;
+      });
+      await widget.keyring.store
+          .deleteAccount(widget.keyring.externals[0].pubKey, isExternal: true);
+      setState(() {
+        _loading = false;
+      });
+
+      widget.network.sdk.api.account.unsubscribeBalance();
+    }
+  }
+
+  Future<void> _importExternal() async {
+    if (widget.keyring.externals.length == 0) {
+      setState(() {
+        _loading = true;
+      });
+      final KeyPairData acc =
+          await widget.network.sdk.api.keyring.addExternal(widget.keyring, {
+        'name': 'external_test',
+        'address': '14xKzzU1ZYDnzFj7FgdtDAYSMJNARjDc2gNw4XAFDgr4uXgp',
+        'observation': true,
+      });
+      setState(() {
+        _loading = false;
+      });
+
+      widget.network.subscribeBalances(acc);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
+        ListTile(
+          title: Text('change lang'),
+          subtitle: Text(_getLang(widget.locale.toString())),
+          trailing: Icon(Icons.arrow_forward_ios, size: 18),
+          onTap: () => _onChangeLang(),
+        ),
+        Divider(),
         ListTile(
           title: Text('change network'),
           subtitle: Text(widget.network.name),
@@ -140,15 +240,30 @@ class _ProfileContentState extends State<ProfileContent> {
                 .map((e) => e.address)
                 .toList()
                 .join(',')),
-            RaisedButton(
-              child: Text(widget.keyring.keyPairs.length > 0
+            Text('externals:'),
+            Text(widget.keyring.externals
+                .map((e) => e.address)
+                .toList()
+                .join(',')),
+            RoundedButton(
+              text: widget.keyring.keyPairs.length > 0
                   ? 'Remove Account'
-                  : 'Import Account'),
+                  : 'Import Account',
               onPressed: _loading
                   ? null
                   : widget.keyring.keyPairs.length > 0
                       ? () => _removeAccount()
                       : () => _importAccount(),
+            ),
+            RoundedButton(
+              text: widget.keyring.externals.length > 0
+                  ? 'Remove External'
+                  : 'Import External',
+              onPressed: _loading
+                  ? null
+                  : widget.keyring.externals.length > 0
+                      ? () => _removeExternal()
+                      : () => _importExternal(),
             )
           ],
         ),

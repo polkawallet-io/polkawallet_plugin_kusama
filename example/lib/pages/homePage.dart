@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:polkawallet_ui/ui.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
+import 'package:polkawallet_sdk/storage/keyring.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({
     this.network,
+    this.keyring,
     this.assetsContent,
     this.profileContent,
   });
 
   final PolkawalletPlugin network;
+  final Keyring keyring;
   final Widget assetsContent;
   final Widget profileContent;
 
@@ -60,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         content: widget.assetsContent,
       )
     ];
-    pages.addAll(widget.network.navItems);
+    pages.addAll(widget.network.getNavItems(widget.keyring));
     pages.add(HomeNavItem(
       text: 'Profile',
       icon: Icon(
@@ -83,7 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
             _tabIndex = index;
           });
         },
-        children: pages.map((e) => SafeArea(child: e.content)).toList(),
+        children: pages
+            .map((e) => Scaffold(
+                    body: PageWrapperWithBackground(SafeArea(
+                  child: e.content,
+                ))))
+            .toList(),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabIndex,
