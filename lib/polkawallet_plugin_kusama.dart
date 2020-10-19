@@ -7,6 +7,7 @@ import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 import 'package:polkawallet_plugin_kusama/service/index.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
@@ -57,10 +58,10 @@ class PluginKusama extends PolkawalletPlugin {
   final balances = BalancesStore();
 
   @override
-  Map networkConst;
+  Map networkConst = {};
 
   @override
-  NetworkStateData networkState;
+  NetworkStateData networkState = NetworkStateData();
 
   @override
   List<HomeNavItem> getNavItems(Keyring keyring) {
@@ -84,6 +85,7 @@ class PluginKusama extends PolkawalletPlugin {
   Map<String, WidgetBuilder> getRoutes(Keyring keyring) {
     return {
       BondExtraPage.route: (_) => BondExtraPage(this, keyring),
+      SetControllerPage.route: (_) => SetControllerPage(this, keyring),
     };
   }
 

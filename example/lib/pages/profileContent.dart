@@ -4,7 +4,6 @@ import 'package:polkawallet_plugin_kusama_example/pages/selectListPage.dart';
 import 'package:polkawallet_plugin_kusama_example/utils/i18n.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
-import 'package:polkawallet_sdk/api/types/networkStateData.dart';
 import 'package:polkawallet_sdk/api/apiKeyring.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -18,7 +17,6 @@ class ProfileContent extends StatefulWidget {
     this.locale,
     this.plugins,
     this.connectedNode,
-    this.networkState,
     this.setNetwork,
     this.setConnectedNode,
     this.changeLang,
@@ -28,7 +26,6 @@ class ProfileContent extends StatefulWidget {
   final Locale locale;
   final List<PolkawalletPlugin> plugins;
   final NetworkParams connectedNode;
-  final NetworkStateData networkState;
   final Function(PolkawalletPlugin) setNetwork;
   final Function(NetworkParams) setConnectedNode;
   final Function(String) changeLang;
@@ -154,7 +151,8 @@ class _ProfileContentState extends State<ProfileContent> {
         widget.keyring,
         keyType: KeyType.mnemonic,
         key:
-            'wing know chapter eight shed lens mandate lake twenty useless bless glory',
+            // 'wing know chapter eight shed lens mandate lake twenty useless bless glory',
+            'second throw patch mix leaf call scare surface enlist pet exhibit hammer',
         name: 'testName01',
         password: 'a123456',
       );
@@ -189,7 +187,7 @@ class _ProfileContentState extends State<ProfileContent> {
       final KeyPairData acc =
           await widget.network.sdk.api.keyring.addExternal(widget.keyring, {
         'name': 'external_test',
-        'address': '14xKzzU1ZYDnzFj7FgdtDAYSMJNARjDc2gNw4XAFDgr4uXgp',
+        'address': '14fpQHev6kcQxiW49e5Cg4VgY8QeKwLxwfbAHg81ro8r8AnD',
         'observation': true,
       });
       setState(() {
@@ -228,8 +226,8 @@ class _ProfileContentState extends State<ProfileContent> {
         Column(
           children: [
             Text('network state'),
-            Text('tokenSymbol: ${widget.networkState.tokenSymbol}'),
-            Text('tokenDecimals: ${widget.networkState.tokenDecimals}'),
+            Text('tokenSymbol: ${widget.network.networkState.tokenSymbol}'),
+            Text('tokenDecimals: ${widget.network.networkState.tokenDecimals}'),
           ],
         ),
         Divider(),

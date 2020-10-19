@@ -8,7 +8,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.da
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
-// import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakingDetailPage.dart';
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
@@ -311,6 +311,7 @@ class _StakingActions extends State<StakingActions>
                   stashInfo: widget.plugin.store.staking.ownStashInfo,
                   bonded: bonded,
                   controller: acc02,
+                  onSuccess: () => _refreshKey.currentState.show(),
                 ),
               ],
             ),
@@ -649,6 +650,7 @@ class StakingActionsPanel extends StatelessWidget {
     this.stashInfo,
     this.bonded,
     this.controller,
+    this.onSuccess,
   });
 
   final bool isStash;
@@ -656,6 +658,15 @@ class StakingActionsPanel extends StatelessWidget {
   final OwnStashInfoData stashInfo;
   final BigInt bonded;
   final KeyPairData controller;
+  final Function onSuccess;
+
+  void _onAction(Future doAction) {
+    doAction.then((res) {
+      if (res ?? false) {
+        onSuccess();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -671,31 +682,31 @@ class StakingActionsPanel extends StatelessWidget {
     Function onSetPayeeTap = () => null;
     bool setControllerDisabled = true;
     Function onSetControllerTap = () => null;
-    // if (isStash) {
-    //   if (stashInfo.controllerId != null) {
-    //     setControllerDisabled = false;
-    //     onSetControllerTap = () => Navigator.of(context)
-    //         .pushNamed(SetControllerPage.route, arguments: controller);
-    //
-    //     if (stashInfo.isOwnController) {
-    //       setPayeeDisabled = false;
-    //       onSetPayeeTap = () => Navigator.of(context).pushNamed(
-    //             SetPayeePage.route,
-    //             arguments: stashInfo.destinationId,
-    //           );
-    //     }
-    //   } else {
-    //     bondButtonString = dic['action.bond'];
-    //   }
-    // } else {
-    //   if (bonded > BigInt.zero) {
-    //     setPayeeDisabled = false;
-    //     onSetPayeeTap = () => Navigator.of(context).pushNamed(
-    //           SetPayeePage.route,
-    //           arguments: stashInfo.destinationId,
-    //         );
-    //   }
-    // }
+    if (isStash) {
+      if (stashInfo.controllerId != null) {
+        setControllerDisabled = false;
+        onSetControllerTap = () => _onAction(Navigator.of(context)
+            .pushNamed(SetControllerPage.route, arguments: controller));
+
+        if (stashInfo.isOwnController) {
+          setPayeeDisabled = false;
+          // onSetPayeeTap = () => Navigator.of(context).pushNamed(
+          //       SetPayeePage.route,
+          //       arguments: stashInfo.destinationId,
+          //     );
+        }
+      } else {
+        bondButtonString = dic['action.bond'];
+      }
+    } else {
+      if (bonded > BigInt.zero) {
+        setPayeeDisabled = false;
+        // onSetPayeeTap = () => Navigator.of(context).pushNamed(
+        //       SetPayeePage.route,
+        //       arguments: stashInfo.destinationId,
+        //     );
+      }
+    }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

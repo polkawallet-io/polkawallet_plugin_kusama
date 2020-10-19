@@ -13,6 +13,7 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama_example/pages/homePage.dart';
+import 'package:polkawallet_ui/pages/accountListPage.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
 void main() {
@@ -42,8 +43,6 @@ class _MyAppState extends State<MyApp> {
   Locale _locale;
 
   NetworkParams _connectedNode;
-
-  NetworkStateData _networkState = NetworkStateData();
 
   ThemeData _getAppTheme(MaterialColor color) {
     return ThemeData(
@@ -92,21 +91,11 @@ class _MyAppState extends State<MyApp> {
 
   void _setConnectedNode(NetworkParams node) {
     if (node != null) {
-      _queryNetworkState();
       _subscribeBalance();
     }
     setState(() {
       _connectedNode = node;
     });
-  }
-
-  Future<void> _queryNetworkState() async {
-    final res = await _network.sdk.api.setting.queryNetworkProps();
-    if (res != null) {
-      setState(() {
-        _networkState = res;
-      });
-    }
   }
 
   void _subscribeBalance() async {
@@ -153,6 +142,7 @@ class _MyAppState extends State<MyApp> {
     return {
       SelectListPage.route: (_) => SelectListPage(),
       TxConfirmPage.route: (_) => TxConfirmPage(_network, _keyring),
+      AccountListPage.route: (_) => AccountListPage(_network, _keyring),
       ...res,
     };
   }
@@ -171,12 +161,10 @@ class _MyAppState extends State<MyApp> {
         _locale,
         widget.plugins,
         _connectedNode,
-        _networkState,
         _setNetwork,
         _setConnectedNode,
         _changeLang);
-    final AssetsContent assets =
-        AssetsContent(_network, _keyring, _networkState);
+    final AssetsContent assets = AssetsContent(_network, _keyring);
     return MaterialApp(
       title: 'Polkawallet Plugin Kusama Demo',
       theme: _theme ?? _getAppTheme(widget.plugins[0].primaryColor),

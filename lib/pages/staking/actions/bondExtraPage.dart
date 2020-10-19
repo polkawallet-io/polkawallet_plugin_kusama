@@ -94,9 +94,7 @@ class _BondExtraPageState extends State<BondExtraPage> {
                       txTitle: dicStaking['action.bondExtra'],
                       module: 'staking',
                       call: 'bondExtra',
-                      txDisplay: {
-                        "amount": inputAmount,
-                      },
+                      txDisplay: {"amount": '$inputAmount $symbol'},
                       params: [
                         // "amount"
                         (double.parse(inputAmount.isEmpty ? '0' : inputAmount) *
