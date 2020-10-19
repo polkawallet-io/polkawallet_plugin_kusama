@@ -13,6 +13,7 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama_example/pages/homePage.dart';
+import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
 void main() {
   final _plugins = [
@@ -109,11 +110,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _subscribeBalance() async {
-    // if (_keyring.keyPairs.length > 0) {
-    //   _network.subscribeBalances(_keyring.keyPairs[0]);
-    // }
-    final acc = KeyPairData();
-    acc.address = '1CTthuNVHUxWJkejKUGAoKaW1ffbXaUUHpEQvfizWP2CMQe';
+    KeyPairData acc = KeyPairData();
+    if (_keyring.keyPairs.length > 0) {
+      acc = _keyring.keyPairs[0];
+    } else if (_keyring.externals.length > 0) {
+      acc = _keyring.externals[0];
+    } else {
+      acc.address = '1CTthuNVHUxWJkejKUGAoKaW1ffbXaUUHpEQvfizWP2CMQe';
+    }
     _network.subscribeBalances(acc);
   }
 
@@ -144,14 +148,11 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Map<String, Widget Function(BuildContext)> _createRoutes() {
-    final res = _network != null
-        ? _network
-            .getRoutes(_keyring)
-            .map((key, value) => MapEntry('${_network.name}$key', value))
-        : {};
+  Map<String, Widget Function(BuildContext)> _getRoutes() {
+    final res = _network != null ? _network.getRoutes(_keyring) : {};
     return {
       SelectListPage.route: (_) => SelectListPage(),
+      TxConfirmPage.route: (_) => TxConfirmPage(_network, _keyring),
       ...res,
     };
   }
@@ -195,7 +196,7 @@ class _MyAppState extends State<MyApp> {
         assetsContent: assets,
         profileContent: profile,
       ),
-      routes: _createRoutes(),
+      routes: _getRoutes(),
     );
   }
 }

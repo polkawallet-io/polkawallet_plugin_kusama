@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -28,8 +27,8 @@ class _BondExtraPageState extends State<BondExtraPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final assetDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     final symbol = widget.plugin.networkState.tokenSymbol;
     final decimals = widget.plugin.networkState.tokenDecimals;
 
@@ -41,7 +40,7 @@ class _BondExtraPageState extends State<BondExtraPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dic['action.bondExtra']),
+        title: Text(dicStaking['action.bondExtra']),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {
@@ -56,15 +55,14 @@ class _BondExtraPageState extends State<BondExtraPage> {
                     children: <Widget>[
                       AddressFormItem(
                         widget.keyring.current,
-                        label: dic['stash'],
-                        svg: widget.plugin.store.accounts
-                            .addressIconsMap[widget.keyring.current.address],
+                        label: dicStaking['stash'],
+                        svg: widget.keyring.current.icon,
                       ),
                       TextFormField(
                         decoration: InputDecoration(
-                          hintText: assetDic['amount'],
+                          hintText: dic['amount'],
                           labelText:
-                              '${assetDic['amount']} (${dic['available']}: ${Fmt.priceFloor(
+                              '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
                             available,
                             lengthMax: 3,
                           )} $symbol)',
@@ -75,10 +73,10 @@ class _BondExtraPageState extends State<BondExtraPage> {
                             TextInputType.numberWithOptions(decimal: true),
                         validator: (v) {
                           if (v.isEmpty) {
-                            return assetDic['amount.error'];
+                            return dic['amount.error'];
                           }
                           if (double.parse(v.trim()) >= available) {
-                            return assetDic['amount.low'];
+                            return dic['amount.low'];
                           }
                           return null;
                         },
@@ -90,22 +88,27 @@ class _BondExtraPageState extends State<BondExtraPage> {
               Padding(
                 padding: EdgeInsets.all(16),
                 child: TxButton(
-                  params: TxConfirmParams(
-                    txTitle: dic['action.bondExtra'],
-                    module: 'staking',
-                    call: 'bondExtra',
-                    txDisplay: {
-                      "amount": _amountCtrl.text.trim(),
-                    },
-                    params: [
-                      // "amount"
-                      (double.parse(_amountCtrl.text.trim()) *
-                              pow(10, decimals))
-                          .toInt(),
-                    ],
-                  ),
+                  getTxParams: () {
+                    final inputAmount = _amountCtrl.text.trim();
+                    return TxConfirmParams(
+                      txTitle: dicStaking['action.bondExtra'],
+                      module: 'staking',
+                      call: 'bondExtra',
+                      txDisplay: {
+                        "amount": inputAmount,
+                      },
+                      params: [
+                        // "amount"
+                        (double.parse(inputAmount.isEmpty ? '0' : inputAmount) *
+                                pow(10, decimals))
+                            .toInt(),
+                      ],
+                    );
+                  },
                   onFinish: (bool success) {
-                    Navigator.of(context).pop(success);
+                    if (success != null && success) {
+                      Navigator.of(context).pop(success);
+                    }
                   },
                 ),
               ),

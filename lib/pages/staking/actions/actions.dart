@@ -247,8 +247,7 @@ class _StakingActions extends State<StakingActions>
                       margin: EdgeInsets.only(right: 16),
                       child: AddressIcon(
                         widget.keyring.current.address,
-                        svg: widget.plugin.store.accounts
-                            .addressIconsMap[widget.keyring.current.address],
+                        svg: widget.keyring.current.icon,
                       ),
                     ),
                     Expanded(
