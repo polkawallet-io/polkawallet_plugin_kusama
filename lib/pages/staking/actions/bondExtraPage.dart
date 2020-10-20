@@ -56,7 +56,6 @@ class _BondExtraPageState extends State<BondExtraPage> {
                       AddressFormItem(
                         widget.keyring.current,
                         label: dicStaking['stash'],
-                        svg: widget.keyring.current.icon,
                       ),
                       TextFormField(
                         decoration: InputDecoration(

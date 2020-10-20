@@ -67,7 +67,6 @@ class _SetControllerPageState extends State<SetControllerPage> {
                     AddressFormItem(
                       widget.keyring.current,
                       label: dic['stash'],
-                      svg: widget.keyring.current.icon,
                     ),
                     AddressFormItem(
                       controller,
