@@ -6,19 +6,19 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
-class BondExtraPage extends StatefulWidget {
-  BondExtraPage(this.plugin, this.keyring);
-  static final String route = '/staking/bondExtra';
+class UnBondPage extends StatefulWidget {
+  UnBondPage(this.plugin, this.keyring);
+  static final String route = '/staking/unbond';
   final PluginKusama plugin;
   final Keyring keyring;
   @override
-  _BondExtraPageState createState() => _BondExtraPageState();
+  _UnBondPageState createState() => _UnBondPageState();
 }
 
-class _BondExtraPageState extends State<BondExtraPage> {
+class _UnBondPageState extends State<UnBondPage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _amountCtrl = new TextEditingController();
@@ -30,15 +30,18 @@ class _BondExtraPageState extends State<BondExtraPage> {
     final symbol = widget.plugin.networkState.tokenSymbol;
     final decimals = widget.plugin.networkState.tokenDecimals;
 
-    double available = 0;
-    if (widget.plugin.balances.native != null) {
-      available = Fmt.balanceDouble(
-          widget.plugin.balances.native.availableBalance.toString(), decimals);
+    double bonded = 0;
+    if (widget.plugin.store.staking.ownStashInfo != null) {
+      bonded = Fmt.bigIntToDouble(
+          BigInt.parse(widget
+              .plugin.store.staking.ownStashInfo.stakingLedger['active']
+              .toString()),
+          decimals);
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dicStaking['action.bondExtra']),
+        title: Text(dicStaking['action.unbond']),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {
@@ -53,14 +56,14 @@ class _BondExtraPageState extends State<BondExtraPage> {
                     children: <Widget>[
                       AddressFormItem(
                         widget.keyring.current,
-                        label: dicStaking['stash'],
+                        label: dicStaking['controller'],
                       ),
                       TextFormField(
                         decoration: InputDecoration(
                           hintText: dic['amount'],
                           labelText:
-                              '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
-                            available,
+                              '${dic['amount']} (${dicStaking['bonded']}: ${Fmt.priceFloor(
+                            bonded,
                             lengthMax: 3,
                           )} $symbol)',
                         ),
@@ -72,7 +75,7 @@ class _BondExtraPageState extends State<BondExtraPage> {
                           if (v.isEmpty) {
                             return dic['amount.error'];
                           }
-                          if (double.parse(v.trim()) >= available) {
+                          if (double.parse(v.trim()) > bonded) {
                             return dic['amount.low'];
                           }
                           return null;
@@ -89,9 +92,9 @@ class _BondExtraPageState extends State<BondExtraPage> {
                     if (_formKey.currentState.validate()) {
                       final inputAmount = _amountCtrl.text.trim();
                       return TxConfirmParams(
-                        txTitle: dicStaking['action.bondExtra'],
+                        txTitle: dicStaking['action.unbond'],
                         module: 'staking',
-                        call: 'bondExtra',
+                        call: 'unbond',
                         txDisplay: {"amount": '$inputAmount $symbol'},
                         params: [
                           // "amount"

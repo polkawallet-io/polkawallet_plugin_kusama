@@ -55,6 +55,7 @@ const Map<String, String> enStaking = {
   'reward.Stash': 'Stash account (do not increase the amount at stake)',
   'reward.Controller':
       'Controller account (do not increase the amount at stake)',
+  'reward.Account': 'Specified payment account',
   'reward.warn': 'Reward destination is not changed',
   'reward.tip':
       'Retrieving info for all applicable eras, this will take some time.',
@@ -131,6 +132,7 @@ const Map<String, String> zhStaking = {
   'reward.Staked': '储值账户(收益再质押)',
   'reward.Stash': '储值账户(收益不再质押)',
   'reward.Controller': '控制账户(收益不再质押)',
+  'reward.Account': '指定收款地址',
   'reward.warn': '分红方式未修改',
   'reward.tip': '正在查询并计算所有质押奖励，可能需要等待几分钟...',
   'reward.time': '查询时间',

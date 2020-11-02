@@ -9,9 +9,9 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.da
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
-// import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakingDetailPage.dart';
-// import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/ownStashInfo.dart';
@@ -406,6 +406,7 @@ class RowAccount02 extends StatelessWidget {
   });
 
   /// 1. if acc02 != null, then we have acc02 in accountListAll.
+  ///    if acc02 == null, we can remind user to import it.
   /// 2. if current account is controller, and it's not self-controlled,
   ///    we display a stashId as address02, or we display a controllerId.
   final KeyPairData acc02;
@@ -690,10 +691,10 @@ class StakingActionsPanel extends StatelessWidget {
 
         if (stashInfo.isOwnController) {
           setPayeeDisabled = false;
-          // onSetPayeeTap = () => Navigator.of(context).pushNamed(
-          //       SetPayeePage.route,
-          //       arguments: stashInfo.destinationId,
-          //     );
+          onSetPayeeTap = () => _onAction(Navigator.of(context).pushNamed(
+                SetPayeePage.route,
+                arguments: stashInfo.destinationId,
+              ));
         }
       } else {
         bondButtonString = dic['action.bond'];
@@ -701,10 +702,10 @@ class StakingActionsPanel extends StatelessWidget {
     } else {
       if (bonded > BigInt.zero) {
         setPayeeDisabled = false;
-        // onSetPayeeTap = () => Navigator.of(context).pushNamed(
-        //       SetPayeePage.route,
-        //       arguments: stashInfo.destinationId,
-        //     );
+        onSetPayeeTap = () => _onAction(Navigator.of(context).pushNamed(
+              SetPayeePage.route,
+              arguments: stashInfo.destinationId,
+            ));
       }
     }
 
@@ -771,11 +772,8 @@ class StakingActionsPanel extends StatelessWidget {
                         ),
                         onPressed: !isController
                             ? () => {}
-                            : () {
-                                Navigator.of(context).pop();
-                                // Navigator.of(context)
-                                //     .pushNamed(UnBondPage.route);
-                              },
+                            : () => _onAction(Navigator.of(context)
+                                .pushNamed(UnBondPage.route)),
                       ),
                     ],
                     cancelButton: CupertinoActionSheetAction(

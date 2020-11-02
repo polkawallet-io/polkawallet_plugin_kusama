@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
+import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
+import 'package:polkawallet_ui/components/addressInputField.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 
 class SetPayeePage extends StatefulWidget {
@@ -71,6 +73,12 @@ class _SetPayeePageState extends State<SetPayeePage> {
     final rewardToOptions =
         _rewardToOptions.map((i) => dic['reward.$i']).toList();
 
+    List<KeyPairData> accounts;
+    if (_rewardTo == 3) {
+      accounts = widget.keyring.keyPairs;
+      accounts.addAll(widget.keyring.externals);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(dic['action.setting']),
@@ -125,7 +133,17 @@ class _SetPayeePageState extends State<SetPayeePage> {
                           ),
                         );
                       },
-                    )
+                    ),
+                    _rewardTo == 3
+                        ? Padding(
+                            padding: EdgeInsets.only(left: 16, right: 16),
+                            child: AddressInputField(
+                              widget.plugin.sdk.api,
+                              accounts,
+                              widget.plugin.store.accounts.addressIndexMap,
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),
