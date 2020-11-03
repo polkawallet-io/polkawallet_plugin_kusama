@@ -4,9 +4,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
-// import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
-// import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
-// import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 // import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
@@ -303,6 +303,7 @@ class _StakingActions extends State<StakingActions>
                   redeemable: redeemable,
                   available: BigInt.parse(info.availableBalance.toString()),
                   networkLoading: !hasData,
+                  onSuccess: () => _refreshKey.currentState.show(),
                 ),
                 Divider(),
                 StakingActionsPanel(
@@ -479,6 +480,7 @@ class StakingInfoPanel extends StatelessWidget {
     this.redeemable,
     this.available,
     this.networkLoading,
+    this.onSuccess,
   });
 
   final bool hasData;
@@ -492,6 +494,7 @@ class StakingInfoPanel extends StatelessWidget {
   final BigInt redeemable;
   final BigInt available;
   final bool networkLoading;
+  final Function onSuccess;
 
   @override
   Widget build(BuildContext context) {
@@ -585,8 +588,13 @@ class StakingInfoPanel extends StatelessWidget {
                                   ),
                                 ),
                                 onTap: () {
-                                  // Navigator.of(context)
-                                  //     .pushNamed(RedeemPage.route);
+                                  Navigator.of(context)
+                                      .pushNamed(RedeemPage.route)
+                                      .then((res) {
+                                    if (res != null && res) {
+                                      onSuccess();
+                                    }
+                                  });
                                 },
                               )
                             : Container()
@@ -629,7 +637,13 @@ class StakingInfoPanel extends StatelessWidget {
                       ),
                       onTap: () {
                         if (!networkLoading) {
-                          // Navigator.of(context).pushNamed(PayoutPage.route);
+                          Navigator.of(context)
+                              .pushNamed(PayoutPage.route)
+                              .then((res) {
+                            if (res != null && res) {
+                              onSuccess();
+                            }
+                          });
                         }
                       },
                     )
@@ -736,7 +750,7 @@ class StakingActionsPanel extends StatelessWidget {
                 /// 1. it has no controller
                 /// 2. it's stash is itself(it's not controller of another acc)
                 if (stashInfo.controllerId == null && isStash) {
-                  // Navigator.of(context).pushNamed(BondPage.route);
+                  _onAction(Navigator.of(context).pushNamed(BondPage.route));
                   return;
                 }
                 showCupertinoModalPopup(

@@ -25,10 +25,10 @@ class _SetPayeePageState extends State<SetPayeePage> {
   String _rewardAccount;
 
   TxConfirmParams _getTxParams() {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    var rewardToOptions =
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final rewardToOptions =
         _rewardToOptions.map((i) => dic['reward.$i']).toList();
-    int currentPayee = _rewardToOptions
+    final currentPayee = _rewardToOptions
         .indexOf(widget.plugin.store.staking.ownStashInfo.destination);
 
     if (currentPayee == _rewardTo) {
@@ -56,11 +56,13 @@ class _SetPayeePageState extends State<SetPayeePage> {
       module: 'staking',
       call: 'setPayee',
       txDisplay: {
-        "reward_destination": rewardToOptions[_rewardTo],
+        "reward_destination": _rewardTo == 3
+            ? {'Account': _rewardAccount}
+            : rewardToOptions[_rewardTo],
       },
       params: [
         // "to"
-        _rewardTo,
+        _rewardTo == 3 ? {'Account': _rewardAccount} : _rewardTo,
       ],
     );
   }
@@ -141,6 +143,11 @@ class _SetPayeePageState extends State<SetPayeePage> {
                               widget.plugin.sdk.api,
                               accounts,
                               widget.plugin.store.accounts.addressIndexMap,
+                              onChanged: (acc) {
+                                setState(() {
+                                  _rewardAccount = acc.address;
+                                });
+                              },
                             ),
                           )
                         : Container(),

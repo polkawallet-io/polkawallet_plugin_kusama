@@ -7,6 +7,9 @@ import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
@@ -86,10 +89,13 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   Map<String, WidgetBuilder> getRoutes(Keyring keyring) {
     return {
+      BondPage.route: (_) => BondPage(this, keyring),
       BondExtraPage.route: (_) => BondExtraPage(this, keyring),
       SetControllerPage.route: (_) => SetControllerPage(this, keyring),
       UnBondPage.route: (_) => UnBondPage(this, keyring),
       SetPayeePage.route: (_) => SetPayeePage(this, keyring),
+      RedeemPage.route: (_) => RedeemPage(this, keyring),
+      PayoutPage.route: (_) => PayoutPage(this, keyring),
     };
   }
 
