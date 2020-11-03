@@ -7,10 +7,10 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.da
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
-// import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
-// import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakingDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakingDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
@@ -119,8 +119,8 @@ class _StakingActions extends State<StakingActions>
                   style: TextStyle(color: Colors.pink),
                 ),
           onTap: () {
-            // Navigator.of(context)
-            //     .pushNamed(StakingDetailPage.route, arguments: i);
+            Navigator.of(context)
+                .pushNamed(StakingDetailPage.route, arguments: i);
           },
         ),
       );
@@ -157,8 +157,8 @@ class _StakingActions extends State<StakingActions>
               DateTime.fromMillisecondsSinceEpoch(i.blockTimestamp * 1000))),
           trailing: Text('${Fmt.balance(i.amount, decimals)} $symbol'),
           onTap: () {
-            // Navigator.of(context)
-            //     .pushNamed(RewardDetailPage.route, arguments: i);
+            Navigator.of(context)
+                .pushNamed(RewardDetailPage.route, arguments: i);
           },
         ),
       );
