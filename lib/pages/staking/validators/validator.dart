@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -82,8 +83,8 @@ class Validator extends StatelessWidget {
       onTap: hasDetail
           ? () {
               // webApi.staking.queryValidatorRewards(validator.accountId);
-              // Navigator.of(context)
-              //     .pushNamed(ValidatorDetailPage.route, arguments: validator);
+              Navigator.of(context)
+                  .pushNamed(ValidatorDetailPage.route, arguments: validator);
             }
           : null,
     );
