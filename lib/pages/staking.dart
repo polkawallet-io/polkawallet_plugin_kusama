@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/actions.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/validators/overview.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -44,7 +45,7 @@ class _StakingState extends State<Staking> {
           ),
           Expanded(
             child: _tab == 1
-                ? Container()
+                ? StakingOverviewPage(widget.plugin, widget.keyring)
                 : StakingActions(widget.plugin, widget.keyring),
           ),
         ],

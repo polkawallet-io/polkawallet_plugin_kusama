@@ -114,6 +114,8 @@ class PluginKusama extends PolkawalletPlugin {
     final res = await sdk.api.connectNode(keyring, nodeList);
     networkState = await sdk.api.setting.queryNetworkProps();
     networkConst = await sdk.api.setting.queryNetworkConst();
+
+    _service.staking.fetchStakingOverview();
     return res;
   }
 

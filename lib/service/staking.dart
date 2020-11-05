@@ -42,7 +42,7 @@ class ApiStaking {
 
     fetchElectedInfo();
 
-    List validatorAddressList = List.of(overview['validators']);
+    List validatorAddressList = overview['validators'];
     validatorAddressList.addAll(overview['waiting']);
     final indexes = await api.account.queryIndexInfo(validatorAddressList);
     store.accounts.setAddressIndex(indexes);
