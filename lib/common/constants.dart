@@ -62,3 +62,12 @@ const MaterialColor kusama_black = const MaterialColor(
     900: const Color(0xFF000000),
   },
 );
+
+const String network_name_kusama = 'kusama';
+const String network_name_polkadot = 'polkadot';
+
+/// js code versions
+const Map<String, int> js_code_version_map = {
+  network_name_polkadot: 10510,
+  network_name_kusama: 10510,
+};
