@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validator.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorListFilter.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/service/walletApi.dart';
@@ -20,6 +22,7 @@ import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 const validator_list_page_size = 100;
@@ -111,7 +114,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
               dicStaking['action.nominee'],
             ),
             onPressed: () {
-              // Navigator.of(context).popAndPushNamed(NominatePage.route);
+              Navigator.of(context).pop();
+              _nominate();
             },
           ),
           CupertinoActionSheetAction(
@@ -133,6 +137,13 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
         ),
       ),
     );
+  }
+
+  Future<void> _nominate() async {
+    final res = await Navigator.of(context).pushNamed(NominatePage.route);
+    if (res != null && res) {
+      _refreshKey.currentState.show();
+    }
   }
 
   Future<void> _chill() async {
@@ -262,7 +273,16 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
               opacity: _expanded ? 1.0 : 0.0,
               duration: Duration(seconds: 1),
               curve: Curves.fastLinearToSlowEaseIn,
-              child: _buildNominatingList(),
+              child: nominators.length > 0
+                  ? _buildNominatingList()
+                  : Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text(
+                        I18n.of(context)
+                            .getDic(i18n_full_dic_ui, 'common')['list.empty'],
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                    ),
             ),
           )
         ],
@@ -279,61 +299,64 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     final stashId = widget.plugin.store.staking.ownStashInfo.stashId;
     final NomineesInfoData nomineesInfo =
         widget.plugin.store.staking.ownStashInfo.inactives;
-    final List<Widget> list = nomineesInfo.nomsActive.map((id) {
-      return Expanded(
-        child: _NomineeItem(
-          id,
-          widget.plugin.store.staking.validatorsInfo,
-          stashId,
-          NomStatus.active,
-          widget.plugin.networkState.tokenDecimals,
-          widget.plugin.store.accounts.addressIndexMap,
-          widget.plugin.store.accounts.addressIconsMap,
-        ),
-      );
-    }).toList();
+    List<Widget> list = [];
+    if (nomineesInfo != null) {
+      list.addAll(nomineesInfo.nomsActive.map((id) {
+        return Expanded(
+          child: _NomineeItem(
+            id,
+            widget.plugin.store.staking.validatorsInfo,
+            stashId,
+            NomStatus.active,
+            widget.plugin.networkState.tokenDecimals,
+            widget.plugin.store.accounts.addressIndexMap,
+            widget.plugin.store.accounts.addressIconsMap,
+          ),
+        );
+      }));
 
-    list.addAll(nomineesInfo.nomsOver.map((id) {
-      return Expanded(
-        child: _NomineeItem(
-          id,
-          widget.plugin.store.staking.validatorsInfo,
-          stashId,
-          NomStatus.over,
-          widget.plugin.networkState.tokenDecimals,
-          widget.plugin.store.accounts.addressIndexMap,
-          widget.plugin.store.accounts.addressIconsMap,
-        ),
-      );
-    }).toList());
+      list.addAll(nomineesInfo.nomsOver.map((id) {
+        return Expanded(
+          child: _NomineeItem(
+            id,
+            widget.plugin.store.staking.validatorsInfo,
+            stashId,
+            NomStatus.over,
+            widget.plugin.networkState.tokenDecimals,
+            widget.plugin.store.accounts.addressIndexMap,
+            widget.plugin.store.accounts.addressIconsMap,
+          ),
+        );
+      }).toList());
 
-    list.addAll(nomineesInfo.nomsInactive.map((id) {
-      return Expanded(
-        child: _NomineeItem(
-          id,
-          widget.plugin.store.staking.validatorsInfo,
-          stashId,
-          NomStatus.inactive,
-          widget.plugin.networkState.tokenDecimals,
-          widget.plugin.store.accounts.addressIndexMap,
-          widget.plugin.store.accounts.addressIconsMap,
-        ),
-      );
-    }).toList());
+      list.addAll(nomineesInfo.nomsInactive.map((id) {
+        return Expanded(
+          child: _NomineeItem(
+            id,
+            widget.plugin.store.staking.validatorsInfo,
+            stashId,
+            NomStatus.inactive,
+            widget.plugin.networkState.tokenDecimals,
+            widget.plugin.store.accounts.addressIndexMap,
+            widget.plugin.store.accounts.addressIconsMap,
+          ),
+        );
+      }).toList());
 
-    list.addAll(nomineesInfo.nomsWaiting.map((id) {
-      return Expanded(
-        child: _NomineeItem(
-          id,
-          widget.plugin.store.staking.validatorsInfo,
-          stashId,
-          NomStatus.waiting,
-          widget.plugin.networkState.tokenDecimals,
-          widget.plugin.store.accounts.addressIndexMap,
-          widget.plugin.store.accounts.addressIconsMap,
-        ),
-      );
-    }).toList());
+      list.addAll(nomineesInfo.nomsWaiting.map((id) {
+        return Expanded(
+          child: _NomineeItem(
+            id,
+            widget.plugin.store.staking.validatorsInfo,
+            stashId,
+            NomStatus.waiting,
+            widget.plugin.networkState.tokenDecimals,
+            widget.plugin.store.accounts.addressIndexMap,
+            widget.plugin.store.accounts.addressIconsMap,
+          ),
+        );
+      }).toList());
+    }
     return Container(
       padding: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
@@ -600,8 +623,8 @@ class _NomineeItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        // Navigator.of(context)
-        //     .pushNamed(ValidatorDetailPage.route, arguments: validator);
+        Navigator.of(context)
+            .pushNamed(ValidatorDetailPage.route, arguments: validator);
       },
     );
   }

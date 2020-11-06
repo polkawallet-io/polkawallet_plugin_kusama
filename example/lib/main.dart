@@ -14,6 +14,8 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama_example/pages/homePage.dart';
 import 'package:polkawallet_ui/pages/accountListPage.dart';
+import 'package:polkawallet_ui/pages/qrSenderPage.dart';
+import 'package:polkawallet_ui/pages/scanPage.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
 void main() {
@@ -142,6 +144,8 @@ class _MyAppState extends State<MyApp> {
     return {
       SelectListPage.route: (_) => SelectListPage(),
       TxConfirmPage.route: (_) => TxConfirmPage(_network, _keyring),
+      QrSenderPage.route: (_) => QrSenderPage(_network, _keyring),
+      ScanPage.route: (_) => ScanPage(_network, _keyring),
       AccountListPage.route: (_) => AccountListPage(_network, _keyring),
       ...res,
     };
