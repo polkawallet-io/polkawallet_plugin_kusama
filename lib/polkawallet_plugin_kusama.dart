@@ -119,13 +119,21 @@ class PluginKusama extends PolkawalletPlugin {
     networkState = await sdk.api.setting.queryNetworkProps();
     networkConst = await sdk.api.setting.queryNetworkConst();
 
+    if (keyring.current != null) {
+      sdk.api.account.subscribeBalance(keyring.current.address,
+          (BalanceData data) {
+        balances.setBalance(data);
+      });
+    }
+
     _service.staking.fetchStakingOverview();
     return res;
   }
 
   @override
-  void subscribeBalances(KeyPairData keyPair) {
-    sdk.api.account.subscribeBalance(keyPair.address, (BalanceData data) {
+  void onChangeAccount(KeyPairData account) {
+    sdk.api.account.unsubscribeBalance();
+    sdk.api.account.subscribeBalance(account.address, (BalanceData data) {
       balances.setBalance(data);
     });
   }

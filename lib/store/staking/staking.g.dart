@@ -324,7 +324,8 @@ mixin _$StakingStore on _StakingStore, Store {
       ActionController(name: '_StakingStore');
 
   @override
-  void setValidatorsInfo(Map<String, dynamic> data, {bool shouldCache = true}) {
+  void setValidatorsInfo(Map<dynamic, dynamic> data,
+      {bool shouldCache = true}) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
         name: '_StakingStore.setValidatorsInfo');
     try {
@@ -335,7 +336,7 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setOverview(Map<String, dynamic> data, {bool shouldCache = true}) {
+  void setOverview(Map<dynamic, dynamic> data, {bool shouldCache = true}) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
         name: '_StakingStore.setOverview');
     try {
@@ -346,7 +347,7 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setOwnStashInfo(String pubKey, Map<String, dynamic> data,
+  void setOwnStashInfo(String pubKey, Map<dynamic, dynamic> data,
       {bool shouldCache = true}) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
         name: '_StakingStore.setOwnStashInfo');

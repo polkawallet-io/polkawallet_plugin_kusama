@@ -113,7 +113,7 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  void setValidatorsInfo(Map<String, dynamic> data, {bool shouldCache = true}) {
+  void setValidatorsInfo(Map data, {bool shouldCache = true}) {
     BigInt totalStaked = BigInt.zero;
     var nominators = {};
     List<ValidatorData> ls = List<ValidatorData>();
@@ -141,7 +141,7 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  void setOverview(Map<String, dynamic> data, {bool shouldCache = true}) {
+  void setOverview(Map data, {bool shouldCache = true}) {
     data.keys.forEach((key) => overview[key] = data[key]);
 
     // show validator's address before we got elected detail info
@@ -155,13 +155,15 @@ abstract class _StakingStore with Store {
     }
 
     if (shouldCache) {
+      // saving nominators data into GetStorage may cause error,
+      // so we remove it before saving.
+      data['nominators'] = {};
       cache.stakingOverview.val = data;
     }
   }
 
   @action
-  void setOwnStashInfo(String pubKey, Map<String, dynamic> data,
-      {bool shouldCache = true}) {
+  void setOwnStashInfo(String pubKey, Map data, {bool shouldCache = true}) {
     ownStashInfo = OwnStashInfoData.fromJson(data);
 
     if (shouldCache) {

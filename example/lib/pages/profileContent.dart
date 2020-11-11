@@ -160,7 +160,7 @@ class _ProfileContentState extends State<ProfileContent> {
         _loading = false;
       });
 
-      widget.network.subscribeBalances(acc);
+      widget.network.onChangeAccount(acc);
     }
   }
 
@@ -174,8 +174,6 @@ class _ProfileContentState extends State<ProfileContent> {
       setState(() {
         _loading = false;
       });
-
-      widget.network.sdk.api.account.unsubscribeBalance();
     }
   }
 
@@ -194,7 +192,7 @@ class _ProfileContentState extends State<ProfileContent> {
         _loading = false;
       });
 
-      widget.network.subscribeBalances(acc);
+      widget.network.onChangeAccount(acc);
     }
   }
 

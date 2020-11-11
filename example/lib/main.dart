@@ -92,24 +92,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _setConnectedNode(NetworkParams node) {
-    if (node != null) {
-      _subscribeBalance();
-    }
     setState(() {
       _connectedNode = node;
     });
-  }
-
-  void _subscribeBalance() async {
-    KeyPairData acc = KeyPairData();
-    if (_keyring.keyPairs.length > 0) {
-      acc = _keyring.keyPairs[0];
-    } else if (_keyring.externals.length > 0) {
-      acc = _keyring.externals[0];
-    } else {
-      acc.address = '1CTthuNVHUxWJkejKUGAoKaW1ffbXaUUHpEQvfizWP2CMQe';
-    }
-    _network.subscribeBalances(acc);
   }
 
   Future<void> _startPlugin() async {
