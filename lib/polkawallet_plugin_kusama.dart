@@ -67,6 +67,14 @@ class PluginKusama extends PolkawalletPlugin {
   final balances = BalancesStore();
 
   @override
+  Map<String, Widget> getTokenIcons(BuildContext context) => {
+        'KSM': Image.asset(
+            'packages/polkawallet_plugin_kusama/assets/images/tokens/KSM.png'),
+        'DOT': Image.asset(
+            'packages/polkawallet_plugin_kusama/assets/images/tokens/DOT.png'),
+      };
+
+  @override
   Map networkConst = {};
 
   @override

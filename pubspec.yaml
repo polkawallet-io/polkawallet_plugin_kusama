@@ -47,6 +47,8 @@ flutter:
     - assets/images/staking/error.png
     - assets/images/staking/reward.svg
     - assets/images/staking/slash.svg
+    - assets/images/tokens/KSM.png
+    - assets/images/tokens/DOT.png
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
