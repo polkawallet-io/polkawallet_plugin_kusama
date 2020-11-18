@@ -163,8 +163,8 @@ class _NominatePageState extends State<NominatePage> {
         });
 
         // set recommended selected
-        final List recommendList = widget
-            .plugin.store.staking.recommendedValidators[widget.plugin.name];
+        final List recommendList = widget.plugin.store.staking
+            .recommendedValidators[widget.plugin.basic.name];
         if (recommendList != null && recommendList.length > 0) {
           List<ValidatorData> recommended = _notSelected.toList();
           recommended
@@ -186,8 +186,8 @@ class _NominatePageState extends State<NominatePage> {
     List<ValidatorData> list = [];
     list.addAll(_selected);
     // add recommended
-    final List recommendList =
-        widget.plugin.store.staking.recommendedValidators[widget.plugin.name];
+    final List recommendList = widget
+        .plugin.store.staking.recommendedValidators[widget.plugin.basic.name];
     if (recommendList != null && recommendList.length > 0) {
       List<ValidatorData> recommended = _notSelected.toList();
       recommended.retainWhere((i) => recommendList.indexOf(i.accountId) > -1);

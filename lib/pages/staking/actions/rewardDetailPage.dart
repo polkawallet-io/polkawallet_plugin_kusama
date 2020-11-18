@@ -24,7 +24,7 @@ class RewardDetailPage extends StatelessWidget {
     final TxRewardData detail = ModalRoute.of(context).settings.arguments;
 
     return TxDetail(
-      networkName: plugin.name,
+      networkName: plugin.basic.name,
       success: true,
       action: detail.eventId,
       hash: detail.extrinsicHash,

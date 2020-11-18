@@ -20,69 +20,48 @@ import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDeta
 import 'package:polkawallet_plugin_kusama/service/index.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
-import 'package:polkawallet_sdk/api/types/balanceData.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
-import 'package:polkawallet_sdk/api/types/networkStateData.dart';
 import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
-import 'package:polkawallet_sdk/polkawallet_sdk.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
-import 'package:polkawallet_sdk/plugin/store/balances.dart';
-import 'package:polkawallet_sdk/service/webViewRunner.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
-import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 
 class PluginKusama extends PolkawalletPlugin {
   /// the kusama plugin support two networks: kusama & polkadot,
   /// so we need to identify the active network to connect & display UI.
   PluginKusama({name = 'kusama'})
-      : name = name,
-        cache = name == 'kusama' ? StoreCacheKusama() : StoreCachePolkadot();
-
-  PluginStore _store;
-  PluginApi _service;
-  PluginStore get store => _store;
-  PluginApi get service => _service;
-
-  final StoreCache cache;
-
-  @override
-  final String name;
+      : basic = PluginBasicData(
+          name: name,
+          ss58: name == 'kusama' ? 2 : 0,
+          primaryColor: name == 'kusama' ? kusama_black : Colors.pink,
+          icon: Image.asset(
+              'packages/polkawallet_plugin_kusama/assets/images/public/$name.png'),
+          iconDisabled: Image.asset(
+              'packages/polkawallet_plugin_kusama/assets/images/public/${name}_gray.png'),
+        ),
+        _cache = name == 'kusama' ? StoreCacheKusama() : StoreCachePolkadot();
 
   @override
-  final WalletSDK sdk = WalletSDK();
-
-  @override
-  MaterialColor get primaryColor =>
-      name == 'polkadot' ? Colors.pink : kusama_black;
+  final PluginBasicData basic;
 
   @override
   List<NetworkParams> get nodeList {
-    if (name == 'polkadot') {
+    if (basic.name == 'polkadot') {
       return node_list_polkadot.map((e) => NetworkParams.fromJson(e)).toList();
     }
     return node_list_kusama.map((e) => NetworkParams.fromJson(e)).toList();
   }
 
   @override
-  final balances = BalancesStore();
-
-  @override
-  Map<String, Widget> getTokenIcons(BuildContext context) => {
-        'KSM': Image.asset(
-            'packages/polkawallet_plugin_kusama/assets/images/tokens/KSM.png'),
-        'DOT': Image.asset(
-            'packages/polkawallet_plugin_kusama/assets/images/tokens/DOT.png'),
-      };
-
-  @override
-  Map networkConst = {};
-
-  @override
-  NetworkStateData networkState = NetworkStateData();
+  Map<String, Widget> tokenIcons = {
+    'KSM': Image.asset(
+        'packages/polkawallet_plugin_kusama/assets/images/tokens/KSM.png'),
+    'DOT': Image.asset(
+        'packages/polkawallet_plugin_kusama/assets/images/tokens/DOT.png'),
+  };
 
   @override
   List<HomeNavItem> getNavItems(Keyring keyring) {
-    final color = name == 'polkadot' ? 'pink' : 'black';
+    final color = basic.name == 'polkadot' ? 'pink' : 'black';
     return home_nav_items.map((e) {
       final nav = e.toLowerCase();
       return HomeNavItem(
@@ -115,34 +94,21 @@ class PluginKusama extends PolkawalletPlugin {
     };
   }
 
-  /// init the plugin runtime & connect to node
+  PluginStore _store;
+  PluginApi _service;
+  PluginStore get store => _store;
+  PluginApi get service => _service;
+
+  final StoreCache _cache;
+
   @override
-  Future<NetworkParams> start(Keyring keyring, {WebViewRunner webView}) async {
-    await sdk.init(keyring, webView: webView);
-
-    _store = PluginStore(cache);
+  Future<void> beforeStart(Keyring keyring) async {
+    _store = PluginStore(_cache);
     _service = PluginApi(this, keyring);
-
-    final res = await sdk.api.connectNode(keyring, nodeList);
-    networkState = await sdk.api.setting.queryNetworkProps();
-    networkConst = await sdk.api.setting.queryNetworkConst();
-
-    if (keyring.current != null) {
-      sdk.api.account.subscribeBalance(keyring.current.address,
-          (BalanceData data) {
-        balances.setBalance(data);
-      });
-    }
-
-    _service.staking.fetchStakingOverview();
-    return res;
   }
 
   @override
-  void onChangeAccount(KeyPairData account) {
-    sdk.api.account.unsubscribeBalance();
-    sdk.api.account.subscribeBalance(account.address, (BalanceData data) {
-      balances.setBalance(data);
-    });
+  Future<void> onStarted(Keyring keyring) async {
+    _service.staking.fetchStakingOverview();
   }
 }

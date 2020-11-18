@@ -37,6 +37,10 @@ dependency_overrides:
 # The following section is specific to Flutter.
 flutter:
   assets:
+    - assets/images/public/kusama.png
+    - assets/images/public/kusama_gray.png
+    - assets/images/public/polkadot.png
+    - assets/images/public/polkadot_gray.png
     - assets/images/public/staking.png
     - assets/images/public/staking_black.png
     - assets/images/public/staking_pink.png

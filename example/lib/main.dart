@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
   void _setNetwork(PolkawalletPlugin network) {
     setState(() {
       _network = network;
-      _theme = _getAppTheme(network.primaryColor);
+      _theme = _getAppTheme(network.basic.primaryColor);
     });
   }
 
@@ -156,7 +156,7 @@ class _MyAppState extends State<MyApp> {
     final AssetsContent assets = AssetsContent(_network, _keyring);
     return MaterialApp(
       title: 'Polkawallet Plugin Kusama Demo',
-      theme: _theme ?? _getAppTheme(widget.plugins[0].primaryColor),
+      theme: _theme ?? _getAppTheme(widget.plugins[0].basic.primaryColor),
       localizationsDelegates: [
         AppLocalizationsDelegate(_locale ?? Locale('en', '')),
         GlobalMaterialLocalizations.delegate,

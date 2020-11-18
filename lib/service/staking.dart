@@ -59,7 +59,7 @@ class ApiStaking {
       'staking',
       page: page,
       sender: keyring.current.address,
-      network: plugin.name,
+      network: plugin.basic.name,
     );
 
     if (page == 0) {
@@ -79,7 +79,7 @@ class ApiStaking {
     final res = await api.subScan.fetchRewardTxsAsync(
       page: 0,
       sender: keyring.current.address,
-      network: plugin.name,
+      network: plugin.basic.name,
     );
 
     await store.staking

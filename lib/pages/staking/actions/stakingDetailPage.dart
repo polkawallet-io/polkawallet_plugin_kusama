@@ -48,7 +48,7 @@ class StakingDetailPage extends StatelessWidget {
       );
     }));
     return TxDetail(
-      networkName: plugin.name,
+      networkName: plugin.basic.name,
       success: detail.success,
       action: detail.call,
       hash: detail.hash,

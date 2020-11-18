@@ -448,15 +448,15 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
           // index_3: the recommended validators
           // add recommended
           List<ValidatorData> recommended = [];
-          final recommendList = widget
-              .plugin.store.staking.recommendedValidators[widget.plugin.name];
+          final recommendList = widget.plugin.store.staking
+              .recommendedValidators[widget.plugin.basic.name];
           if (recommendList != null) {
             recommended = _tab == 0
                 ? widget.plugin.store.staking.validatorsInfo.toList()
                 : widget.plugin.store.staking.nextUpsInfo.toList();
             recommended.retainWhere((i) =>
                 widget.plugin.store.staking
-                    .recommendedValidators[widget.plugin.name]
+                    .recommendedValidators[widget.plugin.basic.name]
                     .indexOf(i.accountId) >
                 -1);
           }

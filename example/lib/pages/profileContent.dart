@@ -91,11 +91,11 @@ class _ProfileContentState extends State<ProfileContent> {
   Future<void> _onChangeNetwork() async {
     final selected = await Navigator.of(context).pushNamed(SelectListPage.route,
         arguments: widget.plugins
-            .map((e) => ListItemData(title: e.name, subtitle: ''))
+            .map((e) => ListItemData(title: e.basic.name, subtitle: ''))
             .toList());
     if (selected != null) {
       final net = widget.plugins[selected];
-      if (net.name != widget.network.name) {
+      if (net.basic.name != widget.network.basic.name) {
         if (widget.connectedNode != null) {
           widget.setConnectedNode(null);
         }
@@ -160,7 +160,7 @@ class _ProfileContentState extends State<ProfileContent> {
         _loading = false;
       });
 
-      widget.network.onChangeAccount(acc);
+      widget.network.changeAccount(acc);
     }
   }
 
@@ -192,7 +192,7 @@ class _ProfileContentState extends State<ProfileContent> {
         _loading = false;
       });
 
-      widget.network.onChangeAccount(acc);
+      widget.network.changeAccount(acc);
     }
   }
 
@@ -209,7 +209,7 @@ class _ProfileContentState extends State<ProfileContent> {
         Divider(),
         ListTile(
           title: Text('change network'),
-          subtitle: Text(widget.network.name),
+          subtitle: Text(widget.network.basic.name),
           trailing: Icon(Icons.arrow_forward_ios, size: 18),
           onTap: () => _onChangeNetwork(),
         ),

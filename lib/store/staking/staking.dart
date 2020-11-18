@@ -157,7 +157,7 @@ abstract class _StakingStore with Store {
     if (shouldCache) {
       // saving nominators data into GetStorage may cause error,
       // so we remove it before saving.
-      data['nominators'] = {};
+      data.remove('nominators');
       cache.stakingOverview.val = data;
     }
   }
