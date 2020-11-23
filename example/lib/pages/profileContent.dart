@@ -170,7 +170,7 @@ class _ProfileContentState extends State<ProfileContent> {
         _loading = true;
       });
       await widget.keyring.store
-          .deleteAccount(widget.keyring.externals[0].pubKey, isExternal: true);
+          .deleteAccount(widget.keyring.externals[0].pubKey);
       setState(() {
         _loading = false;
       });
@@ -183,7 +183,7 @@ class _ProfileContentState extends State<ProfileContent> {
         _loading = true;
       });
       final KeyPairData acc =
-          await widget.network.sdk.api.keyring.addExternal(widget.keyring, {
+          await widget.network.sdk.api.keyring.addContact(widget.keyring, {
         'name': 'external_test',
         'address': '14fpQHev6kcQxiW49e5Cg4VgY8QeKwLxwfbAHg81ro8r8AnD',
         'observation': true,

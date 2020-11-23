@@ -9,6 +9,8 @@ const Map<String, String> enCommon = {
   'amount.available': 'Available',
   'amount.error': 'Invalid amount',
   'amount.low': 'Insufficient balance',
+  'staking': 'Staking',
+  'governance': 'Governance',
 };
 
 const Map<String, String> zhCommon = {
@@ -22,4 +24,6 @@ const Map<String, String> zhCommon = {
   'amount.available': '可用',
   'amount.error': '数量无效',
   'amount.low': '余额不足',
+  'staking': '质押',
+  'governance': '治理',
 };

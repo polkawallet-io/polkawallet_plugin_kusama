@@ -142,7 +142,6 @@ class _SetPayeePageState extends State<SetPayeePage> {
                             child: AddressInputField(
                               widget.plugin.sdk.api,
                               accounts,
-                              widget.plugin.store.accounts.addressIndexMap,
                               onChanged: (acc) {
                                 setState(() {
                                   _rewardAccount = acc.address;

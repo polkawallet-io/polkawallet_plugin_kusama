@@ -20,10 +20,12 @@ import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDeta
 import 'package:polkawallet_plugin_kusama/service/index.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
+import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
+import 'package:polkawallet_sdk/utils/i18n.dart';
 
 class PluginKusama extends PolkawalletPlugin {
   /// the kusama plugin support two networks: kusama & polkadot,
@@ -60,17 +62,17 @@ class PluginKusama extends PolkawalletPlugin {
   };
 
   @override
-  List<HomeNavItem> getNavItems(Keyring keyring) {
+  List<HomeNavItem> getNavItems(BuildContext context, Keyring keyring) {
     final color = basic.name == 'polkadot' ? 'pink' : 'black';
     return home_nav_items.map((e) {
-      final nav = e.toLowerCase();
+      final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
       return HomeNavItem(
-        text: e,
+        text: dic[e],
         icon: Image(
-            image: AssetImage('assets/images/public/$nav.png',
+            image: AssetImage('assets/images/public/$e.png',
                 package: 'polkawallet_plugin_kusama')),
         iconActive: Image(
-            image: AssetImage('assets/images/public/${nav}_$color.png',
+            image: AssetImage('assets/images/public/${e}_$color.png',
                 package: 'polkawallet_plugin_kusama')),
         content: e == 'Staking' ? Staking(this, keyring) : Gov(),
       );

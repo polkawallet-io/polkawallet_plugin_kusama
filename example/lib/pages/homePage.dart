@@ -58,13 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         iconActive: Icon(
           Icons.account_balance_wallet,
-          color: widget.network.primaryColor,
+          color: widget.network.basic.primaryColor,
           size: 32,
         ),
         content: widget.assetsContent,
       )
     ];
-    pages.addAll(widget.network.getNavItems(widget.keyring));
+    pages.addAll(widget.network.getNavItems(context, widget.keyring));
     pages.add(HomeNavItem(
       text: 'Profile',
       icon: Icon(
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       iconActive: Icon(
         CupertinoIcons.profile_circled,
-        color: widget.network.primaryColor,
+        color: widget.network.basic.primaryColor,
         size: 34,
       ),
       content: widget.profileContent,
