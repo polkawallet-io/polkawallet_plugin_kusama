@@ -5,6 +5,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracyPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/democracy/proposalDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/democracy/referendumVotePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
@@ -26,6 +34,7 @@ import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
 class PluginKusama extends PolkawalletPlugin {
   /// the kusama plugin support two networks: kusama & polkadot,
@@ -74,7 +83,7 @@ class PluginKusama extends PolkawalletPlugin {
         iconActive: Image(
             image: AssetImage('assets/images/public/${e}_$color.png',
                 package: 'polkawallet_plugin_kusama')),
-        content: e == 'Staking' ? Staking(this, keyring) : Gov(),
+        content: e == 'staking' ? Staking(this, keyring) : Gov(this),
       );
     }).toList();
   }
@@ -82,6 +91,9 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   Map<String, WidgetBuilder> getRoutes(Keyring keyring) {
     return {
+      TxConfirmPage.route: (_) => TxConfirmPage(this, keyring),
+
+      // staking pages
       BondPage.route: (_) => BondPage(this, keyring),
       BondExtraPage.route: (_) => BondExtraPage(this, keyring),
       SetControllerPage.route: (_) => SetControllerPage(this, keyring),
@@ -93,6 +105,16 @@ class PluginKusama extends PolkawalletPlugin {
       StakingDetailPage.route: (_) => StakingDetailPage(this, keyring),
       RewardDetailPage.route: (_) => RewardDetailPage(this, keyring),
       ValidatorDetailPage.route: (_) => ValidatorDetailPage(this, keyring),
+
+      // governance pages
+      DemocracyPage.route: (_) => DemocracyPage(this, keyring),
+      ReferendumVotePage.route: (_) => ReferendumVotePage(this, keyring),
+      CouncilPage.route: (_) => CouncilPage(this, keyring),
+      CouncilVotePage.route: (_) => CouncilVotePage(this),
+      CandidateListPage.route: (_) => CandidateListPage(this, keyring),
+      CandidateDetailPage.route: (_) => CandidateDetailPage(this, keyring),
+      MotionDetailPage.route: (_) => MotionDetailPage(this, keyring),
+      ProposalDetailPage.route: (_) => ProposalDetailPage(this, keyring),
     };
   }
 

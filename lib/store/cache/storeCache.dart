@@ -10,6 +10,9 @@ class StoreCache {
   final stakingOverview = {}.val('stakingOverview', getBox: _storage);
   final validatorsInfo = {}.val('validatorsInfo', getBox: _storage);
 
+  /// governance network state
+  final councilInfo = {}.val('councilInfo', getBox: _storage);
+
   /// account staking data
   final stakingOwnStash = {}.val('stakingOwnStash', getBox: _storage);
   final stakingTxs = {}.val('stakingTxs', getBox: _storage);
@@ -23,6 +26,9 @@ class StoreCacheKusama extends StoreCache {
   final stakingOverview = {}.val('stakingOverview', getBox: _storage);
   final validatorsInfo = {}.val('validatorsInfo', getBox: _storage);
 
+  /// governance network state
+  final councilInfo = {}.val('councilInfo', getBox: _storage);
+
   /// account staking data
   final stakingOwnStash = {}.val('stakingOwnStash', getBox: _storage);
   final stakingTxs = {}.val('stakingTxs', getBox: _storage);
@@ -35,6 +41,9 @@ class StoreCachePolkadot extends StoreCache {
   /// staking network state
   final stakingOverview = {}.val('stakingOverview', getBox: _storage);
   final validatorsInfo = {}.val('validatorsInfo', getBox: _storage);
+
+  /// governance network state
+  final councilInfo = {}.val('councilInfo', getBox: _storage);
 
   /// account staking data
   final stakingOwnStash = {}.val('stakingOwnStash', getBox: _storage);

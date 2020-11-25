@@ -53,6 +53,7 @@ flutter:
     - assets/images/staking/slash.svg
     - assets/images/tokens/KSM.png
     - assets/images/tokens/DOT.png
+    - assets/images/public/polkassembly.png
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

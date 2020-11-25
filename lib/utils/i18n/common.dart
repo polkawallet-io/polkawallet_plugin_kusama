@@ -9,8 +9,11 @@ const Map<String, String> enCommon = {
   'amount.available': 'Available',
   'amount.error': 'Invalid amount',
   'amount.low': 'Insufficient balance',
+  'balance': 'Balance',
   'staking': 'Staking',
   'governance': 'Governance',
+  'node.connecting': 'Connecting remote node...',
+  'node.failed': 'Remote node connection failed',
 };
 
 const Map<String, String> zhCommon = {
@@ -24,6 +27,9 @@ const Map<String, String> zhCommon = {
   'amount.available': '可用',
   'amount.error': '数量无效',
   'amount.low': '余额不足',
+  'balance': '余额',
   'staking': '质押',
   'governance': '治理',
+  'node.connecting': '正在连接远程节点...',
+  'node.failed': '远程节点连接失败',
 };

@@ -99,4 +99,19 @@ class PluginFmt {
     });
     return ls;
   }
+
+  static List<List> filterCandidateList(
+      List<List> ls, String filter, Map accIndexMap) {
+    ls.retainWhere((i) {
+      String value = filter.trim().toLowerCase();
+      String accName = '';
+      Map accInfo = accIndexMap[i[0]];
+      if (accInfo != null) {
+        accName = accInfo['identity']['display'] ?? '';
+      }
+      return i[0].toLowerCase().contains(value) ||
+          accName.toLowerCase().contains(value);
+    });
+    return ls;
+  }
 }
