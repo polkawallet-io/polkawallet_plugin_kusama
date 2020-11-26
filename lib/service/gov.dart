@@ -14,6 +14,18 @@ class ApiGov {
   final PolkawalletApi api;
   final PluginStore store;
 
+  Future<void> updateIconsAndIndices(List addresses) async {
+    final ls = addresses.toList();
+    ls.removeWhere((e) => store.accounts.addressIconsMap.keys.contains(e));
+
+    final List<List> res = await Future.wait([
+      api.account.getAddressIcons(ls),
+      api.account.queryIndexInfo(ls),
+    ]);
+    store.accounts.setAddressIconsMap(res[0]);
+    store.accounts.setAddressIndex(res[1]);
+  }
+
   Future<void> subscribeBestNumber() async {
     api.setting.subscribeBestNumber((int bestNum) {
       store.gov.setBestNumber(bestNum);
@@ -37,7 +49,7 @@ class ApiGov {
   }
 
   Future<List> queryReferendums() async {
-    final List data = await api.gov.queryReferendums(keyring.current.address);
+    final data = await api.gov.queryReferendums(keyring.current.address);
     store.gov.setReferendums(data);
     return data;
   }
@@ -45,15 +57,14 @@ class ApiGov {
   Future<List> queryProposals() async {
     final data = await api.gov.queryProposals();
     store.gov.setProposals(data);
+
     final List<String> addresses = [];
     data.forEach((e) {
       addresses.add(e.proposer);
       addresses.addAll(e.seconds);
     });
-    final icons = await api.account.getAddressIcons(addresses);
-    store.accounts.setAddressIconsMap(icons);
-    final indexes = await api.account.queryIndexInfo(addresses);
-    store.accounts.setAddressIndex(indexes);
+    updateIconsAndIndices(addresses);
+
     return data;
   }
 
@@ -73,22 +84,54 @@ class ApiGov {
   Future<Map> queryCouncilInfo() async {
     Map info = await api.gov.queryCouncilInfo();
     if (info != null) {
-      List all = [];
+      store.gov.setCouncilInfo(info);
+
+      final List all = [];
       all.addAll(info['members'].map((i) => i[0]));
       all.addAll(info['runnersUp'].map((i) => i[0]));
       all.addAll(info['candidates']);
-      store.gov.setCouncilInfo(info);
-      final indexes = await api.account.queryIndexInfo(all);
-      store.accounts.setAddressIndex(indexes);
-      final icons = await api.account.getAddressIcons(all);
-      store.accounts.setAddressIconsMap(icons);
+      updateIconsAndIndices(all);
     }
+
     return info;
   }
 
   Future<List<CouncilMotionData>> queryCouncilMotions() async {
     final data = await api.gov.queryCouncilMotions();
     store.gov.setCouncilMotions(data);
+    return data;
+  }
+
+  Future<TreasuryOverviewData> queryTreasuryOverview() async {
+    final data = await api.gov.queryTreasuryOverview();
+    store.gov.setTreasuryOverview(data);
+
+    final List<String> addresses = [];
+    final List<SpendProposalData> allProposals =
+        store.gov.treasuryOverview.proposals.toList();
+    allProposals.addAll(store.gov.treasuryOverview.approvals);
+    allProposals.forEach((e) {
+      addresses.add(e.proposal.proposer);
+      addresses.add(e.proposal.beneficiary);
+    });
+    updateIconsAndIndices(addresses);
+
+    return data;
+  }
+
+  Future<List> queryTreasuryTips() async {
+    final data = await api.gov.queryTreasuryTips();
+    store.gov.setTreasuryTips(data);
+
+    List<String> addresses = [];
+    store.gov.treasuryTips.toList().forEach((e) {
+      addresses.add(e.who);
+      if (e.finder != null) {
+        addresses.add(e.finder);
+      }
+    });
+    updateIconsAndIndices(addresses);
+
     return data;
   }
 }

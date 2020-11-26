@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracyPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -100,8 +101,8 @@ class Gov extends StatelessWidget {
                         ),
                         color: Theme.of(context).primaryColor,
                       ),
-                      // onTap: () => Navigator.of(context)
-                      //     .pushNamed(TreasuryPage.route),
+                      onTap: () =>
+                          Navigator.of(context).pushNamed(TreasuryPage.route),
                     ),
                   ),
                   Padding(

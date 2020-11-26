@@ -80,9 +80,8 @@ abstract class _GovernanceStore with Store {
   }
 
   @action
-  void setReferendums(List ls) {
-    referendums = List.of(
-        ls.map((i) => ReferendumInfo.fromJson(i as Map<String, dynamic>)));
+  void setReferendums(List<ReferendumInfo> ls) {
+    referendums = ls;
   }
 
   @action
@@ -105,15 +104,13 @@ abstract class _GovernanceStore with Store {
   }
 
   @action
-  void setTreasuryOverview(Map data) {
-    treasuryOverview = TreasuryOverviewData.fromJson(data);
+  void setTreasuryOverview(TreasuryOverviewData data) {
+    treasuryOverview = data;
   }
 
   @action
-  void setTreasuryTips(List data) {
-    treasuryTips = data
-        .map((e) => TreasuryTipData.fromJson(Map<String, dynamic>.of(e)))
-        .toList();
+  void setTreasuryTips(List<TreasuryTipData> data) {
+    treasuryTips = data;
   }
 
   @action

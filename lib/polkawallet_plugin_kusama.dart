@@ -13,6 +13,11 @@ import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailP
 import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracyPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/democracy/proposalDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/democracy/referendumVotePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/treasury/spendProposalPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitProposalPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitTipPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
@@ -115,6 +120,11 @@ class PluginKusama extends PolkawalletPlugin {
       CandidateDetailPage.route: (_) => CandidateDetailPage(this, keyring),
       MotionDetailPage.route: (_) => MotionDetailPage(this, keyring),
       ProposalDetailPage.route: (_) => ProposalDetailPage(this, keyring),
+      TreasuryPage.route: (_) => TreasuryPage(this, keyring),
+      SpendProposalPage.route: (_) => SpendProposalPage(this, keyring),
+      SubmitProposalPage.route: (_) => SubmitProposalPage(this, keyring),
+      SubmitTipPage.route: (_) => SubmitTipPage(this, keyring),
+      TipDetailPage.route: (_) => TipDetailPage(this, keyring),
     };
   }
 

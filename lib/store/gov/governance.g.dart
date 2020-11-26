@@ -233,7 +233,7 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setReferendums(List<dynamic> ls) {
+  void setReferendums(List<ReferendumInfo> ls) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setReferendums');
     try {
@@ -266,7 +266,7 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setTreasuryOverview(Map<dynamic, dynamic> data) {
+  void setTreasuryOverview(TreasuryOverviewData data) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setTreasuryOverview');
     try {
@@ -277,7 +277,7 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setTreasuryTips(List<dynamic> data) {
+  void setTreasuryTips(List<TreasuryTipData> data) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setTreasuryTips');
     try {

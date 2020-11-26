@@ -12,19 +12,38 @@ import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 
-class CandidateDetailPage extends StatelessWidget {
+class CandidateDetailPage extends StatefulWidget {
   CandidateDetailPage(this.plugin, this.keyring);
+
   final PluginKusama plugin;
   final Keyring keyring;
 
   static final String route = '/gov/candidate';
 
   @override
+  _CandidateDetailPageState createState() => _CandidateDetailPageState();
+}
+
+class _CandidateDetailPageState extends State<CandidateDetailPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.plugin.store.gov.councilVotes != null) {
+        final List info = ModalRoute.of(context).settings.arguments;
+        final voters = widget.plugin.store.gov.councilVotes[info[0]];
+        widget.plugin.service.gov.updateIconsAndIndices(voters.keys.toList());
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final List info = ModalRoute.of(context).settings.arguments;
-    final decimals = plugin.networkState.tokenDecimals;
-    final symbol = plugin.networkState.tokenSymbol;
+    final decimals = widget.plugin.networkState.tokenDecimals;
+    final symbol = widget.plugin.networkState.tokenSymbol;
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -33,14 +52,15 @@ class CandidateDetailPage extends StatelessWidget {
       body: SafeArea(
         child: Observer(
           builder: (_) {
-            final iconsMap = plugin.store.accounts.addressIconsMap;
-            final accInfo = plugin.store.accounts.addressIndexMap[info[0]];
+            final iconsMap = widget.plugin.store.accounts.addressIconsMap;
+            final accInfo =
+                widget.plugin.store.accounts.addressIndexMap[info[0]];
             TextStyle style = Theme.of(context).textTheme.headline4;
 
             Map voters;
             List voterList = [];
-            if (plugin.store.gov.councilVotes != null) {
-              voters = plugin.store.gov.councilVotes[info[0]];
+            if (widget.plugin.store.gov.councilVotes != null) {
+              voters = widget.plugin.store.gov.councilVotes[info[0]];
               voterList = voters.keys.toList();
             }
             return ListView(
@@ -81,7 +101,8 @@ class CandidateDetailPage extends StatelessWidget {
                   child: Column(
                     children: voterList.map((i) {
                       return CandidateItem(
-                        accInfo: plugin.store.accounts.addressIndexMap[i],
+                        accInfo:
+                            widget.plugin.store.accounts.addressIndexMap[i],
                         icon: iconsMap[i],
                         balance: [i, voters[i]],
                         tokenSymbol: symbol,
@@ -91,10 +112,6 @@ class CandidateDetailPage extends StatelessWidget {
                     }).toList(),
                   ),
                 ),
-                FutureBuilder(
-                  future: plugin.sdk.api.account.getAddressIcons(voterList),
-                  builder: (_, __) => Container(),
-                )
               ],
             );
           },

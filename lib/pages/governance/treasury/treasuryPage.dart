@@ -1,45 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/council.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/motions.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/treasury/spendProposals.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tips.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/ui.dart';
 import 'package:polkawallet_ui/components/topTaps.dart';
+import 'package:polkawallet_ui/ui.dart';
 
-class CouncilPage extends StatefulWidget {
-  CouncilPage(this.plugin, this.keyring);
+class TreasuryPage extends StatefulWidget {
+  TreasuryPage(this.plugin, this.keyring);
   final PluginKusama plugin;
   final Keyring keyring;
 
-  static const String route = '/gov/council/index';
+  static const String route = '/gov/treasury/index';
 
   @override
-  _GovernanceState createState() => _GovernanceState();
+  _TreasuryPageState createState() => _TreasuryPageState();
 }
 
-class _GovernanceState extends State<CouncilPage> {
+class _TreasuryPageState extends State<TreasuryPage> {
   int _tab = 0;
 
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.plugin.sdk.api.connectedNode == null) {
-        return;
-      }
       widget.plugin.service.gov.queryCouncilInfo();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final tabs = [dic['council'], dic['council.motions']];
+    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    var tabs = [dic['treasury'], dic['treasury.tip']];
     return Scaffold(
       body: PageWrapperWithBackground(SafeArea(
         child: Container(
@@ -74,8 +70,8 @@ class _GovernanceState extends State<CouncilPage> {
                     child: widget.plugin.store.gov.council.members == null
                         ? CupertinoActivityIndicator()
                         : _tab == 0
-                            ? Council(widget.plugin)
-                            : Motions(widget.plugin),
+                            ? SpendProposals(widget.plugin, widget.keyring)
+                            : MoneyTips(widget.plugin, widget.keyring),
                   );
                 },
               ),

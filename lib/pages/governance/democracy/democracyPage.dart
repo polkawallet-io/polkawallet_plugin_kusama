@@ -31,8 +31,7 @@ class _DemocracyPageState extends State<DemocracyPage> {
         body: PageWrapperWithBackground(
       SafeArea(
         child: Container(
-          padding: EdgeInsets.only(top: 20),
-          color: Colors.transparent,
+          padding: EdgeInsets.only(top: 8),
           child: Column(
             children: <Widget>[
               Row(
