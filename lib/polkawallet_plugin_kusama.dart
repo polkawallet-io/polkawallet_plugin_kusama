@@ -39,6 +39,7 @@ import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
 class PluginKusama extends PolkawalletPlugin {
@@ -125,6 +126,7 @@ class PluginKusama extends PolkawalletPlugin {
       SubmitProposalPage.route: (_) => SubmitProposalPage(this, keyring),
       SubmitTipPage.route: (_) => SubmitTipPage(this, keyring),
       TipDetailPage.route: (_) => TipDetailPage(this, keyring),
+      DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
     };
   }
 

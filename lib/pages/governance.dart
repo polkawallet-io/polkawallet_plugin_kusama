@@ -7,6 +7,7 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/entryPageCard.dart';
+import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
 
 class Gov extends StatelessWidget {
   Gov(this.plugin);
@@ -117,9 +118,12 @@ class Gov extends StatelessWidget {
                         ),
                         color: Colors.black87,
                       ),
-                      // onTap: () => Navigator.of(context).pushNamed(
-                      //     DAppWrapperPage.route,
-                      //     arguments: 'https://$network.polkassembly.io/'),
+                      onTap: () => Navigator.of(context).pushNamed(
+                        DAppWrapperPage.route,
+                        arguments:
+                            'https://${plugin.basic.name}.polkassembly.io/',
+                        //"https://apps.acala.network/#/loan",
+                      ),
                     ),
                   ),
                 ],
