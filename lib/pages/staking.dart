@@ -27,28 +27,30 @@ class _StakingState extends State<Staking> {
   Widget build(BuildContext context) {
     var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     var tabs = [dic['actions'], dic['validators']];
-    return Container(
-      padding: EdgeInsets.only(top: 20),
-      color: Colors.transparent,
-      child: Column(
-        children: <Widget>[
-          PageTitleTabs(
-            names: tabs,
-            activeTab: _tab,
-            onTab: (v) {
-              if (_tab != v) {
-                setState(() {
-                  _tab = v;
-                });
-              }
-            },
-          ),
-          Expanded(
-            child: _tab == 1
-                ? StakingOverviewPage(widget.plugin, widget.keyring)
-                : StakingActions(widget.plugin, widget.keyring),
-          ),
-        ],
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.only(top: 16),
+        color: Colors.transparent,
+        child: Column(
+          children: <Widget>[
+            PageTitleTabs(
+              names: tabs,
+              activeTab: _tab,
+              onTab: (v) {
+                if (_tab != v) {
+                  setState(() {
+                    _tab = v;
+                  });
+                }
+              },
+            ),
+            Expanded(
+              child: _tab == 1
+                  ? StakingOverviewPage(widget.plugin, widget.keyring)
+                  : StakingActions(widget.plugin, widget.keyring),
+            ),
+          ],
+        ),
       ),
     );
   }

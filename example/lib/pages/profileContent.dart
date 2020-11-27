@@ -146,14 +146,19 @@ class _ProfileContentState extends State<ProfileContent> {
       setState(() {
         _loading = true;
       });
-      final KeyPairData acc =
-          await widget.network.sdk.api.keyring.importAccount(
+      final json = await widget.network.sdk.api.keyring.importAccount(
         widget.keyring,
         keyType: KeyType.mnemonic,
         key:
             // 'wing know chapter eight shed lens mandate lake twenty useless bless glory',
             'second throw patch mix leaf call scare surface enlist pet exhibit hammer',
         name: 'testName01',
+        password: 'a123456',
+      );
+      final acc = await widget.network.sdk.api.keyring.addAccount(
+        widget.keyring,
+        keyType: KeyType.mnemonic,
+        acc: json,
         password: 'a123456',
       );
       setState(() {

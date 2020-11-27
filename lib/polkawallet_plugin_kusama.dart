@@ -41,6 +41,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
+import 'package:polkawallet_ui/pages/walletExtensionSignPage.dart';
 
 class PluginKusama extends PolkawalletPlugin {
   /// the kusama plugin support two networks: kusama & polkadot,
@@ -127,6 +128,8 @@ class PluginKusama extends PolkawalletPlugin {
       SubmitTipPage.route: (_) => SubmitTipPage(this, keyring),
       TipDetailPage.route: (_) => TipDetailPage(this, keyring),
       DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
+      WalletExtensionSignPage.route: (_) =>
+          WalletExtensionSignPage(this, keyring),
     };
   }
 

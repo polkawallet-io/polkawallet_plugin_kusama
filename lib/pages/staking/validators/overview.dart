@@ -101,7 +101,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     );
   }
 
-  void _onSetPayee() {
+  void _onSetNomination() {
     if (widget.plugin.store.staking.ownStashInfo == null) return;
 
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
@@ -122,10 +122,13 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             child: Text(
               dicStaking['action.chill'],
             ),
-            onPressed: () {
-              Navigator.of(context).pop();
-              _chill();
-            },
+            onPressed:
+                widget.plugin.store.staking.ownStashInfo.nominating.length > 0
+                    ? () {
+                        Navigator.of(context).pop();
+                        _chill();
+                      }
+                    : null,
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
@@ -260,7 +263,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
                             ],
                           ),
                           onTap: bonded > 0
-                              ? _onSetPayee
+                              ? _onSetNomination
                               : () => _goToBond(bondExtra: true),
                         ),
             ),

@@ -769,8 +769,8 @@ class StakingActionsPanel extends StatelessWidget {
                             ? () => {}
                             : () {
                                 Navigator.of(context).pop();
-                                Navigator.of(context)
-                                    .pushNamed(BondExtraPage.route);
+                                _onAction(Navigator.of(context)
+                                    .pushNamed(BondExtraPage.route));
                               },
                       ),
 
@@ -786,8 +786,11 @@ class StakingActionsPanel extends StatelessWidget {
                         ),
                         onPressed: !isController
                             ? () => {}
-                            : () => _onAction(Navigator.of(context)
-                                .pushNamed(UnBondPage.route)),
+                            : () {
+                                Navigator.of(context).pop();
+                                _onAction(Navigator.of(context)
+                                    .pushNamed(UnBondPage.route));
+                              },
                       ),
                     ],
                     cancelButton: CupertinoActionSheetAction(
