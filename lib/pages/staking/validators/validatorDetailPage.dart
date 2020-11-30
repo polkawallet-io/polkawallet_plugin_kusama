@@ -45,6 +45,7 @@ class ValidatorDetailPage extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         AccountInfo(
+                          network: plugin.basic.name,
                           accInfo: accInfo,
                           address: detail.accountId,
                           icon: accIcon,

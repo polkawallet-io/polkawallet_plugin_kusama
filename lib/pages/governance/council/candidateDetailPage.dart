@@ -72,6 +72,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       AccountInfo(
+                        network: widget.plugin.basic.name,
                         accInfo: accInfo,
                         address: info[0],
                         icon: iconsMap[info[0]],
