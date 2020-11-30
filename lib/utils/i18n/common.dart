@@ -15,6 +15,7 @@ const Map<String, String> enCommon = {
   'governance': 'Governance',
   'node.connecting': 'Connecting remote node...',
   'node.failed': 'Remote node connection failed',
+  'unlock': 'Unlock Account with Password',
 };
 
 const Map<String, String> zhCommon = {
@@ -34,4 +35,5 @@ const Map<String, String> zhCommon = {
   'governance': '治理',
   'node.connecting': '正在连接远程节点...',
   'node.failed': '远程节点连接失败',
+  'unlock': '使用密码解锁账户',
 };

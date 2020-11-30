@@ -98,7 +98,8 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   Map<String, WidgetBuilder> getRoutes(Keyring keyring) {
     return {
-      TxConfirmPage.route: (_) => TxConfirmPage(this, keyring),
+      TxConfirmPage.route: (_) =>
+          TxConfirmPage(this, keyring, _service.getPassword),
 
       // staking pages
       BondPage.route: (_) => BondPage(this, keyring),
@@ -129,7 +130,7 @@ class PluginKusama extends PolkawalletPlugin {
       TipDetailPage.route: (_) => TipDetailPage(this, keyring),
       DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
       WalletExtensionSignPage.route: (_) =>
-          WalletExtensionSignPage(this, keyring),
+          WalletExtensionSignPage(this, keyring, _service.getPassword),
     };
   }
 
