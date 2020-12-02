@@ -26,6 +26,7 @@ import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/tapTooltip.dart';
 import 'package:polkawallet_ui/components/outlinedCircle.dart';
+import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
@@ -88,6 +89,12 @@ class _StakingActions extends State<StakingActions>
     _tab == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
 
     await widget.plugin.service.staking.queryOwnStashInfo();
+  }
+
+  Future<void> _onChangeAccount(KeyPairData acc) async {
+    widget.keyring.setCurrent(acc);
+    widget.plugin.changeAccount(acc);
+    _refreshKey.currentState.show();
   }
 
   List<Widget> _buildTxList() {
@@ -207,6 +214,12 @@ class _StakingActions extends State<StakingActions>
           return;
         }
       });
+
+      // update account icon
+      if (acc02.icon == null) {
+        acc02.icon =
+            widget.plugin.store.accounts.addressIconsMap[acc02.address];
+      }
     }
 
     final symbol = widget.plugin.networkState.tokenSymbol;
@@ -287,7 +300,8 @@ class _StakingActions extends State<StakingActions>
                   isController: isController,
                   isSelfControl: isSelfControl,
                   stashInfo: widget.plugin.store.staking.ownStashInfo,
-                  store: widget.plugin.store,
+                  keyring: widget.keyring,
+                  onChangeAccount: _onChangeAccount,
                 ),
                 Divider(),
                 StakingInfoPanel(
@@ -403,7 +417,8 @@ class RowAccount02 extends StatelessWidget {
     this.isController,
     this.isSelfControl,
     this.stashInfo,
-    this.store,
+    this.keyring,
+    this.onChangeAccount,
   });
 
   /// 1. if acc02 != null, then we have acc02 in accountListAll.
@@ -415,12 +430,54 @@ class RowAccount02 extends StatelessWidget {
   final bool isController;
   final bool isSelfControl;
   final OwnStashInfoData stashInfo;
-  final PluginStore store;
+  final Keyring keyring;
+  final Future<void> Function(KeyPairData acc) onChangeAccount;
+
+  void _showActions(BuildContext context) {
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final actionAccountTitle =
+        isController && !isSelfControl ? dic['stash'] : dic['controller'];
+    final changeAccountText =
+        dic['action.use'] + actionAccountTitle + dic['action.operate'];
+    final accIndex =
+        keyring.allAccounts.indexWhere((e) => e.pubKey == acc02.pubKey);
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: <Widget>[
+          accIndex >= 0
+              ? CupertinoActionSheetAction(
+                  child: Text(
+                    changeAccountText,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onChangeAccount(keyring.allAccounts[accIndex]);
+                  },
+                )
+              : CupertinoActionSheetAction(
+                  child: Text(
+                    changeAccountText,
+                    style: TextStyle(
+                        color: Theme.of(context).unselectedWidgetColor),
+                  ),
+                  onPressed: () => null,
+                )
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Text(
+              I18n.of(context).getDic(i18n_full_dic_ui, 'common')['cancel']),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> dic =
-        I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     final stashId = stashInfo.stashId ?? accountId;
     final controllerId = stashInfo.controllerId ?? accountId;
     final String address02 =
@@ -433,9 +490,7 @@ class RowAccount02 extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(left: 4, right: 20),
                   child: acc02 != null
-                      ? AddressIcon(address02,
-                          svg: store.accounts.addressIconsMap[acc02.address],
-                          size: 32)
+                      ? AddressIcon(address02, svg: acc02.icon, size: 32)
                       : AddressIcon(address02, size: 32),
                 ),
                 Expanded(
@@ -459,7 +514,22 @@ class RowAccount02 extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container()
+                Expanded(
+                  child: controllerId == stashId
+                      ? Container()
+                      : GestureDetector(
+                          child: Container(
+                            width: 80,
+                            height: 18,
+                            child: Icon(
+                              Icons.settings,
+                              color: Theme.of(context).primaryColor,
+                              size: 24,
+                            ),
+                          ),
+                          onTap: () => _showActions(context),
+                        ),
+                )
               ],
             )
           : Container(),
