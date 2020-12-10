@@ -112,7 +112,7 @@ class _PayoutPageState extends State<PayoutPage> {
     });
   }
 
-  TxConfirmParams _getParams() {
+  Future<TxConfirmParams> _getParams() async {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     final decimals = widget.plugin.networkState.tokenDecimals;
 
@@ -244,9 +244,9 @@ class _PayoutPageState extends State<PayoutPage> {
                 child: _rewards != null && _rewards['available'] != null
                     ? TxButton(
                         getTxParams: _getParams,
-                        onFinish: (bool success) {
-                          if (success != null && success) {
-                            Navigator.of(context).pop(success);
+                        onFinish: (Map res) {
+                          if (res != null) {
+                            Navigator.of(context).pop(res);
                           }
                         },
                       )

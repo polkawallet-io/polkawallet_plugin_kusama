@@ -3,6 +3,7 @@ library polkawallet_plugin_kusama;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
@@ -38,6 +39,7 @@ import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
+import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
@@ -55,6 +57,7 @@ class PluginKusama extends PolkawalletPlugin {
               'packages/polkawallet_plugin_kusama/assets/images/public/$name.png'),
           iconDisabled: Image.asset(
               'packages/polkawallet_plugin_kusama/assets/images/public/${name}_gray.png'),
+          isTestNet: false,
         ),
         _cache = name == 'kusama' ? StoreCacheKusama() : StoreCachePolkadot();
 
@@ -134,6 +137,9 @@ class PluginKusama extends PolkawalletPlugin {
     };
   }
 
+  @override
+  Future<String> loadJSCode() => null;
+
   PluginStore _store;
   PluginApi _service;
   PluginStore get store => _store;
@@ -142,7 +148,11 @@ class PluginKusama extends PolkawalletPlugin {
   final StoreCache _cache;
 
   @override
-  Future<void> beforeStart(Keyring keyring) async {
+  Future<void> onWillStart(Keyring keyring) async {
+    await GetStorage.init(basic.name == 'polkadot'
+        ? plugin_polkadot_storage_key
+        : plugin_kusama_storage_key);
+
     _store = PluginStore(_cache);
     _service = PluginApi(this, keyring);
   }
@@ -150,5 +160,10 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   Future<void> onStarted(Keyring keyring) async {
     _service.staking.fetchStakingOverview();
+  }
+
+  @override
+  Future<void> onAccountChanged(KeyPairData acc) async {
+    _store.staking.loadAccountCache(acc.pubKey);
   }
 }

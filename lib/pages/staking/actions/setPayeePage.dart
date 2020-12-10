@@ -24,7 +24,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
   int _rewardTo;
   String _rewardAccount;
 
-  TxConfirmParams _getTxParams() {
+  Future<TxConfirmParams> _getTxParams() async {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     final rewardToOptions =
         _rewardToOptions.map((i) => dic['reward.$i']).toList();
@@ -157,9 +157,9 @@ class _SetPayeePageState extends State<SetPayeePage> {
                 padding: EdgeInsets.all(16),
                 child: TxButton(
                   getTxParams: _getTxParams,
-                  onFinish: (bool success) {
-                    if (success != null && success) {
-                      Navigator.of(context).pop(success);
+                  onFinish: (Map res) {
+                    if (res != null) {
+                      Navigator.of(context).pop(res);
                     }
                   },
                 ),

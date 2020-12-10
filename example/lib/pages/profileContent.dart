@@ -102,8 +102,9 @@ class _ProfileContentState extends State<ProfileContent> {
         widget.setNetwork(net);
 
         /// we reuse the existing webView instance when we start a new plugin.
-        final res = await net.start(widget.keyring,
+        await net.beforeStart(widget.keyring,
             webView: widget.network.sdk.webView);
+        final res = await net.start(widget.keyring);
         widget.setConnectedNode(res);
         widget.keyring.setSS58(res.ss58);
       }

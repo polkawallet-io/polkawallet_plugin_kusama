@@ -28,7 +28,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
 
   KeyPairData _beneficiary;
 
-  TxConfirmParams _getTxParams() {
+  Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
       final decimals = widget.plugin.networkState.tokenDecimals;

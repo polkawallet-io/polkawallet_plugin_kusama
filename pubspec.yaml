@@ -17,6 +17,7 @@ dependencies:
   flutter_mobx: ^1.1.0
   json_annotation: ^3.0.1
   flutter_svg: ^0.18.0
+  get_storage: ^1.2.1
   polkawallet_sdk:
     path: ../sdk
   polkawallet_ui:

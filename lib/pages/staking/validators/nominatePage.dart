@@ -32,7 +32,7 @@ class _NominatePageState extends State<NominatePage> {
   String _filter = '';
   int _sort = 0;
 
-  TxConfirmParams _chill() {
+  Future<TxConfirmParams> _chill() async {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     return TxConfirmParams(
       txTitle: dicStaking['action.chill'],
@@ -43,7 +43,7 @@ class _NominatePageState extends State<NominatePage> {
     );
   }
 
-  TxConfirmParams _setNominee() {
+  Future<TxConfirmParams> _setNominee() async {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     final targets = _selected.map((i) => i.accountId).toList();
     return TxConfirmParams(
@@ -246,13 +246,13 @@ class _NominatePageState extends State<NominatePage> {
                 child: TxButton(
                   getTxParams:
                       widget.plugin.store.staking.validatorsInfo.length == 0
-                          ? () => null
+                          ? () async => null
                           : _selected.length == 0
                               ? _chill
                               : _setNominee,
-                  onFinish: (bool success) {
-                    if (success != null && success) {
-                      Navigator.of(context).pop(success);
+                  onFinish: (Map res) {
+                    if (res != null) {
+                      Navigator.of(context).pop(res);
                     }
                   },
                 ),

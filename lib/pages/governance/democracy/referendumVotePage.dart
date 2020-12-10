@@ -34,7 +34,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
 
   int _voteConviction = 0;
 
-  TxConfirmParams _getTxParams() {
+  Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
       final decimals = widget.plugin.networkState.tokenDecimals;

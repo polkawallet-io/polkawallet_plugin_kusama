@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -33,7 +31,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
 
   KeyPairData _beneficiary;
 
-  TxConfirmParams _getTxParams() {
+  Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
       final int decimals = widget.plugin.networkState.tokenDecimals;

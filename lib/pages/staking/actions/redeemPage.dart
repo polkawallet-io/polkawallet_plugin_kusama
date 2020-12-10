@@ -78,7 +78,7 @@ class _RedeemPageState extends State<RedeemPage> {
                   builder: (_, AsyncSnapshot snapshot) {
                     return snapshot.hasData
                         ? TxButton(
-                            getTxParams: () {
+                            getTxParams: () async {
                               return TxConfirmParams(
                                 txTitle: dicStaking['action.redeem'],
                                 module: 'staking',
@@ -90,9 +90,9 @@ class _RedeemPageState extends State<RedeemPage> {
                                 params: [_slashingSpans],
                               );
                             },
-                            onFinish: (bool success) {
-                              if (success != null && success) {
-                                Navigator.of(context).pop(success);
+                            onFinish: (Map res) {
+                              if (res != null) {
+                                Navigator.of(context).pop(res);
                               }
                             },
                           )

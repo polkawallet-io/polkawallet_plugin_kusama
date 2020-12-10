@@ -82,7 +82,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
               Padding(
                 padding: EdgeInsets.all(16),
                 child: TxButton(
-                  getTxParams: () {
+                  getTxParams: () async {
                     var currentController =
                         ModalRoute.of(context).settings.arguments;
                     if (currentController != null &&
@@ -118,9 +118,9 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       ],
                     );
                   },
-                  onFinish: (bool success) {
-                    if (success != null && success) {
-                      Navigator.of(context).pop(success);
+                  onFinish: (Map res) {
+                    if (res != null) {
+                      Navigator.of(context).pop(res);
                     }
                   },
                 ),
