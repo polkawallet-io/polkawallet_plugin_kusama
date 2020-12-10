@@ -261,10 +261,10 @@ abstract class _StakingStore with Store {
 
   @action
   Future<void> loadCache(String pubKey) async {
-    if (cache.stakingOverview != null) {
+    if (cache.stakingOverview.val.keys.length > 0) {
       setOverview(cache.stakingOverview.val, shouldCache: false);
     }
-    if (cache.validatorsInfo != null) {
+    if (cache.validatorsInfo.val.keys.length > 0) {
       setValidatorsInfo(cache.validatorsInfo.val, shouldCache: false);
     }
 

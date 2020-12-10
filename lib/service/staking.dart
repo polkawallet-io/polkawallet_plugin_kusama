@@ -78,7 +78,7 @@ class ApiStaking {
         store.staking.ownStashInfo.account.accountId;
     final res = await api.subScan.fetchRewardTxsAsync(
       page: 0,
-      sender: keyring.current.address,
+      sender: address,
       network: plugin.basic.name,
     );
 

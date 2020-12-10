@@ -23,30 +23,30 @@ class StoreCacheKusama extends StoreCache {
   static final _storage = () => GetStorage(plugin_kusama_storage_key);
 
   /// staking network state
-  // final stakingOverview = {}.val('stakingOverview', getBox: _storage);
-  // final validatorsInfo = {}.val('validatorsInfo', getBox: _storage);
-  //
-  // /// governance network state
-  // final councilInfo = {}.val('councilInfo', getBox: _storage);
-  //
-  // /// account staking data
-  // final stakingOwnStash = {}.val('stakingOwnStash', getBox: _storage);
-  // final stakingTxs = {}.val('stakingTxs', getBox: _storage);
-  // final stakingRewardTxs = {}.val('stakingRewardTxs', getBox: _storage);
+  final stakingOverview = {}.val('stakingOverview', getBox: _storage);
+  final validatorsInfo = {}.val('validatorsInfo', getBox: _storage);
+
+  /// governance network state
+  final councilInfo = {}.val('councilInfo', getBox: _storage);
+
+  /// account staking data
+  final stakingOwnStash = {}.val('stakingOwnStash', getBox: _storage);
+  final stakingTxs = {}.val('stakingTxs', getBox: _storage);
+  final stakingRewardTxs = {}.val('stakingRewardTxs', getBox: _storage);
 }
 
 class StoreCachePolkadot extends StoreCache {
   static final _storage = () => GetStorage(plugin_polkadot_storage_key);
 
-  // /// staking network state
-  // final stakingOverview = {}.val('stakingOverview', getBox: _storage);
-  // final validatorsInfo = {}.val('validatorsInfo', getBox: _storage);
-  //
-  // /// governance network state
-  // final councilInfo = {}.val('councilInfo', getBox: _storage);
-  //
-  // /// account staking data
-  // final stakingOwnStash = {}.val('stakingOwnStash', getBox: _storage);
-  // final stakingTxs = {}.val('stakingTxs', getBox: _storage);
-  // final stakingRewardTxs = {}.val('stakingRewardTxs', getBox: _storage);
+  /// staking network state
+  final stakingOverview = {}.val('stakingOverview', getBox: _storage);
+  final validatorsInfo = {}.val('validatorsInfo', getBox: _storage);
+
+  /// governance network state
+  final councilInfo = {}.val('councilInfo', getBox: _storage);
+
+  /// account staking data
+  final stakingOwnStash = {}.val('stakingOwnStash', getBox: _storage);
+  final stakingTxs = {}.val('stakingTxs', getBox: _storage);
+  final stakingRewardTxs = {}.val('stakingRewardTxs', getBox: _storage);
 }

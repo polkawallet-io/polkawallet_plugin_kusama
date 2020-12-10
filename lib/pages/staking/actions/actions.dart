@@ -198,8 +198,7 @@ class _StakingActions extends State<StakingActions>
       isController = widget.plugin.store.staking.ownStashInfo.isOwnController;
       isSelfControl = isStash && isController;
 
-      widget.plugin.store.accounts
-          .pubKeyAddressMap[widget.plugin.sdk.api.connectedNode.ss58]
+      widget.plugin.store.accounts.pubKeyAddressMap[widget.plugin.basic.ss58]
           ?.forEach((k, v) {
         if (widget.plugin.store.staking.ownStashInfo.isOwnStash &&
             v == widget.plugin.store.staking.ownStashInfo.controllerId) {

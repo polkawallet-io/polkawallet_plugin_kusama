@@ -96,10 +96,9 @@ abstract class _GovernanceStore with Store {
 
   @action
   Future<void> loadCache() async {
-    final data = cache.councilInfo.val;
-    if (data != null) {
-      setCouncilInfo(data['data'], shouldCache: false);
-      cacheCouncilTimestamp = data['cacheTime'];
+    if (cache.councilInfo.val['data'] != null) {
+      setCouncilInfo(cache.councilInfo.val['data'], shouldCache: false);
+      cacheCouncilTimestamp = cache.councilInfo.val['cacheTime'];
     }
   }
 
