@@ -1,9 +1,9 @@
 import 'package:mobx/mobx.dart';
+import 'package:polkawallet_sdk/api/types/staking/accountBondedInfo.dart';
+import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/txData.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
-import 'package:polkawallet_plugin_kusama/store/staking/types/ownStashInfo.dart';
-import 'package:polkawallet_plugin_kusama/store/staking/types/bondedInfoData.dart';
 
 part 'staking.g.dart';
 
@@ -32,7 +32,8 @@ abstract class _StakingStore with Store {
   OwnStashInfoData ownStashInfo;
 
   @observable
-  AccountBondedInfo accountBondedInfo;
+  Map<String, AccountBondedInfo> accountBondedMap =
+      Map<String, AccountBondedInfo>();
 
   @observable
   bool txsLoading = false;
@@ -53,9 +54,6 @@ abstract class _StakingStore with Store {
   @observable
   ObservableMap<String, dynamic> stakesChartDataCache =
       ObservableMap<String, dynamic>();
-
-  @observable
-  Map phalaAirdropWhiteList = {};
 
   @observable
   Map recommendedValidators = {};
@@ -174,8 +172,8 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> clearTxs() async {
-    txs.clear();
+  void setAccountBondedMap(Map<String, AccountBondedInfo> data) {
+    accountBondedMap = data;
   }
 
   @action
@@ -185,13 +183,16 @@ abstract class _StakingStore with Store {
 
   @action
   Future<void> addTxs(Map data, String pubKey,
-      {bool shouldCache = false}) async {
+      {bool shouldCache = false, reset = false}) async {
     if (data == null || data['extrinsics'] == null) return;
     txsCount = data['count'];
 
     List<TxData> ls =
         List.of(data['extrinsics']).map((i) => TxData.fromJson(i)).toList();
 
+    if (reset) {
+      txs.clear();
+    }
     txs.addAll(ls);
 
     if (shouldCache) {
@@ -215,13 +216,6 @@ abstract class _StakingStore with Store {
       cached[pubKey] = data;
       cache.stakingRewardTxs.val = cached;
     }
-  }
-
-  @action
-  void clearState() {
-    txs.clear();
-    overview = ObservableMap<String, dynamic>();
-    ownStashInfo = null;
   }
 
   @action
@@ -263,9 +257,14 @@ abstract class _StakingStore with Store {
   Future<void> loadCache(String pubKey) async {
     if (cache.stakingOverview.val.keys.length > 0) {
       setOverview(cache.stakingOverview.val, shouldCache: false);
+    } else {
+      overview = ObservableMap<String, dynamic>();
     }
+
     if (cache.validatorsInfo.val.keys.length > 0) {
       setValidatorsInfo(cache.validatorsInfo.val, shouldCache: false);
+    } else {
+      setValidatorsInfo({'info': []}, shouldCache: false);
     }
 
     loadAccountCache(pubKey);

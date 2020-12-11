@@ -22,6 +22,7 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage
 import 'package:polkawallet_plugin_kusama/pages/staking.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
@@ -107,6 +108,7 @@ class PluginKusama extends PolkawalletPlugin {
       // staking pages
       BondPage.route: (_) => BondPage(this, keyring),
       BondExtraPage.route: (_) => BondExtraPage(this, keyring),
+      ControllerSelectPage.route: (_) => ControllerSelectPage(this, keyring),
       SetControllerPage.route: (_) => SetControllerPage(this, keyring),
       UnBondPage.route: (_) => UnBondPage(this, keyring),
       SetPayeePage.route: (_) => SetPayeePage(this, keyring),
@@ -154,7 +156,6 @@ class PluginKusama extends PolkawalletPlugin {
         : plugin_kusama_storage_key);
 
     _store = PluginStore(_cache);
-    _store.staking.clearState();
     _store.staking.loadCache(keyring.current.pubKey);
     _store.gov.clearState();
     _store.gov.loadCache();

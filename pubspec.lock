@@ -9,12 +9,12 @@ packages:
     source: hosted
     version: "6.0.0"
   analyzer:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.39.14"
+    version: "0.39.15"
   args:
     dependency: transitive
     description:
@@ -278,7 +278,7 @@ packages:
     source: hosted
     version: "3.16.1"
   get_storage:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: get_storage
       url: "https://pub.dartlang.org"

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -7,7 +8,6 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/pages/accountListPage.dart';
 
 class SetControllerPage extends StatefulWidget {
   SetControllerPage(this.plugin, this.keyring);
@@ -24,10 +24,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
   Future<void> _changeControllerId(BuildContext context) async {
     final accounts = widget.keyring.keyPairs.toList();
     accounts.addAll(widget.keyring.externals);
-    var acc = await Navigator.of(context).pushNamed(
-      AccountListPage.route,
-      arguments: AccountListPageParams(list: accounts),
-    );
+    var acc = await Navigator.of(context).pushNamed(ControllerSelectPage.route);
     if (acc != null) {
       setState(() {
         _controller = acc;

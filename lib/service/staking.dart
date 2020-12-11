@@ -62,11 +62,12 @@ class ApiStaking {
       network: plugin.basic.name,
     );
 
-    if (page == 0) {
-      store.staking.clearTxs();
-    }
-    await store.staking
-        .addTxs(res, keyring.current.pubKey, shouldCache: page == 0);
+    await store.staking.addTxs(
+      res,
+      keyring.current.pubKey,
+      shouldCache: page == 0,
+      reset: page == 0,
+    );
 
     store.staking.setTxsLoading(false);
 
@@ -112,7 +113,8 @@ class ApiStaking {
   }
 
   Future<Map> queryOwnStashInfo() async {
-    Map data = await api.staking.queryOwnStashInfo(keyring.current.address);
+    final data =
+        await api.service.staking.queryOwnStashInfo(keyring.current.address);
     store.staking.setOwnStashInfo(keyring.current.pubKey, data);
 
     final List<String> addressesNeedIcons =
@@ -138,5 +140,11 @@ class ApiStaking {
         Map<String, Map>.from({api.connectedNode.ss58.toString(): pubKeys}));
 
     return data;
+  }
+
+  Future<void> queryAccountBondedInfo() async {
+    final data = await api.staking
+        .queryBonded(keyring.allAccounts.map((e) => e.pubKey).toList());
+    store.staking.setAccountBondedMap(data);
   }
 }

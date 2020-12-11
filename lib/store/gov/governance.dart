@@ -99,6 +99,8 @@ abstract class _GovernanceStore with Store {
     if (cache.councilInfo.val['data'] != null) {
       setCouncilInfo(cache.councilInfo.val['data'], shouldCache: false);
       cacheCouncilTimestamp = cache.councilInfo.val['cacheTime'];
+    } else {
+      setCouncilInfo(Map<String, dynamic>(), shouldCache: false);
     }
   }
 
@@ -121,7 +123,6 @@ abstract class _GovernanceStore with Store {
   void clearState() {
     referendums = [];
     proposals = [];
-    council = CouncilInfoData();
     councilMotions = [];
     treasuryOverview = TreasuryOverviewData();
     treasuryTips = [];

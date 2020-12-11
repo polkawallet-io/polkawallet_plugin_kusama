@@ -13,11 +13,9 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dar
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakingDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/store/index.dart';
-import 'package:polkawallet_plugin_kusama/store/staking/types/ownStashInfo.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/subscan.dart';
-import 'package:polkawallet_sdk/api/types/balanceData.dart';
+import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -88,7 +86,10 @@ class _StakingActions extends State<StakingActions>
   Future<void> _updateStakingInfo() async {
     _tab == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
 
-    await widget.plugin.service.staking.queryOwnStashInfo();
+    await Future.wait([
+      widget.plugin.service.staking.queryOwnStashInfo(),
+      widget.plugin.service.staking.queryAccountBondedInfo(),
+    ]);
   }
 
   Future<void> _onChangeAccount(KeyPairData acc) async {
@@ -224,9 +225,15 @@ class _StakingActions extends State<StakingActions>
     final symbol = widget.plugin.networkState.tokenSymbol;
     final decimals = widget.plugin.networkState.tokenDecimals;
 
-    final BalanceData info = widget.plugin.balances.native;
-    final freeBalance = BigInt.parse(info.freeBalance.toString());
-    final reservedBalance = BigInt.parse(info.reservedBalance.toString());
+    final info = widget.plugin.balances.native;
+    final freeBalance =
+        info == null ? BigInt.zero : BigInt.parse(info.freeBalance.toString());
+    final reservedBalance = info == null
+        ? BigInt.zero
+        : BigInt.parse(info.reservedBalance.toString());
+    final available = info == null
+        ? BigInt.zero
+        : BigInt.parse(info.availableBalance.toString());
     final totalBalance = freeBalance + reservedBalance;
     BigInt bonded = BigInt.zero;
     BigInt redeemable = BigInt.zero;
@@ -314,7 +321,7 @@ class _StakingActions extends State<StakingActions>
                   bonded: bonded,
                   unlocking: unlocking,
                   redeemable: redeemable,
-                  available: BigInt.parse(info.availableBalance.toString()),
+                  available: available,
                   networkLoading: !hasData,
                   onSuccess: () => _refreshKey.currentState.show(),
                 ),

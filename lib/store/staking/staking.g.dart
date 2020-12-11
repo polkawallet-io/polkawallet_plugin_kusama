@@ -120,18 +120,18 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
-  final _$accountBondedInfoAtom = Atom(name: '_StakingStore.accountBondedInfo');
+  final _$accountBondedMapAtom = Atom(name: '_StakingStore.accountBondedMap');
 
   @override
-  AccountBondedInfo get accountBondedInfo {
-    _$accountBondedInfoAtom.reportRead();
-    return super.accountBondedInfo;
+  Map<String, AccountBondedInfo> get accountBondedMap {
+    _$accountBondedMapAtom.reportRead();
+    return super.accountBondedMap;
   }
 
   @override
-  set accountBondedInfo(AccountBondedInfo value) {
-    _$accountBondedInfoAtom.reportWrite(value, super.accountBondedInfo, () {
-      super.accountBondedInfo = value;
+  set accountBondedMap(Map<String, AccountBondedInfo> value) {
+    _$accountBondedMapAtom.reportWrite(value, super.accountBondedMap, () {
+      super.accountBondedMap = value;
     });
   }
 
@@ -229,23 +229,6 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
-  final _$phalaAirdropWhiteListAtom =
-      Atom(name: '_StakingStore.phalaAirdropWhiteList');
-
-  @override
-  Map<dynamic, dynamic> get phalaAirdropWhiteList {
-    _$phalaAirdropWhiteListAtom.reportRead();
-    return super.phalaAirdropWhiteList;
-  }
-
-  @override
-  set phalaAirdropWhiteList(Map<dynamic, dynamic> value) {
-    _$phalaAirdropWhiteListAtom.reportWrite(value, super.phalaAirdropWhiteList,
-        () {
-      super.phalaAirdropWhiteList = value;
-    });
-  }
-
   final _$recommendedValidatorsAtom =
       Atom(name: '_StakingStore.recommendedValidators');
 
@@ -263,13 +246,6 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
-  final _$clearTxsAsyncAction = AsyncAction('_StakingStore.clearTxs');
-
-  @override
-  Future<void> clearTxs() {
-    return _$clearTxsAsyncAction.run(() => super.clearTxs());
-  }
-
   final _$setTxsLoadingAsyncAction = AsyncAction('_StakingStore.setTxsLoading');
 
   @override
@@ -281,9 +257,9 @@ mixin _$StakingStore on _StakingStore, Store {
 
   @override
   Future<void> addTxs(Map<dynamic, dynamic> data, String pubKey,
-      {bool shouldCache = false}) {
-    return _$addTxsAsyncAction
-        .run(() => super.addTxs(data, pubKey, shouldCache: shouldCache));
+      {bool shouldCache = false, dynamic reset = false}) {
+    return _$addTxsAsyncAction.run(() =>
+        super.addTxs(data, pubKey, shouldCache: shouldCache, reset: reset));
   }
 
   final _$addTxsRewardsAsyncAction = AsyncAction('_StakingStore.addTxsRewards');
@@ -359,11 +335,11 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void clearState() {
+  void setAccountBondedMap(Map<String, AccountBondedInfo> data) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
-        name: '_StakingStore.clearState');
+        name: '_StakingStore.setAccountBondedMap');
     try {
-      return super.clearState();
+      return super.setAccountBondedMap(data);
     } finally {
       _$_StakingStoreActionController.endAction(_$actionInfo);
     }
@@ -399,14 +375,13 @@ staked: ${staked},
 nominatorCount: ${nominatorCount},
 validatorsInfo: ${validatorsInfo},
 ownStashInfo: ${ownStashInfo},
-accountBondedInfo: ${accountBondedInfo},
+accountBondedMap: ${accountBondedMap},
 txsLoading: ${txsLoading},
 txsCount: ${txsCount},
 txs: ${txs},
 txsRewards: ${txsRewards},
 rewardsChartDataCache: ${rewardsChartDataCache},
 stakesChartDataCache: ${stakesChartDataCache},
-phalaAirdropWhiteList: ${phalaAirdropWhiteList},
 recommendedValidators: ${recommendedValidators},
 nextUpsInfo: ${nextUpsInfo},
 validatorsAll: ${validatorsAll},
