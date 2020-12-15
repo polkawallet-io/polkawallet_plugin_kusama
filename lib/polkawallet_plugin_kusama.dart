@@ -60,10 +60,14 @@ class PluginKusama extends PolkawalletPlugin {
               'packages/polkawallet_plugin_kusama/assets/images/public/${name}_gray.png'),
           isTestNet: false,
         ),
+        recoveryEnabled = name == 'kusama',
         _cache = name == 'kusama' ? StoreCacheKusama() : StoreCachePolkadot();
 
   @override
   final PluginBasicData basic;
+
+  @override
+  final bool recoveryEnabled;
 
   @override
   List<NetworkParams> get nodeList {

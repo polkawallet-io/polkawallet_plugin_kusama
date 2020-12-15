@@ -22,8 +22,6 @@ class _SetControllerPageState extends State<SetControllerPage> {
   KeyPairData _controller;
 
   Future<void> _changeControllerId(BuildContext context) async {
-    final accounts = widget.keyring.keyPairs.toList();
-    accounts.addAll(widget.keyring.externals);
     var acc = await Navigator.of(context).pushNamed(ControllerSelectPage.route);
     if (acc != null) {
       setState(() {
@@ -33,14 +31,15 @@ class _SetControllerPageState extends State<SetControllerPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_controller == null) {
-      var acc = ModalRoute.of(context).settings.arguments;
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final KeyPairData acc = ModalRoute.of(context).settings.arguments;
       setState(() {
         _controller = acc;
       });
-    }
+    });
   }
 
   @override
