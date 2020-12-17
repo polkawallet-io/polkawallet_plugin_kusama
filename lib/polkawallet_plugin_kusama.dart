@@ -78,7 +78,7 @@ class PluginKusama extends PolkawalletPlugin {
   }
 
   @override
-  Map<String, Widget> tokenIcons = {
+  final Map<String, Widget> tokenIcons = {
     'KSM': Image.asset(
         'packages/polkawallet_plugin_kusama/assets/images/tokens/KSM.png'),
     'DOT': Image.asset(

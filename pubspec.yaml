@@ -19,9 +19,13 @@ dependencies:
   flutter_svg: ^0.18.0
   get_storage: ^1.2.1
   polkawallet_sdk:
-    path: ../sdk
+    git:
+      url: https://github.com/polkawallet-io/sdk.git
+      ref: master
   polkawallet_ui:
-    path: ../ui
+    git:
+      url: https://github.com/polkawallet-io/ui.git
+      ref: master
 
 dev_dependencies:
   build_runner: 1.10.1
