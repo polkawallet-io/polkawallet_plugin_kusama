@@ -52,16 +52,20 @@ class PluginKusama extends PolkawalletPlugin {
   PluginKusama({name = 'kusama'})
       : basic = PluginBasicData(
           name: name,
-          ss58: name == 'kusama' ? 2 : 0,
-          primaryColor: name == 'kusama' ? kusama_black : Colors.pink,
+          ss58: name == network_name_kusama ? 2 : 0,
+          primaryColor:
+              name == network_name_kusama ? kusama_black : Colors.pink,
           icon: Image.asset(
               'packages/polkawallet_plugin_kusama/assets/images/public/$name.png'),
           iconDisabled: Image.asset(
               'packages/polkawallet_plugin_kusama/assets/images/public/${name}_gray.png'),
+          jsCodeVersion: 10910,
           isTestNet: false,
         ),
-        recoveryEnabled = name == 'kusama',
-        _cache = name == 'kusama' ? StoreCacheKusama() : StoreCachePolkadot();
+        recoveryEnabled = name == network_name_kusama,
+        _cache = name == network_name_kusama
+            ? StoreCacheKusama()
+            : StoreCachePolkadot();
 
   @override
   final PluginBasicData basic;
@@ -71,7 +75,7 @@ class PluginKusama extends PolkawalletPlugin {
 
   @override
   List<NetworkParams> get nodeList {
-    if (basic.name == 'polkadot') {
+    if (basic.name == network_name_polkadot) {
       return node_list_polkadot.map((e) => NetworkParams.fromJson(e)).toList();
     }
     return node_list_kusama.map((e) => NetworkParams.fromJson(e)).toList();
@@ -87,7 +91,7 @@ class PluginKusama extends PolkawalletPlugin {
 
   @override
   List<HomeNavItem> getNavItems(BuildContext context, Keyring keyring) {
-    final color = basic.name == 'polkadot' ? 'pink' : 'black';
+    final color = basic.name == network_name_polkadot ? 'pink' : 'black';
     return home_nav_items.map((e) {
       final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
       return HomeNavItem(
@@ -155,7 +159,7 @@ class PluginKusama extends PolkawalletPlugin {
 
   @override
   Future<void> onWillStart(Keyring keyring) async {
-    await GetStorage.init(basic.name == 'polkadot'
+    await GetStorage.init(basic.name == network_name_polkadot
         ? plugin_polkadot_storage_key
         : plugin_kusama_storage_key);
 
