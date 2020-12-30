@@ -122,8 +122,8 @@ class Gov extends StatelessWidget {
                             onTap: () => Navigator.of(context).pushNamed(
                               DAppWrapperPage.route,
                               arguments:
-                                  // 'https://${plugin.basic.name}.polkassembly.io/',
-                                  "https://apps.acala.network/#/loan",
+                                  'https://${plugin.basic.name}.polkassembly.io/',
+                              // "https://apps.acala.network/#/loan",
                             ),
                           ),
                         ),
