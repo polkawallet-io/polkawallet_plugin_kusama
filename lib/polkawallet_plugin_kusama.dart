@@ -24,6 +24,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.da
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/rebondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
@@ -119,6 +120,7 @@ class PluginKusama extends PolkawalletPlugin {
       ControllerSelectPage.route: (_) => ControllerSelectPage(this, keyring),
       SetControllerPage.route: (_) => SetControllerPage(this, keyring),
       UnBondPage.route: (_) => UnBondPage(this, keyring),
+      RebondPage.route: (_) => RebondPage(this, keyring),
       SetPayeePage.route: (_) => SetPayeePage(this, keyring),
       RedeemPage.route: (_) => RedeemPage(this, keyring),
       PayoutPage.route: (_) => PayoutPage(this, keyring),

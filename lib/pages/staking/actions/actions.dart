@@ -8,6 +8,7 @@ import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/rebondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
@@ -24,7 +25,6 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
-import 'package:polkawallet_ui/components/tapTooltip.dart';
 import 'package:polkawallet_ui/components/outlinedCircle.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
@@ -574,13 +574,9 @@ class StakingInfoPanel extends StatelessWidget {
   final bool networkLoading;
   final Function onSuccess;
 
-  @override
-  Widget build(BuildContext context) {
-    final Map<String, String> dic =
-        I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final Map<String, String> dicGov =
-        I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    Color actionButtonColor = Theme.of(context).primaryColor;
+  void _showUnlocking(BuildContext context) {
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicGov = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final unlockDetail = List.of(stashInfo.unbondings['mapped'])
         .map((e) {
           return '${dic['bond.unlocking']}:  ${Fmt.balance(e[0], decimals)}\n'
@@ -588,6 +584,42 @@ class StakingInfoPanel extends StatelessWidget {
         })
         .toList()
         .join('\n\n');
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: Text(dic['bond.unlocking']),
+        message: Text(unlockDetail),
+        actions: <Widget>[
+          CupertinoActionSheetAction(
+            child: Text(dic['action.rebond']),
+            onPressed: !isController
+                ? () => {}
+                : () async {
+                    Navigator.of(context).pop();
+                    final res =
+                        await Navigator.of(context).pushNamed(RebondPage.route);
+                    if (res != null) {
+                      onSuccess();
+                    }
+                  },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Text(I18n.of(context)
+              .getDic(i18n_full_dic_kusama, 'common')['cancel']),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    Color actionButtonColor = Theme.of(context).primaryColor;
 
     String dest = stashInfo.destination;
     if (dest.contains('account')) {
@@ -613,7 +645,7 @@ class StakingInfoPanel extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         unlocking > BigInt.zero
-                            ? TapTooltip(
+                            ? GestureDetector(
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 2),
                                   child: Icon(
@@ -622,7 +654,7 @@ class StakingInfoPanel extends StatelessWidget {
                                     color: actionButtonColor,
                                   ),
                                 ),
-                                message: '\n$unlockDetail\n',
+                                onTap: () => _showUnlocking(context),
                               )
                             : Container(),
                         Text(
@@ -674,7 +706,7 @@ class StakingInfoPanel extends StatelessWidget {
                                   Navigator.of(context)
                                       .pushNamed(RedeemPage.route)
                                       .then((res) {
-                                    if (res != null && res) {
+                                    if (res != null) {
                                       onSuccess();
                                     }
                                   });
@@ -723,7 +755,7 @@ class StakingInfoPanel extends StatelessWidget {
                           Navigator.of(context)
                               .pushNamed(PayoutPage.route)
                               .then((res) {
-                            if (res != null && res) {
+                            if (res != null) {
                               onSuccess();
                             }
                           });
