@@ -59,7 +59,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     });
 
     _fetchRecommendedValidators();
-    widget.plugin.service.staking.fetchStakingOverview();
+    widget.plugin.service.staking.queryElectedInfo();
     await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
@@ -399,7 +399,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
         final List<Tab> _listTabs = <Tab>[
           Tab(
             text:
-                '${dicStaking['elected']} (${widget.plugin.store.staking.validatorsInfo.length})',
+                '${dicStaking['elected']} (${widget.plugin.store.staking.electedInfo.length})',
           ),
           Tab(
             text:
@@ -425,7 +425,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             ),
           ),
         ];
-        if (widget.plugin.store.staking.validatorsAll.length > 0) {
+        if (widget.plugin.store.staking.validatorsInfo.length > 0) {
           // index_2: the filter Widget
           list.add(Container(
             color: Colors.white,
@@ -455,7 +455,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
               .recommendedValidators[widget.plugin.basic.name];
           if (recommendList != null) {
             recommended = _tab == 0
-                ? widget.plugin.store.staking.validatorsInfo.toList()
+                ? widget.plugin.store.staking.electedInfo.toList()
                 : widget.plugin.store.staking.nextUpsInfo.toList();
             recommended.retainWhere((i) =>
                 widget.plugin.store.staking
@@ -487,7 +487,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
                             icon,
                             decimals,
                             widget.plugin.store.staking
-                                    .nominationsAll[acc.accountId] ??
+                                    .nominationsMap[acc.accountId] ??
                                 [],
                           );
                         }).toList(),
@@ -499,7 +499,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
           ));
           // add validators
           List<ValidatorData> ls = _tab == 0
-              ? widget.plugin.store.staking.validatorsInfo.toList()
+              ? widget.plugin.store.staking.electedInfo.toList()
               : widget.plugin.store.staking.nextUpsInfo.toList();
           // filter list
           ls = PluginFmt.filterValidatorList(
@@ -510,10 +510,10 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
           if (_tab == 1) {
             ls.sort((a, b) {
               final aLength = widget.plugin.store.staking
-                      .nominationsAll[a.accountId]?.length ??
+                      .nominationsMap[a.accountId]?.length ??
                   0;
               final bLength = widget.plugin.store.staking
-                      .nominationsAll[b.accountId]?.length ??
+                      .nominationsMap[b.accountId]?.length ??
                   0;
               return 0 - aLength.compareTo(bLength);
             });
@@ -545,7 +545,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
                 accInfo,
                 icon,
                 decimals,
-                widget.plugin.store.staking.nominationsAll[acc.accountId] ?? [],
+                widget.plugin.store.staking.nominationsMap[acc.accountId] ?? [],
               );
             },
           ),

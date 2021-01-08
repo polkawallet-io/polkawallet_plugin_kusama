@@ -173,7 +173,7 @@ class PluginKusama extends PolkawalletPlugin {
 
   @override
   Future<void> onStarted(Keyring keyring) async {
-    _service.staking.fetchStakingOverview();
+    _service.staking.queryElectedInfo();
   }
 
   @override

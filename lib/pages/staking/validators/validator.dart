@@ -72,8 +72,10 @@ class Validator extends StatelessWidget {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(dic['points']),
-                      Text(hasDetail ? validator.points.toString() : '~'),
+                      Text(dic['reward']),
+                      Text(hasDetail
+                          ? '${validator.stakedReturnCmp.toStringAsFixed(2)}%'
+                          : '~'),
                     ],
                   )
                 : Container()

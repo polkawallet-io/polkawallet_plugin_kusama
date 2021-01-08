@@ -23,6 +23,16 @@ const node_list_kusama = [
     'name': 'Kusama (Polkadot Canary, hosted by Web3 Foundation)',
     'ss58': 2,
     'endpoint': 'wss://cc3-5.kusama.network/',
+  },
+  {
+    'name': 'Kusama (Polkadot Canary, hosted by onfinality)',
+    'ss58': 2,
+    'endpoint': 'wss://kusama.api.onfinality.io/public-ws',
+  },
+  {
+    'name': 'Kusama (Polkadot Canary, hosted by PatractLabs)',
+    'ss58': 2,
+    'endpoint': 'wss://kusama.elara.patract.io',
   }
 ];
 const node_list_polkadot = [
@@ -45,6 +55,16 @@ const node_list_polkadot = [
     'name': 'Polkadot (Live, hosted by Web3 Foundation)',
     'ss58': 0,
     'endpoint': 'wss://cc1-1.polkadot.network',
+  },
+  {
+    'name': 'Polkadot (Live, hosted by onfinality)',
+    'ss58': 0,
+    'endpoint': 'wss://polkadot.api.onfinality.io/public-ws',
+  },
+  {
+    'name': 'Polkadot (Live, hosted by PatractLabs)',
+    'ss58': 0,
+    'endpoint': 'wss://polkadot.elara.patract.io',
   }
 ];
 

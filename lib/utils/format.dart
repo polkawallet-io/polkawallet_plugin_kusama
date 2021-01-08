@@ -52,23 +52,16 @@ class PluginFmt {
     }
     double comA = double.parse(a.commission.split('%')[0]);
     double comB = double.parse(b.commission.split('%')[0]);
-    var cmpStake = a.total < b.total ? 1 : -1;
     switch (sortType) {
       case 0:
-        return a.total != b.total
-            ? cmpStake
-            : comA > comB
-                ? 1
-                : -1;
+        return a.rankReward < b.rankReward ? 1 : -1;
       case 1:
-        return a.points == b.points
-            ? cmpStake
-            : a.points < b.points
-                ? 1
-                : -1;
+        return a.rankBondTotal > b.rankBondTotal ? 1 : -1;
       case 2:
         return comA == comB
-            ? cmpStake
+            ? a.rankReward < b.rankReward
+                ? 1
+                : -1
             : comA > comB
                 ? 1
                 : -1;

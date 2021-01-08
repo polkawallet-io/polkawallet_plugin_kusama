@@ -35,23 +35,6 @@ class ApiStaking {
     return {};
   }
 
-  Future<Map> fetchStakingOverview() async {
-    final overview = await api.staking.queryOverview();
-    if (overview == null) return null;
-    store.staking.setOverview(overview);
-
-    fetchElectedInfo();
-
-    List validatorAddressList = overview['validators'];
-    validatorAddressList.addAll(overview['waiting']);
-    final indexes = await api.account.queryIndexInfo(validatorAddressList);
-    store.accounts.setAddressIndex(indexes);
-
-    final icons = await api.account.getAddressIcons(validatorAddressList);
-    store.accounts.setAddressIconsMap(icons);
-    return overview;
-  }
-
   Future<Map> updateStakingTxs(int page) async {
     store.staking.setTxsLoading(true);
 
@@ -89,10 +72,20 @@ class ApiStaking {
   }
 
   // this query takes a long time
-  Future<void> fetchElectedInfo() async {
+  Future<void> queryElectedInfo() async {
     // fetch all validators details
-    var res = await api.staking.queryElectedInfo();
+    final res = await api.staking.queryElectedInfo();
     store.staking.setValidatorsInfo(res);
+
+    List validatorAddressList = res['validatorIds'];
+    validatorAddressList.addAll(res['waitingIds']);
+    plugin.service.gov.updateIconsAndIndices(validatorAddressList);
+  }
+
+  Future<void> queryNominations() async {
+    // fetch nominators for all validators
+    final res = await api.staking.queryNominations();
+    store.staking.setNominations(res);
   }
 
   Future<Map> queryValidatorRewards(String accountId) async {
@@ -135,7 +128,7 @@ class ApiStaking {
     store.accounts.setAddressIconsMap(icons);
 
     // get stash&controller's pubKey
-    final pubKeys = await api.account.decodeAddress(addressesNeedIcons);
+    final pubKeys = await api.account.decodeAddress(addressesNeedDecode);
     store.accounts.setPubKeyAddressMap(
         Map<String, Map>.from({api.connectedNode.ss58.toString(): pubKeys}));
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 
-enum ValidatorSortOptions { staked, points, commission, judgements }
+enum ValidatorSortOptions { reward, staked, commission, judgements }
 
 class ValidatorListFilter extends StatefulWidget {
   ValidatorListFilter(

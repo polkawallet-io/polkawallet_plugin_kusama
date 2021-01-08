@@ -64,7 +64,7 @@ class _NominatePageState extends State<NominatePage> {
         widget.plugin.store.accounts.addressIconsMap[validator.accountId];
     final bool isWaiting = validator.total == BigInt.zero;
     final nominations =
-        widget.plugin.store.staking.nominationsAll[validator.accountId] ?? [];
+        widget.plugin.store.staking.nominationsMap[validator.accountId] ?? [];
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -104,9 +104,7 @@ class _NominatePageState extends State<NominatePage> {
                   Row(
                     children: [
                       Text(
-                        isWaiting
-                            ? '${dicStaking['nominators']}: ${nominations.length}'
-                            : '${dicStaking['points']}: ${validator.points}',
+                        '${dicStaking['nominators']}: ${nominations.length}',
                         style: TextStyle(
                           color: Theme.of(context).unselectedWidgetColor,
                           fontSize: 12,
@@ -152,7 +150,7 @@ class _NominatePageState extends State<NominatePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        widget.plugin.store.staking.validatorsAll.forEach((i) {
+        widget.plugin.store.staking.validatorsInfo.forEach((i) {
           _notSelected.add(i);
           _selectedMap[i.accountId] = false;
         });

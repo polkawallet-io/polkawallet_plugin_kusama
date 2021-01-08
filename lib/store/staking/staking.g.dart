@@ -9,33 +9,12 @@ part of 'staking.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$StakingStore on _StakingStore, Store {
-  Computed<List<ValidatorData>> _$nextUpsInfoComputed;
-
-  @override
-  List<ValidatorData> get nextUpsInfo => (_$nextUpsInfoComputed ??=
-          Computed<List<ValidatorData>>(() => super.nextUpsInfo,
-              name: '_StakingStore.nextUpsInfo'))
-      .value;
-  Computed<List<ValidatorData>> _$validatorsAllComputed;
-
-  @override
-  List<ValidatorData> get validatorsAll => (_$validatorsAllComputed ??=
-          Computed<List<ValidatorData>>(() => super.validatorsAll,
-              name: '_StakingStore.validatorsAll'))
-      .value;
   Computed<List<ValidatorData>> _$nominatingListComputed;
 
   @override
   List<ValidatorData> get nominatingList => (_$nominatingListComputed ??=
           Computed<List<ValidatorData>>(() => super.nominatingList,
               name: '_StakingStore.nominatingList'))
-      .value;
-  Computed<Map<String, List<dynamic>>> _$nominationsAllComputed;
-
-  @override
-  Map<String, List<dynamic>> get nominationsAll => (_$nominationsAllComputed ??=
-          Computed<Map<String, List<dynamic>>>(() => super.nominationsAll,
-              name: '_StakingStore.nominationsAll'))
       .value;
   Computed<BigInt> _$accountUnlockingTotalComputed;
 
@@ -44,51 +23,6 @@ mixin _$StakingStore on _StakingStore, Store {
           Computed<BigInt>(() => super.accountUnlockingTotal,
               name: '_StakingStore.accountUnlockingTotal'))
       .value;
-
-  final _$overviewAtom = Atom(name: '_StakingStore.overview');
-
-  @override
-  ObservableMap<String, dynamic> get overview {
-    _$overviewAtom.reportRead();
-    return super.overview;
-  }
-
-  @override
-  set overview(ObservableMap<String, dynamic> value) {
-    _$overviewAtom.reportWrite(value, super.overview, () {
-      super.overview = value;
-    });
-  }
-
-  final _$stakedAtom = Atom(name: '_StakingStore.staked');
-
-  @override
-  BigInt get staked {
-    _$stakedAtom.reportRead();
-    return super.staked;
-  }
-
-  @override
-  set staked(BigInt value) {
-    _$stakedAtom.reportWrite(value, super.staked, () {
-      super.staked = value;
-    });
-  }
-
-  final _$nominatorCountAtom = Atom(name: '_StakingStore.nominatorCount');
-
-  @override
-  int get nominatorCount {
-    _$nominatorCountAtom.reportRead();
-    return super.nominatorCount;
-  }
-
-  @override
-  set nominatorCount(int value) {
-    _$nominatorCountAtom.reportWrite(value, super.nominatorCount, () {
-      super.nominatorCount = value;
-    });
-  }
 
   final _$validatorsInfoAtom = Atom(name: '_StakingStore.validatorsInfo');
 
@@ -102,6 +36,51 @@ mixin _$StakingStore on _StakingStore, Store {
   set validatorsInfo(List<ValidatorData> value) {
     _$validatorsInfoAtom.reportWrite(value, super.validatorsInfo, () {
       super.validatorsInfo = value;
+    });
+  }
+
+  final _$electedInfoAtom = Atom(name: '_StakingStore.electedInfo');
+
+  @override
+  List<ValidatorData> get electedInfo {
+    _$electedInfoAtom.reportRead();
+    return super.electedInfo;
+  }
+
+  @override
+  set electedInfo(List<ValidatorData> value) {
+    _$electedInfoAtom.reportWrite(value, super.electedInfo, () {
+      super.electedInfo = value;
+    });
+  }
+
+  final _$nextUpsInfoAtom = Atom(name: '_StakingStore.nextUpsInfo');
+
+  @override
+  List<ValidatorData> get nextUpsInfo {
+    _$nextUpsInfoAtom.reportRead();
+    return super.nextUpsInfo;
+  }
+
+  @override
+  set nextUpsInfo(List<ValidatorData> value) {
+    _$nextUpsInfoAtom.reportWrite(value, super.nextUpsInfo, () {
+      super.nextUpsInfo = value;
+    });
+  }
+
+  final _$nominationsMapAtom = Atom(name: '_StakingStore.nominationsMap');
+
+  @override
+  Map<dynamic, dynamic> get nominationsMap {
+    _$nominationsMapAtom.reportRead();
+    return super.nominationsMap;
+  }
+
+  @override
+  set nominationsMap(Map<dynamic, dynamic> value) {
+    _$nominationsMapAtom.reportWrite(value, super.nominationsMap, () {
+      super.nominationsMap = value;
     });
   }
 
@@ -312,11 +291,11 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setOverview(Map<dynamic, dynamic> data, {bool shouldCache = true}) {
+  void setNominations(Map<dynamic, dynamic> data) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
-        name: '_StakingStore.setOverview');
+        name: '_StakingStore.setNominations');
     try {
-      return super.setOverview(data, shouldCache: shouldCache);
+      return super.setNominations(data);
     } finally {
       _$_StakingStoreActionController.endAction(_$actionInfo);
     }
@@ -370,10 +349,10 @@ mixin _$StakingStore on _StakingStore, Store {
   @override
   String toString() {
     return '''
-overview: ${overview},
-staked: ${staked},
-nominatorCount: ${nominatorCount},
 validatorsInfo: ${validatorsInfo},
+electedInfo: ${electedInfo},
+nextUpsInfo: ${nextUpsInfo},
+nominationsMap: ${nominationsMap},
 ownStashInfo: ${ownStashInfo},
 accountBondedMap: ${accountBondedMap},
 txsLoading: ${txsLoading},
@@ -383,10 +362,7 @@ txsRewards: ${txsRewards},
 rewardsChartDataCache: ${rewardsChartDataCache},
 stakesChartDataCache: ${stakesChartDataCache},
 recommendedValidators: ${recommendedValidators},
-nextUpsInfo: ${nextUpsInfo},
-validatorsAll: ${validatorsAll},
 nominatingList: ${nominatingList},
-nominationsAll: ${nominationsAll},
 accountUnlockingTotal: ${accountUnlockingTotal}
     ''';
   }

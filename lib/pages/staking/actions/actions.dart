@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -316,8 +318,8 @@ class _StakingActions extends State<StakingActions>
                   accountId: widget.keyring.current.address,
                   stashInfo: widget.plugin.store.staking.ownStashInfo,
                   decimals: decimals,
-                  blockDuration: widget.plugin.networkConst['babe']
-                      ['expectedBlockTime'],
+                  blockDuration: int.parse(
+                      widget.plugin.networkConst['babe']['expectedBlockTime']),
                   bonded: bonded,
                   unlocking: unlocking,
                   redeemable: redeemable,
@@ -586,6 +588,11 @@ class StakingInfoPanel extends StatelessWidget {
         })
         .toList()
         .join('\n\n');
+
+    String dest = stashInfo.destination;
+    if (dest.contains('account')) {
+      dest = Fmt.address(jsonDecode(dest)['account']);
+    }
     return Padding(
       padding: EdgeInsets.only(top: 4, bottom: 4),
       child: Column(
@@ -694,7 +701,7 @@ class StakingInfoPanel extends StatelessWidget {
               ),
               InfoItem(
                 title: dic['bond.reward'],
-                content: stashInfo.destination,
+                content: dest,
                 crossAxisAlignment: CrossAxisAlignment.center,
               ),
               Expanded(

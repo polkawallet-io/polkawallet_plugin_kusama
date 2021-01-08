@@ -18,16 +18,16 @@ abstract class _StakingStore with Store {
   final StoreCache cache;
 
   @observable
-  ObservableMap<String, dynamic> overview = ObservableMap<String, dynamic>();
-
-  @observable
-  BigInt staked = BigInt.zero;
-
-  @observable
-  int nominatorCount = 0;
-
-  @observable
   List<ValidatorData> validatorsInfo = List<ValidatorData>();
+
+  @observable
+  List<ValidatorData> electedInfo = List<ValidatorData>();
+
+  @observable
+  List<ValidatorData> nextUpsInfo = List<ValidatorData>();
+
+  @observable
+  Map nominationsMap = Map();
 
   @observable
   OwnStashInfoData ownStashInfo;
@@ -60,26 +60,6 @@ abstract class _StakingStore with Store {
   Map recommendedValidators = {};
 
   @computed
-  List<ValidatorData> get nextUpsInfo {
-    if (overview['waiting'] != null) {
-      List<ValidatorData> list = List.of(overview['waiting']).map((i) {
-        ValidatorData validator = ValidatorData();
-        validator.accountId = i;
-        return validator;
-      }).toList();
-      return list;
-    }
-    return [];
-  }
-
-  @computed
-  List<ValidatorData> get validatorsAll {
-    List<ValidatorData> res = validatorsInfo.toList();
-    res.addAll(nextUpsInfo);
-    return res;
-  }
-
-  @computed
   List<ValidatorData> get nominatingList {
     if (ownStashInfo == null ||
         ownStashInfo.nominating == null ||
@@ -88,14 +68,6 @@ abstract class _StakingStore with Store {
     }
     return List.of(validatorsInfo
         .where((i) => ownStashInfo.nominating.indexOf(i.accountId) >= 0));
-  }
-
-  @computed
-  Map<String, List> get nominationsAll {
-    if (overview['nominators'] == null) {
-      return {};
-    }
-    return Map<String, List>.from(overview['nominators']);
   }
 
   @computed
@@ -113,25 +85,25 @@ abstract class _StakingStore with Store {
 
   @action
   void setValidatorsInfo(Map data, {bool shouldCache = true}) {
-    BigInt totalStaked = BigInt.zero;
-    var nominators = {};
-    List<ValidatorData> ls = List<ValidatorData>();
+    if (data['validators'] == null) return;
 
-    data['info'].forEach((i) {
-      i['points'] = overview['eraPoints'] != null
-          ? overview['eraPoints']['individual'][i['accountId']]
-          : 0;
-      ValidatorData data = ValidatorData.fromJson(i);
-      totalStaked += data.total;
-      data.nominators.forEach((n) {
-        nominators[n['who']] = true;
-      });
-      ls.add(data);
-    });
-    ls.sort((a, b) => a.total > b.total ? -1 : 1);
-    validatorsInfo = ls;
-    staked = totalStaked;
-    nominatorCount = nominators.keys.length;
+    // all validators
+    final validatorsAll = List.of(data['validators'])
+        .map((i) => ValidatorData.fromJson(i))
+        .toList();
+    validatorsInfo = validatorsAll;
+
+    // elected validators
+    final elected = validatorsAll.toList();
+    elected.removeWhere((e) => !e.isElected);
+    electedInfo = elected;
+
+    // waiting validators
+    nextUpsInfo = List.of(data['waitingIds']).map((i) {
+      final e = ValidatorData();
+      e.accountId = i;
+      return e;
+    }).toList();
 
     // cache data
     if (shouldCache) {
@@ -140,25 +112,8 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  void setOverview(Map data, {bool shouldCache = true}) {
-    data.keys.forEach((key) => overview[key] = data[key]);
-
-    // show validator's address before we got elected detail info
-    if (validatorsInfo.length == 0 && data['validators'] != null) {
-      List<ValidatorData> list = List.of(data['validators']).map((i) {
-        ValidatorData validator = ValidatorData();
-        validator.accountId = i;
-        return validator;
-      }).toList();
-      validatorsInfo = list;
-    }
-
-    if (shouldCache) {
-      // saving nominators data into GetStorage may cause error,
-      // so we remove it before saving.
-      data.remove('nominators');
-      cache.stakingOverview.val = data;
-    }
+  void setNominations(Map data) {
+    nominationsMap = data;
   }
 
   @action
@@ -256,16 +211,13 @@ abstract class _StakingStore with Store {
 
   @action
   Future<void> loadCache(String pubKey) async {
-    if (cache.stakingOverview.val.keys.length > 0) {
-      setOverview(cache.stakingOverview.val, shouldCache: false);
-    } else {
-      overview = ObservableMap<String, dynamic>();
-    }
-
     if (cache.validatorsInfo.val.keys.length > 0) {
       setValidatorsInfo(cache.validatorsInfo.val, shouldCache: false);
     } else {
-      setValidatorsInfo({'info': []}, shouldCache: false);
+      setValidatorsInfo(
+        {'validators': [], 'waitingIds': []},
+        shouldCache: false,
+      );
     }
 
     loadAccountCache(pubKey);
