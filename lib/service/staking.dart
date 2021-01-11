@@ -77,6 +77,8 @@ class ApiStaking {
     final res = await api.staking.queryElectedInfo();
     store.staking.setValidatorsInfo(res);
 
+    queryNominations();
+
     List validatorAddressList = res['validatorIds'];
     validatorAddressList.addAll(res['waitingIds']);
     plugin.service.gov.updateIconsAndIndices(validatorAddressList);

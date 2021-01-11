@@ -12,7 +12,6 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class NominatePage extends StatefulWidget {
@@ -63,8 +62,14 @@ class _NominatePageState extends State<NominatePage> {
     final accIcon =
         widget.plugin.store.accounts.addressIconsMap[validator.accountId];
     final bool isWaiting = validator.total == BigInt.zero;
-    final nominations =
-        widget.plugin.store.staking.nominationsMap[validator.accountId] ?? [];
+    final nominations = !isWaiting
+        ? validator.nominators
+        : widget.plugin.store.staking.nominationsMap[validator.accountId] ?? [];
+
+    final textStyle = TextStyle(
+      color: Theme.of(context).unselectedWidgetColor,
+      fontSize: 12,
+    );
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -83,34 +88,23 @@ class _NominatePageState extends State<NominatePage> {
                     validator.accountId,
                     accInfo,
                   ),
-                  !isWaiting
-                      ? Text(
-                          '${dicStaking['total']}: ${Fmt.token(validator.total, decimals)}',
-                          style: TextStyle(
-                            color: Theme.of(context).unselectedWidgetColor,
-                            fontSize: 12,
-                          ),
-                        )
-                      : Container(),
                   Text(
-                    isWaiting
-                        ? dicStaking['waiting']
-                        : '${dicStaking['commission']}: ${validator.commission}',
-                    style: TextStyle(
-                      color: Theme.of(context).unselectedWidgetColor,
-                      fontSize: 12,
-                    ),
+                    '${dicStaking['commission']}: ${validator.commission}',
+                    style: textStyle,
                   ),
                   Row(
                     children: [
                       Text(
                         '${dicStaking['nominators']}: ${nominations.length}',
-                        style: TextStyle(
-                          color: Theme.of(context).unselectedWidgetColor,
-                          fontSize: 12,
-                        ),
+                        style: textStyle,
                       ),
                     ],
+                  ),
+                  Text(
+                    isWaiting
+                        ? dicStaking['waiting']
+                        : '${dicStaking['reward']}: ${validator.stakedReturnCmp.toStringAsFixed(2)}%',
+                    style: textStyle,
                   ),
                 ],
               ),
