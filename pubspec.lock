@@ -533,7 +533,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: master
+      ref: "3124d34e1cf2472b00903e4bc498177435f36cd1"
       resolved-ref: "3124d34e1cf2472b00903e4bc498177435f36cd1"
       url: "https://github.com/polkawallet-io/ui.git"
     source: git

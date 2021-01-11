@@ -29,7 +29,7 @@ dependencies:
   polkawallet_ui:
     git:
       url: https://github.com/polkawallet-io/ui.git
-      ref: master
+      ref: 3124d34e1cf2472b00903e4bc498177435f36cd1
 #    path: ../../ui
 
   # The following adds the Cupertino Icons font to your application.
