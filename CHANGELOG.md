@@ -1,3 +1,3 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.7] - 20210112.
 
-* TODO: Describe initial release.
+* update dependency polkawallet_sdk: 0.0.7.

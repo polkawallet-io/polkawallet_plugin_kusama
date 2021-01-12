@@ -22,7 +22,7 @@ abstract class _GovernanceStore with Store {
   int cacheCouncilTimestamp = 0;
 
   @observable
-  int bestNumber = 0;
+  BigInt bestNumber = BigInt.zero;
 
   @observable
   CouncilInfoData council = CouncilInfoData();
@@ -75,7 +75,7 @@ abstract class _GovernanceStore with Store {
   }
 
   @action
-  void setBestNumber(int number) {
+  void setBestNumber(BigInt number) {
     bestNumber = number;
   }
 

@@ -29,13 +29,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   final _$bestNumberAtom = Atom(name: '_GovernanceStore.bestNumber');
 
   @override
-  int get bestNumber {
+  BigInt get bestNumber {
     _$bestNumberAtom.reportRead();
     return super.bestNumber;
   }
 
   @override
-  set bestNumber(int value) {
+  set bestNumber(BigInt value) {
     _$bestNumberAtom.reportWrite(value, super.bestNumber, () {
       super.bestNumber = value;
     });
@@ -222,7 +222,7 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setBestNumber(int number) {
+  void setBestNumber(BigInt number) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setBestNumber');
     try {

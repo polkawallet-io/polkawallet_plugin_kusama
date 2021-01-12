@@ -51,13 +51,13 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
           call: 'vote',
           txTitle: govDic['vote.proposal'],
           txDisplay: {
-            "id": info.index,
+            "id": info.index.toInt(),
             "balance": amt,
             "vote": vote['vote'],
           },
           params: [
             // "id"
-            info.index,
+            info.index.toInt(),
             // "options"
             {"Standard": vote},
           ]);

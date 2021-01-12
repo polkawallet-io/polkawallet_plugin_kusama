@@ -186,7 +186,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('${dic['treasury.proposal']} #${proposal.id}'),
+        title: Text('${dic['treasury.proposal']} #${int.parse(proposal.id)}'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -254,7 +254,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
                         )
                       : Container(),
                   FutureBuilder(
-                    future: _getExternalLinks(proposal.id),
+                    future: _getExternalLinks(int.parse(proposal.id)),
                     builder: (_, AsyncSnapshot<List> snapshot) {
                       if (snapshot.hasData) {
                         return GovExternalLinks(snapshot.data);

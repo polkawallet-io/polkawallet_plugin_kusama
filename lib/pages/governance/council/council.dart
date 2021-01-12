@@ -119,7 +119,7 @@ class _CouncilState extends State<Council> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['seats'],
                 content:
-                    '${widget.plugin.store.gov.council.members.length}/${widget.plugin.store.gov.council.desiredSeats}',
+                    '${widget.plugin.store.gov.council.members.length}/${int.parse(widget.plugin.store.gov.council.desiredSeats)}',
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,

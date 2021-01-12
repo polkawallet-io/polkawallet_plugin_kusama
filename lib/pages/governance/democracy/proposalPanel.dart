@@ -47,7 +47,7 @@ class ProposalPanel extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline4,
                       ),
                       Text(
-                        '#${proposal.index}',
+                        '#${BigInt.parse(proposal.index)}',
                         style: Theme.of(context).textTheme.headline4,
                       ),
                     ],

@@ -27,8 +27,8 @@ class ApiGov {
   }
 
   Future<void> subscribeBestNumber() async {
-    api.setting.subscribeBestNumber((int bestNum) {
-      store.gov.setBestNumber(bestNum);
+    api.setting.subscribeBestNumber((bestNum) {
+      store.gov.setBestNumber(BigInt.parse(bestNum.toString()));
     });
   }
 
@@ -37,9 +37,9 @@ class ApiGov {
   }
 
   Future<void> updateBestNumber() async {
-    final int bestNumber = await api.service.webView
+    final bestNumber = await api.service.webView
         .evalJavascript('api.derive.chain.bestNumber()');
-    store.gov.setBestNumber(bestNumber);
+    store.gov.setBestNumber(BigInt.parse(bestNumber.toString()));
   }
 
   Future<List> getReferendumVoteConvictions() async {

@@ -39,9 +39,10 @@ class _ProposalsState extends State<SpendProposals> {
   int _getSpendPeriod() {
     int spendDays = 0;
     if (widget.plugin.networkConst['treasury'] != null) {
-      final int period = widget.plugin.networkConst['treasury']['spendPeriod'];
-      final int blockTime =
-          widget.plugin.networkConst['babe']['expectedBlockTime'];
+      final period =
+          int.parse(widget.plugin.networkConst['treasury']['spendPeriod']);
+      final blockTime =
+          int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']);
       spendDays = period * (blockTime ~/ 1000) ~/ SECONDS_OF_DAY;
     }
     return spendDays;
@@ -303,7 +304,7 @@ class _ProposalItem extends StatelessWidget {
       subtitle: Text(
           '${Fmt.balance(proposal.proposal.value.toString(), decimals)} $symbol'),
       trailing: Text(
-        '# ${proposal.id}',
+        '# ${int.parse(proposal.id)}',
         style: Theme.of(context).textTheme.headline4,
       ),
       onTap: () {

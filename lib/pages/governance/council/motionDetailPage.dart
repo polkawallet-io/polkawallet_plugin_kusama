@@ -132,6 +132,8 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
             methodTreasury.indexOf(motion.proposal.method) > -1;
         bool isExternal = motion.proposal.section == 'democracy' &&
             methodExternal.indexOf(motion.proposal.method) > -1;
+
+        final votesEnd = BigInt.parse(motion.votes.end.toString());
         return Scaffold(
           appBar: AppBar(
             title: Text('${dic['council.motion']} #${motion.votes.index}'),
@@ -213,14 +215,15 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                               children: <Widget>[
                                 Text(
                                   Fmt.blockToTime(
-                                    motion.votes.end -
-                                        widget.plugin.store.gov.bestNumber,
+                                    (votesEnd -
+                                            widget.plugin.store.gov.bestNumber)
+                                        .toInt(),
                                     blockTime,
                                   ),
                                   style: Theme.of(context).textTheme.headline4,
                                 ),
                                 Text(
-                                  '#${motion.votes.end}',
+                                  '#$votesEnd',
                                   style: Theme.of(context).textTheme.headline4,
                                 )
                               ],

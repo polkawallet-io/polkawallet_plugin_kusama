@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -228,7 +226,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
     bool isTipped = tipData.tips.length > 0;
     int blockTime = 6000;
     if (widget.plugin.networkConst['treasury'] != null) {
-      blockTime = widget.plugin.networkConst['babe']['expectedBlockTime'];
+      blockTime =
+          int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']);
     }
 
     final List<BigInt> values =
@@ -246,8 +245,11 @@ class _TipDetailPageState extends State<TipDetailPage> {
       body: SafeArea(
         child: Observer(
           builder: (BuildContext context) {
-            final bool canClose = tipData.closes != null &&
-                tipData.closes <= widget.plugin.store.gov.bestNumber;
+            final closeBlock = tipData.closes != null
+                ? BigInt.parse(tipData.closes.toString())
+                : null;
+            final bool canClose = closeBlock != null &&
+                closeBlock <= widget.plugin.store.gov.bestNumber;
             return ListView(
               children: <Widget>[
                 RoundedCard(
@@ -332,9 +334,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
                           ],
                         ),
                       ),
-                      tipData.closes != null &&
-                              tipData.closes >
-                                  widget.plugin.store.gov.bestNumber
+                      closeBlock != null &&
+                              closeBlock > widget.plugin.store.gov.bestNumber
                           ? Padding(
                               padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
                               child: Row(
@@ -349,13 +350,14 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                         children: <Widget>[
                                           Text(
                                             Fmt.blockToTime(
-                                              tipData.closes -
-                                                  widget.plugin.store.gov
-                                                      .bestNumber,
+                                              (closeBlock -
+                                                      widget.plugin.store.gov
+                                                          .bestNumber)
+                                                  .toInt(),
                                               blockTime,
                                             ),
                                           ),
-                                          Text('#${tipData.closes}')
+                                          Text('#$closeBlock')
                                         ],
                                       ),
                                     ),

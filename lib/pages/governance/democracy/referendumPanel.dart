@@ -26,15 +26,16 @@ class ReferendumPanel extends StatelessWidget {
   final String symbol;
   final int decimals;
   final ReferendumInfo data;
-  final int bestNumber;
-  final Function(int) onCancelVote;
+  final BigInt bestNumber;
+  final Function(BigInt) onCancelVote;
   final int blockDuration;
   final Widget links;
 
   @override
   Widget build(BuildContext context) {
-    int endLeft = data.status['end'] - bestNumber;
-    int activateLeft = endLeft + data.status['delay'];
+    final endLeft = BigInt.parse(data.status['end'].toString()) - bestNumber;
+    final activateLeft =
+        endLeft + BigInt.parse(data.status['delay'].toString());
     var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     List<Widget> list = <Widget>[
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
@@ -58,29 +59,31 @@ class ReferendumPanel extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-                '${dic['remain']} ${Fmt.blockToTime(endLeft, blockDuration)}',
+                '${dic['remain']} ${Fmt.blockToTime(endLeft.toInt(), blockDuration)}',
                 style: TextStyle(color: Colors.lightGreen)),
           ),
           Text(
-            '${data.status['end'] - bestNumber} blocks',
+            '${Fmt.priceFloorBigInt(endLeft, 0, lengthFixed: 0)} blocks',
             style: TextStyle(color: Colors.lightGreen),
           )
         ],
       ),
-      Row(
-        children: <Widget>[
-          Container(width: 21),
-          Expanded(
-            child: Text(
-                '${dic['activate']} ${Fmt.blockToTime(activateLeft, blockDuration)}',
-                style: TextStyle(color: Colors.pink)),
-          ),
-          Text(
-            '#${data.status['end'] + data.status['delay']}',
-            style: TextStyle(color: Colors.pink),
-          )
-        ],
-      ),
+      data.isPassing
+          ? Row(
+              children: <Widget>[
+                Container(width: 21),
+                Expanded(
+                  child: Text(
+                      '${dic['activate']} ${Fmt.blockToTime(activateLeft.toInt(), blockDuration)}',
+                      style: TextStyle(color: Colors.pink)),
+                ),
+                Text(
+                  '#${Fmt.priceFloorBigInt(bestNumber + activateLeft, 0, lengthFixed: 0)}',
+                  style: TextStyle(color: Colors.pink),
+                )
+              ],
+            )
+          : Container(),
       data.detail['content'].toString().isNotEmpty
           ? Container(
               padding: EdgeInsets.only(top: 16),

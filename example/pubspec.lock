@@ -297,7 +297,7 @@ packages:
       name: polkawallet_sdk
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.6"
+    version: "0.0.7"
   polkawallet_ui:
     dependency: "direct main"
     description:

@@ -25,9 +25,9 @@ class _DemocracyState extends State<Democracy> {
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  final Map<int, List> _links = {};
+  final Map<BigInt, List> _links = {};
 
-  Future<List> _getExternalLinks(int id) async {
+  Future<List> _getExternalLinks(BigInt id) async {
     if (_links[id] != null) return _links[id];
 
     final List res = await widget.plugin.sdk.api.gov.getExternalLinks(
@@ -50,7 +50,7 @@ class _DemocracyState extends State<Democracy> {
     await widget.plugin.service.gov.queryReferendums();
   }
 
-  Future<void> _submitCancelVote(int id) async {
+  Future<void> _submitCancelVote(BigInt id) async {
     final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final params = TxConfirmParams(
       module: 'democracy',
@@ -112,8 +112,10 @@ class _DemocracyState extends State<Democracy> {
                             bestNumber: bestNumber,
                             symbol: symbol,
                             decimals: decimals,
-                            blockDuration: widget.plugin.networkConst['babe']
-                                ['expectedBlockTime'],
+                            blockDuration: BigInt.parse(widget.plugin
+                                    .networkConst['babe']['expectedBlockTime']
+                                    .toString())
+                                .toInt(),
                             onCancelVote: _submitCancelVote,
                             links: FutureBuilder(
                               future: _getExternalLinks(list[i].index),

@@ -37,7 +37,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
 
   List _links;
 
-  Future<List> _getExternalLinks(int id) async {
+  Future<List> _getExternalLinks(BigInt id) async {
     if (_links != null) return _links;
 
     final List res = await widget.plugin.sdk.api.gov.getExternalLinks(
@@ -64,11 +64,11 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
       call: 'second',
       txTitle: dic['proposal.second'],
       txDisplay: {
-        "proposal": proposal.index,
+        "proposal": BigInt.parse(proposal.index.toString()).toInt(),
         "seconds": proposal.seconds.length,
       },
       params: [
-        proposal.index,
+        BigInt.parse(proposal.index.toString()).toInt(),
         proposal.seconds.length,
       ],
     );
@@ -87,7 +87,8 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-          title: Text('${dic['proposal']} #${proposalPara.index}'),
+          title: Text(
+              '${dic['proposal']} #${BigInt.parse(proposalPara.index.toString())}'),
           centerTitle: true),
       body: SafeArea(
         child: RefreshIndicator(
@@ -188,7 +189,8 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                           ),
                         ),
                         FutureBuilder(
-                          future: _getExternalLinks(proposal.index),
+                          future: _getExternalLinks(
+                              BigInt.parse(proposalPara.index.toString())),
                           builder: (_, AsyncSnapshot snapshot) {
                             if (snapshot.hasData) {
                               return GovExternalLinks(snapshot.data);
