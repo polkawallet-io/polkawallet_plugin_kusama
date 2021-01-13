@@ -219,7 +219,7 @@ class _OverviewCard extends StatelessWidget {
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['treasury.total'],
-                content: overview.proposalCount.toString(),
+                content: int.parse(overview.proposalCount ?? '0').toString(),
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,

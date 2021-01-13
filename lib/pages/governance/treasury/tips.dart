@@ -42,7 +42,7 @@ class _ProposalsState extends State<MoneyTips> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (BuildContext context) {
-        List<TreasuryTipData> tips = [];
+        final tips = List<TreasuryTipData>();
         if (widget.plugin.store.gov.treasuryTips != null) {
           tips.addAll(widget.plugin.store.gov.treasuryTips.reversed);
         }
@@ -65,39 +65,41 @@ class _ProposalsState extends State<MoneyTips> {
                         isLoading: false,
                       );
                     }
-                    final TreasuryTipData tip = tips[i];
-                    return RoundedCard(
-                      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                      padding: EdgeInsets.only(top: 16, bottom: 16),
-                      child: ListTile(
-                        leading: AddressIcon(
-                          tip.who,
-                          svg: widget
-                              .plugin.store.accounts.addressIconsMap[tip.who],
-                        ),
-                        title: UI.accountDisplayName(
+                    return Observer(builder: (_) {
+                      final TreasuryTipData tip = tips[i];
+                      final icon =
+                          widget.plugin.store.accounts.addressIconsMap[tip.who];
+                      final indices =
+                          widget.plugin.store.accounts.addressIndexMap[tip.who];
+                      return RoundedCard(
+                        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        padding: EdgeInsets.only(top: 16, bottom: 16),
+                        child: ListTile(
+                          leading: AddressIcon(
                             tip.who,
-                            widget.plugin.store.accounts
-                                .addressIndexMap[tip.who]),
-                        subtitle: Text(tip.reason),
-                        trailing: Column(
-                          children: <Widget>[
-                            Text(
-                              tip.tips.length.toString(),
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            Text(I18n.of(context).getDic(
-                                i18n_full_dic_kusama, 'gov')['treasury.tipper'])
-                          ],
+                            svg: icon,
+                          ),
+                          title: UI.accountDisplayName(tip.who, indices),
+                          subtitle: Text(tip.reason),
+                          trailing: Column(
+                            children: <Widget>[
+                              Text(
+                                tip.tips.length.toString(),
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                              Text(I18n.of(context).getDic(i18n_full_dic_kusama,
+                                  'gov')['treasury.tipper'])
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              TipDetailPage.route,
+                              arguments: tip,
+                            );
+                          },
                         ),
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                            TipDetailPage.route,
-                            arguments: tip,
-                          );
-                        },
-                      ),
-                    );
+                      );
+                    });
                   },
                 ),
         );

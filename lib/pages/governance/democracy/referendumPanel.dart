@@ -27,7 +27,7 @@ class ReferendumPanel extends StatelessWidget {
   final int decimals;
   final ReferendumInfo data;
   final BigInt bestNumber;
-  final Function(BigInt) onCancelVote;
+  final Function(int) onCancelVote;
   final int blockDuration;
   final Widget links;
 
@@ -265,7 +265,7 @@ class ReferendumPanel extends StatelessWidget {
               OutlinedButtonSmall(
                 content: dic['vote.remove'],
                 active: false,
-                onPressed: () => onCancelVote(data.index),
+                onPressed: () => onCancelVote(data.index.toInt()),
               ),
             ],
           ),

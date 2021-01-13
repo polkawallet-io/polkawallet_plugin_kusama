@@ -50,7 +50,7 @@ class _DemocracyState extends State<Democracy> {
     await widget.plugin.service.gov.queryReferendums();
   }
 
-  Future<void> _submitCancelVote(BigInt id) async {
+  Future<void> _submitCancelVote(int id) async {
     final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final params = TxConfirmParams(
       module: 'democracy',
