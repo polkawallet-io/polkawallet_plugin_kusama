@@ -592,7 +592,13 @@ class StakingInfoPanel extends StatelessWidget {
         message: Text(unlockDetail),
         actions: <Widget>[
           CupertinoActionSheetAction(
-            child: Text(dic['action.rebond']),
+            child: Text(
+              dic['action.rebond'],
+              style: TextStyle(
+                  color: !isController
+                      ? Theme.of(context).unselectedWidgetColor
+                      : Theme.of(context).primaryColor),
+            ),
             onPressed: !isController
                 ? () => {}
                 : () async {
