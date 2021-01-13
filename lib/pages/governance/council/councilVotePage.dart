@@ -47,7 +47,7 @@ class _CouncilVote extends State<CouncilVotePage> {
       final decimals = widget.plugin.networkState.tokenDecimals;
       final amt = _amountCtrl.text.trim();
       List selected = _selected.map((i) => i[0]).toList();
-      final params = TxConfirmParams(
+      return TxConfirmParams(
         module: 'electionsPhragmen',
         call: 'vote',
         txTitle: govDic['vote.candidate'],
@@ -62,7 +62,6 @@ class _CouncilVote extends State<CouncilVotePage> {
           Fmt.tokenInt(amt, decimals).toString(),
         ],
       );
-      Navigator.of(context).pushNamed(TxConfirmPage.route, arguments: params);
     }
     return null;
   }

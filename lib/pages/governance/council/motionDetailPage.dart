@@ -14,6 +14,8 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/borderedTitle.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
+import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
 class MotionDetailPage extends StatefulWidget {
@@ -67,32 +69,30 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
   }
 
   void _onVote(bool approve) async {
-    // var dic = I18n.of(context).gov;
-    // final CouncilMotionData motion = ModalRoute.of(context).settings.arguments;
-    // var args = {
-    //   "title": dic['treasury.vote'],
-    //   "txInfo": {
-    //     "module": 'council',
-    //     "call": 'vote',
-    //   },
-    //   "detail": jsonEncode({
-    //     "proposalHash": motion.hash,
-    //     "proposalId": motion.votes.index,
-    //     "voteValue": approve,
-    //   }),
-    //   "params": [
-    //     motion.hash,
-    //     motion.votes.index,
-    //     approve,
-    //   ],
-    //   'onFinish': (BuildContext txPageContext, Map res) {
-    //     Navigator.popUntil(
-    //         txPageContext, ModalRoute.withName(CouncilPage.route));
-    //
-    //     globalMotionsRefreshKey.currentState.show();
-    //   }
-    // };
-    // Navigator.of(context).pushNamed(TxConfirmPage.route, arguments: args);
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final CouncilMotionData motion = ModalRoute.of(context).settings.arguments;
+    final args = TxConfirmParams(
+      module: 'council',
+      call: 'vote',
+      txTitle: dic['treasury.vote'],
+      txDisplay: {
+        "proposalHash": motion.hash,
+        "proposalId": motion.votes.index,
+        "voteValue": approve,
+      },
+      params: [
+        motion.hash,
+        motion.votes.index,
+        approve,
+      ],
+    );
+    final res = await Navigator.of(context)
+        .pushNamed(TxConfirmPage.route, arguments: args);
+    if (res != null) {
+      final CouncilMotionData motion =
+          ModalRoute.of(context).settings.arguments;
+      _fetchTreasuryProposal(motion.proposal.args[0]);
+    }
   }
 
   @override
@@ -103,7 +103,8 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
       builder: (BuildContext context) {
         int blockTime = 6000;
         if (widget.plugin.networkConst['treasury'] != null) {
-          blockTime = widget.plugin.networkConst['babe']['expectedBlockTime'];
+          blockTime = int.parse(
+              widget.plugin.networkConst['babe']['expectedBlockTime']);
         }
         List<List<String>> params = [];
         motion.proposal.meta.args.asMap().forEach((k, v) {

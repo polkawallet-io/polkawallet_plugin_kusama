@@ -176,7 +176,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     bool isController = false;
     bool isStash = true;
     if (hashData) {
-      bonded = stashInfo.stakingLedger['active'];
+      bonded = int.parse(stashInfo.stakingLedger['active'].toString());
       nominators = stashInfo.nominating.toList();
       if (nominators.length > 0) {
         nominatorListHeight = double.parse((nominators.length * 56).toString());
