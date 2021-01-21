@@ -1,6 +1,7 @@
 library polkawallet_plugin_kusama;
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -21,7 +22,6 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPag
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rebondPage.dart';
@@ -29,6 +29,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart'
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakingDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
@@ -77,9 +78,13 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   List<NetworkParams> get nodeList {
     if (basic.name == network_name_polkadot) {
-      return node_list_polkadot.map((e) => NetworkParams.fromJson(e)).toList();
+      return _randomList(node_list_polkadot)
+          .map((e) => NetworkParams.fromJson(e))
+          .toList();
     }
-    return node_list_kusama.map((e) => NetworkParams.fromJson(e)).toList();
+    return _randomList(node_list_kusama)
+        .map((e) => NetworkParams.fromJson(e))
+        .toList();
   }
 
   @override
@@ -115,7 +120,7 @@ class PluginKusama extends PolkawalletPlugin {
           TxConfirmPage(this, keyring, _service.getPassword),
 
       // staking pages
-      BondPage.route: (_) => BondPage(this, keyring),
+      StakePage.route: (_) => StakePage(this, keyring),
       BondExtraPage.route: (_) => BondExtraPage(this, keyring),
       ControllerSelectPage.route: (_) => ControllerSelectPage(this, keyring),
       SetControllerPage.route: (_) => SetControllerPage(this, keyring),
@@ -181,5 +186,17 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
     _store.staking.loadAccountCache(acc.pubKey);
+  }
+
+  List _randomList(List input) {
+    final data = input.toList();
+    final res = List();
+    final _random = Random();
+    for (var i = 0; i < input.length; i++) {
+      final item = data[_random.nextInt(data.length)];
+      res.add(item);
+      data.remove(item);
+    }
+    return res;
   }
 }

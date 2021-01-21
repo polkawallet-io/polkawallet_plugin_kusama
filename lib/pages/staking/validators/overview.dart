@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validator.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
@@ -89,10 +89,13 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             ),
             CupertinoButton(
               child: Text(dic['ok']),
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop();
-                Navigator.pushNamed(
-                    context, bondExtra ? BondExtraPage.route : BondPage.route);
+                final res = Navigator.pushNamed(
+                    context, bondExtra ? BondExtraPage.route : StakePage.route);
+                if (res != null) {
+                  _refreshKey.currentState.show();
+                }
               },
             ),
           ],
@@ -105,6 +108,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     if (widget.plugin.store.staking.ownStashInfo == null) return;
 
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final hasNomination =
+        widget.plugin.store.staking.ownStashInfo.nominating.length > 0;
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -121,14 +126,17 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
           CupertinoActionSheetAction(
             child: Text(
               dicStaking['action.chill'],
+              style: TextStyle(
+                  color: hasNomination
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).disabledColor),
             ),
-            onPressed:
-                widget.plugin.store.staking.ownStashInfo.nominating.length > 0
-                    ? () {
-                        Navigator.of(context).pop();
-                        _chill();
-                      }
-                    : null,
+            onPressed: hasNomination
+                ? () {
+                    Navigator.of(context).pop();
+                    _chill();
+                  }
+                : () => null,
           ),
         ],
         cancelButton: CupertinoActionSheetAction(

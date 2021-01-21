@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/nominateForm.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorListFilter.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/format.dart';
@@ -11,20 +11,22 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
+import 'package:polkawallet_ui/components/borderedTitle.dart';
+import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/pages/txConfirmPage.dart';
+import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
-class NominatePage extends StatefulWidget {
-  NominatePage(this.plugin, this.keyring);
-  static final String route = '/staking/nominate';
+class NominateForm extends StatefulWidget {
+  NominateForm(this.plugin, this.keyring, {this.onNext});
   final PluginKusama plugin;
   final Keyring keyring;
+  final Function(TxConfirmParams) onNext;
   @override
-  _NominatePageState createState() => _NominatePageState();
+  _NominateFormState createState() => _NominateFormState();
 }
 
-class _NominatePageState extends State<NominatePage> {
+class _NominateFormState extends State<NominateForm> {
   final List<ValidatorData> _selected = List<ValidatorData>();
   final List<ValidatorData> _notSelected = List<ValidatorData>();
   Map<String, bool> _selectedMap = Map<String, bool>();
@@ -32,23 +34,16 @@ class _NominatePageState extends State<NominatePage> {
   String _filter = '';
   int _sort = 0;
 
-  Future<TxConfirmParams> _chill() async {
+  void _setNominee() {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    return TxConfirmParams(
-      txTitle: dicStaking['action.chill'],
+    final targets = _selected.map((i) => i.accountId).toList();
+    widget.onNext(TxConfirmParams(
+      txTitle: dicStaking['action.nominate'],
       module: 'staking',
-      call: 'chill',
-      txDisplay: {'action': 'chill'},
-      params: [],
-    );
-  }
-
-  Future<void> _setNominee(TxConfirmParams params) async {
-    final res = await Navigator.of(context)
-        .pushNamed(TxConfirmPage.route, arguments: params);
-    if (res != null) {
-      Navigator.of(context).pop(res);
-    }
+      call: 'nominate',
+      txDisplay: {'targets': targets.join(', ')},
+      params: [targets],
+    ));
   }
 
   Widget _buildListItem(BuildContext context, ValidatorData validator) {
@@ -193,20 +188,44 @@ class _NominatePageState extends State<NominatePage> {
         widget.plugin.store.accounts.addressIndexMap, a, b, _sort));
     list.addAll(retained);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(dicStaking['action.nominate']),
-        centerTitle: true,
-      ),
-      body: Builder(builder: (BuildContext context) {
-        return SafeArea(
-          child: NominateForm(
-            widget.plugin,
-            widget.keyring,
-            onNext: (TxConfirmParams params) => _setNominee(params),
+    return Column(
+      children: <Widget>[
+        Container(
+          color: Theme.of(context).cardColor,
+          padding: EdgeInsets.only(top: 8, bottom: 8),
+          child: ValidatorListFilter(
+            onFilterChange: (v) {
+              if (_filter != v) {
+                setState(() {
+                  _filter = v;
+                });
+              }
+            },
+            onSortChange: (v) {
+              if (_sort != v) {
+                setState(() {
+                  _sort = v;
+                });
+              }
+            },
           ),
-        );
-      }),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (BuildContext context, int i) {
+              return _buildListItem(context, list[i]);
+            },
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16),
+          child: RoundedButton(
+            text: dicStaking['action.nominate'],
+            onPressed: _selected.length > 0 ? _setNominee : null,
+          ),
+        ),
+      ],
     );
   }
 }

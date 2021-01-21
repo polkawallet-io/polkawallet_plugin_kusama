@@ -123,7 +123,7 @@ class Gov extends StatelessWidget {
                               DAppWrapperPage.route,
                               arguments:
                                   'https://${plugin.basic.name}.polkassembly.io/',
-                              // "https://apps.acala.network/#/loan",
+                              // "https://polkadot.js.org/apps/",
                             ),
                           ),
                         ),
