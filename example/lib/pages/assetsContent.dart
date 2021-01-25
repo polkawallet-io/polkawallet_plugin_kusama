@@ -28,8 +28,8 @@ class _AssetsContentState extends State<AssetsContent> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        final symbol = widget.network.networkState.tokenSymbol[0] ?? '';
-        final decimals = widget.network.networkState.tokenDecimals[0] ?? 12;
+        final symbol = (widget.network.networkState.tokenSymbol ?? [''])[0];
+        final decimals = (widget.network.networkState.tokenDecimals ?? [12])[0];
 
         final balancesInfo = widget.network.balances.native;
         final tokens = widget.network.balances.tokens;

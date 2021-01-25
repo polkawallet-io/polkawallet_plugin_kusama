@@ -38,15 +38,31 @@ class ApiStaking {
   Future<Map> updateStakingTxs(int page) async {
     store.staking.setTxsLoading(true);
 
-    Map res = await api.subScan.fetchTxsAsync(
-      'staking',
-      page: page,
-      sender: keyring.current.address,
-      network: plugin.basic.name,
-    );
-
+    final res = await Future.wait([
+      api.subScan.fetchTxsAsync(
+        'staking',
+        page: page,
+        sender: keyring.current.address,
+        network: plugin.basic.name,
+      ),
+      api.subScan.fetchTxsAsync(
+        'utility',
+        call: 'batchAll',
+        page: page,
+        sender: keyring.current.address,
+        network: plugin.basic.name,
+      ),
+    ]);
+    final list = res[0];
+    if (res[1] != null && res[1]['extrinsics'] != null) {
+      final batchTxs = List.of(res[1]['extrinsics']);
+      batchTxs.retainWhere((e) => (e['params'] as String).contains('Staking'));
+      final allTxs = [...res[0]['extrinsics'], ...batchTxs];
+      allTxs.sort((a, b) => a['block_num'] < b['block_num'] ? 1 : -1);
+      res[0]['extrinsics'] = allTxs;
+    }
     await store.staking.addTxs(
-      res,
+      list,
       keyring.current.pubKey,
       shouldCache: page == 0,
       reset: page == 0,
@@ -54,7 +70,7 @@ class ApiStaking {
 
     store.staking.setTxsLoading(false);
 
-    return res;
+    return list;
   }
 
   Future<Map> updateStakingRewards() async {
