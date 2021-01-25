@@ -319,7 +319,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             widget.plugin.store.staking.validatorsInfo,
             stashId,
             NomStatus.active,
-            widget.plugin.networkState.tokenDecimals,
+            widget.plugin.networkState.tokenDecimals[0],
             widget.plugin.store.accounts.addressIndexMap,
             widget.plugin.store.accounts.addressIconsMap,
           ),
@@ -333,7 +333,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             widget.plugin.store.staking.validatorsInfo,
             stashId,
             NomStatus.over,
-            widget.plugin.networkState.tokenDecimals,
+            widget.plugin.networkState.tokenDecimals[0],
             widget.plugin.store.accounts.addressIndexMap,
             widget.plugin.store.accounts.addressIconsMap,
           ),
@@ -347,7 +347,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             widget.plugin.store.staking.validatorsInfo,
             stashId,
             NomStatus.inactive,
-            widget.plugin.networkState.tokenDecimals,
+            widget.plugin.networkState.tokenDecimals[0],
             widget.plugin.store.accounts.addressIndexMap,
             widget.plugin.store.accounts.addressIconsMap,
           ),
@@ -361,7 +361,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             widget.plugin.store.staking.validatorsInfo,
             stashId,
             NomStatus.waiting,
-            widget.plugin.networkState.tokenDecimals,
+            widget.plugin.networkState.tokenDecimals[0],
             widget.plugin.store.accounts.addressIndexMap,
             widget.plugin.store.accounts.addressIconsMap,
           ),
@@ -403,7 +403,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     return Observer(
       builder: (_) {
-        final int decimals = widget.plugin.networkState.tokenDecimals;
+        final int decimals = widget.plugin.networkState.tokenDecimals[0];
         final List<Tab> _listTabs = <Tab>[
           Tab(
             text:

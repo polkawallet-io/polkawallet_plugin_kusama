@@ -230,8 +230,9 @@ class _ProfileContentState extends State<ProfileContent> {
         Column(
           children: [
             Text('network state'),
-            Text('tokenSymbol: ${widget.network.networkState.tokenSymbol}'),
-            Text('tokenDecimals: ${widget.network.networkState.tokenDecimals}'),
+            Text('tokenSymbol: ${widget.network.networkState.tokenSymbol[0]}'),
+            Text(
+                'tokenDecimals: ${widget.network.networkState.tokenDecimals[0]}'),
           ],
         ),
         Divider(),

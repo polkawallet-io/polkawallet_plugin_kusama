@@ -53,7 +53,6 @@ class _NominatePageState extends State<NominatePage> {
 
   Widget _buildListItem(BuildContext context, ValidatorData validator) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final int decimals = widget.plugin.networkState.tokenDecimals;
     final Map accInfo =
         widget.plugin.store.accounts.addressIndexMap[validator.accountId];
     final accIcon =

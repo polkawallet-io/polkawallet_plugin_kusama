@@ -99,8 +99,8 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
               final ProposalInfoData proposal = widget
                   .plugin.store.gov.proposals
                   .firstWhere((e) => e.index == proposalPara.index);
-              final decimals = widget.plugin.networkState.tokenDecimals;
-              final symbol = widget.plugin.networkState.tokenSymbol ?? '';
+              final decimals = widget.plugin.networkState.tokenDecimals[0];
+              final symbol = widget.plugin.networkState.tokenSymbol[0] ?? '';
               final List<List<String>> params = [];
               bool hasProposal = false;
               if (proposal.image?.proposal != null) {

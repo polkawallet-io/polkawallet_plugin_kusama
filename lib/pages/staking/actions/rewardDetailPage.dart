@@ -19,8 +19,8 @@ class RewardDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final decimals = plugin.networkState.tokenDecimals;
-    final symbol = plugin.networkState.tokenSymbol;
+    final decimals = plugin.networkState.tokenDecimals[0];
+    final symbol = plugin.networkState.tokenSymbol[0];
     final TxRewardData detail = ModalRoute.of(context).settings.arguments;
 
     return TxDetail(

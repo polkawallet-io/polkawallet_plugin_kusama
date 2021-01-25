@@ -32,8 +32,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
   final TextEditingController _tipInputCtrl = TextEditingController();
 
   Future<void> _onEndorse() async {
-    final symbol = widget.plugin.networkState.tokenSymbol;
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
     showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
@@ -112,7 +112,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
 
   Future<void> _onEndorseSubmit() async {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
     final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
     String amt = _tipInputCtrl.text.trim();
     final args = TxConfirmParams(
@@ -177,7 +177,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
 
   Future<void> _onTip(BigInt median) async {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
     final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
     final args = TxConfirmParams(
       module: 'treasury',
@@ -199,8 +199,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final symbol = widget.plugin.networkState.tokenSymbol;
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
     final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
     final who = KeyPairData();
     final finder = KeyPairData();

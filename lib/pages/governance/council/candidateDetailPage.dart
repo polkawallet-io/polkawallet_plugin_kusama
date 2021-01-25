@@ -42,8 +42,8 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
   Widget build(BuildContext context) {
     final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final List info = ModalRoute.of(context).settings.arguments;
-    final decimals = widget.plugin.networkState.tokenDecimals;
-    final symbol = widget.plugin.networkState.tokenSymbol;
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final symbol = widget.plugin.networkState.tokenSymbol[0];
     return Scaffold(
       appBar: AppBar(
           title: Text(

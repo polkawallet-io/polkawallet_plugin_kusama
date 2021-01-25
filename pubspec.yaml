@@ -17,13 +17,13 @@ dependencies:
   json_annotation: ^3.0.1
   flutter_svg: ^0.18.0
   get_storage: ^1.2.1
-  polkawallet_sdk: ^0.0.8
+  polkawallet_sdk: ^0.1.0
 #  polkawallet_sdk:
 #    path: ../sdk
   polkawallet_ui:
     git:
       url: https://github.com/polkawallet-io/ui.git
-      ref: 225debc79aa5e3aca6783a3506bcc3e596398e7c
+      ref: 9ff8f1ebbaad3bbda904756f650414cf7cfe3163
 #    path: ../ui
 
 dev_dependencies:

@@ -31,7 +31,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
   Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-      final decimals = widget.plugin.networkState.tokenDecimals;
+      final decimals = widget.plugin.networkState.tokenDecimals[0];
       final amt = _amountCtrl.text.trim();
       return TxConfirmParams(
         module: 'treasury',
@@ -72,8 +72,8 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final dicCommon = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final decimals = widget.plugin.networkState.tokenDecimals;
-    final symbol = widget.plugin.networkState.tokenSymbol;
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final symbol = widget.plugin.networkState.tokenSymbol[0];
     final bondPercentage = Fmt.balanceInt(
             widget.plugin.networkConst['treasury']['proposalBond'].toString()) *
         BigInt.from(100) ~/

@@ -114,7 +114,7 @@ class _PayoutPageState extends State<PayoutPage> {
 
   Future<TxConfirmParams> _getParams() async {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
 
     List rewards = _rewards['validators'];
     if (rewards.length == 1 && List.of(rewards[0]['eras']).length == 1) {
@@ -170,7 +170,7 @@ class _PayoutPageState extends State<PayoutPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
 
     BigInt rewardTotal;
     if (_rewards != null) {

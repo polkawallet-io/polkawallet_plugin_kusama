@@ -44,7 +44,7 @@ class _CouncilVote extends State<CouncilVotePage> {
   Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-      final decimals = widget.plugin.networkState.tokenDecimals;
+      final decimals = widget.plugin.networkState.tokenDecimals[0];
       final amt = _amountCtrl.text.trim();
       List selected = _selected.map((i) => i[0]).toList();
       return TxConfirmParams(
@@ -77,8 +77,7 @@ class _CouncilVote extends State<CouncilVotePage> {
       body: Observer(
         builder: (_) {
           final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-          final decimals = widget.plugin.networkState.tokenDecimals;
-          final symbol = widget.plugin.networkState.tokenSymbol;
+          final decimals = widget.plugin.networkState.tokenDecimals[0];
 
           final balance = Fmt.balanceInt(
               widget.plugin.balances.native.freeBalance.toString());

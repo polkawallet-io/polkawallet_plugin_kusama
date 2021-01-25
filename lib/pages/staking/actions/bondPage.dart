@@ -8,6 +8,7 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
+import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/pages/accountListPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
@@ -58,8 +59,8 @@ class _BondPageState extends State<BondPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final symbol = widget.plugin.networkState.tokenSymbol;
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
 
     double available = 0;
     if (widget.plugin.balances.native != null) {
@@ -84,7 +85,23 @@ class _BondPageState extends State<BondPage> {
             child: ListView(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16, top: 8),
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: TextTag(
+                        I18n.of(context).getDic(
+                            i18n_full_dic_kusama, 'staking')['stake.warn'],
+                        color: Colors.deepOrange,
+                        fontSize: 12,
+                        margin: EdgeInsets.all(0),
+                        padding: EdgeInsets.all(8),
+                      ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16),
                   child: AddressFormItem(
                     widget.keyring.current,
                     label: dicStaking['stash'],
@@ -118,9 +135,9 @@ class _BondPageState extends State<BondPage> {
                       if (v.isEmpty) {
                         return dic['amount.error'];
                       }
-                      if (double.parse(v.trim()) >= available) {
-                        return dic['amount.low'];
-                      }
+                      // if (double.parse(v.trim()) >= available) {
+                      //   return dic['amount.low'];
+                      // }
                       return null;
                     },
                   ),

@@ -142,8 +142,8 @@ class _StakingActions extends State<StakingActions>
   }
 
   List<Widget> _buildRewardsList() {
-    final int decimals = widget.plugin.networkState.tokenDecimals;
-    final String symbol = widget.plugin.networkState.tokenSymbol;
+    final int decimals = widget.plugin.networkState.tokenDecimals[0];
+    final String symbol = widget.plugin.networkState.tokenSymbol[0];
 
     List<Widget> res = [];
     res.addAll(widget.plugin.store.staking.txsRewards.map((i) {
@@ -221,8 +221,7 @@ class _StakingActions extends State<StakingActions>
       }
     }
 
-    final symbol = widget.plugin.networkState.tokenSymbol;
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final decimals = widget.plugin.networkState.tokenDecimals[0];
 
     final info = widget.plugin.balances.native;
     final freeBalance =
