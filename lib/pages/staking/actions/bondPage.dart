@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
-import 'package:polkawallet_ui/components/addressInputField.dart';
-import 'package:polkawallet_ui/components/borderedTitle.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/pages/accountListPage.dart';
@@ -46,6 +45,13 @@ class _BondPageState extends State<BondPage> {
         _controller = acc;
       });
     }
+  }
+
+  void _onPayeeChanged(int to, String address) {
+    setState(() {
+      _rewardTo = to;
+      _rewardAccount = address;
+    });
   }
 
   @override
@@ -119,53 +125,12 @@ class _BondPageState extends State<BondPage> {
                     },
                   ),
                 ),
-                ListTile(
-                  title: Text(dicStaking['bond.reward']),
-                  subtitle: Text(rewardToOptions[_rewardTo]),
-                  trailing: Icon(Icons.arrow_forward_ios, size: 18),
-                  onTap: () {
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder: (_) => Container(
-                        height:
-                            MediaQuery.of(context).copyWith().size.height / 3,
-                        child: CupertinoPicker(
-                          backgroundColor: Colors.white,
-                          itemExtent: 56,
-                          scrollController: FixedExtentScrollController(
-                              initialItem: _rewardTo),
-                          children: rewardToOptions
-                              .map((i) => Padding(
-                                  padding: EdgeInsets.all(12),
-                                  child: Text(
-                                    i,
-                                    style: TextStyle(fontSize: 16),
-                                  )))
-                              .toList(),
-                          onSelectedItemChanged: (v) {
-                            setState(() {
-                              _rewardTo = v;
-                            });
-                          },
-                        ),
-                      ),
-                    );
-                  },
+                PayeeSelector(
+                  widget.plugin,
+                  widget.keyring,
+                  initialValue: widget.plugin.store.staking.ownStashInfo,
+                  onChange: _onPayeeChanged,
                 ),
-                _rewardTo == 3
-                    ? Padding(
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        child: AddressInputField(
-                          widget.plugin.sdk.api,
-                          accounts,
-                          onChanged: (acc) {
-                            setState(() {
-                              _rewardAccount = acc.address;
-                            });
-                          },
-                        ),
-                      )
-                    : Container(),
               ],
             ),
           ),

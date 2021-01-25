@@ -65,6 +65,18 @@ class _StakePageState extends State<StakePage> {
       appBar: AppBar(
         title: Text('${dic['staking']} ${_step + 1}/2'),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            if (_step == 1) {
+              setState(() {
+                _step = 0;
+              });
+            } else {
+              Navigator.of(context).pop();
+            }
+          },
+        ),
       ),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(

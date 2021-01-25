@@ -61,7 +61,7 @@ class _BondExtraPageState extends State<BondExtraPage> {
                           labelText:
                               '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
                             available,
-                            lengthMax: 3,
+                            lengthMax: 4,
                           )} $symbol)',
                         ),
                         inputFormatters: [UI.decimalInputFormatter(decimals)],

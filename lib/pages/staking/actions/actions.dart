@@ -88,10 +88,7 @@ class _StakingActions extends State<StakingActions>
   Future<void> _updateStakingInfo() async {
     _tab == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
 
-    await Future.wait([
-      widget.plugin.service.staking.queryOwnStashInfo(),
-      widget.plugin.service.staking.queryAccountBondedInfo(),
-    ]);
+    await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
   Future<void> _onChangeAccount(KeyPairData acc) async {
@@ -288,7 +285,7 @@ class _StakingActions extends State<StakingActions>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '${Fmt.priceFloorBigInt(totalBalance, decimals, lengthMax: 3)}',
+                            '${Fmt.priceFloorBigInt(totalBalance, decimals, lengthMax: 4)}',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
@@ -368,6 +365,7 @@ class _StakingActions extends State<StakingActions>
       } else {
         _updateStakingInfo();
       }
+      widget.plugin.service.staking.queryAccountBondedInfo();
     });
   }
 
@@ -639,7 +637,7 @@ class StakingInfoPanel extends StatelessWidget {
             children: <Widget>[
               InfoItem(
                 title: dic['bonded'],
-                content: Fmt.priceFloorBigInt(bonded, decimals, lengthMax: 3),
+                content: Fmt.priceFloorBigInt(bonded, decimals, lengthMax: 4),
                 crossAxisAlignment: CrossAxisAlignment.center,
               ),
               Expanded(
@@ -665,7 +663,7 @@ class StakingInfoPanel extends StatelessWidget {
                             : Container(),
                         Text(
                           Fmt.priceFloorBigInt(unlocking, decimals,
-                              lengthMax: 3),
+                              lengthMax: 4),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -690,7 +688,7 @@ class StakingInfoPanel extends StatelessWidget {
                           Fmt.priceFloorBigInt(
                             redeemable,
                             decimals,
-                            lengthMax: 3,
+                            lengthMax: 4,
                           ),
                           style: TextStyle(
                             fontSize: 14,
@@ -734,7 +732,7 @@ class StakingInfoPanel extends StatelessWidget {
               InfoItem(
                 title: dic['available'],
                 content:
-                    Fmt.priceFloorBigInt(available, decimals, lengthMax: 3),
+                    Fmt.priceFloorBigInt(available, decimals, lengthMax: 4),
                 crossAxisAlignment: CrossAxisAlignment.center,
               ),
               InfoItem(
@@ -826,10 +824,8 @@ class StakingActionsPanel extends StatelessWidget {
 
         if (stashInfo.isOwnController) {
           setPayeeDisabled = false;
-          onSetPayeeTap = () => _onAction(Navigator.of(context).pushNamed(
-                SetPayeePage.route,
-                arguments: stashInfo.destinationId,
-              ));
+          onSetPayeeTap = () =>
+              _onAction(Navigator.of(context).pushNamed(SetPayeePage.route));
         }
       } else {
         bondButtonString = dic['action.bond'];
@@ -837,10 +833,8 @@ class StakingActionsPanel extends StatelessWidget {
     } else {
       if (bonded > BigInt.zero) {
         setPayeeDisabled = false;
-        onSetPayeeTap = () => _onAction(Navigator.of(context).pushNamed(
-              SetPayeePage.route,
-              arguments: stashInfo.destinationId,
-            ));
+        onSetPayeeTap = () =>
+            _onAction(Navigator.of(context).pushNamed(SetPayeePage.route));
       }
     }
 

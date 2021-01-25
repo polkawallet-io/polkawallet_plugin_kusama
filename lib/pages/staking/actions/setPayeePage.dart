@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -19,67 +22,71 @@ class SetPayeePage extends StatefulWidget {
 }
 
 class _SetPayeePageState extends State<SetPayeePage> {
-  final _rewardToOptions = ['Staked', 'Stash', 'Controller', 'Account'];
-
   int _rewardTo;
   String _rewardAccount;
 
   Future<TxConfirmParams> _getTxParams() async {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     final rewardToOptions =
-        _rewardToOptions.map((i) => dic['reward.$i']).toList();
-    final currentPayee = _rewardToOptions
-        .indexOf(widget.plugin.store.staking.ownStashInfo.destination);
+        PayeeSelector.options.map((i) => dic['reward.$i']).toList();
+    final OwnStashInfoData currentPayee =
+        widget.plugin.store.staking.ownStashInfo;
 
-    if (currentPayee == _rewardTo) {
-      showCupertinoDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: Container(),
-            content: Text('${dic['reward.warn']}'),
-            actions: <Widget>[
-              CupertinoButton(
-                child: Text(I18n.of(context)
-                    .getDic(i18n_full_dic_kusama, 'common')['ok']),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        },
-      );
-      return null;
+    if (_rewardTo == null) {
+      bool noChange = false;
+      if (currentPayee.destinationId != 3 || _rewardAccount == null) {
+        noChange = true;
+      } else if (currentPayee.destinationId == 3 &&
+          currentPayee.destination.contains(_rewardAccount.toLowerCase())) {
+        noChange = true;
+      }
+      if (noChange) {
+        showCupertinoDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: Container(),
+              content: Text('${dic['reward.warn']}'),
+              actions: <Widget>[
+                CupertinoButton(
+                  child: Text(I18n.of(context)
+                      .getDic(i18n_full_dic_kusama, 'common')['ok']),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            );
+          },
+        );
+        return null;
+      }
     }
 
+    final to = _rewardTo ?? currentPayee.destinationId;
     return TxConfirmParams(
       txTitle: dic['action.setting'],
       module: 'staking',
       call: 'setPayee',
       txDisplay: {
-        "reward_destination": _rewardTo == 3
-            ? {'Account': _rewardAccount}
-            : rewardToOptions[_rewardTo],
+        "reward_destination":
+            to == 3 ? {'Account': _rewardAccount} : rewardToOptions[to],
       },
       params: [
         // "to"
-        _rewardTo == 3 ? {'Account': _rewardAccount} : _rewardTo,
+        to == 3 ? {'Account': _rewardAccount} : to,
       ],
     );
+  }
+
+  void _onPayeeChanged(int to, String address) {
+    setState(() {
+      _rewardTo = to;
+      _rewardAccount = address;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final defaultValue = ModalRoute.of(context).settings.arguments ?? 0;
-
-    final rewardToOptions =
-        _rewardToOptions.map((i) => dic['reward.$i']).toList();
-
-    List<KeyPairData> accounts;
-    if (_rewardTo == 3) {
-      accounts = widget.keyring.keyPairs;
-      accounts.addAll(widget.keyring.externals);
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -92,7 +99,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
             children: <Widget>[
               Expanded(
                 child: ListView(
-                  children: <Widget>[
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(left: 16, right: 16, top: 8),
                       child: AddressFormItem(
@@ -100,56 +107,12 @@ class _SetPayeePageState extends State<SetPayeePage> {
                         label: dic['controller'],
                       ),
                     ),
-                    ListTile(
-                      title: Text(dic['bond.reward']),
-                      subtitle:
-                          Text(rewardToOptions[_rewardTo ?? defaultValue]),
-                      trailing: Icon(Icons.arrow_forward_ios, size: 18),
-                      onTap: () {
-                        showCupertinoModalPopup(
-                          context: context,
-                          builder: (_) => Container(
-                            height:
-                                MediaQuery.of(context).copyWith().size.height /
-                                    3,
-                            child: CupertinoPicker(
-                              backgroundColor: Colors.white,
-                              itemExtent: 56,
-                              scrollController: FixedExtentScrollController(
-                                  initialItem: defaultValue),
-                              children: rewardToOptions
-                                  .map((i) => Padding(
-                                        padding: EdgeInsets.all(12),
-                                        child: Text(
-                                          i,
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                      ))
-                                  .toList(),
-                              onSelectedItemChanged: (v) {
-                                setState(() {
-                                  _rewardTo = v;
-                                });
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    _rewardTo == 3
-                        ? Padding(
-                            padding: EdgeInsets.only(left: 16, right: 16),
-                            child: AddressInputField(
-                              widget.plugin.sdk.api,
-                              accounts,
-                              onChanged: (acc) {
-                                setState(() {
-                                  _rewardAccount = acc.address;
-                                });
-                              },
-                            ),
-                          )
-                        : Container(),
+                    PayeeSelector(
+                      widget.plugin,
+                      widget.keyring,
+                      initialValue: widget.plugin.store.staking.ownStashInfo,
+                      onChange: _onPayeeChanged,
+                    )
                   ],
                 ),
               ),
@@ -168,6 +131,99 @@ class _SetPayeePageState extends State<SetPayeePage> {
           ),
         );
       }),
+    );
+  }
+}
+
+class PayeeSelector extends StatefulWidget {
+  PayeeSelector(this.plugin, this.keyring, {this.initialValue, this.onChange});
+
+  static const options = ['Staked', 'Stash', 'Controller', 'Account'];
+
+  final PluginKusama plugin;
+  final Keyring keyring;
+  final OwnStashInfoData initialValue;
+  final Function(int, String) onChange;
+
+  @override
+  _PayeeSelectorState createState() => _PayeeSelectorState();
+}
+
+class _PayeeSelectorState extends State<PayeeSelector> {
+  int _rewardTo;
+  String _rewardAccount;
+
+  @override
+  Widget build(BuildContext context) {
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+
+    final rewardToOptions =
+        PayeeSelector.options.map((i) => dic['reward.$i']).toList();
+
+    KeyPairData defaultAcc = widget.keyring.current;
+    if ((_rewardTo ?? widget.initialValue.destinationId) == 3) {
+      if (widget.initialValue.destinationId == 3) {
+        final acc = KeyPairData();
+        acc.address = jsonDecode(widget.initialValue.destination)['account'];
+        defaultAcc = acc;
+      }
+    }
+
+    return Column(
+      children: <Widget>[
+        ListTile(
+          title: Text(dic['bond.reward']),
+          subtitle: Text(rewardToOptions[
+              _rewardTo ?? widget.initialValue.destinationId ?? 0]),
+          trailing: Icon(Icons.arrow_forward_ios, size: 18),
+          onTap: () {
+            showCupertinoModalPopup(
+              context: context,
+              builder: (_) => Container(
+                height: MediaQuery.of(context).copyWith().size.height / 3,
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 56,
+                  scrollController: FixedExtentScrollController(
+                      initialItem: widget.initialValue.destinationId ?? 0),
+                  children: rewardToOptions
+                      .map((i) => Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Text(
+                              i,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ))
+                      .toList(),
+                  onSelectedItemChanged: (v) {
+                    setState(() {
+                      _rewardTo = v;
+                      _rewardAccount = widget.keyring.current.address;
+                    });
+                    widget.onChange(v, _rewardAccount);
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+        (_rewardTo ?? widget.initialValue.destinationId) == 3
+            ? Padding(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                child: AddressInputField(
+                  widget.plugin.sdk.api,
+                  widget.keyring.allWithContacts,
+                  initialValue: defaultAcc,
+                  onChanged: (acc) {
+                    setState(() {
+                      _rewardAccount = acc.address;
+                    });
+                    widget.onChange(_rewardTo, acc.address);
+                  },
+                ),
+              )
+            : Container(),
+      ],
     );
   }
 }

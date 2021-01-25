@@ -64,7 +64,7 @@ class _UnBondPageState extends State<UnBondPage> {
                           labelText:
                               '${dic['amount']} (${dicStaking['bonded']}: ${Fmt.priceFloor(
                             bonded,
-                            lengthMax: 3,
+                            lengthMax: 4,
                           )} $symbol)',
                         ),
                         inputFormatters: [UI.decimalInputFormatter(decimals)],

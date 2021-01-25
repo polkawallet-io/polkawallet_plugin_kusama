@@ -58,11 +58,9 @@ class ApiStaking {
   }
 
   Future<Map> updateStakingRewards() async {
-    final address = store.staking.ownStashInfo?.stashId ??
-        store.staking.ownStashInfo.account.accountId;
     final res = await api.subScan.fetchRewardTxsAsync(
       page: 0,
-      sender: address,
+      sender: keyring.current.address,
       network: plugin.basic.name,
     );
 
