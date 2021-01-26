@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -179,9 +178,9 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                     text: I18n.of(context)
                         .getDic(i18n_full_dic_ui, 'common')['tx.submit'],
                     getTxParams: _getTxParams,
-                    onFinish: (ok) {
-                      if (ok ?? false) {
-                        Navigator.of(context).pop();
+                    onFinish: (res) {
+                      if (res != null) {
+                        Navigator.of(context).pop(res);
                       }
                     },
                   ),

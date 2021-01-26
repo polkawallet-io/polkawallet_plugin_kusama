@@ -21,6 +21,7 @@ class ReferendumPanel extends StatelessWidget {
     this.onCancelVote,
     this.blockDuration,
     this.links,
+    this.onRefresh,
   });
 
   final String symbol;
@@ -30,6 +31,7 @@ class ReferendumPanel extends StatelessWidget {
   final Function(int) onCancelVote;
   final int blockDuration;
   final Widget links;
+  final Function onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -280,9 +282,13 @@ class ReferendumPanel extends StatelessWidget {
         isCouncil: true,
         isVotedNo: false,
         isVotedYes: false,
-        onVote: (res) {
-          Navigator.of(context).pushNamed(ReferendumVotePage.route,
-              arguments: {'referenda': data, 'voteYes': res});
+        onVote: (yes) async {
+          final res = await Navigator.of(context).pushNamed(
+              ReferendumVotePage.route,
+              arguments: {'referenda': data, 'voteYes': yes});
+          if (res != null) {
+            onRefresh();
+          }
         },
       ),
     ));

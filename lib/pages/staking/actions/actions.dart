@@ -795,7 +795,7 @@ class StakingActionsPanel extends StatelessWidget {
 
   void _onAction(Future doAction) {
     doAction.then((res) {
-      if (res ?? false) {
+      if (res != null) {
         onSuccess();
       }
     });

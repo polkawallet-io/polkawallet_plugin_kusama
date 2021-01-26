@@ -122,6 +122,7 @@ class _ProposalsState extends State<SpendProposals> {
                                       accInfo: widget.plugin.store.accounts
                                           .addressIndexMap[e.proposal.proposer],
                                       proposal: e,
+                                      onRefresh: _refreshPage,
                                     );
                                   }).toList(),
                                 )
@@ -161,6 +162,7 @@ class _ProposalsState extends State<SpendProposals> {
                                                 .addressIndexMap[
                                             e.proposal.proposer],
                                         proposal: e,
+                                        onRefresh: _refreshPage,
                                       );
                                     }).toList(),
                                   ),
@@ -253,7 +255,7 @@ class _OverviewCard extends StatelessWidget {
                   onPressed: () async {
                     final res = await Navigator.of(context)
                         .pushNamed(SubmitProposalPage.route);
-                    if (res ?? false) {
+                    if (res != null) {
                       refreshPage();
                     }
                   },
@@ -268,7 +270,7 @@ class _OverviewCard extends StatelessWidget {
                     SubmitTipPage.route,
                     arguments: isCouncil,
                   );
-                  if (res ?? false) {
+                  if (res != null) {
                     refreshPage();
                   }
                 },
@@ -288,6 +290,7 @@ class _ProposalItem extends StatelessWidget {
     this.proposal,
     this.icon,
     this.accInfo,
+    this.onRefresh,
   });
 
   final String symbol;
@@ -295,6 +298,7 @@ class _ProposalItem extends StatelessWidget {
   final String icon;
   final Map accInfo;
   final SpendProposalData proposal;
+  final Function onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -307,9 +311,12 @@ class _ProposalItem extends StatelessWidget {
         '# ${int.parse(proposal.id)}',
         style: Theme.of(context).textTheme.headline4,
       ),
-      onTap: () {
-        Navigator.of(context)
+      onTap: () async {
+        final res = await Navigator.of(context)
             .pushNamed(SpendProposalPage.route, arguments: proposal);
+        if (res != null) {
+          onRefresh();
+        }
       },
     );
   }

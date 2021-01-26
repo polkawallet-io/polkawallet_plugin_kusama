@@ -10,7 +10,6 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
@@ -173,9 +172,9 @@ class _CouncilVote extends State<CouncilVotePage> {
                     getTxParams: _getTxParams,
                     text: I18n.of(context)
                         .getDic(i18n_full_dic_ui, 'common')['tx.submit'],
-                    onFinish: (ok) {
-                      if (ok ?? false) {
-                        Navigator.of(context).pop(ok);
+                    onFinish: (res) {
+                      if (res != null) {
+                        Navigator.of(context).pop(res);
                       }
                     },
                   ),

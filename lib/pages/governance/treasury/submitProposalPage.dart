@@ -183,9 +183,9 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
               child: TxButton(
                 text: dic['treasury.submit'],
                 getTxParams: _getTxParams,
-                onFinish: (ok) {
-                  if (ok ?? false) {
-                    Navigator.of(context).pop(ok);
+                onFinish: (res) {
+                  if (res != null) {
+                    Navigator.of(context).pop(res);
                   }
                 },
               ),

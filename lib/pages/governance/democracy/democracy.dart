@@ -125,7 +125,11 @@ class _DemocracyState extends State<Democracy> {
                                 }
                                 return Container();
                               },
-                            ));
+                            ),
+                            onRefresh: () {
+                              _refreshKey.currentState.show();
+                            },
+                          );
                   },
                 ),
         );

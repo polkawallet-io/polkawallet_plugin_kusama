@@ -115,7 +115,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
     );
     final res = await Navigator.of(context)
         .pushNamed(TxConfirmPage.route, arguments: args);
-    if (res ?? false) {
+    if (res != null) {
       Navigator.of(context).pop(res);
     }
   }
@@ -142,7 +142,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
     );
     final res = await Navigator.of(context)
         .pushNamed(TxConfirmPage.route, arguments: args);
-    if (res ?? false) {
+    if (res != null) {
       Navigator.of(context).pop(res);
     }
   }

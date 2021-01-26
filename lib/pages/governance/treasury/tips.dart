@@ -91,11 +91,14 @@ class _ProposalsState extends State<MoneyTips> {
                                   'gov')['treasury.tipper'])
                             ],
                           ),
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
+                          onTap: () async {
+                            final res = await Navigator.of(context).pushNamed(
                               TipDetailPage.route,
                               arguments: tip,
                             );
+                            if (res != null) {
+                              _refreshKey.currentState.show();
+                            }
                           },
                         ),
                       );

@@ -51,7 +51,7 @@ class _CouncilState extends State<Council> {
     );
     final res = await Navigator.of(context)
         .pushNamed(TxConfirmPage.route, arguments: params);
-    if (res ?? false) {
+    if (res != null) {
       _refreshKey.currentState.show();
     }
   }
@@ -208,8 +208,13 @@ class _CouncilState extends State<Council> {
           Divider(height: 24),
           RoundedButton(
             text: dic['vote'],
-            onPressed: () =>
-                Navigator.of(context).pushNamed(CouncilVotePage.route),
+            onPressed: () async {
+              final res =
+                  await Navigator.of(context).pushNamed(CouncilVotePage.route);
+              if (res != null) {
+                _refreshKey.currentState.show();
+              }
+            },
           )
         ],
       ),
