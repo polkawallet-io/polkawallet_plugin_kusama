@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
@@ -175,7 +176,9 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
 
   Widget _buildTopCard(BuildContext context) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final decimals = (widget.plugin.networkState.tokenDecimals ?? [12])[0];
     final stashInfo = widget.plugin.store.staking.ownStashInfo;
+    final overview = widget.plugin.store.staking.overview;
     final hashData = stashInfo != null && stashInfo.stakingLedger != null;
 
     int bonded = 0;
@@ -194,6 +197,12 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
           (!stashInfo.isOwnStash && !stashInfo.isOwnController);
     }
 
+    double stakedRatio = 0;
+    if (overview['totalStaked'] != null) {
+      stakedRatio = Fmt.balanceInt('0x${overview['totalStaked']}') /
+          Fmt.balanceInt(overview['totalIssuance']);
+    }
+
     Color actionButtonColor = Theme.of(context).primaryColor;
     Color disabledColor = Theme.of(context).disabledColor;
 
@@ -202,6 +211,40 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
       padding: EdgeInsets.only(top: 8, bottom: 8),
       child: Column(
         children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
+            child: Column(
+              children: [
+                Text(
+                  '${dicStaking['overview.total']} (${(stakedRatio * 100).toStringAsFixed(1)}%)',
+                  style: TextStyle(fontSize: 12),
+                ),
+                Text(
+                  Fmt.balance('0x${overview['totalStaked']}', decimals,
+                      length: 0),
+                  style: Theme.of(context).textTheme.headline4,
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            child: Row(
+              children: [
+                InfoItem(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  title: dicStaking['overview.reward'],
+                  content: Fmt.ratio(overview['stakedReturn'] / 100),
+                ),
+                InfoItem(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  title: dicStaking['overview.min'],
+                  content: Fmt.balance(overview['minNominated'], decimals),
+                ),
+              ],
+            ),
+          ),
+          Divider(),
           ListTile(
             leading: Container(
               width: 32,

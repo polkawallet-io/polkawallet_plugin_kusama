@@ -47,9 +47,8 @@ class _AssetsContentState extends State<AssetsContent> {
                     Text('address'),
                     Text(widget.keyring.current.address ?? ''),
                     Text(
-                        'decimals: ${widget.network.networkState.tokenDecimals[0]}'),
-                    Text(
-                        'symbol: ${widget.network.networkState.tokenSymbol[0]}'),
+                        'decimals: ${widget.network.networkState.tokenDecimals}'),
+                    Text('symbol: ${widget.network.networkState.tokenSymbol}'),
                   ],
                 ),
               ),

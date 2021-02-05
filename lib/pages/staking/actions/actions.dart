@@ -224,12 +224,13 @@ class _StakingActions extends State<StakingActions>
     final decimals = widget.plugin.networkState.tokenDecimals[0];
 
     final info = widget.plugin.balances.native;
-    final freeBalance =
-        info == null ? BigInt.zero : BigInt.parse(info.freeBalance.toString());
-    final reservedBalance = info == null
+    final freeBalance = info?.freeBalance == null
+        ? BigInt.zero
+        : BigInt.parse(info.freeBalance.toString());
+    final reservedBalance = info?.reservedBalance == null
         ? BigInt.zero
         : BigInt.parse(info.reservedBalance.toString());
-    final available = info == null
+    final available = info?.availableBalance == null
         ? BigInt.zero
         : BigInt.parse(info.availableBalance.toString());
     final totalBalance = freeBalance + reservedBalance;

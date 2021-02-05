@@ -69,6 +69,21 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
+  final _$overviewAtom = Atom(name: '_StakingStore.overview');
+
+  @override
+  Map<dynamic, dynamic> get overview {
+    _$overviewAtom.reportRead();
+    return super.overview;
+  }
+
+  @override
+  set overview(Map<dynamic, dynamic> value) {
+    _$overviewAtom.reportWrite(value, super.overview, () {
+      super.overview = value;
+    });
+  }
+
   final _$nominationsMapAtom = Atom(name: '_StakingStore.nominationsMap');
 
   @override
@@ -352,6 +367,7 @@ mixin _$StakingStore on _StakingStore, Store {
 validatorsInfo: ${validatorsInfo},
 electedInfo: ${electedInfo},
 nextUpsInfo: ${nextUpsInfo},
+overview: ${overview},
 nominationsMap: ${nominationsMap},
 ownStashInfo: ${ownStashInfo},
 accountBondedMap: ${accountBondedMap},

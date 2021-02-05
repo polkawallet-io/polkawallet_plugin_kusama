@@ -27,6 +27,9 @@ abstract class _StakingStore with Store {
   List<ValidatorData> nextUpsInfo = List<ValidatorData>();
 
   @observable
+  Map overview = Map();
+
+  @observable
   Map nominationsMap = Map();
 
   @observable
@@ -86,6 +89,13 @@ abstract class _StakingStore with Store {
   @action
   void setValidatorsInfo(Map data, {bool shouldCache = true}) {
     if (data['validators'] == null) return;
+
+    overview = {
+      'stakedReturn': data['inflation']['stakedReturn'],
+      'totalStaked': data['totalStaked'],
+      'totalIssuance': data['totalIssuance'],
+      'minNominated': data['minNominated'],
+    };
 
     // all validators
     final validatorsAll = List.of(data['validators'])
