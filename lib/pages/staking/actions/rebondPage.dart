@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
@@ -12,7 +12,7 @@ import 'package:polkawallet_ui/utils/format.dart';
 class RebondPage extends StatefulWidget {
   RebondPage(this.plugin, this.keyring);
   static final String route = '/staking/rebond';
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
   @override
   _RebondPageState createState() => _RebondPageState();
@@ -25,8 +25,8 @@ class _RebondPageState extends State<RebondPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final symbol = widget.plugin.networkState.tokenSymbol[0];
     final decimals = widget.plugin.networkState.tokenDecimals[0];
 

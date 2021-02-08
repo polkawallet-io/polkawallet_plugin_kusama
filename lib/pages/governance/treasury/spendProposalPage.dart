@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/govExternalLinks.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/infoItem.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/motionDetailPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/govExternalLinks.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryOverviewData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -22,7 +22,7 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class SpendProposalPage extends StatefulWidget {
   SpendProposalPage(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   static const String route = '/gov/treasury/proposal';
@@ -50,7 +50,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
   }
 
   Future<void> _showActions({bool isVote = false}) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final SpendProposalData proposal =
         ModalRoute.of(context).settings.arguments;
     CouncilProposalData proposalData = CouncilProposalData();
@@ -100,7 +100,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
   }
 
   Future<void> _onSendToCouncil(bool approve) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final SpendProposalData proposal =
         ModalRoute.of(context).settings.arguments;
     final String txName =
@@ -121,7 +121,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
   }
 
   Future<void> _onVote(bool approve) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final SpendProposalData proposal =
         ModalRoute.of(context).settings.arguments;
     final CouncilMotionData councilProposal = proposal.council[0];
@@ -149,7 +149,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final symbol = widget.plugin.networkState.tokenSymbol[0] ?? '';
     final decimals = widget.plugin.networkState.tokenDecimals[0] ?? 10;
     final SpendProposalData proposal =

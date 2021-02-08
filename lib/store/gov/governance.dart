@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
+import 'package:polkawallet_plugin_chainx/store/cache/storeCache.dart';
 
 import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/councilInfoData.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracyPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/councilPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/democracy/democracyPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/treasury/treasuryPage.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/entryPageCard.dart';
@@ -16,8 +16,8 @@ class Gov extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final dicCommon = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
+    final dicCommon = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -31,7 +31,7 @@ class Gov extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     I18n.of(context)
-                        .getDic(i18n_full_dic_kusama, 'common')['governance'],
+                        .getDic(i18n_full_dic_chainx, 'common')['governance'],
                     style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).cardColor,
@@ -114,7 +114,7 @@ class Gov extends StatelessWidget {
                               'Polkassembly',
                               dic['polkassembly'],
                               Image.asset(
-                                'packages/polkawallet_plugin_kusama/assets/images/public/polkassembly.png',
+                                'packages/polkawallet_plugin_chainx/assets/images/public/polkassembly.png',
                                 width: 56,
                               ),
                               color: Colors.black87,

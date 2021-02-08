@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/proposalPanel.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/democracy/proposalPanel.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
 
 class Proposals extends StatefulWidget {
   Proposals(this.plugin);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
 
   @override
   _ProposalsState createState() => _ProposalsState();

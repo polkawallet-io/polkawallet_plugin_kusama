@@ -1,5 +1,5 @@
-name: polkawallet_plugin_kusama
-description: The kusama/polkadot network flutter plugin for polkawallet app.
+name: polkawallet_plugin_chainx
+description: The ChainX network flutter plugin for polkawallet app.
 version: 0.0.1
 homepage:
 
@@ -18,8 +18,8 @@ dependencies:
   flutter_svg: ^0.18.0
   get_storage: ^1.2.1
   polkawallet_sdk: ^0.1.0
-#  polkawallet_sdk:
-#    path: ../sdk
+  #  polkawallet_sdk:
+  #    path: ../sdk
   polkawallet_ui:
     git:
       url: https://github.com/polkawallet-io/ui.git
@@ -39,8 +39,8 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/images/public/kusama.png
-    - assets/images/public/kusama_gray.png
+    - assets/images/public/chainx.png
+    - assets/images/public/chainx_gray.png
     - assets/images/public/polkadot.png
     - assets/images/public/polkadot_gray.png
     - assets/images/public/staking.png

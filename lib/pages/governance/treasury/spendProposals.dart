@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
-import 'package:polkawallet_plugin_kusama/common/constants.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/spendProposalPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitProposalPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitTipPage.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/infoItem.dart';
+import 'package:polkawallet_plugin_chainx/common/constants.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/treasury/spendProposalPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/treasury/submitProposalPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/treasury/submitTipPage.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryOverviewData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -21,7 +21,7 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class SpendProposals extends StatefulWidget {
   SpendProposals(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   @override
@@ -62,7 +62,7 @@ class _ProposalsState extends State<SpendProposals> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     return Observer(
       builder: (BuildContext context) {
         final decimals = widget.plugin.networkState.tokenDecimals[0] ?? 10;
@@ -205,7 +205,7 @@ class _OverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final Map dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     return RoundedCard(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.all(16),

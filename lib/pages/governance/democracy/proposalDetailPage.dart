@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/govExternalLinks.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/store/accounts.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/motionDetailPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/govExternalLinks.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/store/accounts.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
 import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
@@ -22,7 +22,7 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class ProposalDetailPage extends StatefulWidget {
   ProposalDetailPage(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   static const String route = '/gov/democracy/proposal';
@@ -57,7 +57,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
   }
 
   Future<void> _onSwitch() async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final ProposalInfoData proposal = ModalRoute.of(context).settings.arguments;
     final TxConfirmParams params = TxConfirmParams(
       module: 'democracy',
@@ -82,7 +82,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final ProposalInfoData proposalPara =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
@@ -242,7 +242,7 @@ class ProposalSecondsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final Map dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final List seconding = proposal.seconds.toList();
     seconding.removeAt(0);
     return Container(

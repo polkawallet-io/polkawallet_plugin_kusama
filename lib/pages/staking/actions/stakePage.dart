@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/nominateForm.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/bondPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/nominateForm.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
@@ -14,7 +14,7 @@ import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 class StakePage extends StatefulWidget {
   StakePage(this.plugin, this.keyring);
   static final String route = '/staking/stake';
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
   @override
   _StakePageState createState() => _StakePageState();
@@ -28,7 +28,7 @@ class _StakePageState extends State<StakePage> {
   TxConfirmParams _bondParams;
 
   Future<void> _onStake(TxConfirmParams nominateParams) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final txBond = 'api.tx.staking.bond(...${jsonEncode(_bondParams.params)})';
     final txNominate =
         'api.tx.staking.nominate(...${jsonEncode(nominateParams.params)})';
@@ -59,7 +59,7 @@ class _StakePageState extends State<StakePage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
 
     return Scaffold(
       appBar: AppBar(

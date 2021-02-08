@@ -1,4 +1,4 @@
-import 'package:polkawallet_plugin_kusama_example/utils/i18n/profile.dart';
+import 'package:polkawallet_plugin_chainx_example/utils/i18n/profile.dart';
 
 const Map<String, Map<String, Map<String, String>>> i18n_full_dic = {
   'en': {

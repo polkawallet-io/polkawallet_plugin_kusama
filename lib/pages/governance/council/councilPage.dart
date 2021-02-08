@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/council.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/motions.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/council.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/motions.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/ui.dart';
@@ -12,7 +12,7 @@ import 'package:polkawallet_ui/components/topTaps.dart';
 
 class CouncilPage extends StatefulWidget {
   CouncilPage(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   static const String route = '/gov/council/index';
@@ -38,7 +38,7 @@ class _GovernanceState extends State<CouncilPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final tabs = [dic['council'], dic['council.motions']];
     return Scaffold(
       body: PageWrapperWithBackground(SafeArea(

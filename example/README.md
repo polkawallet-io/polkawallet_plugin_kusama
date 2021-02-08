@@ -1,6 +1,6 @@
 # example
 
-polkawallet_plugin_kusama_example.
+polkawallet_plugin_chainx_example.
 
 ## Getting Started
 

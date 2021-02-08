@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 
 class NetworkSelectPage extends StatefulWidget {
   NetworkSelectPage(this.network);
 
-  final PluginKusama network;
+  final PluginChainX network;
 
   static const String route = '/tx';
 

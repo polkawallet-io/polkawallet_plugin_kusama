@@ -1,4 +1,4 @@
-import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class PluginFmt {

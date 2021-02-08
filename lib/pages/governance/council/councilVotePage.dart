@@ -4,9 +4,9 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/candidateListPage.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
@@ -16,7 +16,7 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class CouncilVotePage extends StatefulWidget {
   CouncilVotePage(this.plugin);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
 
   static final String route = '/gov/vote';
   @override
@@ -42,7 +42,7 @@ class _CouncilVote extends State<CouncilVotePage> {
 
   Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
-      final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+      final govDic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
       final decimals = widget.plugin.networkState.tokenDecimals[0];
       final amt = _amountCtrl.text.trim();
       List selected = _selected.map((i) => i[0]).toList();
@@ -67,7 +67,7 @@ class _CouncilVote extends State<CouncilVotePage> {
 
   @override
   Widget build(BuildContext context) {
-    var govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    var govDic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     return Scaffold(
       appBar: AppBar(
         title: Text(govDic['vote.candidate']),
@@ -75,7 +75,7 @@ class _CouncilVote extends State<CouncilVotePage> {
       ),
       body: Observer(
         builder: (_) {
-          final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+          final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
           final decimals = widget.plugin.networkState.tokenDecimals[0];
 
           final balance = Fmt.balanceInt(

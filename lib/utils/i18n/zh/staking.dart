@@ -16,7 +16,7 @@ const Map<String, String> zhStaking = {
   'stake.ratio': '质押率',
   'stake.own': '节点',
   'stake.other': '他人',
-  'stake.warn': '提示：绑定的资产在解绑时需要约28天的锁定时间（在 Kusama 网络上需要约7天）。',
+  'stake.warn': '提示：绑定的资产在解绑时需要约28天的锁定时间（在 ChainX 网络上需要约7天）。',
   'staked': '总质押',
   'commission': '佣金',
   'reward': '收益',

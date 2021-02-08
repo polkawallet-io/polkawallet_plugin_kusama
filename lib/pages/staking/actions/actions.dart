@@ -4,19 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/rebondPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakingDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/infoItem.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/bondExtraPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/payoutPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/redeemPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/rewardDetailPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/setControllerPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/setPayeePage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakingDetailPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/unbondPage.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/subscan.dart';
 import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -32,7 +32,7 @@ import 'package:polkawallet_ui/utils/format.dart';
 
 class StakingActions extends StatefulWidget {
   StakingActions(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
   @override
   _StakingActions createState() => _StakingActions();
@@ -98,7 +98,7 @@ class _StakingActions extends State<StakingActions>
   }
 
   List<Widget> _buildTxList() {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     List<Widget> res = [];
     res.addAll(widget.plugin.store.staking.txs.map((i) {
       return Container(
@@ -109,9 +109,9 @@ class _StakingActions extends State<StakingActions>
             padding: EdgeInsets.only(top: 4),
             child: i.success
                 ? Image.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/ok.png')
+                    'packages/polkawallet_plugin_chainx/assets/images/staking/ok.png')
                 : Image.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/error.png'),
+                    'packages/polkawallet_plugin_chainx/assets/images/staking/error.png'),
           ),
           title: Text(i.call),
           subtitle: Text(Fmt.dateTime(
@@ -155,9 +155,9 @@ class _StakingActions extends State<StakingActions>
             padding: EdgeInsets.only(top: 4),
             child: i.eventId == 'Reward'
                 ? SvgPicture.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/reward.svg')
+                    'packages/polkawallet_plugin_chainx/assets/images/staking/reward.svg')
                 : SvgPicture.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/slash.svg'),
+                    'packages/polkawallet_plugin_chainx/assets/images/staking/slash.svg'),
           ),
           title: Text(i.eventId),
           subtitle: Text(Fmt.dateTime(
@@ -180,7 +180,7 @@ class _StakingActions extends State<StakingActions>
   }
 
   Widget _buildActionCard() {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final bool hasData = widget.plugin.store.staking.ownStashInfo != null;
 
     bool isStash = true;
@@ -372,7 +372,7 @@ class _StakingActions extends State<StakingActions>
   @override
   Widget build(BuildContext context) {
     final Map<String, String> dic =
-        I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+        I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     return Observer(
       builder: (_) {
@@ -440,7 +440,7 @@ class RowAccount02 extends StatelessWidget {
   final Future<void> Function(KeyPairData acc) onChangeAccount;
 
   void _showActions(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final actionAccountTitle =
         isController && !isSelfControl ? dic['stash'] : dic['controller'];
     final changeAccountText =
@@ -483,7 +483,7 @@ class RowAccount02 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final stashId = stashInfo.stashId ?? accountId;
     final controllerId = stashInfo.controllerId ?? accountId;
     final String address02 =
@@ -573,8 +573,8 @@ class StakingInfoPanel extends StatelessWidget {
   final Function onSuccess;
 
   void _showUnlocking(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final dicGov = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final dicGov = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final unlockDetail = List.of(stashInfo.unbondings['mapped'])
         .map((e) {
           return '${dic['bond.unlocking']}:  ${Fmt.balance(e[0], decimals)}\n'
@@ -611,7 +611,7 @@ class StakingInfoPanel extends StatelessWidget {
         ],
         cancelButton: CupertinoActionSheetAction(
           child: Text(I18n.of(context)
-              .getDic(i18n_full_dic_kusama, 'common')['cancel']),
+              .getDic(i18n_full_dic_chainx, 'common')['cancel']),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -622,7 +622,7 @@ class StakingInfoPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     Color actionButtonColor = Theme.of(context).primaryColor;
 
     String dest = stashInfo.destination;
@@ -805,7 +805,7 @@ class StakingActionsPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<String, String> dic =
-        I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+        I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     num actionButtonWidth = (MediaQuery.of(context).size.width - 64) / 3;
     Color actionButtonColor = Theme.of(context).primaryColor;
@@ -910,7 +910,7 @@ class StakingActionsPanel extends StatelessWidget {
                     ],
                     cancelButton: CupertinoActionSheetAction(
                       child: Text(I18n.of(context)
-                          .getDic(i18n_full_dic_kusama, 'common')['cancel']),
+                          .getDic(i18n_full_dic_chainx, 'common')['cancel']),
                       onPressed: () {
                         Navigator.pop(context);
                       },

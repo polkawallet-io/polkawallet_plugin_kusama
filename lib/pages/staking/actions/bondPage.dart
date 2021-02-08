@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/setPayeePage.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -16,7 +16,7 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class BondPage extends StatefulWidget {
   BondPage(this.plugin, this.keyring, {this.onNext});
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
   final Function(TxConfirmParams) onNext;
   @override
@@ -57,8 +57,8 @@ class _BondPageState extends State<BondPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final symbol = widget.plugin.networkState.tokenSymbol[0];
     final decimals = widget.plugin.networkState.tokenDecimals[0];
 
@@ -91,7 +91,7 @@ class _BondPageState extends State<BondPage> {
                       Expanded(
                           child: TextTag(
                         I18n.of(context).getDic(
-                            i18n_full_dic_kusama, 'staking')['stake.warn'],
+                            i18n_full_dic_chainx, 'staking')['stake.warn'],
                         color: Colors.deepOrange,
                         fontSize: 12,
                         margin: EdgeInsets.all(0),

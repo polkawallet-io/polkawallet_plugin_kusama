@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/proposalDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/democracy/proposalDetailPage.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/utils/format.dart';
@@ -15,13 +15,13 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 class ProposalPanel extends StatelessWidget {
   ProposalPanel(this.plugin, this.proposal);
 
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final ProposalInfoData proposal;
 
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+          final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
           final decimals = plugin.networkState.tokenDecimals[0];
           final symbol = plugin.networkState.tokenSymbol[0] ?? '';
           final CouncilProposalData proposalMeta = proposal.image?.proposal;

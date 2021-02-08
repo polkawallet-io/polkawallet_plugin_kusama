@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/referendumPanel.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/govExternalLinks.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/democracy/referendumPanel.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/govExternalLinks.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
@@ -16,7 +16,7 @@ import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 class Democracy extends StatefulWidget {
   Democracy(this.plugin);
 
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   @override
   _DemocracyState createState() => _DemocracyState();
 }
@@ -51,7 +51,7 @@ class _DemocracyState extends State<Democracy> {
   }
 
   Future<void> _submitCancelVote(int id) async {
-    final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final govDic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final params = TxConfirmParams(
       module: 'democracy',
       call: 'removeVote',

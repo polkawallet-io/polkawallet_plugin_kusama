@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
@@ -15,7 +15,7 @@ import 'package:polkawallet_ui/components/txButton.dart';
 class SetPayeePage extends StatefulWidget {
   SetPayeePage(this.plugin, this.keyring);
   static final String route = '/staking/payee';
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
   @override
   _SetPayeePageState createState() => _SetPayeePageState();
@@ -26,7 +26,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
   String _rewardAccount;
 
   Future<TxConfirmParams> _getTxParams() async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final rewardToOptions =
         PayeeSelector.options.map((i) => dic['reward.$i']).toList();
     final OwnStashInfoData currentPayee =
@@ -50,7 +50,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
               actions: <Widget>[
                 CupertinoButton(
                   child: Text(I18n.of(context)
-                      .getDic(i18n_full_dic_kusama, 'common')['ok']),
+                      .getDic(i18n_full_dic_chainx, 'common')['ok']),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -86,7 +86,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     return Scaffold(
       appBar: AppBar(
@@ -140,7 +140,7 @@ class PayeeSelector extends StatefulWidget {
 
   static const options = ['Staked', 'Stash', 'Controller', 'Account'];
 
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
   final OwnStashInfoData initialValue;
   final Function(int, String) onChange;
@@ -155,7 +155,7 @@ class _PayeeSelectorState extends State<PayeeSelector> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     final rewardToOptions =
         PayeeSelector.options.map((i) => dic['reward.$i']).toList();

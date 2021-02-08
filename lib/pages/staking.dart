@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/actions.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/overview.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/actions.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/validators/overview.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_ui/components/pageTitleTaps.dart';
@@ -25,7 +25,7 @@ class _StakingState extends State<Staking> {
 
   @override
   Widget build(BuildContext context) {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     var tabs = [dic['actions'], dic['validators']];
     return SafeArea(
       child: Container(

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/infoItem.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/accountInfo.dart';
@@ -18,14 +18,14 @@ class ValidatorDetailPage extends StatelessWidget {
   ValidatorDetailPage(this.plugin, this.keyring);
   static final String route = '/staking/validator';
 
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
           final dicStaking =
-              I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+              I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
           final int decimals = plugin.networkState.tokenDecimals[0];
           final ValidatorData detail =
               ModalRoute.of(context).settings.arguments;

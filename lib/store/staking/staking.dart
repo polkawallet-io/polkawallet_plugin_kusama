@@ -2,9 +2,9 @@ import 'package:mobx/mobx.dart';
 import 'package:polkawallet_sdk/api/types/staking/accountBondedInfo.dart';
 import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/api/types/txData.dart';
-import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
-import 'package:polkawallet_plugin_kusama/store/staking/types/txData.dart';
-import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
+import 'package:polkawallet_plugin_chainx/store/cache/storeCache.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/txData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 
 part 'staking.g.dart';
 

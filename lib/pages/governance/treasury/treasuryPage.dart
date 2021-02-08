@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/spendProposals.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tips.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/treasury/spendProposals.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/treasury/tips.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/topTaps.dart';
@@ -12,7 +12,7 @@ import 'package:polkawallet_ui/ui.dart';
 
 class TreasuryPage extends StatefulWidget {
   TreasuryPage(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   static const String route = '/gov/treasury/index';
@@ -34,7 +34,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
 
   @override
   Widget build(BuildContext context) {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     var tabs = [dic['treasury'], dic['treasury.tip']];
     return Scaffold(
       body: PageWrapperWithBackground(SafeArea(

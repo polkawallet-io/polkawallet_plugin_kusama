@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 
 enum ValidatorSortOptions { reward, staked, commission, judgements }
@@ -19,8 +19,8 @@ class _ValidatorListFilterState extends State<ValidatorListFilter> {
   int _sort = 0;
 
   void _showActions() {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -48,7 +48,7 @@ class _ValidatorListFilterState extends State<ValidatorListFilter> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     var theme = Theme.of(context);
     return Container(
       color: theme.cardColor,

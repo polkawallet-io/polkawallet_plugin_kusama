@@ -17,7 +17,7 @@ const Map<String, String> enStaking = {
   'stake.own': 'Own',
   'stake.other': 'Other',
   'stake.warn':
-      'Tips: The bonded Tokens will be locked for about 28 days on Polkadot(7 days on Kusama) after unbonding.',
+      'Tips: The bonded Tokens will be locked for about 28 days on Polkadot(7 days on ChainX) after unbonding.',
   'staked': 'Staked',
   'commission': 'Commission',
   'reward': 'Return',

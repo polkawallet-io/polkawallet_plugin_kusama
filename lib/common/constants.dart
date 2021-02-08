@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const int SECONDS_OF_DAY = 24 * 60 * 60; // seconds of one day
 const int SECONDS_OF_YEAR = 365 * 24 * 60 * 60; // seconds of one year
 
-const node_list_kusama = [
+const node_list_chainx = [
   {
     'name': 'Kusama (Polkadot Canary, hosted by PatractLabs)',
     'ss58': 2,
@@ -60,7 +60,7 @@ const node_list_polkadot = [
 
 const home_nav_items = ['staking', 'governance'];
 
-const MaterialColor kusama_black = const MaterialColor(
+const MaterialColor chainx_black = const MaterialColor(
   0xFF222222,
   const <int, Color>{
     50: const Color(0xFF555555),
@@ -76,5 +76,5 @@ const MaterialColor kusama_black = const MaterialColor(
   },
 );
 
-const String network_name_kusama = 'kusama';
+const String network_name_chainx = 'chainx';
 const String network_name_polkadot = 'polkadot';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracy.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/proposals.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/democracy/democracy.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/democracy/proposals.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/ui.dart';
@@ -10,7 +10,7 @@ import 'package:polkawallet_ui/components/topTaps.dart';
 
 class DemocracyPage extends StatefulWidget {
   DemocracyPage(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   static const String route = '/gov/democracy/index';
@@ -24,7 +24,7 @@ class _DemocracyPageState extends State<DemocracyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final tabs = [dic['democracy.referendum'], dic['democracy.proposal']];
 
     return Scaffold(

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePage.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/infoItem.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/candidateDetailPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/councilVotePage.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/borderedTitle.dart';
@@ -20,7 +20,7 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class Council extends StatefulWidget {
   Council(this.plugin);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
 
   @override
   State<StatefulWidget> createState() => _CouncilState();
@@ -41,7 +41,7 @@ class _CouncilState extends State<Council> {
   }
 
   Future<void> _submitCancelVotes() async {
-    final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final govDic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final params = TxConfirmParams(
       module: 'electionsPhragmen',
       call: 'removeVoter',
@@ -64,7 +64,7 @@ class _CouncilState extends State<Council> {
         return CupertinoAlertDialog(
           title: Container(),
           content: Text(I18n.of(context)
-              .getDic(i18n_full_dic_kusama, 'gov')['vote.remove.confirm']),
+              .getDic(i18n_full_dic_chainx, 'gov')['vote.remove.confirm']),
           actions: [
             CupertinoButton(
               child: Text(dic['cancel']),
@@ -96,7 +96,7 @@ class _CouncilState extends State<Council> {
 
   Widget _buildTopCard(String tokenView) {
     final decimals = widget.plugin.networkState.tokenDecimals[0] ?? 12;
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
 
     final userVotes = widget.plugin.store.gov.userCouncilVotes;
     BigInt voteAmount = BigInt.zero;
@@ -223,7 +223,7 @@ class _CouncilState extends State<Council> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     return Observer(builder: (_) {
       final decimals = widget.plugin.networkState.tokenDecimals[0];
       final symbol = widget.plugin.networkState.tokenSymbol[0];
@@ -347,7 +347,7 @@ class CandidateItem extends StatelessWidget {
       subtitle: balance.length == 1
           ? null
           : Text(
-              '${I18n.of(context).getDic(i18n_full_dic_kusama, 'gov')['backing']}: ${Fmt.token(
+              '${I18n.of(context).getDic(i18n_full_dic_chainx, 'gov')['backing']}: ${Fmt.token(
               BigInt.parse(balance[1].toString()),
               decimals,
               length: 0,

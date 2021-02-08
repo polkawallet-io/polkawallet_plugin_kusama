@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama_example/pages/selectListPage.dart';
-import 'package:polkawallet_plugin_kusama_example/utils/i18n.dart';
+import 'package:polkawallet_plugin_chainx_example/pages/selectListPage.dart';
+import 'package:polkawallet_plugin_chainx_example/utils/i18n.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/api/apiKeyring.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/service/gov.dart';
-import 'package:polkawallet_plugin_kusama/service/staking.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/service/gov.dart';
+import 'package:polkawallet_plugin_chainx/service/staking.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -9,14 +9,14 @@ import 'package:polkawallet_ui/components/passwordInputDialog.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 
 class PluginApi {
-  PluginApi(PluginKusama plugin, Keyring keyring)
+  PluginApi(PluginChainX plugin, Keyring keyring)
       : staking = ApiStaking(plugin, keyring),
         gov = ApiGov(plugin, keyring),
         plugin = plugin;
   final ApiStaking staking;
   final ApiGov gov;
 
-  final PluginKusama plugin;
+  final PluginChainX plugin;
 
   Future<String> getPassword(BuildContext context, KeyPairData acc) async {
     final password = await showCupertinoDialog(

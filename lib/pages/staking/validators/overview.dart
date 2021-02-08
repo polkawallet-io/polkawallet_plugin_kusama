@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/validator.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorListFilter.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/service/walletApi.dart';
-import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
-import 'package:polkawallet_plugin_kusama/utils/format.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/infoItem.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/bondExtraPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/validators/nominatePage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/validators/validator.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDetailPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorListFilter.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/service/walletApi.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
+import 'package:polkawallet_plugin_chainx/utils/format.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -30,7 +30,7 @@ const validator_list_page_size = 100;
 
 class StakingOverviewPage extends StatefulWidget {
   StakingOverviewPage(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   @override
@@ -75,8 +75,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
   void _goToBond({bondExtra = false}) {
     if (widget.plugin.store.staking.ownStashInfo == null) return;
 
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     showCupertinoDialog(
       context: context,
       builder: (_) {
@@ -108,7 +108,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
   void _onSetNomination() {
     if (widget.plugin.store.staking.ownStashInfo == null) return;
 
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final hasNomination =
         widget.plugin.store.staking.ownStashInfo.nominating.length > 0;
     showCupertinoModalPopup(
@@ -142,7 +142,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
         ],
         cancelButton: CupertinoActionSheetAction(
           child: Text(I18n.of(context)
-              .getDic(i18n_full_dic_kusama, 'common')['cancel']),
+              .getDic(i18n_full_dic_chainx, 'common')['cancel']),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -159,7 +159,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
   }
 
   Future<void> _chill() async {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final params = TxConfirmParams(
       txTitle: dicStaking['action.chill'],
       module: 'staking',
@@ -175,7 +175,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
   }
 
   Widget _buildTopCard(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final decimals = (widget.plugin.networkState.tokenDecimals ?? [12])[0];
     final stashInfo = widget.plugin.store.staking.ownStashInfo;
     final overview = widget.plugin.store.staking.overview;
@@ -443,7 +443,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
 
   @override
   Widget build(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     return Observer(
       builder: (_) {
         final int decimals = widget.plugin.networkState.tokenDecimals[0];
@@ -629,7 +629,7 @@ class _NomineeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     final validatorIndex = validators.indexWhere((i) => i.accountId == id);
     final validator = validatorIndex < 0

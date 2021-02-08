@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorListFilter.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
-import 'package:polkawallet_plugin_kusama/utils/format.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDetailPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorListFilter.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
+import 'package:polkawallet_plugin_chainx/utils/format.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
@@ -17,7 +17,7 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class NominateForm extends StatefulWidget {
   NominateForm(this.plugin, this.keyring, {this.onNext});
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
   final Function(TxConfirmParams) onNext;
   @override
@@ -33,7 +33,7 @@ class _NominateFormState extends State<NominateForm> {
   int _sort = 0;
 
   void _setNominee() {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final targets = _selected.map((i) => i.accountId).toList();
     widget.onNext(TxConfirmParams(
       txTitle: dicStaking['action.nominate'],
@@ -45,7 +45,7 @@ class _NominateFormState extends State<NominateForm> {
   }
 
   Widget _buildListItem(BuildContext context, ValidatorData validator) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final Map accInfo =
         widget.plugin.store.accounts.addressIndexMap[validator.accountId];
     final accIcon =
@@ -162,7 +162,7 @@ class _NominateFormState extends State<NominateForm> {
 
   @override
   Widget build(BuildContext context) {
-    var dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    var dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     List<ValidatorData> list = [];
     list.addAll(_selected);

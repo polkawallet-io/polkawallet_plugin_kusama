@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/council.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/govExternalLinks.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/council/council.dart';
+import 'package:polkawallet_plugin_chainx/pages/governance/govExternalLinks.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryOverviewData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -20,7 +20,7 @@ import 'package:polkawallet_ui/utils/format.dart';
 
 class MotionDetailPage extends StatefulWidget {
   MotionDetailPage(this.plugin, this.keyring);
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
 
   static const String route = '/gov/council/motion';
@@ -69,7 +69,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
   }
 
   void _onVote(bool approve) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final CouncilMotionData motion = ModalRoute.of(context).settings.arguments;
     final args = TxConfirmParams(
       module: 'council',
@@ -97,7 +97,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final Map dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final CouncilMotionData motion = ModalRoute.of(context).settings.arguments;
     return Observer(
       builder: (BuildContext context) {
@@ -286,7 +286,7 @@ class _ProposalArgsListState extends State<ProposalArgsList> {
                   ? Icons.keyboard_arrow_down
                   : Icons.keyboard_arrow_right,
             ),
-            Text(I18n.of(context).getDic(i18n_full_dic_kusama, 'gov')['detail'])
+            Text(I18n.of(context).getDic(i18n_full_dic_chainx, 'gov')['detail'])
           ],
         ),
         onTap: () {
@@ -336,7 +336,7 @@ class ProposalVoteButtonsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final Map dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     return Row(
       children: <Widget>[
         Expanded(
@@ -398,7 +398,7 @@ class ProposalArgsItem extends StatelessWidget {
 class ProposalVotingList extends StatefulWidget {
   ProposalVotingList({this.plugin, this.council});
 
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final CouncilMotionData council;
 
   @override
@@ -418,7 +418,7 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final symbol = widget.plugin.networkState.tokenSymbol[0];
     final decimals = widget.plugin.networkState.tokenDecimals[0];
     final String voteCountAye =

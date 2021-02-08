@@ -1,6 +1,6 @@
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/store/index.dart';
-import 'package:polkawallet_plugin_kusama/utils/format.dart';
+import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/store/index.dart';
+import 'package:polkawallet_plugin_chainx/utils/format.dart';
 import 'package:polkawallet_sdk/api/api.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 
@@ -9,7 +9,7 @@ class ApiStaking {
       : api = plugin.sdk.api,
         store = plugin.store;
 
-  final PluginKusama plugin;
+  final PluginChainX plugin;
   final Keyring keyring;
   final PolkawalletApi api;
   final PluginStore store;
