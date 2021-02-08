@@ -50,21 +50,20 @@ const node_list_polkadot = [
 
 const home_nav_items = ['staking', 'governance'];
 
-const MaterialColor chainx_black = const MaterialColor(
-  0xFF222222,
+const MaterialColor chainx_yellow = const MaterialColor(
+  0xFFF6C94A,
   const <int, Color>{
-    50: const Color(0xFF555555),
-    100: const Color(0xFF444444),
-    200: const Color(0xFF444444),
-    300: const Color(0xFF333333),
-    400: const Color(0xFF333333),
-    500: const Color(0xFF222222),
-    600: const Color(0xFF111111),
-    700: const Color(0xFF111111),
-    800: const Color(0xFF000000),
-    900: const Color(0xFF000000),
+    50: const Color(0xFFFBE8B1),
+    100: const Color(0xFFFAE29E),
+    200: const Color(0xFFF9DC8A),
+    300: const Color(0xFFF9D677),
+    400: const Color(0xFFF8D063),
+    500: const Color(0xFFF6C94A),
+    600: const Color(0xFFF6C43C),
+    700: const Color(0xFFF5BE29),
+    800: const Color(0xFFF4B915),
+    900: const Color(0xFFEAAE0B),
   },
 );
 
 const String network_name_chainx = 'chainx';
-const String network_name_polkadot = 'polkadot';

@@ -52,9 +52,8 @@ class PluginChainX extends PolkawalletPlugin {
   PluginChainX({name = 'chainx'})
       : basic = PluginBasicData(
           name: name,
-          ss58: name == network_name_chainx ? 2 : 0,
-          primaryColor:
-              name == network_name_chainx ? chainx_black : Colors.pink,
+          ss58: 2,
+          primaryColor: chainx_yellow,
           icon: Image.asset(
               'packages/polkawallet_plugin_chainx/assets/images/public/$name.png'),
           iconDisabled: Image.asset(
@@ -62,10 +61,8 @@ class PluginChainX extends PolkawalletPlugin {
           jsCodeVersion: 11301,
           isTestNet: false,
         ),
-        recoveryEnabled = name == network_name_chainx,
-        _cache = name == network_name_chainx
-            ? StoreCacheChainX()
-            : StoreCachePolkadot();
+        recoveryEnabled = true,
+        _cache = StoreCacheChainX();
 
   @override
   final PluginBasicData basic;
@@ -75,11 +72,6 @@ class PluginChainX extends PolkawalletPlugin {
 
   @override
   List<NetworkParams> get nodeList {
-    if (basic.name == network_name_polkadot) {
-      return _randomList(node_list_polkadot)
-          .map((e) => NetworkParams.fromJson(e))
-          .toList();
-    }
     return _randomList(node_list_chainx)
         .map((e) => NetworkParams.fromJson(e))
         .toList();
@@ -95,7 +87,7 @@ class PluginChainX extends PolkawalletPlugin {
 
   @override
   List<HomeNavItem> getNavItems(BuildContext context, Keyring keyring) {
-    final color = basic.name == network_name_polkadot ? 'pink' : 'black';
+    final color = 'yellow';
     return home_nav_items.map((e) {
       final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
       return HomeNavItem(
@@ -164,9 +156,7 @@ class PluginChainX extends PolkawalletPlugin {
 
   @override
   Future<void> onWillStart(Keyring keyring) async {
-    await GetStorage.init(basic.name == network_name_polkadot
-        ? plugin_polkadot_storage_key
-        : plugin_chainx_storage_key);
+    await GetStorage.init(plugin_chainx_storage_key);
 
     _store = PluginStore(_cache);
     _store.staking.loadCache(keyring.current.pubKey);
