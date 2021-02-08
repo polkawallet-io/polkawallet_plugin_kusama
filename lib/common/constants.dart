@@ -5,29 +5,19 @@ const int SECONDS_OF_YEAR = 365 * 24 * 60 * 60; // seconds of one year
 
 const node_list_chainx = [
   {
-    'name': 'Kusama (Polkadot Canary, hosted by PatractLabs)',
+    'name': 'ChainX (Chinese Node)',
     'ss58': 2,
-    'endpoint': 'wss://kusama.elara.patract.io',
+    'endpoint': 'wss://mainnet.spiderx.pro/ws',
   },
   {
-    'name': 'Kusama (Polkadot Canary, hosted by Polkawallet)',
+    'name': 'ChainX (Overseas Node)',
     'ss58': 2,
-    'endpoint': 'wss://kusama-1.polkawallet.io:9944/',
+    'endpoint': 'wss://mainnet.chainx.org/ws',
   },
   {
-    'name': 'Kusama (Polkadot Canary, hosted by Polkawallet Asia)',
+    'name': 'ChainX (Elena Node)',
     'ss58': 2,
-    'endpoint': 'wss://kusama-2.polkawallet.io/',
-  },
-  {
-    'name': 'Kusama (Polkadot Canary, hosted by Parity)',
-    'ss58': 2,
-    'endpoint': 'wss://kusama-rpc.polkadot.io/',
-  },
-  {
-    'name': 'Kusama (Polkadot Canary, hosted by onfinality)',
-    'ss58': 2,
-    'endpoint': 'wss://kusama.api.onfinality.io/public-ws',
+    'endpoint': 'wss://chainx.elara.patract.io/',
   },
 ];
 const node_list_polkadot = [
