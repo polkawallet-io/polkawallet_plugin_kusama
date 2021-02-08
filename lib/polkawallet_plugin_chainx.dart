@@ -79,10 +79,8 @@ class PluginChainX extends PolkawalletPlugin {
 
   @override
   final Map<String, Widget> tokenIcons = {
-    'KSM': Image.asset(
-        'packages/polkawallet_plugin_chainx/assets/images/tokens/KSM.png'),
-    'DOT': Image.asset(
-        'packages/polkawallet_plugin_chainx/assets/images/tokens/DOT.png'),
+    'PCX': Image.asset(
+        'packages/polkawallet_plugin_chainx/assets/images/tokens/PCX.png'),
   };
 
   @override
