@@ -11,8 +11,8 @@ const node_list_chainx = [
   },
   {
     'name': 'ChainX (Elena Node)',
-    'ss58': 2,
-    'endpoint': 'wss://chainx.elara.patract.io/',
+    'ss58': 0,
+    'endpoint': 'wss://chainx.elara.patract.io',
   },
 ];
 const home_nav_items = ['staking', 'governance'];
