@@ -36,8 +36,7 @@ abstract class _StakingStore with Store {
   OwnStashInfoData ownStashInfo;
 
   @observable
-  Map<String, AccountBondedInfo> accountBondedMap =
-      Map<String, AccountBondedInfo>();
+  Map<String, AccountBondedInfo> accountBondedMap = Map<String, AccountBondedInfo>();
 
   @observable
   bool txsLoading = false;
@@ -52,25 +51,20 @@ abstract class _StakingStore with Store {
   ObservableList<TxRewardData> txsRewards = ObservableList<TxRewardData>();
 
   @observable
-  ObservableMap<String, dynamic> rewardsChartDataCache =
-      ObservableMap<String, dynamic>();
+  ObservableMap<String, dynamic> rewardsChartDataCache = ObservableMap<String, dynamic>();
 
   @observable
-  ObservableMap<String, dynamic> stakesChartDataCache =
-      ObservableMap<String, dynamic>();
+  ObservableMap<String, dynamic> stakesChartDataCache = ObservableMap<String, dynamic>();
 
   @observable
   Map recommendedValidators = {};
 
   @computed
   List<ValidatorData> get nominatingList {
-    if (ownStashInfo == null ||
-        ownStashInfo.nominating == null ||
-        ownStashInfo.nominating.length == 0) {
+    if (ownStashInfo == null || ownStashInfo.nominating == null || ownStashInfo.nominating.length == 0) {
       return [];
     }
-    return List.of(validatorsInfo
-        .where((i) => ownStashInfo.nominating.indexOf(i.accountId) >= 0));
+    return List.of(validatorsInfo.where((i) => ownStashInfo.nominating.indexOf(i.accountId) >= 0));
   }
 
   @computed
@@ -90,6 +84,8 @@ abstract class _StakingStore with Store {
   void setValidatorsInfo(Map data, {bool shouldCache = true}) {
     if (data['validators'] == null) return;
 
+    print(data);
+
     overview = {
       'stakedReturn': data['inflation']['stakedReturn'],
       'totalStaked': data['totalStaked'],
@@ -98,9 +94,7 @@ abstract class _StakingStore with Store {
     };
 
     // all validators
-    final validatorsAll = List.of(data['validators'])
-        .map((i) => ValidatorData.fromJson(i))
-        .toList();
+    final validatorsAll = List.of(data['validators']).map((i) => ValidatorData.fromJson(i)).toList();
     validatorsInfo = validatorsAll;
 
     // elected validators
@@ -148,13 +142,11 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> addTxs(Map data, String pubKey,
-      {bool shouldCache = false, reset = false}) async {
+  Future<void> addTxs(Map data, String pubKey, {bool shouldCache = false, reset = false}) async {
     if (data == null || data['extrinsics'] == null) return;
     txsCount = data['count'];
 
-    List<TxData> ls =
-        List.of(data['extrinsics']).map((i) => TxData.fromJson(i)).toList();
+    List<TxData> ls = List.of(data['extrinsics']).map((i) => TxData.fromJson(i)).toList();
 
     if (reset) {
       txs.clear();
@@ -169,11 +161,9 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> addTxsRewards(Map data, String pubKey,
-      {bool shouldCache = false}) async {
+  Future<void> addTxsRewards(Map data, String pubKey, {bool shouldCache = false}) async {
     if (data['list'] == null) return;
-    List<TxRewardData> ls =
-        List.of(data['list']).map((i) => TxRewardData.fromJson(i)).toList();
+    List<TxRewardData> ls = List.of(data['list']).map((i) => TxRewardData.fromJson(i)).toList();
 
     txsRewards = ObservableList.of(ls);
 
@@ -202,8 +192,7 @@ abstract class _StakingStore with Store {
     }
 
     if (cache.stakingOwnStash.val[pubKey] != null) {
-      ownStashInfo =
-          OwnStashInfoData.fromJson(cache.stakingOwnStash.val[pubKey]);
+      ownStashInfo = OwnStashInfoData.fromJson(cache.stakingOwnStash.val[pubKey]);
     } else {
       ownStashInfo = null;
     }
