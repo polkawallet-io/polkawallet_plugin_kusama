@@ -6,13 +6,18 @@ const int SECONDS_OF_YEAR = 365 * 24 * 60 * 60; // seconds of one year
 const node_list_chainx = [
   {
     'name': 'ChainX (Overseas Node)',
-    'ss58': 2,
+    'ss58': 0,
     'endpoint': 'wss://mainnet.chainx.org/ws',
   },
   {
     'name': 'ChainX (Elena Node)',
     'ss58': 0,
     'endpoint': 'wss://chainx.elara.patract.io',
+  },
+  {
+    'name': 'ChainX (Staging)',
+    'ss58': 0,
+    'endpoint': 'wss://chainx.gregorst.org',
   },
 ];
 const home_nav_items = ['staking', 'governance'];

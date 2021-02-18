@@ -52,7 +52,7 @@ class PluginChainX extends PolkawalletPlugin {
   PluginChainX({name = 'chainx'})
       : basic = PluginBasicData(
           name: name,
-          ss58: 2,
+          ss58: 0,
           primaryColor: chainx_yellow,
           icon: Image.asset('packages/polkawallet_plugin_chainx/assets/images/public/$name.png'),
           iconDisabled: Image.asset('packages/polkawallet_plugin_chainx/assets/images/public/${name}_gray.png'),
