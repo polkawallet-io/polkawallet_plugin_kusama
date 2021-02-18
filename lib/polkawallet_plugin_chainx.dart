@@ -54,10 +54,8 @@ class PluginChainX extends PolkawalletPlugin {
           name: name,
           ss58: 2,
           primaryColor: chainx_yellow,
-          icon: Image.asset(
-              'packages/polkawallet_plugin_chainx/assets/images/public/$name.png'),
-          iconDisabled: Image.asset(
-              'packages/polkawallet_plugin_chainx/assets/images/public/${name}_gray.png'),
+          icon: Image.asset('packages/polkawallet_plugin_chainx/assets/images/public/$name.png'),
+          iconDisabled: Image.asset('packages/polkawallet_plugin_chainx/assets/images/public/${name}_gray.png'),
           jsCodeVersion: 11301,
           isTestNet: false,
         ),
@@ -72,15 +70,12 @@ class PluginChainX extends PolkawalletPlugin {
 
   @override
   List<NetworkParams> get nodeList {
-    return _randomList(node_list_chainx)
-        .map((e) => NetworkParams.fromJson(e))
-        .toList();
+    return _randomList(node_list_chainx).map((e) => NetworkParams.fromJson(e)).toList();
   }
 
   @override
   final Map<String, Widget> tokenIcons = {
-    'PCX': Image.asset(
-        'packages/polkawallet_plugin_chainx/assets/images/tokens/PCX.png'),
+    'PCX': Image.asset('packages/polkawallet_plugin_chainx/assets/images/tokens/PCX.png'),
   };
 
   @override
@@ -90,12 +85,8 @@ class PluginChainX extends PolkawalletPlugin {
       final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
       return HomeNavItem(
         text: dic[e],
-        icon: Image(
-            image: AssetImage('assets/images/public/$e.png',
-                package: 'polkawallet_plugin_chainx')),
-        iconActive: Image(
-            image: AssetImage('assets/images/public/${e}_$color.png',
-                package: 'polkawallet_plugin_chainx')),
+        icon: Image(image: AssetImage('assets/images/public/$e.png', package: 'polkawallet_plugin_chainx')),
+        iconActive: Image(image: AssetImage('assets/images/public/${e}_$color.png', package: 'polkawallet_plugin_chainx')),
         content: e == 'staking' ? Staking(this, keyring) : Gov(this),
       );
     }).toList();
@@ -104,8 +95,7 @@ class PluginChainX extends PolkawalletPlugin {
   @override
   Map<String, WidgetBuilder> getRoutes(Keyring keyring) {
     return {
-      TxConfirmPage.route: (_) =>
-          TxConfirmPage(this, keyring, _service.getPassword),
+      TxConfirmPage.route: (_) => TxConfirmPage(this, keyring, _service.getPassword),
 
       // staking pages
       StakePage.route: (_) => StakePage(this, keyring),
@@ -137,13 +127,12 @@ class PluginChainX extends PolkawalletPlugin {
       SubmitTipPage.route: (_) => SubmitTipPage(this, keyring),
       TipDetailPage.route: (_) => TipDetailPage(this, keyring),
       DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
-      WalletExtensionSignPage.route: (_) =>
-          WalletExtensionSignPage(this, keyring, _service.getPassword),
+      WalletExtensionSignPage.route: (_) => WalletExtensionSignPage(this, keyring, _service.getPassword),
     };
   }
 
   @override
-  Future<String> loadJSCode() => null;
+  Future<String> loadJSCode() => rootBundle.loadString('packages/polkawallet_plugin_chainx/lib/js_service_chainx/dist/main.js');
 
   PluginStore _store;
   PluginApi _service;
