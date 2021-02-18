@@ -52,7 +52,7 @@ class PluginChainX extends PolkawalletPlugin {
   PluginChainX({name = 'chainx'})
       : basic = PluginBasicData(
           name: name,
-          ss58: 0,
+          ss58: 44,
           primaryColor: chainx_yellow,
           icon: Image.asset('packages/polkawallet_plugin_chainx/assets/images/public/$name.png'),
           iconDisabled: Image.asset('packages/polkawallet_plugin_chainx/assets/images/public/${name}_gray.png'),
@@ -132,7 +132,7 @@ class PluginChainX extends PolkawalletPlugin {
   }
 
   @override
-  Future<String> loadJSCode() => rootBundle.loadString('packages/polkawallet_plugin_chainx/lib/js_service_chainx/dist/main.js');
+  Future<String> loadJSCode() => rootBundle.loadString('packages/polkawallet_plugin_chainx/js_service_chainx/dist/main.js');
 
   PluginStore _store;
   PluginApi _service;
