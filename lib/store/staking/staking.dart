@@ -84,7 +84,7 @@ abstract class _StakingStore with Store {
   void setValidatorsInfo(Map data, {bool shouldCache = true}) {
     if (data['validators'] == null) return;
 
-    print(data);
+    print('setValidatorsInfo func: $data');
 
     overview = {
       'stakedReturn': data['inflation']['stakedReturn'],
