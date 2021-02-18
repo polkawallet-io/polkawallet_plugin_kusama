@@ -3,7 +3,9 @@ library polkawallet_plugin_chainx;
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_chainx/common/constants.dart';
 import 'package:polkawallet_plugin_chainx/pages/governance.dart';
@@ -132,7 +134,7 @@ class PluginChainX extends PolkawalletPlugin {
   }
 
   @override
-  Future<String> loadJSCode() => rootBundle.loadString('packages/polkawallet_plugin_chainx/js_service_chainx/dist/main.js');
+  Future<String> loadJSCode() => rootBundle.loadString('packages/polkawallet_plugin_chainx/lib/js_service_chainx/dist/main.js');
 
   PluginStore _store;
   PluginApi _service;
