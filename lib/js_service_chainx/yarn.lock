@@ -1391,46 +1391,6 @@
   dependencies:
     "@json-rpc-tools/types" "^1.6.1"
 
-"@laminar/api@0.2.0-beta.143", "@laminar/api@^0.2.0-beta.143":
-  version "0.2.0-beta.143"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.143.tgz#89d6963c06745225d913030098754aaf5221c457"
-  integrity sha512-ptiiNgiMsgvc71AazVRkG2ebYILQY60TAW6AkRlA7Y8MYm/VEZT91yy9GGoxEL0x+SKQ0LJYkQld2MgdNv5gqg==
-  dependencies:
-    "@babel/runtime" "^7.8.0"
-    "@laminar/flow-protocol-ethereum" "0.0.12"
-    "@laminar/types" "^0.2.0-beta.143"
-    "@open-web3/orml-api-derive" "^0.6.0-beta.26"
-    "@polkadot/api" "^2.5.1"
-    rxjs "^6.6.3"
-    web3 "^1.2.9"
-    web3-core "^1.2.9"
-    web3-eth-contract "^1.2.9"
-    web3-utils "^1.2.9"
-
-"@laminar/flow-protocol-ethereum@0.0.12":
-  version "0.0.12"
-  resolved "https://registry.npm.taobao.org/@laminar/flow-protocol-ethereum/download/@laminar/flow-protocol-ethereum-0.0.12.tgz#ad0771b1428c95d90fcc573c222d6cf4b4f89555"
-  integrity sha1-rQdxsUKMldkPzFc8Ii1s9LT4lVU=
-
-"@laminar/type-definitions@0.2.0-beta.143", "@laminar/type-definitions@^0.2.0-beta.143":
-  version "0.2.0-beta.143"
-  resolved "https://registry.yarnpkg.com/@laminar/type-definitions/-/type-definitions-0.2.0-beta.143.tgz#a4dd18ac34addfeb451dbd3aea789d0976c34c27"
-  integrity sha512-9CanpyDiQC+XFpc6K70T7pN5qS2uclIUImuNKDgWdV/dbviQnFz5PgZurYsdSCSvOGStjsoRY84SU/S8eCmTLg==
-  dependencies:
-    "@open-web3/orml-type-definitions" "^0.6.0-beta.26"
-
-"@laminar/types@0.2.0-beta.143", "@laminar/types@^0.2.0-beta.143":
-  version "0.2.0-beta.143"
-  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.143.tgz#daae99eb07e42e8d745919e415af70944ea06b85"
-  integrity sha512-qjPRiy2z4aAOe9hceIFN+wWZ0TZ1hDXx+kd1GRhQhUfz2s2SjwYl8uEzOSDbGFIZQUCp8J54YCKQcoHaMwrpxA==
-  dependencies:
-    "@babel/runtime" "^7.8.0"
-    "@laminar/type-definitions" "^0.2.0-beta.143"
-    "@open-web3/api-mobx" "^0.6.0-beta.26"
-    "@open-web3/orml-types" "^0.6.0-beta.26"
-    "@polkadot/typegen" "^2.5.1"
-    "@polkadot/types" "^2.5.1"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.npm.taobao.org/@mrmlnc/readdir-enhanced/download/@mrmlnc/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
