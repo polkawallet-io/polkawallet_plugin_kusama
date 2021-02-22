@@ -212,7 +212,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
+            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
             child: Column(
               children: [
                 Text(
@@ -228,7 +228,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.fromLTRB(0, 16, 0, 8),
             child: Row(
               children: [
                 InfoItem(
