@@ -16,7 +16,7 @@ const node_list_chainx = [
   },
 ];
 // const home_nav_items = ['staking', 'governance'];
-const home_nav_items = [];
+const home_nav_items = ["governance"];
 
 const MaterialColor chainx_yellow = const MaterialColor(
   0xFFF6C94A,
