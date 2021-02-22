@@ -148,21 +148,21 @@ class PluginChainX extends PolkawalletPlugin {
     await GetStorage.init(plugin_chainx_storage_key);
 
     _store = PluginStore(_cache);
-    _store.staking.loadCache(keyring.current.pubKey);
-    _store.gov.clearState();
-    _store.gov.loadCache();
+    // _store.staking.loadCache(keyring.current.pubKey);
+    // _store.gov.clearState();
+    // _store.gov.loadCache();
 
     _service = PluginApi(this, keyring);
   }
 
   @override
   Future<void> onStarted(Keyring keyring) async {
-    _service.staking.queryElectedInfo();
+    // _service.staking.queryElectedInfo();
   }
 
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
-    _store.staking.loadAccountCache(acc.pubKey);
+    // _store.staking.loadAccountCache(acc.pubKey);
   }
 
   List _randomList(List input) {
