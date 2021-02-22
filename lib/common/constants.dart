@@ -14,13 +14,9 @@ const node_list_chainx = [
     'ss58': 44,
     'endpoint': 'wss://chainx.elara.patract.io',
   },
-  {
-    'name': 'ChainX (Staging)',
-    'ss58': 44,
-    'endpoint': 'wss://chainx.gregorst.org',
-  },
 ];
-const home_nav_items = ['staking', 'governance'];
+// const home_nav_items = ['staking', 'governance'];
+const home_nav_items = [];
 
 const MaterialColor chainx_yellow = const MaterialColor(
   0xFFF6C94A,

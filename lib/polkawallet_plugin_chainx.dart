@@ -100,36 +100,36 @@ class PluginChainX extends PolkawalletPlugin {
       TxConfirmPage.route: (_) => TxConfirmPage(this, keyring, _service.getPassword),
 
       // staking pages
-      StakePage.route: (_) => StakePage(this, keyring),
-      BondExtraPage.route: (_) => BondExtraPage(this, keyring),
-      ControllerSelectPage.route: (_) => ControllerSelectPage(this, keyring),
-      SetControllerPage.route: (_) => SetControllerPage(this, keyring),
-      UnBondPage.route: (_) => UnBondPage(this, keyring),
-      RebondPage.route: (_) => RebondPage(this, keyring),
-      SetPayeePage.route: (_) => SetPayeePage(this, keyring),
-      RedeemPage.route: (_) => RedeemPage(this, keyring),
-      PayoutPage.route: (_) => PayoutPage(this, keyring),
-      NominatePage.route: (_) => NominatePage(this, keyring),
-      StakingDetailPage.route: (_) => StakingDetailPage(this, keyring),
-      RewardDetailPage.route: (_) => RewardDetailPage(this, keyring),
-      ValidatorDetailPage.route: (_) => ValidatorDetailPage(this, keyring),
+      // StakePage.route: (_) => StakePage(this, keyring),
+      // BondExtraPage.route: (_) => BondExtraPage(this, keyring),
+      // ControllerSelectPage.route: (_) => ControllerSelectPage(this, keyring),
+      // SetControllerPage.route: (_) => SetControllerPage(this, keyring),
+      // UnBondPage.route: (_) => UnBondPage(this, keyring),
+      // RebondPage.route: (_) => RebondPage(this, keyring),
+      // SetPayeePage.route: (_) => SetPayeePage(this, keyring),
+      // RedeemPage.route: (_) => RedeemPage(this, keyring),
+      // PayoutPage.route: (_) => PayoutPage(this, keyring),
+      // NominatePage.route: (_) => NominatePage(this, keyring),
+      // StakingDetailPage.route: (_) => StakingDetailPage(this, keyring),
+      // RewardDetailPage.route: (_) => RewardDetailPage(this, keyring),
+      // ValidatorDetailPage.route: (_) => ValidatorDetailPage(this, keyring),
 
       // governance pages
-      DemocracyPage.route: (_) => DemocracyPage(this, keyring),
-      ReferendumVotePage.route: (_) => ReferendumVotePage(this, keyring),
-      CouncilPage.route: (_) => CouncilPage(this, keyring),
-      CouncilVotePage.route: (_) => CouncilVotePage(this),
-      CandidateListPage.route: (_) => CandidateListPage(this, keyring),
-      CandidateDetailPage.route: (_) => CandidateDetailPage(this, keyring),
-      MotionDetailPage.route: (_) => MotionDetailPage(this, keyring),
-      ProposalDetailPage.route: (_) => ProposalDetailPage(this, keyring),
-      TreasuryPage.route: (_) => TreasuryPage(this, keyring),
-      SpendProposalPage.route: (_) => SpendProposalPage(this, keyring),
-      SubmitProposalPage.route: (_) => SubmitProposalPage(this, keyring),
-      SubmitTipPage.route: (_) => SubmitTipPage(this, keyring),
-      TipDetailPage.route: (_) => TipDetailPage(this, keyring),
-      DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
-      WalletExtensionSignPage.route: (_) => WalletExtensionSignPage(this, keyring, _service.getPassword),
+      // DemocracyPage.route: (_) => DemocracyPage(this, keyring),
+      // ReferendumVotePage.route: (_) => ReferendumVotePage(this, keyring),
+      // CouncilPage.route: (_) => CouncilPage(this, keyring),
+      // CouncilVotePage.route: (_) => CouncilVotePage(this),
+      // CandidateListPage.route: (_) => CandidateListPage(this, keyring),
+      // CandidateDetailPage.route: (_) => CandidateDetailPage(this, keyring),
+      // MotionDetailPage.route: (_) => MotionDetailPage(this, keyring),
+      // ProposalDetailPage.route: (_) => ProposalDetailPage(this, keyring),
+      // TreasuryPage.route: (_) => TreasuryPage(this, keyring),
+      // SpendProposalPage.route: (_) => SpendProposalPage(this, keyring),
+      // SubmitProposalPage.route: (_) => SubmitProposalPage(this, keyring),
+      // SubmitTipPage.route: (_) => SubmitTipPage(this, keyring),
+      // TipDetailPage.route: (_) => TipDetailPage(this, keyring),
+      // DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
+      // WalletExtensionSignPage.route: (_) => WalletExtensionSignPage(this, keyring, _service.getPassword),
     };
   }
 
@@ -148,21 +148,21 @@ class PluginChainX extends PolkawalletPlugin {
     await GetStorage.init(plugin_chainx_storage_key);
 
     _store = PluginStore(_cache);
-    _store.staking.loadCache(keyring.current.pubKey);
-    _store.gov.clearState();
-    _store.gov.loadCache();
+    // _store.staking.loadCache(keyring.current.pubKey);
+    // _store.gov.clearState();
+    // _store.gov.loadCache();
 
     _service = PluginApi(this, keyring);
   }
 
   @override
   Future<void> onStarted(Keyring keyring) async {
-    _service.staking.queryElectedInfo();
+    // _service.staking.queryElectedInfo();
   }
 
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
-    _store.staking.loadAccountCache(acc.pubKey);
+    // _store.staking.loadAccountCache(acc.pubKey);
   }
 
   List _randomList(List input) {
