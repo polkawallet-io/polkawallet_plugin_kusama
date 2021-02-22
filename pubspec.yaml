@@ -50,6 +50,7 @@ flutter:
     - assets/images/public/governance.png
     - assets/images/public/governance_black.png
     - assets/images/public/governance_pink.png
+    - assets/images/public/governance_yellow.png
     - assets/images/staking/ok.png
     - assets/images/staking/error.png
     - assets/images/staking/reward.svg
