@@ -1,64 +1,52 @@
-import "@babel/polyfill"
-import { ApiPromise } from "@polkadot/api"
-const { WsProvider } = require("@polkadot/rpc-provider")
-const { options } = require("@chainx-v2/api")
-import { subscribeMessage, getNetworkConst, getNetworkProperties } from "./service/setting"
-import keyring from "./service/keyring"
-import account from "./service/account"
-import staking from "./service/staking"
-import wc from "./service/walletconnect"
-import gov from "./service/gov"
-import { genLinks } from "./utils/config/config"
+import "@babel/polyfill";
+import { options, WsProvider, LaminarApi } from "@laminar/api";
+import { ApiPromise } from "@polkadot/api";
+import { subscribeMessage, getNetworkConst, getNetworkProperties } from "./service/setting";
+import { genLinks } from "./utils/config/config";
+import keyring from "./service/keyring";
+import account from "./service/account";
+import laminar from "./service/laminar";
 
 // send message to JSChannel: PolkaWallet
 function send(path: string, data: any) {
-  if (window.location.href.match("about:blank")) {
-    PolkaWallet.postMessage(JSON.stringify({ path, data }))
+  if (window.location.href === "about:blank") {
+    PolkaWallet.postMessage(JSON.stringify({ path, data }));
   } else {
-    console.log(path, data)
+    console.log(path, data);
   }
 }
-send("log", "chainx main js loaded")
-;(<any>window).send = send
+send("log", "laminar main js loaded");
+(<any>window).send = send;
 
-/**
- * connect to a specific node.
- *
- * @param {string} nodeEndpoint
- */
 async function connect(nodes: string[]) {
   return new Promise(async (resolve, reject) => {
-    const wsProvider = new WsProvider(nodes)
+    const provider = new WsProvider(nodes);
     try {
-      const res = await ApiPromise.create(options({ provider: wsProvider }))
-      ;(<any>window).api = res
-      send("log", res.genesisHash.toHuman())
-      await res.isReady
-      send("log", `wss connected success`)
-      resolve(true)
+      const laminarApi = new LaminarApi({ provider });
+      const res = new ApiPromise(options({ provider }));
+      await laminarApi.isReady();
+      await res.isReady;
+      (<any>window).laminarApi = laminarApi;
+      (<any>window).api = res;
+      const url = nodes[(<any>res)._options.provider.__private_15_endpointIndex];
+      send("log", `${url} wss connected success`);
+      resolve(url);
     } catch (err) {
-      send("log", `connect failed`)
-      wsProvider.disconnect()
-      resolve(null)
+      send("log", `connect failed`);
+      provider.disconnect();
+      resolve(null);
     }
-  })
+  });
 }
 
-const test = async () => {
-  // const props = await api.rpc.system.properties();
-  // send("log", props);
-}
-;(<any>window).settings = {
-  test,
+(<any>window).settings = {
   connect,
-  subscribeMessage,
   getNetworkConst,
   getNetworkProperties,
-  // generate external links to polkascan/subscan/polkassembly...
+  subscribeMessage,
   genLinks,
-}
-;(<any>window).keyring = keyring
-;(<any>window).account = account
-;(<any>window).staking = staking
-;(<any>window).gov = gov
-;(<any>window).walletConnect = wc
+};
+
+(<any>window).keyring = keyring;
+(<any>window).account = account;
+(<any>window).laminar = laminar;

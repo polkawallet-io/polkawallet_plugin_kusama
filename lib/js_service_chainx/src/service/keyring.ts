@@ -2,7 +2,6 @@ import { keyExtractSuri, mnemonicGenerate, cryptoWaitReady, signatureVerify } fr
 import { hexToU8a, u8aToHex, isHex, stringToU8a } from "@polkadot/util";
 import BN from "bn.js";
 import { parseQrCode, getSigner, makeTx, getSubmittable } from "../utils/QrSigner";
-import gov from "./gov";
 
 import { Keyring } from "@polkadot/keyring";
 import { KeypairType } from "@polkadot/util-crypto/types";
@@ -104,15 +103,7 @@ async function initKeys(accounts: KeyringPair$Json[], ss58Formats: number[]) {
  * estimate gas fee of an extrinsic
  */
 async function txFeeEstimate(api: ApiPromise, txInfo: any, paramList: any[]) {
-  let tx: SubmittableExtrinsic<"promise">;
-  // wrap tx with council.propose for treasury propose
-  if (txInfo.txName == "treasury.approveProposal") {
-    tx = await gov.makeTreasuryProposalSubmission(api, paramList[0], false);
-  } else if (txInfo.txName == "treasury.rejectProposal") {
-    tx = await gov.makeTreasuryProposalSubmission(api, paramList[0], true);
-  } else {
-    tx = api.tx[txInfo.module][txInfo.call](...paramList);
-  }
+  let tx: SubmittableExtrinsic<"promise"> = api.tx[txInfo.module][txInfo.call](...paramList);
 
   let sender = txInfo.sender.address;
   if (txInfo.proxy) {
@@ -171,15 +162,8 @@ function _extractEvents(api: ApiPromise, result: SubmittableResult) {
  */
 function sendTx(api: ApiPromise, txInfo: any, paramList: any[], password: string, msgId: string) {
   return new Promise(async (resolve) => {
-    let tx: SubmittableExtrinsic<"promise">;
-    // wrap tx with council.propose for treasury propose
-    if (txInfo.txName == "treasury.approveProposal") {
-      tx = await gov.makeTreasuryProposalSubmission(api, paramList[0], false);
-    } else if (txInfo.txName == "treasury.rejectProposal") {
-      tx = await gov.makeTreasuryProposalSubmission(api, paramList[0], true);
-    } else {
-      tx = api.tx[txInfo.module][txInfo.call](...paramList);
-    }
+    let tx: SubmittableExtrinsic<"promise"> = api.tx[txInfo.module][txInfo.call](...paramList);
+
     let unsub = () => {};
     const onStatusChange = (result: SubmittableResult) => {
       if (result.status.isInBlock || result.status.isFinalized) {

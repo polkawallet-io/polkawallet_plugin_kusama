@@ -3,7 +3,6 @@ import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { compactFromU8a, hexStripPrefix, hexToU8a, u8aConcat, u8aToHex, u8aToU8a } from "@polkadot/util";
 import { encodeAddress, decodeAddress, blake2AsU8a } from "@polkadot/util-crypto";
 import { SUBSTRATE_NETWORK_LIST } from "../constants/networkSpect";
-import gov from "../service/gov";
 import { QRSigner, QRSubmittable } from "../types/scannerTypes";
 
 const MULTIPART = new Uint8Array([0]);
@@ -282,15 +281,7 @@ export function makeTx(api: ApiPromise, txInfo: any, paramList: any[], ss58: num
     api.derive.tx
       .signingInfo(signer)
       .then(async ({ header, mortalLength, nonce }) => {
-        let tx: SubmittableExtrinsic<"promise">;
-        // wrap tx with council.propose for treasury propose
-        if (txInfo.txName == "treasury.approveProposal") {
-          tx = await gov.makeTreasuryProposalSubmission(api, paramList[0], false);
-        } else if (txInfo.txName == "treasury.rejectProposal") {
-          tx = await gov.makeTreasuryProposalSubmission(api, paramList[0], true);
-        } else {
-          tx = api.tx[txInfo.module][txInfo.call](...paramList);
-        }
+        let tx: SubmittableExtrinsic<"promise"> = api.tx[txInfo.module][txInfo.call](...paramList);
         // wrap tx with recovery.asRecovered for proxy tx
         if (txInfo.proxy) {
           tx = api.tx.recovery.asRecovered(txInfo.sender.address, tx);
