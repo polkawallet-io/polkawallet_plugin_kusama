@@ -85,6 +85,7 @@ abstract class _StakingStore with Store {
     if (data['validators'] == null) return;
 
     print('setValidatorsInfo func: $data');
+    // {validators: [], waitingIds: []}
 
     overview = {
       'stakedReturn': data['inflation']['stakedReturn'],
