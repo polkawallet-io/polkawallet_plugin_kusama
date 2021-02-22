@@ -6,7 +6,6 @@ import { subscribeMessage, getNetworkConst, getNetworkProperties } from "./servi
 import { genLinks } from "./utils/config/config"
 import keyring from "./service/keyring"
 import account from "./service/account"
-import laminar from "./service/laminar"
 
 // send message to JSChannel: PolkaWallet
 function send(path: string, data: any) {
@@ -46,4 +45,3 @@ async function connect(nodes: string[]) {
 }
 ;(<any>window).keyring = keyring
 ;(<any>window).account = account
-;(<any>window).laminar = laminar
