@@ -12,13 +12,13 @@ import { genLinks } from "./utils/config/config"
 
 // send message to JSChannel: PolkaWallet
 function send(path: string, data: any) {
-  if (window.location.href.match("https://localhost:8080/")) {
+  if (window.location.href.match("about:blank")) {
     PolkaWallet.postMessage(JSON.stringify({ path, data }))
   } else {
     console.log(path, data)
   }
 }
-send("log", "main js loaded")
+send("log", "chainx main js loaded")
 ;(<any>window).send = send
 
 /**
@@ -32,8 +32,8 @@ async function connect(nodes: string[]) {
     try {
       const res = await ApiPromise.create(options({ provider: wsProvider }))
       ;(<any>window).api = res
+      send("log", res.genesisHash.toHuman())
       await res.isReady
-      console.log("result: ", res)
       send("log", `wss connected success`)
       resolve(true)
     } catch (err) {

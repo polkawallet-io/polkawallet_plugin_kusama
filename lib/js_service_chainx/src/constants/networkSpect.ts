@@ -1,5 +1,5 @@
-import networks from "@polkadot/networks";
-import { assert } from "@polkadot/util";
+import networks from "@polkadot/networks"
+import { assert } from "@polkadot/util"
 
 const colors = {
   background: {
@@ -21,20 +21,20 @@ const colors = {
     faded: "#9A9A9A",
     main: "#C0C0C0",
   },
-};
+}
 
-export const unknownNetworkPathId = "";
+export const unknownNetworkPathId = ""
 
 export const NetworkProtocols = Object.freeze({
   ETHEREUM: "ethereum",
   SUBSTRATE: "substrate",
   UNKNOWN: "unknown",
-});
+})
 
 // accounts for which the network couldn't be found (failed migration, removed network)
 export const UnknownNetworkKeys = Object.freeze({
   UNKNOWN: "unknown",
-});
+})
 
 // ethereumChainId is used as Network key for Ethereum networks
 /* eslint-disable sort-keys */
@@ -45,7 +45,7 @@ export const EthereumNetworkKeys = Object.freeze({
   GOERLI: "5",
   KOVAN: "42",
   CLASSIC: "61",
-});
+})
 
 /* eslint-enable sort-keys */
 
@@ -62,7 +62,8 @@ export const SubstrateNetworkKeys = Object.freeze({
   POLKADOT: "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
   SUBSTRATE_DEV: "0x0d667fd278ec412cd9fccdb066f09ed5b4cfd9c9afa9eb747213acb02b1e70bc", // substrate --dev commit ac6a2a783f0e1f4a814cf2add40275730cd41be1 hosted on wss://dev-node.substrate.dev .
   WESTEND: "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e",
-});
+  CHAINX: "0x012cfb6997279fed8ff754a5a90cb30627c70fcdd79ee9c480bcef07de754810",
+})
 
 const unknownNetworkBase = {
   [UnknownNetworkKeys.UNKNOWN]: {
@@ -74,7 +75,7 @@ const unknownNetworkBase = {
     secondaryColor: colors.background.card,
     title: "Unknown network",
   },
-};
+}
 
 const substrateNetworkBase = {
   [SubstrateNetworkKeys.ACALA_TC4]: {
@@ -187,7 +188,17 @@ const substrateNetworkBase = {
     title: "Westend",
     unit: "WND",
   },
-};
+  [SubstrateNetworkKeys.CHAINX]: {
+    color: "#F6C94A",
+    decimals: 8,
+    genesisHash: SubstrateNetworkKeys.CHAINX,
+    order: 3,
+    pathId: "chainx",
+    prefix: 44,
+    title: "ChainX",
+    unit: "PCX",
+  },
+}
 
 const ethereumNetworkBase = {
   [EthereumNetworkKeys.FRONTIER]: {
@@ -219,19 +230,19 @@ const ethereumNetworkBase = {
     order: 103,
     title: "Kovan Testnet",
   },
-};
+}
 
 const ethereumDefaultValues = {
   color: "#434875",
   protocol: NetworkProtocols.ETHEREUM,
   secondaryColor: colors.background.card,
-};
+}
 
 const substrateDefaultValues = {
   color: "#4C4646",
   protocol: NetworkProtocols.SUBSTRATE,
   secondaryColor: colors.background.card,
-};
+}
 
 function setDefault(networkBase, defaultProps) {
   return Object.keys(networkBase).reduce((acc, networkKey) => {
@@ -241,28 +252,28 @@ function setDefault(networkBase, defaultProps) {
         ...defaultProps,
         ...networkBase[networkKey],
       },
-    };
-  }, {});
+    }
+  }, {})
 }
 
-export const ETHEREUM_NETWORK_LIST = Object.freeze(setDefault(ethereumNetworkBase, ethereumDefaultValues));
-export const SUBSTRATE_NETWORK_LIST = Object.freeze(setDefault(substrateNetworkBase, substrateDefaultValues));
-export const UNKNOWN_NETWORK = Object.freeze(unknownNetworkBase);
+export const ETHEREUM_NETWORK_LIST = Object.freeze(setDefault(ethereumNetworkBase, ethereumDefaultValues))
+export const SUBSTRATE_NETWORK_LIST = Object.freeze(setDefault(substrateNetworkBase, substrateDefaultValues))
+export const UNKNOWN_NETWORK = Object.freeze(unknownNetworkBase)
 
 const substrateNetworkMetas = Object.values({
   ...SUBSTRATE_NETWORK_LIST,
   ...UNKNOWN_NETWORK,
-});
-export const PATH_IDS_LIST = substrateNetworkMetas.map((meta: any) => meta.pathId);
+})
+export const PATH_IDS_LIST = substrateNetworkMetas.map((meta: any) => meta.pathId)
 
-export const NETWORK_LIST = Object.freeze(Object.assign({}, SUBSTRATE_NETWORK_LIST, ETHEREUM_NETWORK_LIST, UNKNOWN_NETWORK));
+export const NETWORK_LIST = Object.freeze(Object.assign({}, SUBSTRATE_NETWORK_LIST, ETHEREUM_NETWORK_LIST, UNKNOWN_NETWORK))
 
-export const defaultNetworkKey = SubstrateNetworkKeys.KUSAMA;
+export const defaultNetworkKey = SubstrateNetworkKeys.KUSAMA
 
 function getGenesis(name: string): string {
-  const network = networks.find(({ network }) => network === name);
-  assert(network && network.genesisHash[0], `Unable to find genesisHash for ${name}`);
-  return network.genesisHash[0];
+  const network = networks.find(({ network }) => network === name)
+  assert(network && network.genesisHash[0], `Unable to find genesisHash for ${name}`)
+  return network.genesisHash[0]
 }
-export const KUSAMA_GENESIS = getGenesis("kusama");
-export const POLKADOT_GENESIS = getGenesis("polkadot");
+export const KUSAMA_GENESIS = getGenesis("kusama")
+export const POLKADOT_GENESIS = getGenesis("polkadot")
