@@ -48,8 +48,7 @@ const test = async () => {
   // const props = await api.rpc.system.properties();
   // send("log", props);
 }
-
-const settings = {
+;(<any>window).settings = {
   test,
   connect,
   subscribeMessage,
@@ -58,11 +57,8 @@ const settings = {
   // generate external links to polkascan/subscan/polkassembly...
   genLinks,
 }
-;(<any>window).settings = settings
 ;(<any>window).keyring = keyring
 ;(<any>window).account = account
 ;(<any>window).staking = staking
 ;(<any>window).gov = gov
 ;(<any>window).walletConnect = wc
-
-export default settings
