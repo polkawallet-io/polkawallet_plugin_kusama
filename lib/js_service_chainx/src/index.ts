@@ -27,10 +27,11 @@ async function connect(nodes: string[]) {
     try {
       const res = await ApiPromise.create(options({ provider: wsProvider }))
       ;(<any>window).api = res
-      send("log", res.genesisHash.toHuman())
+      send("log", (<any>res)._options.provider)
       await res.isReady
-      send("log", `wss connected success`)
-      resolve(true)
+      const url = nodes[(<any>res)._options.provider.__private_12_endpointIndex]
+      send("log", `${url} wss connected success`)
+      resolve(url)
     } catch (err) {
       send("log", `connect failed`)
       wsProvider.disconnect()
