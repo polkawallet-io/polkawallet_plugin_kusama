@@ -27,7 +27,9 @@
     "@polkadot/api": "^3.7.3"
   },
   "dependencies": {
+    "@chainx-v2/api": "^0.0.50",
     "@polkadot/api": "^3.7.3",
+    "@polkadot/rpc-provider": "^3.10.1",
     "@polkadot/ui-shared": "0.68.1",
     "@walletconnect/client": "2.0.0-alpha.26",
     "bn.js": "^5.1.2",
