@@ -16,12 +16,14 @@
     "@laminar/type-definitions": "0.2.0-beta.143"
   },
   "dependencies": {
+    "@chainx-v2/api": "^0.0.50",
     "@laminar/api": "^0.2.0-beta.143",
     "@laminar/type-definitions": "^0.2.0-beta.143",
     "@laminar/types": "^0.2.0-beta.143",
     "@open-web3/orml-types": "^0.6.0-beta.26",
     "@polkadot/api": "^2.5.1",
     "@polkadot/keyring": "^3.7.1",
+    "@polkadot/rpc-provider": "^3.10.1",
     "@polkadot/ui-shared": "^0.57.3",
     "bn.js": "^5.1.1",
     "oo7-substrate": "^0.8.0",
