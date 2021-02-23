@@ -132,7 +132,10 @@ abstract class _StakingStore with Store {
 
     if (shouldCache) {
       final cached = cache.stakingOwnStash.val;
-      cached[pubKey] = data;
+      cached[pubKey] = {
+        'timestamp': DateTime.now().millisecondsSinceEpoch,
+        'data': data
+      };
       cache.stakingOwnStash.val = cached;
     }
   }
@@ -201,9 +204,12 @@ abstract class _StakingStore with Store {
       return;
     }
 
-    if (cache.stakingOwnStash.val[pubKey] != null) {
-      ownStashInfo =
-          OwnStashInfoData.fromJson(cache.stakingOwnStash.val[pubKey]);
+    final stashInfo = cache.stakingOwnStash.val[pubKey];
+    if (stashInfo != null &&
+        stashInfo['timestamp'] != null &&
+        stashInfo['timestamp'] + 24 * 3600 * 1000 >
+            DateTime.now().millisecondsSinceEpoch) {
+      ownStashInfo = OwnStashInfoData.fromJson(stashInfo['data']);
     } else {
       ownStashInfo = null;
     }
