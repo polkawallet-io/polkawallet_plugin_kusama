@@ -27,15 +27,12 @@ class _RebondPageState extends State<RebondPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final symbol = widget.plugin.networkState.tokenSymbol;
+    final decimals = widget.plugin.networkState.tokenDecimals;
 
     BigInt redeemable = BigInt.zero;
-    if (widget.plugin.store.staking.ownStashInfo != null &&
-        widget.plugin.store.staking.ownStashInfo.stakingLedger != null) {
-      redeemable = BigInt.parse(widget
-          .plugin.store.staking.ownStashInfo.account.redeemable
-          .toString());
+    if (widget.plugin.store.staking.ownStashInfo != null && widget.plugin.store.staking.ownStashInfo.stakingLedger != null) {
+      redeemable = BigInt.parse(widget.plugin.store.staking.ownStashInfo.account.redeemable.toString());
     }
     BigInt unlocking = widget.plugin.store.staking.accountUnlockingTotal;
     unlocking -= redeemable;
@@ -64,16 +61,14 @@ class _RebondPageState extends State<RebondPage> {
                       TextFormField(
                         decoration: InputDecoration(
                           hintText: dic['amount'],
-                          labelText:
-                              '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
+                          labelText: '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
                             available,
                             lengthMax: 4,
                           )} $symbol)',
                         ),
                         inputFormatters: [UI.decimalInputFormatter(decimals)],
                         controller: _amountCtrl,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                         validator: (v) {
                           if (v.isEmpty) {
                             return dic['amount.error'];

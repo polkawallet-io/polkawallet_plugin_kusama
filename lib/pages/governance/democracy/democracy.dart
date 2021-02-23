@@ -86,10 +86,8 @@ class _DemocracyState extends State<Democracy> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        final tokenDecimals = widget.plugin.networkState.tokenDecimals;
-        print('networkState: $tokenDecimals');
-        final decimals = widget.plugin.networkState.tokenDecimals[0];
-        final symbol = widget.plugin.networkState.tokenSymbol[0];
+        final decimals = widget.plugin.networkState.tokenDecimals;
+        final symbol = widget.plugin.networkState.tokenSymbol;
         final list = widget.plugin.store.gov.referendums;
         final bestNumber = widget.plugin.store.gov.bestNumber;
         return RefreshIndicator(

@@ -23,10 +23,8 @@ class _RedeemPageState extends State<RedeemPage> {
   Future<int> _getSlashingSpans() async {
     if (_slashingSpans != null) return _slashingSpans;
 
-    final String stashId = widget.plugin.store.staking.ownStashInfo.stashId ??
-        widget.plugin.store.staking.ownStashInfo.account.accountId;
-    final int spans =
-        await widget.plugin.sdk.api.staking.getSlashingSpans(stashId);
+    final String stashId = widget.plugin.store.staking.ownStashInfo.stashId ?? widget.plugin.store.staking.ownStashInfo.account.accountId;
+    final int spans = await widget.plugin.sdk.api.staking.getSlashingSpans(stashId);
     setState(() {
       _slashingSpans = spans;
     });
@@ -37,12 +35,9 @@ class _RedeemPageState extends State<RedeemPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final decimals = widget.plugin.networkState.tokenDecimals;
 
-    final redeemable = Fmt.balance(
-        widget.plugin.store.staking.ownStashInfo.account.redeemable.toString(),
-        decimals,
-        length: decimals);
+    final redeemable = Fmt.balance(widget.plugin.store.staking.ownStashInfo.account.redeemable.toString(), decimals, length: decimals);
     return Scaffold(
       appBar: AppBar(
         title: Text(dicStaking['action.redeem']),
@@ -83,10 +78,7 @@ class _RedeemPageState extends State<RedeemPage> {
                                 txTitle: dicStaking['action.redeem'],
                                 module: 'staking',
                                 call: 'withdrawUnbonded',
-                                txDisplay: {
-                                  'spanCount': _slashingSpans,
-                                  'amount': redeemable
-                                },
+                                txDisplay: {'spanCount': _slashingSpans, 'amount': redeemable},
                                 params: [_slashingSpans],
                               );
                             },

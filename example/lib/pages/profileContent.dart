@@ -62,11 +62,9 @@ class _ProfileContentState extends State<ProfileContent> {
           child: CupertinoPicker(
             backgroundColor: Colors.white,
             itemExtent: 58,
-            scrollController: FixedExtentScrollController(
-                initialItem: _langOptions.indexOf(langCurrent)),
+            scrollController: FixedExtentScrollController(initialItem: _langOptions.indexOf(langCurrent)),
             children: _langOptions.map((i) {
-              return Padding(
-                  padding: EdgeInsets.all(16), child: Text(_getLang(i)));
+              return Padding(padding: EdgeInsets.all(16), child: Text(_getLang(i)));
             }).toList(),
             onSelectedItemChanged: (v) {
               setState(() {
@@ -89,10 +87,7 @@ class _ProfileContentState extends State<ProfileContent> {
   }
 
   Future<void> _onChangeNetwork() async {
-    final selected = await Navigator.of(context).pushNamed(SelectListPage.route,
-        arguments: widget.plugins
-            .map((e) => ListItemData(title: e.basic.name, subtitle: ''))
-            .toList());
+    final selected = await Navigator.of(context).pushNamed(SelectListPage.route, arguments: widget.plugins.map((e) => ListItemData(title: e.basic.name, subtitle: '')).toList());
     if (selected != null) {
       final net = widget.plugins[selected];
       if (net.basic.name != widget.network.basic.name) {
@@ -102,8 +97,7 @@ class _ProfileContentState extends State<ProfileContent> {
         widget.setNetwork(net);
 
         /// we reuse the existing webView instance when we start a new plugin.
-        await net.beforeStart(widget.keyring,
-            webView: widget.network.sdk.webView);
+        await net.beforeStart(widget.keyring, webView: widget.network.sdk.webView);
         final res = await net.start(widget.keyring);
         widget.setConnectedNode(res);
         widget.keyring.setSS58(res.ss58);
@@ -112,17 +106,13 @@ class _ProfileContentState extends State<ProfileContent> {
   }
 
   Future<void> _onChangeNode() async {
-    final selected = await Navigator.of(context).pushNamed(SelectListPage.route,
-        arguments: widget.network.nodeList
-            .map((e) => ListItemData(title: e.name, subtitle: e.endpoint))
-            .toList());
+    final selected = await Navigator.of(context).pushNamed(SelectListPage.route, arguments: widget.network.nodeList.map((e) => ListItemData(title: e.name, subtitle: e.endpoint)).toList());
     if (selected != null) {
       if (widget.connectedNode != null) {
         widget.setConnectedNode(null);
       }
       final node = widget.network.nodeList[selected];
-      final res =
-          await widget.network.sdk.api.connectNode(widget.keyring, [node]);
+      final res = await widget.network.sdk.api.connectNode(widget.keyring, [node]);
       widget.setConnectedNode(res);
     }
   }
@@ -132,8 +122,7 @@ class _ProfileContentState extends State<ProfileContent> {
       setState(() {
         _loading = true;
       });
-      await widget.keyring.store
-          .deleteAccount(widget.keyring.keyPairs[0].pubKey);
+      await widget.keyring.store.deleteAccount(widget.keyring.keyPairs[0].pubKey);
       setState(() {
         _loading = false;
       });
@@ -175,8 +164,7 @@ class _ProfileContentState extends State<ProfileContent> {
       setState(() {
         _loading = true;
       });
-      await widget.keyring.store
-          .deleteAccount(widget.keyring.externals[0].pubKey);
+      await widget.keyring.store.deleteAccount(widget.keyring.externals[0].pubKey);
       setState(() {
         _loading = false;
       });
@@ -188,8 +176,7 @@ class _ProfileContentState extends State<ProfileContent> {
       setState(() {
         _loading = true;
       });
-      final KeyPairData acc =
-          await widget.network.sdk.api.keyring.addContact(widget.keyring, {
+      final KeyPairData acc = await widget.network.sdk.api.keyring.addContact(widget.keyring, {
         'name': 'external_test',
         'address': '14fpQHev6kcQxiW49e5Cg4VgY8QeKwLxwfbAHg81ro8r8AnD',
         'observation': true,
@@ -230,28 +217,19 @@ class _ProfileContentState extends State<ProfileContent> {
         Column(
           children: [
             Text('network state'),
-            Text('tokenSymbol: ${widget.network.networkState.tokenSymbol[0]}'),
-            Text(
-                'tokenDecimals: ${widget.network.networkState.tokenDecimals[0]}'),
+            Text('tokenSymbol: ${widget.network.networkState.tokenSymbol}'),
+            Text('tokenDecimals: ${widget.network.networkState.tokenDecimals}'),
           ],
         ),
         Divider(),
         Column(
           children: [
             Text('keyPairs:'),
-            Text(widget.keyring.keyPairs
-                .map((e) => e.address)
-                .toList()
-                .join(',')),
+            Text(widget.keyring.keyPairs.map((e) => e.address).toList().join(',')),
             Text('externals:'),
-            Text(widget.keyring.externals
-                .map((e) => e.address)
-                .toList()
-                .join(',')),
+            Text(widget.keyring.externals.map((e) => e.address).toList().join(',')),
             RoundedButton(
-              text: widget.keyring.keyPairs.length > 0
-                  ? 'Remove Account'
-                  : 'Import Account',
+              text: widget.keyring.keyPairs.length > 0 ? 'Remove Account' : 'Import Account',
               onPressed: _loading
                   ? null
                   : widget.keyring.keyPairs.length > 0
@@ -259,9 +237,7 @@ class _ProfileContentState extends State<ProfileContent> {
                       : () => _importAccount(),
             ),
             RoundedButton(
-              text: widget.keyring.externals.length > 0
-                  ? 'Remove External'
-                  : 'Import External',
+              text: widget.keyring.externals.length > 0 ? 'Remove External' : 'Import External',
               onPressed: _loading
                   ? null
                   : widget.keyring.externals.length > 0

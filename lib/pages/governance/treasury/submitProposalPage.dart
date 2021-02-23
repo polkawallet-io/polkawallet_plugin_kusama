@@ -31,7 +31,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
   Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-      final decimals = widget.plugin.networkState.tokenDecimals[0];
+      final decimals = widget.plugin.networkState.tokenDecimals;
       final amt = _amountCtrl.text.trim();
       return TxConfirmParams(
         module: 'treasury',
@@ -72,17 +72,11 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final dicCommon = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final bondPercentage = Fmt.balanceInt(
-            widget.plugin.networkConst['treasury']['proposalBond'].toString()) *
-        BigInt.from(100) ~/
-        BigInt.from(1000000);
-    final minBond = Fmt.balanceInt(widget
-        .plugin.networkConst['treasury']['proposalBondMinimum']
-        .toString());
-    final balance = Fmt.balanceInt(
-        widget.plugin.balances.native.availableBalance.toString());
+    final decimals = widget.plugin.networkState.tokenDecimals;
+    final symbol = widget.plugin.networkState.tokenSymbol;
+    final bondPercentage = Fmt.balanceInt(widget.plugin.networkConst['treasury']['proposalBond'].toString()) * BigInt.from(100) ~/ BigInt.from(1000000);
+    final minBond = Fmt.balanceInt(widget.plugin.networkConst['treasury']['proposalBondMinimum'].toString());
+    final balance = Fmt.balanceInt(widget.plugin.balances.native.availableBalance.toString());
     return Scaffold(
       appBar: AppBar(title: Text(dic['treasury.submit']), centerTitle: true),
       body: SafeArea(
@@ -100,8 +94,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
                           onTap: () async {
                             final acc = await Navigator.of(context).pushNamed(
                               AccountListPage.route,
-                              arguments: AccountListPageParams(
-                                  list: widget.keyring.allAccounts),
+                              arguments: AccountListPageParams(list: widget.keyring.allAccounts),
                             );
                             if (acc != null) {
                               setState(() {
@@ -119,12 +112,9 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
                                   hintText: dicCommon['amount'],
                                   labelText: '${dicCommon['amount']} ($symbol)',
                                 ),
-                                inputFormatters: [
-                                  UI.decimalInputFormatter(decimals)
-                                ],
+                                inputFormatters: [UI.decimalInputFormatter(decimals)],
                                 controller: _amountCtrl,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
+                                keyboardType: TextInputType.numberWithOptions(decimal: true),
                                 validator: (v) {
                                   if (v.isEmpty) {
                                     return dicCommon['amount.error'];
@@ -134,18 +124,13 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
                               ),
                               TextFormField(
                                 decoration: InputDecoration(
-                                  labelText:
-                                      '${dic['treasury.bond']} ($symbol)',
+                                  labelText: '${dic['treasury.bond']} ($symbol)',
                                 ),
                                 initialValue: '$bondPercentage%',
                                 readOnly: true,
-                                style: TextStyle(
-                                    color: Theme.of(context).disabledColor),
+                                style: TextStyle(color: Theme.of(context).disabledColor),
                                 validator: (v) {
-                                  final BigInt bond = Fmt.tokenInt(
-                                          _amountCtrl.text.trim(), decimals) *
-                                      bondPercentage ~/
-                                      BigInt.from(100);
+                                  final BigInt bond = Fmt.tokenInt(_amountCtrl.text.trim(), decimals) * bondPercentage ~/ BigInt.from(100);
                                   if (balance <= bond) {
                                     return dicCommon['amount.low'];
                                   }
@@ -154,8 +139,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
                               ),
                               TextFormField(
                                 decoration: InputDecoration(
-                                  labelText:
-                                      '${dic['treasury.bond.min']} ($symbol)',
+                                  labelText: '${dic['treasury.bond.min']} ($symbol)',
                                 ),
                                 initialValue: Fmt.priceCeilBigInt(
                                   minBond,
@@ -163,8 +147,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
                                   lengthFixed: 3,
                                 ),
                                 readOnly: true,
-                                style: TextStyle(
-                                    color: Theme.of(context).disabledColor),
+                                style: TextStyle(color: Theme.of(context).disabledColor),
                                 validator: (v) {
                                   if (balance <= minBond) {
                                     return dicCommon['amount.low'];

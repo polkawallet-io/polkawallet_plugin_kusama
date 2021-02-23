@@ -59,17 +59,15 @@ class _BondPageState extends State<BondPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final symbol = widget.plugin.networkState.tokenSymbol;
+    final decimals = widget.plugin.networkState.tokenDecimals;
 
     double available = 0;
     if (widget.plugin.balances.native != null) {
-      available = Fmt.balanceDouble(
-          widget.plugin.balances.native.availableBalance.toString(), decimals);
+      available = Fmt.balanceDouble(widget.plugin.balances.native.availableBalance.toString(), decimals);
     }
 
-    final rewardToOptions =
-        _rewardToOptions.map((i) => dicStaking['reward.$i']).toList();
+    final rewardToOptions = _rewardToOptions.map((i) => dicStaking['reward.$i']).toList();
 
     List<KeyPairData> accounts;
     if (_rewardTo == 3) {
@@ -90,8 +88,7 @@ class _BondPageState extends State<BondPage> {
                     children: [
                       Expanded(
                           child: TextTag(
-                        I18n.of(context).getDic(
-                            i18n_full_dic_chainx, 'staking')['stake.warn'],
+                        I18n.of(context).getDic(i18n_full_dic_chainx, 'staking')['stake.warn'],
                         color: Colors.deepOrange,
                         fontSize: 12,
                         margin: EdgeInsets.all(0),
@@ -121,16 +118,14 @@ class _BondPageState extends State<BondPage> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       hintText: dic['amount'],
-                      labelText:
-                          '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
+                      labelText: '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
                         available,
                         lengthMax: 3,
                       )} $symbol)',
                     ),
                     inputFormatters: [UI.decimalInputFormatter(decimals)],
                     controller: _amountCtrl,
-                    keyboardType:
-                        TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
                     validator: (v) {
                       if (v.isEmpty) {
                         return dic['amount.error'];
@@ -169,9 +164,7 @@ class _BondPageState extends State<BondPage> {
                   call: 'bond',
                   txDisplay: {
                     "amount": '$inputAmount $symbol',
-                    "reward_destination": _rewardTo == 3
-                        ? {'Account': _rewardAccount}
-                        : rewardToOptions[_rewardTo],
+                    "reward_destination": _rewardTo == 3 ? {'Account': _rewardAccount} : rewardToOptions[_rewardTo],
                   },
                   params: [
                     // "controllerId":

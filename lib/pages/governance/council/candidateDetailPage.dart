@@ -42,19 +42,15 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
   Widget build(BuildContext context) {
     final Map dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final List info = ModalRoute.of(context).settings.arguments;
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    final decimals = widget.plugin.networkState.tokenDecimals;
+    final symbol = widget.plugin.networkState.tokenSymbol;
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-              I18n.of(context).getDic(i18n_full_dic_ui, 'common')['detail']),
-          centerTitle: true),
+      appBar: AppBar(title: Text(I18n.of(context).getDic(i18n_full_dic_ui, 'common')['detail']), centerTitle: true),
       body: SafeArea(
         child: Observer(
           builder: (_) {
             final iconsMap = widget.plugin.store.accounts.addressIconsMap;
-            final accInfo =
-                widget.plugin.store.accounts.addressIndexMap[info[0]];
+            final accInfo = widget.plugin.store.accounts.addressIndexMap[info[0]];
             TextStyle style = Theme.of(context).textTheme.headline4;
 
             Map voters;
@@ -80,9 +76,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                       Divider(),
                       Padding(
                         padding: EdgeInsets.only(top: 8, bottom: 8),
-                        child: Text(
-                            '${Fmt.token(BigInt.parse(info[1].toString()), decimals)} $symbol',
-                            style: style),
+                        child: Text('${Fmt.token(BigInt.parse(info[1].toString()), decimals)} $symbol', style: style),
                       ),
                       Text(dic['backing'])
                     ],
@@ -102,8 +96,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                   child: Column(
                     children: voterList.map((i) {
                       return CandidateItem(
-                        accInfo:
-                            widget.plugin.store.accounts.addressIndexMap[i],
+                        accInfo: widget.plugin.store.accounts.addressIndexMap[i],
                         icon: iconsMap[i],
                         balance: [i, voters[i]],
                         tokenSymbol: symbol,

@@ -24,16 +24,12 @@ class ValidatorDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          final dicStaking =
-              I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-          final int decimals = plugin.networkState.tokenDecimals[0];
-          final ValidatorData detail =
-              ModalRoute.of(context).settings.arguments;
+          final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+          final int decimals = plugin.networkState.tokenDecimals;
+          final ValidatorData detail = ModalRoute.of(context).settings.arguments;
 
-          final accInfo =
-              plugin.store.accounts.addressIndexMap[detail.accountId];
-          final accIcon =
-              plugin.store.accounts.addressIconsMap[detail.accountId];
+          final accInfo = plugin.store.accounts.addressIndexMap[detail.accountId];
+          final accIcon = plugin.store.accounts.addressIconsMap[detail.accountId];
 
           return Scaffold(
             appBar: AppBar(
@@ -42,12 +38,7 @@ class ValidatorDetailPage extends StatelessWidget {
             ),
             body: SafeArea(
               child: ListView.builder(
-                itemCount: 2 +
-                    (detail.isElected
-                        ? detail.nominators.length
-                        : plugin.store.staking.nominationsMap[detail.accountId]
-                                ?.length ??
-                            0),
+                itemCount: 2 + (detail.isElected ? detail.nominators.length : plugin.store.staking.nominationsMap[detail.accountId]?.length ?? 0),
                 itemBuilder: (_, i) {
                   if (i == 0) {
                     return RoundedCard(
@@ -71,15 +62,13 @@ class ValidatorDetailPage extends StatelessWidget {
                                 ),
                                 InfoItem(
                                   title: dicStaking['stake.other'],
-                                  content:
-                                      Fmt.token(detail.bondOther, decimals),
+                                  content: Fmt.token(detail.bondOther, decimals),
                                 ),
                               ],
                             ),
                           ),
                           Padding(
-                            padding:
-                                EdgeInsets.only(top: 16, left: 24, bottom: 24),
+                            padding: EdgeInsets.only(top: 16, left: 24, bottom: 24),
                             child: Row(
                               children: <Widget>[
                                 InfoItem(
@@ -88,8 +77,7 @@ class ValidatorDetailPage extends StatelessWidget {
                                 ),
                                 InfoItem(
                                   title: dicStaking['reward'],
-                                  content:
-                                      '${detail.stakedReturnCmp.toStringAsFixed(2)}%',
+                                  content: '${detail.stakedReturnCmp.toStringAsFixed(2)}%',
                                 ),
                               ],
                             ),
@@ -99,9 +87,7 @@ class ValidatorDetailPage extends StatelessWidget {
                     );
                   }
                   if (i == 1) {
-                    final addresses = detail.isElected
-                        ? detail.nominators.map((e) => e['who']).toList()
-                        : plugin.store.staking.nominationsMap[detail.accountId];
+                    final addresses = detail.isElected ? detail.nominators.map((e) => e['who']).toList() : plugin.store.staking.nominationsMap[detail.accountId];
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -111,33 +97,22 @@ class ValidatorDetailPage extends StatelessWidget {
                             title: dicStaking['nominators'],
                           ),
                         ),
-                        FutureBuilder(
-                            future: plugin.service.gov
-                                .updateIconsAndIndices(addresses),
-                            builder: (_, __) => Container()),
+                        FutureBuilder(future: plugin.service.gov.updateIconsAndIndices(addresses), builder: (_, __) => Container()),
                       ],
                     );
                   }
                   if (detail.isElected) {
                     final item = detail.nominators[i - 2];
                     return ListTile(
-                      leading: AddressIcon(item['who'],
-                          size: 32,
-                          svg: plugin
-                              .store.accounts.addressIconsMap[item['who']]),
-                      title: UI.accountDisplayName(item['who'],
-                          plugin.store.accounts.addressIndexMap[item['who']]),
-                      trailing: Text(
-                          '${Fmt.balance(item['value'].toString(), plugin.networkState.tokenDecimals[0])} ${plugin.networkState.tokenSymbol[0]}'),
+                      leading: AddressIcon(item['who'], size: 32, svg: plugin.store.accounts.addressIconsMap[item['who']]),
+                      title: UI.accountDisplayName(item['who'], plugin.store.accounts.addressIndexMap[item['who']]),
+                      trailing: Text('${Fmt.balance(item['value'].toString(), plugin.networkState.tokenDecimals)} ${plugin.networkState.tokenSymbol}'),
                     );
                   } else {
-                    final address = plugin
-                        .store.staking.nominationsMap[detail.accountId][i - 2];
+                    final address = plugin.store.staking.nominationsMap[detail.accountId][i - 2];
                     return ListTile(
-                      leading: AddressIcon(address,
-                          svg: plugin.store.accounts.addressIconsMap[address]),
-                      title: UI.accountDisplayName(address,
-                          plugin.store.accounts.addressIndexMap[address]),
+                      leading: AddressIcon(address, svg: plugin.store.accounts.addressIconsMap[address]),
+                      title: UI.accountDisplayName(address, plugin.store.accounts.addressIndexMap[address]),
                     );
                   }
                 },

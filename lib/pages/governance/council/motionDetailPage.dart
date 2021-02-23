@@ -30,11 +30,7 @@ class MotionDetailPage extends StatefulWidget {
 }
 
 class _MotionDetailPageState extends State<MotionDetailPage> {
-  final List<String> methodExternal = [
-    'externalPropose',
-    'externalProposeDefault',
-    'externalProposeMajority'
-  ];
+  final List<String> methodExternal = ['externalPropose', 'externalProposeDefault', 'externalProposeMajority'];
   final List<String> methodTreasury = ['approveProposal', 'rejectProposal'];
 
   Map _treasuryProposal;
@@ -45,8 +41,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
     if (_links != null) return _links;
 
     final List res = await widget.plugin.sdk.api.gov.getExternalLinks(
-      GenExternalLinksParams.fromJson(
-          {'data': id.toString(), 'type': 'council'}),
+      GenExternalLinksParams.fromJson({'data': id.toString(), 'type': 'council'}),
     );
     if (res != null) {
       setState(() {
@@ -86,11 +81,9 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
         approve,
       ],
     );
-    final res = await Navigator.of(context)
-        .pushNamed(TxConfirmPage.route, arguments: args);
+    final res = await Navigator.of(context).pushNamed(TxConfirmPage.route, arguments: args);
     if (res != null) {
-      final CouncilMotionData motion =
-          ModalRoute.of(context).settings.arguments;
+      final CouncilMotionData motion = ModalRoute.of(context).settings.arguments;
       _fetchTreasuryProposal(motion.proposal.args[0]);
     }
   }
@@ -103,13 +96,11 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
       builder: (BuildContext context) {
         int blockTime = 6000;
         if (widget.plugin.networkConst['treasury'] != null) {
-          blockTime = int.parse(
-              widget.plugin.networkConst['babe']['expectedBlockTime']);
+          blockTime = int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']);
         }
         List<List<String>> params = [];
         motion.proposal.meta.args.asMap().forEach((k, v) {
-          params.add(
-              ['${v.name}: ${v.type}', motion.proposal.args[k].toString()]);
+          params.add(['${v.name}: ${v.type}', motion.proposal.args[k].toString()]);
         });
         bool isCouncil = false;
         widget.plugin.store.gov.council.members.forEach((e) {
@@ -129,10 +120,8 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
             isVotedNo = true;
           }
         });
-        bool isTreasury = motion.proposal.section == 'treasury' &&
-            methodTreasury.indexOf(motion.proposal.method) > -1;
-        bool isExternal = motion.proposal.section == 'democracy' &&
-            methodExternal.indexOf(motion.proposal.method) > -1;
+        bool isTreasury = motion.proposal.section == 'treasury' && methodTreasury.indexOf(motion.proposal.method) > -1;
+        bool isExternal = motion.proposal.section == 'democracy' && methodExternal.indexOf(motion.proposal.method) > -1;
 
         final votesEnd = BigInt.parse(motion.votes.end.toString());
         return Scaffold(
@@ -169,18 +158,13 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                       params.length > 0
                           ? Text(
                               dic['proposal.params'],
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).unselectedWidgetColor),
+                              style: TextStyle(color: Theme.of(context).unselectedWidgetColor),
                             )
                           : Container(),
-                      params.length > 0
-                          ? ProposalArgsList(params)
-                          : Container(),
+                      params.length > 0 ? ProposalArgsList(params) : Container(),
                       isTreasury
                           ? FutureBuilder(
-                              future: _fetchTreasuryProposal(
-                                  motion.proposal.args[0]),
+                              future: _fetchTreasuryProposal(motion.proposal.args[0]),
                               builder: (_, AsyncSnapshot<Map> snapshot) {
                                 if (snapshot.hasData) {
                                   return ProposalArgsItem(
@@ -216,9 +200,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                               children: <Widget>[
                                 Text(
                                   Fmt.blockToTime(
-                                    (votesEnd -
-                                            widget.plugin.store.gov.bestNumber)
-                                        .toInt(),
+                                    (votesEnd - widget.plugin.store.gov.bestNumber).toInt(),
                                     blockTime,
                                   ),
                                   style: Theme.of(context).textTheme.headline4,
@@ -282,9 +264,7 @@ class _ProposalArgsListState extends State<ProposalArgsList> {
         child: Row(
           children: <Widget>[
             Icon(
-              _showDetail
-                  ? Icons.keyboard_arrow_down
-                  : Icons.keyboard_arrow_right,
+              _showDetail ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
             ),
             Text(I18n.of(context).getDic(i18n_full_dic_chainx, 'gov')['detail'])
           ],
@@ -310,10 +290,7 @@ class _ProposalArgsListState extends State<ProposalArgsList> {
 
     return Container(
       margin: EdgeInsets.only(top: 8, bottom: 8),
-      decoration: BoxDecoration(
-          border: Border(
-              left:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 3))),
+      decoration: BoxDecoration(border: Border(left: BorderSide(color: Theme.of(context).dividerColor, width: 3))),
       child: Column(
         children: items,
       ),
@@ -378,9 +355,7 @@ class ProposalArgsItem extends StatelessWidget {
     return Container(
       margin: margin ?? EdgeInsets.fromLTRB(8, 4, 4, 4),
       padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-      decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).dividerColor),
-          borderRadius: BorderRadius.all(Radius.circular(4))),
+      decoration: BoxDecoration(border: Border.all(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -419,15 +394,11 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final String voteCountAye =
-        '${widget.council.votes.ayes.length}/${widget.council.votes.threshold}';
-    final int thresholdNay = widget.plugin.store.gov.council.members.length -
-        widget.council.votes.threshold +
-        1;
-    final String voteCountNay =
-        '${widget.council.votes.nays.length}/$thresholdNay';
+    final symbol = widget.plugin.networkState.tokenSymbol;
+    final decimals = widget.plugin.networkState.tokenDecimals;
+    final String voteCountAye = '${widget.council.votes.ayes.length}/${widget.council.votes.threshold}';
+    final int thresholdNay = widget.plugin.store.gov.council.members.length - widget.council.votes.threshold + 1;
+    final String voteCountNay = '${widget.council.votes.nays.length}/$thresholdNay';
     return Container(
       padding: EdgeInsets.only(bottom: 24),
       margin: EdgeInsets.only(top: 8),
@@ -440,16 +411,12 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [0, 1].map((e) {
-                final Color tabColor = e == _tab
-                    ? Theme.of(context).primaryColor
-                    : Theme.of(context).disabledColor;
+                final Color tabColor = e == _tab ? Theme.of(context).primaryColor : Theme.of(context).disabledColor;
                 return GestureDetector(
                   child: Container(
                     padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
                     child: Text(
-                      e == 0
-                          ? '${dic['yes']}($voteCountAye)'
-                          : '${dic['no']}($voteCountNay)',
+                      e == 0 ? '${dic['yes']}($voteCountAye)' : '${dic['no']}($voteCountNay)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -476,8 +443,7 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
                     return CandidateItem(
                       accInfo: widget.plugin.store.accounts.addressIndexMap[e],
                       icon: widget.plugin.store.accounts.addressIconsMap[e],
-                      balance: widget.plugin.store.gov.council.members
-                          .firstWhere((i) => i[0] == e),
+                      balance: widget.plugin.store.gov.council.members.firstWhere((i) => i[0] == e),
                       tokenSymbol: symbol,
                       decimals: decimals,
                     );
@@ -486,8 +452,7 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
                     return CandidateItem(
                       accInfo: widget.plugin.store.accounts.addressIndexMap[e],
                       icon: widget.plugin.store.accounts.addressIconsMap[e],
-                      balance: widget.plugin.store.gov.council.members
-                          .firstWhere((i) => i[0] == e),
+                      balance: widget.plugin.store.gov.council.members.firstWhere((i) => i[0] == e),
                       tokenSymbol: symbol,
                       decimals: decimals,
                     );

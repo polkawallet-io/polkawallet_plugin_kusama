@@ -19,8 +19,8 @@ class RewardDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final decimals = plugin.networkState.tokenDecimals[0];
-    final symbol = plugin.networkState.tokenSymbol[0];
+    final decimals = plugin.networkState.tokenDecimals;
+    final symbol = plugin.networkState.tokenSymbol;
     final TxRewardData detail = ModalRoute.of(context).settings.arguments;
 
     return TxDetail(
@@ -36,8 +36,7 @@ class RewardDetailPage extends StatelessWidget {
           title: '${Fmt.balance(detail.amount, decimals)} $symbol',
         ),
       ],
-      blockTime: Fmt.dateTime(
-          DateTime.fromMillisecondsSinceEpoch(detail.blockTimestamp * 1000)),
+      blockTime: Fmt.dateTime(DateTime.fromMillisecondsSinceEpoch(detail.blockTimestamp * 1000)),
       blockNum: detail.blockNum,
     );
   }

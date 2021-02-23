@@ -38,10 +38,8 @@ class StakingActions extends StatefulWidget {
   _StakingActions createState() => _StakingActions();
 }
 
-class _StakingActions extends State<StakingActions>
-    with SingleTickerProviderStateMixin {
-  final GlobalKey<RefreshIndicatorState> _refreshKey =
-      new GlobalKey<RefreshIndicatorState>();
+class _StakingActions extends State<StakingActions> with SingleTickerProviderStateMixin {
+  final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey<RefreshIndicatorState>();
 
   bool _loading = false;
   bool _rewardLoading = false;
@@ -63,9 +61,7 @@ class _StakingActions extends State<StakingActions>
         _loading = false;
       });
 
-      if (res == null ||
-          res['extrinsics'] == null ||
-          res['extrinsics'].length < tx_list_page_size) {
+      if (res == null || res['extrinsics'] == null || res['extrinsics'].length < tx_list_page_size) {
         setState(() {
           _isLastPage = true;
         });
@@ -107,15 +103,10 @@ class _StakingActions extends State<StakingActions>
           leading: Container(
             width: 32,
             padding: EdgeInsets.only(top: 4),
-            child: i.success
-                ? Image.asset(
-                    'packages/polkawallet_plugin_chainx/assets/images/staking/ok.png')
-                : Image.asset(
-                    'packages/polkawallet_plugin_chainx/assets/images/staking/error.png'),
+            child: i.success ? Image.asset('packages/polkawallet_plugin_chainx/assets/images/staking/ok.png') : Image.asset('packages/polkawallet_plugin_chainx/assets/images/staking/error.png'),
           ),
           title: Text(i.call),
-          subtitle: Text(Fmt.dateTime(
-              DateTime.fromMillisecondsSinceEpoch(i.blockTimestamp * 1000))),
+          subtitle: Text(Fmt.dateTime(DateTime.fromMillisecondsSinceEpoch(i.blockTimestamp * 1000))),
           trailing: i.success
               ? Text(
                   dic['success'],
@@ -126,8 +117,7 @@ class _StakingActions extends State<StakingActions>
                   style: TextStyle(color: Colors.pink),
                 ),
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(StakingDetailPage.route, arguments: i);
+            Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
           },
         ),
       );
@@ -142,8 +132,8 @@ class _StakingActions extends State<StakingActions>
   }
 
   List<Widget> _buildRewardsList() {
-    final int decimals = widget.plugin.networkState.tokenDecimals[0];
-    final String symbol = widget.plugin.networkState.tokenSymbol[0];
+    final int decimals = widget.plugin.networkState.tokenDecimals;
+    final String symbol = widget.plugin.networkState.tokenSymbol;
 
     List<Widget> res = [];
     res.addAll(widget.plugin.store.staking.txsRewards.map((i) {
@@ -154,18 +144,14 @@ class _StakingActions extends State<StakingActions>
             width: 32,
             padding: EdgeInsets.only(top: 4),
             child: i.eventId == 'Reward'
-                ? SvgPicture.asset(
-                    'packages/polkawallet_plugin_chainx/assets/images/staking/reward.svg')
-                : SvgPicture.asset(
-                    'packages/polkawallet_plugin_chainx/assets/images/staking/slash.svg'),
+                ? SvgPicture.asset('packages/polkawallet_plugin_chainx/assets/images/staking/reward.svg')
+                : SvgPicture.asset('packages/polkawallet_plugin_chainx/assets/images/staking/slash.svg'),
           ),
           title: Text(i.eventId),
-          subtitle: Text(Fmt.dateTime(
-              DateTime.fromMillisecondsSinceEpoch(i.blockTimestamp * 1000))),
+          subtitle: Text(Fmt.dateTime(DateTime.fromMillisecondsSinceEpoch(i.blockTimestamp * 1000))),
           trailing: Text('${Fmt.balance(i.amount, decimals)} $symbol'),
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(RewardDetailPage.route, arguments: i);
+            Navigator.of(context).pushNamed(RewardDetailPage.route, arguments: i);
           },
         ),
       );
@@ -192,22 +178,17 @@ class _StakingActions extends State<StakingActions>
     if (hasData) {
       // we assume an address is stash if it's stakingData
       // is empty (!isOwnStash && !isOwnController).
-      isStash = widget.plugin.store.staking.ownStashInfo.isOwnStash ||
-          (!widget.plugin.store.staking.ownStashInfo.isOwnStash &&
-              !widget.plugin.store.staking.ownStashInfo.isOwnController);
+      isStash = widget.plugin.store.staking.ownStashInfo.isOwnStash || (!widget.plugin.store.staking.ownStashInfo.isOwnStash && !widget.plugin.store.staking.ownStashInfo.isOwnController);
       isController = widget.plugin.store.staking.ownStashInfo.isOwnController;
       isSelfControl = isStash && isController;
 
-      widget.plugin.store.accounts.pubKeyAddressMap[widget.plugin.basic.ss58]
-          ?.forEach((k, v) {
-        if (widget.plugin.store.staking.ownStashInfo.isOwnStash &&
-            v == widget.plugin.store.staking.ownStashInfo.controllerId) {
+      widget.plugin.store.accounts.pubKeyAddressMap[widget.plugin.basic.ss58]?.forEach((k, v) {
+        if (widget.plugin.store.staking.ownStashInfo.isOwnStash && v == widget.plugin.store.staking.ownStashInfo.controllerId) {
           acc02.address = v;
           acc02.pubKey = k;
           return;
         }
-        if (widget.plugin.store.staking.ownStashInfo.isOwnController &&
-            v == widget.plugin.store.staking.ownStashInfo.stashId) {
+        if (widget.plugin.store.staking.ownStashInfo.isOwnController && v == widget.plugin.store.staking.ownStashInfo.stashId) {
           acc02.address = v;
           acc02.pubKey = k;
           return;
@@ -216,34 +197,22 @@ class _StakingActions extends State<StakingActions>
 
       // update account icon
       if (acc02.icon == null) {
-        acc02.icon =
-            widget.plugin.store.accounts.addressIconsMap[acc02.address];
+        acc02.icon = widget.plugin.store.accounts.addressIconsMap[acc02.address];
       }
     }
 
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final decimals = widget.plugin.networkState.tokenDecimals;
 
     final info = widget.plugin.balances.native;
-    final freeBalance = info?.freeBalance == null
-        ? BigInt.zero
-        : BigInt.parse(info.freeBalance.toString());
-    final reservedBalance = info?.reservedBalance == null
-        ? BigInt.zero
-        : BigInt.parse(info.reservedBalance.toString());
-    final available = info?.availableBalance == null
-        ? BigInt.zero
-        : BigInt.parse(info.availableBalance.toString());
+    final freeBalance = info?.freeBalance == null ? BigInt.zero : BigInt.parse(info.freeBalance.toString());
+    final reservedBalance = info?.reservedBalance == null ? BigInt.zero : BigInt.parse(info.reservedBalance.toString());
+    final available = info?.availableBalance == null ? BigInt.zero : BigInt.parse(info.availableBalance.toString());
     final totalBalance = freeBalance + reservedBalance;
     BigInt bonded = BigInt.zero;
     BigInt redeemable = BigInt.zero;
-    if (hasData &&
-        widget.plugin.store.staking.ownStashInfo.stakingLedger != null) {
-      bonded = BigInt.parse(widget
-          .plugin.store.staking.ownStashInfo.stakingLedger['active']
-          .toString());
-      redeemable = BigInt.parse(widget
-          .plugin.store.staking.ownStashInfo.account.redeemable
-          .toString());
+    if (hasData && widget.plugin.store.staking.ownStashInfo.stakingLedger != null) {
+      bonded = BigInt.parse(widget.plugin.store.staking.ownStashInfo.stakingLedger['active'].toString());
+      redeemable = BigInt.parse(widget.plugin.store.staking.ownStashInfo.account.redeemable.toString());
     }
     BigInt unlocking = widget.plugin.store.staking.accountUnlockingTotal;
     unlocking -= redeemable;
@@ -299,9 +268,7 @@ class _StakingActions extends State<StakingActions>
                 ),
                 RowAccount02(
                   acc02: acc02,
-                  accountId: widget.plugin.store.staking.ownStashInfo.account
-                          .accountId ??
-                      widget.keyring.current.address,
+                  accountId: widget.plugin.store.staking.ownStashInfo.account.accountId ?? widget.keyring.current.address,
                   isController: isController,
                   isSelfControl: isSelfControl,
                   stashInfo: widget.plugin.store.staking.ownStashInfo,
@@ -315,8 +282,7 @@ class _StakingActions extends State<StakingActions>
                   accountId: widget.keyring.current.address,
                   stashInfo: widget.plugin.store.staking.ownStashInfo,
                   decimals: decimals,
-                  blockDuration: int.parse(
-                      widget.plugin.networkConst['babe']['expectedBlockTime']),
+                  blockDuration: int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']),
                   bonded: bonded,
                   unlocking: unlocking,
                   redeemable: redeemable,
@@ -346,8 +312,7 @@ class _StakingActions extends State<StakingActions>
 
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
         setState(() {
           if (!_isLastPage) {
             _txsPage += 1;
@@ -371,8 +336,7 @@ class _StakingActions extends State<StakingActions>
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> dic =
-        I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final Map<String, String> dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     return Observer(
       builder: (_) {
@@ -441,12 +405,9 @@ class RowAccount02 extends StatelessWidget {
 
   void _showActions(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final actionAccountTitle =
-        isController && !isSelfControl ? dic['stash'] : dic['controller'];
-    final changeAccountText =
-        dic['action.use'] + actionAccountTitle + dic['action.operate'];
-    final accIndex =
-        keyring.allAccounts.indexWhere((e) => e.pubKey == acc02.pubKey);
+    final actionAccountTitle = isController && !isSelfControl ? dic['stash'] : dic['controller'];
+    final changeAccountText = dic['action.use'] + actionAccountTitle + dic['action.operate'];
+    final accIndex = keyring.allAccounts.indexWhere((e) => e.pubKey == acc02.pubKey);
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -464,15 +425,13 @@ class RowAccount02 extends StatelessWidget {
               : CupertinoActionSheetAction(
                   child: Text(
                     changeAccountText,
-                    style: TextStyle(
-                        color: Theme.of(context).unselectedWidgetColor),
+                    style: TextStyle(color: Theme.of(context).unselectedWidgetColor),
                   ),
                   onPressed: () => null,
                 )
         ],
         cancelButton: CupertinoActionSheetAction(
-          child: Text(
-              I18n.of(context).getDic(i18n_full_dic_ui, 'common')['cancel']),
+          child: Text(I18n.of(context).getDic(i18n_full_dic_ui, 'common')['cancel']),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -486,8 +445,7 @@ class RowAccount02 extends StatelessWidget {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final stashId = stashInfo.stashId ?? accountId;
     final controllerId = stashInfo.controllerId ?? accountId;
-    final String address02 =
-        isController && !isSelfControl ? stashId : controllerId;
+    final String address02 = isController && !isSelfControl ? stashId : controllerId;
     return Container(
       padding: EdgeInsets.only(top: 8, bottom: 8),
       child: stashInfo != null
@@ -495,27 +453,19 @@ class RowAccount02 extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.only(left: 4, right: 20),
-                  child: acc02 != null
-                      ? AddressIcon(address02, svg: acc02.icon, size: 32)
-                      : AddressIcon(address02, size: 32),
+                  child: acc02 != null ? AddressIcon(address02, svg: acc02.icon, size: 32) : AddressIcon(address02, size: 32),
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        isController && !isSelfControl
-                            ? dic['stash']
-                            : dic['controller'],
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).unselectedWidgetColor),
+                        isController && !isSelfControl ? dic['stash'] : dic['controller'],
+                        style: TextStyle(fontSize: 14, color: Theme.of(context).unselectedWidgetColor),
                       ),
                       Text(
                         Fmt.address(address02),
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: Theme.of(context).unselectedWidgetColor),
+                        style: TextStyle(fontSize: 13, color: Theme.of(context).unselectedWidgetColor),
                       ),
                     ],
                   ),
@@ -592,17 +542,13 @@ class StakingInfoPanel extends StatelessWidget {
           CupertinoActionSheetAction(
             child: Text(
               dic['action.rebond'],
-              style: TextStyle(
-                  color: !isController
-                      ? Theme.of(context).unselectedWidgetColor
-                      : Theme.of(context).primaryColor),
+              style: TextStyle(color: !isController ? Theme.of(context).unselectedWidgetColor : Theme.of(context).primaryColor),
             ),
             onPressed: !isController
                 ? () => {}
                 : () async {
                     Navigator.of(context).pop();
-                    final res =
-                        await Navigator.of(context).pushNamed(RebondPage.route);
+                    final res = await Navigator.of(context).pushNamed(RebondPage.route);
                     if (res != null) {
                       onSuccess();
                     }
@@ -610,8 +556,7 @@ class StakingInfoPanel extends StatelessWidget {
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
-          child: Text(I18n.of(context)
-              .getDic(i18n_full_dic_chainx, 'common')['cancel']),
+          child: Text(I18n.of(context).getDic(i18n_full_dic_chainx, 'common')['cancel']),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -662,8 +607,7 @@ class StakingInfoPanel extends StatelessWidget {
                               )
                             : Container(),
                         Text(
-                          Fmt.priceFloorBigInt(unlocking, decimals,
-                              lengthMax: 4),
+                          Fmt.priceFloorBigInt(unlocking, decimals, lengthMax: 4),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -679,8 +623,7 @@ class StakingInfoPanel extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(dic['bond.redeemable'],
-                        style: TextStyle(fontSize: 12)),
+                    Text(dic['bond.redeemable'], style: TextStyle(fontSize: 12)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -707,9 +650,7 @@ class StakingInfoPanel extends StatelessWidget {
                                   ),
                                 ),
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(RedeemPage.route)
-                                      .then((res) {
+                                  Navigator.of(context).pushNamed(RedeemPage.route).then((res) {
                                     if (res != null) {
                                       onSuccess();
                                     }
@@ -731,8 +672,7 @@ class StakingInfoPanel extends StatelessWidget {
             children: <Widget>[
               InfoItem(
                 title: dic['available'],
-                content:
-                    Fmt.priceFloorBigInt(available, decimals, lengthMax: 4),
+                content: Fmt.priceFloorBigInt(available, decimals, lengthMax: 4),
                 crossAxisAlignment: CrossAxisAlignment.center,
               ),
               InfoItem(
@@ -756,9 +696,7 @@ class StakingInfoPanel extends StatelessWidget {
                       ),
                       onTap: () {
                         if (!networkLoading) {
-                          Navigator.of(context)
-                              .pushNamed(PayoutPage.route)
-                              .then((res) {
+                          Navigator.of(context).pushNamed(PayoutPage.route).then((res) {
                             if (res != null) {
                               onSuccess();
                             }
@@ -804,8 +742,7 @@ class StakingActionsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> dic =
-        I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final Map<String, String> dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     num actionButtonWidth = (MediaQuery.of(context).size.width - 64) / 3;
     Color actionButtonColor = Theme.of(context).primaryColor;
@@ -819,13 +756,11 @@ class StakingActionsPanel extends StatelessWidget {
     if (isStash) {
       if (stashInfo.controllerId != null) {
         setControllerDisabled = false;
-        onSetControllerTap = () => _onAction(Navigator.of(context)
-            .pushNamed(SetControllerPage.route, arguments: controller));
+        onSetControllerTap = () => _onAction(Navigator.of(context).pushNamed(SetControllerPage.route, arguments: controller));
 
         if (stashInfo.isOwnController) {
           setPayeeDisabled = false;
-          onSetPayeeTap = () =>
-              _onAction(Navigator.of(context).pushNamed(SetPayeePage.route));
+          onSetPayeeTap = () => _onAction(Navigator.of(context).pushNamed(SetPayeePage.route));
         }
       } else {
         bondButtonString = dic['action.bond'];
@@ -833,8 +768,7 @@ class StakingActionsPanel extends StatelessWidget {
     } else {
       if (bonded > BigInt.zero) {
         setPayeeDisabled = false;
-        onSetPayeeTap = () =>
-            _onAction(Navigator.of(context).pushNamed(SetPayeePage.route));
+        onSetPayeeTap = () => _onAction(Navigator.of(context).pushNamed(SetPayeePage.route));
       }
     }
 
@@ -884,8 +818,7 @@ class StakingActionsPanel extends StatelessWidget {
                             ? () => {}
                             : () {
                                 Navigator.of(context).pop();
-                                _onAction(Navigator.of(context)
-                                    .pushNamed(BondExtraPage.route));
+                                _onAction(Navigator.of(context).pushNamed(BondExtraPage.route));
                               },
                       ),
 
@@ -894,23 +827,19 @@ class StakingActionsPanel extends StatelessWidget {
                         child: Text(
                           dic['action.unbond'],
                           style: TextStyle(
-                            color: !isController
-                                ? disabledColor
-                                : actionButtonColor,
+                            color: !isController ? disabledColor : actionButtonColor,
                           ),
                         ),
                         onPressed: !isController
                             ? () => {}
                             : () {
                                 Navigator.of(context).pop();
-                                _onAction(Navigator.of(context)
-                                    .pushNamed(UnBondPage.route));
+                                _onAction(Navigator.of(context).pushNamed(UnBondPage.route));
                               },
                       ),
                     ],
                     cancelButton: CupertinoActionSheetAction(
-                      child: Text(I18n.of(context)
-                          .getDic(i18n_full_dic_chainx, 'common')['cancel']),
+                      child: Text(I18n.of(context).getDic(i18n_full_dic_chainx, 'common')['cancel']),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -933,11 +862,7 @@ class StakingActionsPanel extends StatelessWidget {
                   ),
                   Text(
                     dic['action.reward'],
-                    style: TextStyle(
-                        color: setPayeeDisabled
-                            ? disabledColor
-                            : actionButtonColor,
-                        fontSize: 11),
+                    style: TextStyle(color: setPayeeDisabled ? disabledColor : actionButtonColor, fontSize: 11),
                   )
                 ],
               ),
@@ -953,17 +878,11 @@ class StakingActionsPanel extends StatelessWidget {
                 children: <Widget>[
                   OutlinedCircle(
                     icon: Icons.repeat,
-                    color: setControllerDisabled
-                        ? disabledColor
-                        : actionButtonColor,
+                    color: setControllerDisabled ? disabledColor : actionButtonColor,
                   ),
                   Text(
                     dic['action.control'],
-                    style: TextStyle(
-                        color: setControllerDisabled
-                            ? disabledColor
-                            : actionButtonColor,
-                        fontSize: 11),
+                    style: TextStyle(color: setControllerDisabled ? disabledColor : actionButtonColor, fontSize: 11),
                   )
                 ],
               ),
