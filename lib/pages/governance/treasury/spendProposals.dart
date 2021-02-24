@@ -38,8 +38,8 @@ class _ProposalsState extends State<SpendProposals> {
   int _getSpendPeriod() {
     int spendDays = 0;
     if (widget.plugin.networkConst['treasury'] != null) {
-      final period = int.parse(widget.plugin.networkConst['treasury']['spendPeriod']);
-      final blockTime = int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']);
+      final period = widget.plugin.networkConst['treasury']['spendPeriod'];
+      final blockTime = widget.plugin.networkConst['babe']['expectedBlockTime'];
       spendDays = period * (blockTime ~/ 1000) ~/ SECONDS_OF_DAY;
     }
     return spendDays;
