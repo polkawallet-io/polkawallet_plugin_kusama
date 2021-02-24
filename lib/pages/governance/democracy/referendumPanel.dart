@@ -46,7 +46,7 @@ class ReferendumPanel extends StatelessWidget {
         ),
         Text(
           '#${data.index}',
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headline2,
         ),
       ]),
       Divider(),
