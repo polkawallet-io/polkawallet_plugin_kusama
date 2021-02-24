@@ -76,7 +76,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
     final symbol = widget.plugin.networkState.tokenSymbol;
     final bondPercentage = Fmt.balanceInt(widget.plugin.networkConst['treasury']['proposalBond'].toString()) * BigInt.from(100) ~/ BigInt.from(1000000);
     final minBond = Fmt.balanceInt(widget.plugin.networkConst['treasury']['proposalBondMinimum'].toString());
-    final balance = Fmt.balanceInt(widget.plugin.balances.native.availableBalance.toString());
+    final balance = Fmt.balanceInt((widget.plugin.balances.native.availableBalance ? widget.plugin.balances.native.availableBalance : 0).toString());
     return Scaffold(
       appBar: AppBar(title: Text(dic['treasury.submit']), centerTitle: true),
       body: SafeArea(
