@@ -219,7 +219,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     bool isTipped = tipData.tips.length > 0;
     int blockTime = 6000;
     if (widget.plugin.networkConst['treasury'] != null) {
-      blockTime = int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']);
+      blockTime = widget.plugin.networkConst['babe']['expectedBlockTime'];
     }
 
     final List<BigInt> values = tipData.tips.map((e) => BigInt.parse(e.value.toString())).toList();
