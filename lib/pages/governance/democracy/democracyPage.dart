@@ -43,7 +43,8 @@ class _DemocracyPageState extends State<DemocracyPage> {
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  TopTabs(
+                  Expanded(
+                      child: TopTabs(
                     names: tabs,
                     activeTab: _tab,
                     onTab: (v) {
@@ -53,13 +54,11 @@ class _DemocracyPageState extends State<DemocracyPage> {
                         }
                       });
                     },
-                  ),
+                  )),
                 ],
               ),
               Expanded(
-                child: _tab == 0
-                    ? Democracy(widget.plugin)
-                    : Proposals(widget.plugin),
+                child: _tab == 0 ? Democracy(widget.plugin) : Proposals(widget.plugin),
               ),
             ],
           ),
