@@ -192,7 +192,7 @@ class ReferendumPanel extends StatelessWidget {
               ),
               Text(
                 '${Fmt.balance(data.changeNay, decimals)} $symbol',
-                style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 13),
+                style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 11),
               )
             ],
           ),
