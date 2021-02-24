@@ -36,16 +36,13 @@ class ReferendumPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final endLeft = BigInt.parse(data.status['end'].toString()) - bestNumber;
-    final activateLeft =
-        endLeft + BigInt.parse(data.status['delay'].toString());
+    final activateLeft = endLeft + BigInt.parse(data.status['delay'].toString());
     var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     List<Widget> list = <Widget>[
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
         Text(
-          data.image != null && data.image['proposal'] != null
-              ? '${data.image['proposal']['section']}.${data.image['proposal']['method']}'
-              : '-',
-          style: Theme.of(context).textTheme.headline4,
+          data.image != null && data.image['proposal'] != null ? '${data.image['proposal']['section']}.${data.image['proposal']['method']}' : '-',
+          style: Theme.of(context).textTheme.headline5,
         ),
         Text(
           '#${data.index}',
@@ -60,9 +57,7 @@ class ReferendumPanel extends StatelessWidget {
             child: Icon(Icons.timer, color: Colors.lightGreen, size: 18),
           ),
           Expanded(
-            child: Text(
-                '${dic['remain']} ${Fmt.blockToTime(endLeft.toInt(), blockDuration)}',
-                style: TextStyle(color: Colors.lightGreen)),
+            child: Text('${dic['remain']} ${Fmt.blockToTime(endLeft.toInt(), blockDuration)}', style: TextStyle(color: Colors.lightGreen)),
           ),
           Text(
             '${Fmt.priceFloorBigInt(endLeft, 0, lengthFixed: 0)} blocks',
@@ -75,9 +70,7 @@ class ReferendumPanel extends StatelessWidget {
               children: <Widget>[
                 Container(width: 21),
                 Expanded(
-                  child: Text(
-                      '${dic['activate']} ${Fmt.blockToTime(activateLeft.toInt(), blockDuration)}',
-                      style: TextStyle(color: Colors.pink)),
+                  child: Text('${dic['activate']} ${Fmt.blockToTime(activateLeft.toInt(), blockDuration)}', style: TextStyle(color: Colors.pink)),
                 ),
                 Text(
                   '#${Fmt.priceFloorBigInt(bestNumber + activateLeft, 0, lengthFixed: 0)}',
@@ -94,8 +87,7 @@ class ReferendumPanel extends StatelessWidget {
           : Container()
     ];
     if (data.detail['params'] != null && data.detail['params'].length > 0) {
-      list.add(
-          ReferendumArgsList(data.detail['params'], data.image['proposal']));
+      list.add(ReferendumArgsList(data.detail['params'], data.image['proposal']));
     }
     list.addAll([
       Padding(
@@ -119,25 +111,17 @@ class ReferendumPanel extends StatelessWidget {
     BigInt votedNay = BigInt.parse(data.votedNay);
     BigInt votedTotalCalc = votedAye + votedNay;
     double yes = votedAye / votedTotalCalc;
-    double widthYes =
-        votedTotalCalc > BigInt.zero ? yes * widthFull : widthFull / 2;
+    double widthYes = votedTotalCalc > BigInt.zero ? yes * widthFull : widthFull / 2;
     double widthMin = 6;
-    BigInt voteChange = data.isPassing
-        ? Fmt.balanceInt(data.changeNay)
-        : Fmt.balanceInt(data.changeAye);
-    double yesChange = data.isPassing
-        ? 1 - (votedNay + voteChange) / (votedTotalCalc + voteChange)
-        : (votedAye + voteChange) / (votedTotalCalc + voteChange);
-    double widthPointer =
-        votedTotalCalc > BigInt.zero ? yesChange * widthFull : widthFull / 2;
+    BigInt voteChange = data.isPassing ? Fmt.balanceInt(data.changeNay) : Fmt.balanceInt(data.changeAye);
+    double yesChange = data.isPassing ? 1 - (votedNay + voteChange) / (votedTotalCalc + voteChange) : (votedAye + voteChange) / (votedTotalCalc + voteChange);
+    double widthPointer = votedTotalCalc > BigInt.zero ? yesChange * widthFull : widthFull / 2;
 
     list.addAll([
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          data.isPassing
-              ? Icon(Icons.check_circle, color: Colors.lightGreen, size: 20)
-              : Icon(Icons.remove_circle, color: Colors.orange, size: 20),
+          data.isPassing ? Icon(Icons.check_circle, color: Colors.lightGreen, size: 20) : Icon(Icons.remove_circle, color: Colors.orange, size: 20),
           Padding(
             padding: EdgeInsets.only(left: 4),
             child: Text(
@@ -160,8 +144,7 @@ class ReferendumPanel extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(bottom: 8),
             width: widthPointer > widthMin ? widthPointer : widthMin,
-            decoration: BoxDecoration(
-                border: Border(left: BorderSide(width: 4, color: Colors.grey))),
+            decoration: BoxDecoration(border: Border(left: BorderSide(width: 4, color: Colors.grey))),
           )
         ],
       ),
@@ -172,9 +155,7 @@ class ReferendumPanel extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.only(bottom: 2),
               margin: EdgeInsets.only(bottom: 4),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(width: 6, color: Colors.orange))),
+              decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 6, color: Colors.orange))),
             ),
           ),
           Container(
@@ -194,10 +175,7 @@ class ReferendumPanel extends StatelessWidget {
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text('${Fmt.token(votedNay, decimals)} $symbol'),
-          Text('${Fmt.token(votedAye, decimals)} $symbol')
-        ],
+        children: <Widget>[Text('${Fmt.token(votedNay, decimals)} $symbol'), Text('${Fmt.token(votedAye, decimals)} $symbol')],
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,15 +188,11 @@ class ReferendumPanel extends StatelessWidget {
                   data.isPassing ? Icons.arrow_drop_up : Icons.arrow_drop_down,
                   color: Theme.of(context).unselectedWidgetColor,
                 ),
-                message: data.isPassing
-                    ? dic['vote.change.up']
-                    : dic['vote.change.down'],
+                message: data.isPassing ? dic['vote.change.up'] : dic['vote.change.down'],
               ),
               Text(
                 '${Fmt.balance(data.changeNay, decimals)} $symbol',
-                style: TextStyle(
-                    color: Theme.of(context).unselectedWidgetColor,
-                    fontSize: 13),
+                style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 13),
               )
             ],
           ),
@@ -230,15 +204,11 @@ class ReferendumPanel extends StatelessWidget {
                   !data.isPassing ? Icons.arrow_drop_up : Icons.arrow_drop_down,
                   color: Theme.of(context).unselectedWidgetColor,
                 ),
-                message: !data.isPassing
-                    ? dic['vote.change.up']
-                    : dic['vote.change.down'],
+                message: !data.isPassing ? dic['vote.change.up'] : dic['vote.change.down'],
               ),
               Text(
                 '${Fmt.balance(data.changeAye, decimals)} $symbol',
-                style: TextStyle(
-                    color: Theme.of(context).unselectedWidgetColor,
-                    fontSize: 13),
+                style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 13),
               )
             ],
           )
@@ -251,9 +221,7 @@ class ReferendumPanel extends StatelessWidget {
         data.userVoted['balance'].toString(),
         decimals,
       );
-      String conviction = data.userVoted['vote']['conviction'] == 'None'
-          ? '0.1x'
-          : (data.userVoted['vote']['conviction'] as String).substring(6);
+      String conviction = data.userVoted['vote']['conviction'] == 'None' ? '0.1x' : (data.userVoted['vote']['conviction'] as String).substring(6);
       String yes = data.userVoted['vote']['vote'] == 'Aye' ? 'yes' : 'no';
       list.add(
         Padding(
@@ -283,9 +251,7 @@ class ReferendumPanel extends StatelessWidget {
         isVotedNo: false,
         isVotedYes: false,
         onVote: (yes) async {
-          final res = await Navigator.of(context).pushNamed(
-              ReferendumVotePage.route,
-              arguments: {'referenda': data, 'voteYes': yes});
+          final res = await Navigator.of(context).pushNamed(ReferendumVotePage.route, arguments: {'referenda': data, 'voteYes': yes});
           if (res != null) {
             onRefresh();
           }
@@ -329,9 +295,7 @@ class _ReferendumArgsList extends State<ReferendumArgsList> {
         child: Row(
           children: <Widget>[
             Icon(
-              _showDetail
-                  ? Icons.keyboard_arrow_down
-                  : Icons.keyboard_arrow_right,
+              _showDetail ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
             ),
             Text(I18n.of(context).getDic(i18n_full_dic_chainx, 'gov')['detail'])
           ],
@@ -348,9 +312,7 @@ class _ReferendumArgsList extends State<ReferendumArgsList> {
         items.add(Container(
           margin: EdgeInsets.fromLTRB(8, 4, 4, 4),
           padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-          decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).dividerColor),
-              borderRadius: BorderRadius.all(Radius.circular(4))),
+          decoration: BoxDecoration(border: Border.all(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.all(Radius.circular(4))),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -372,10 +334,7 @@ class _ReferendumArgsList extends State<ReferendumArgsList> {
     }
     return Container(
       margin: EdgeInsets.only(top: 8, bottom: 8),
-      decoration: BoxDecoration(
-          border: Border(
-              left:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 3))),
+      decoration: BoxDecoration(border: Border(left: BorderSide(color: Theme.of(context).dividerColor, width: 3))),
       child: Column(
         children: items,
       ),
