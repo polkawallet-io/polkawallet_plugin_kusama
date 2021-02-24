@@ -42,7 +42,7 @@ class ReferendumPanel extends StatelessWidget {
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
         Text(
           data.image != null && data.image['proposal'] != null ? '${data.image['proposal']['section']}.${data.image['proposal']['method']}' : '-',
-          style: Theme.of(context).textTheme.headline3,
+          style: Theme.of(context).textTheme.headline2,
         ),
         Text(
           '#${data.index}',
