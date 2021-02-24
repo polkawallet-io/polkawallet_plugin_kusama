@@ -19,7 +19,7 @@ class TopTabs extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  width: 160,
+                  width: 140,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
