@@ -182,6 +182,20 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                   ],
                 ),
                 Divider(),
+                Text(
+                  'Block Producer',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(right: 16),
+                    child: AddressIcon(
+                      widget.keyring.current.address,
+                      svg: widget.keyring.current.icon,
+                    ),
+                  ),
+                  Text("BEARPOOL")
+                ])
               ],
             ),
     );
