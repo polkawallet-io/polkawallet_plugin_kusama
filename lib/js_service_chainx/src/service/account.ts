@@ -89,19 +89,17 @@ async function queryAccountsBonded(api: ApiPromise, pubKeys: string[]) {
  * get network native token balance of an address
  */
 async function getBalance(api: ApiPromise, address: string, msgChannel: string) {
-  const getBalanceAsync = (address: string) => {
-    return new Promise(async (resolve, reject) => {
-      let res = await api.query.system.account(address)
-      let accountId = await (await api.derive.balances.account(address)).accountId
+  let accInfo = await api.query.system.account(address)
+  let accountId = await (await api.derive.balances.account(address)).accountId
 
-      resolve({
-        accountId: accountId,
-        accountNonce: res.nonce,
-        availableBalance: res.data.free,
-        freeBalance: res.data.free,
-        reserved: res.data.reserved,
-      })
-    })
+  const transform = (res) => {
+    return {
+      accountId: accountId,
+      accountNonce: res.nonce,
+      availableBalance: res.data.free,
+      freeBalance: res.data.free,
+      reserved: res.data.reserved,
+    }
   }
 
   /*
@@ -117,13 +115,10 @@ async function getBalance(api: ApiPromise, address: string, msgChannel: string) 
   */
 
   if (msgChannel) {
-    subscribeMessage(getBalanceAsync, [address], msgChannel, null)
+    subscribeMessage(api.query.system.account, [address], msgChannel, transform)
     return
   }
-
-  const res = await getBalanceAsync(address)
-
-  return res
+  return transform(accInfo)
 }
 
 /**
