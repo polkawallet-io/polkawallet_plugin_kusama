@@ -388,72 +388,72 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
 
 enum NomStatus { active, over, inactive, waiting }
 
-class _NomineeItem extends StatelessWidget {
-  _NomineeItem(
-    this.id,
-    this.validators,
-    this.stashId,
-    this.nomStatus,
-    this.decimals,
-    this.accInfoMap,
-    this.accIconMap,
-  );
+// class _NomineeItem extends StatelessWidget {
+//   _NomineeItem(
+//     this.id,
+//     this.validators,
+//     this.stashId,
+//     this.nomStatus,
+//     this.decimals,
+//     this.accInfoMap,
+//     this.accIconMap,
+//   );
 
-  final String id;
-  final List<ValidatorData> validators;
-  final String stashId;
-  final NomStatus nomStatus;
-  final int decimals;
-  final Map<String, Map> accInfoMap;
-  final Map<String, String> accIconMap;
+//   final String id;
+//   final List<ValidatorData> validators;
+//   final String stashId;
+//   final NomStatus nomStatus;
+//   final int decimals;
+//   final Map<String, Map> accInfoMap;
+//   final Map<String, String> accIconMap;
 
-  @override
-  Widget build(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+//   @override
+//   Widget build(BuildContext context) {
+//     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
-    final validatorIndex = validators.indexWhere((i) => i.accountId == id);
-    final validator = validatorIndex < 0 ? ValidatorData.fromJson({'accountId': id}) : validators[validatorIndex];
+//     final validatorIndex = validators.indexWhere((i) => i.accountId == id);
+//     final validator = validatorIndex < 0 ? ValidatorData.fromJson({'accountId': id}) : validators[validatorIndex];
 
-    final accInfo = accInfoMap[validator.accountId];
-    final icon = accIconMap[validator.accountId];
-    final status = nomStatus.toString().split('.')[1];
+//     final accInfo = accInfoMap[validator.accountId];
+//     final icon = accIconMap[validator.accountId];
+//     final status = nomStatus.toString().split('.')[1];
 
-    BigInt meStaked;
-    int meIndex = validator.nominators.indexWhere((i) => i['who'] == stashId);
-    if (meIndex >= 0) {
-      meStaked = BigInt.parse(validator.nominators[meIndex]['value'].toString());
-    }
-    String subtitle = dicStaking['nominate.$status'];
-    if (nomStatus == NomStatus.active) {
-      subtitle += ' ${Fmt.token(meStaked ?? BigInt.zero, decimals)}';
-    }
+//     BigInt meStaked;
+//     int meIndex = validator.nominators.indexWhere((i) => i['who'] == stashId);
+//     if (meIndex >= 0) {
+//       meStaked = BigInt.parse(validator.nominators[meIndex]['value'].toString());
+//     }
+//     String subtitle = dicStaking['nominate.$status'];
+//     if (nomStatus == NomStatus.active) {
+//       subtitle += ' ${Fmt.token(meStaked ?? BigInt.zero, decimals)}';
+//     }
 
-    return ListTile(
-      dense: true,
-      leading: AddressIcon(validator.accountId, svg: icon, size: 32),
-      title: UI.accountDisplayName(validator.accountId, accInfo),
-      subtitle: Text(subtitle),
-      trailing: Container(
-        width: 100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: Container(height: 4),
-            ),
-            Expanded(
-              child: Text(validator.commission.isNotEmpty ? validator.commission : '~'),
-            ),
-            Expanded(
-              child: Text(dicStaking['commission'], style: TextStyle(fontSize: 12)),
-            ),
-          ],
-        ),
-      ),
-      onTap: () {
-        Navigator.of(context).pushNamed(ValidatorDetailPage.route, arguments: validator);
-      },
-    );
-  }
-}
+//     return ListTile(
+//       dense: true,
+//       leading: AddressIcon(validator.accountId, svg: icon, size: 32),
+//       title: UI.accountDisplayName(validator.accountId, accInfo),
+//       subtitle: Text(subtitle),
+//       trailing: Container(
+//         width: 100,
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           mainAxisSize: MainAxisSize.min,
+//           children: <Widget>[
+//             Expanded(
+//               child: Container(height: 4),
+//             ),
+//             Expanded(
+//               child: Text(validator.commission.isNotEmpty ? validator.commission : '~'),
+//             ),
+//             Expanded(
+//               child: Text(dicStaking['commission'], style: TextStyle(fontSize: 12)),
+//             ),
+//           ],
+//         ),
+//       ),
+//       onTap: () {
+//         Navigator.of(context).pushNamed(ValidatorDetailPage.route, arguments: validator);
+//       },
+//     );
+//   }
+// }
