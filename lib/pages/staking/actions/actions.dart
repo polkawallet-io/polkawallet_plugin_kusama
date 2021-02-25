@@ -234,8 +234,8 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
           ),
           title: Text(i.address),
           subtitle: Column(children: [
-            Text('Number of votes: ${i.votes}', style: TextStyle(color: Colors.green)),
-            Text('Number of interests: ${i.interests}', style: TextStyle(color: Colors.red)),
+            Text('Votes: ${i.votes}', style: TextStyle(color: Colors.green)),
+            Text('Interests: ${i.interests}', style: TextStyle(color: Colors.red)),
           ]),
           trailing: Text('Freeze: ${i.freeze}'),
           onTap: () {
