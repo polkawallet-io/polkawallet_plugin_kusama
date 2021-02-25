@@ -186,7 +186,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                   'Block Producer',
                   style: Theme.of(context).textTheme.headline4,
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(right: 16),
                     child: AddressIcon(
