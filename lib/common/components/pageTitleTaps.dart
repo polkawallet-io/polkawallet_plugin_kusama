@@ -19,18 +19,13 @@ class PageTitleTabs extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  width: 150,
+                  width: 160,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         title,
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: activeTab == index
-                                ? Theme.of(context).cardColor
-                                : Colors.white70,
-                            fontWeight: FontWeight.w500),
+                        style: TextStyle(fontSize: 16, color: activeTab == index ? Theme.of(context).cardColor : Colors.white70, fontWeight: FontWeight.w500),
                       )
                     ],
                   ),
@@ -39,10 +34,7 @@ class PageTitleTabs extends StatelessWidget {
                   height: 12,
                   width: 32,
                   decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            width: activeTab == index ? 3 : 0,
-                            color: Colors.white)),
+                    border: Border(bottom: BorderSide(width: activeTab == index ? 3 : 0, color: Colors.white)),
                   ),
                 )
               ],
