@@ -251,7 +251,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
     List<ValidatorData> validatorsInfo = [];
     Map<String, dynamic> account1 = {
       'accountId': '15fzipQgL4rtnLckM4DiETBNNp3v2bpXguhQxLB6ne6VgXKM',
-      'exposure': {'total': 2056244.9369, 'own': 2044.1234},
+      'exposure': {'total': 20562449369, 'own': 20441234},
       'isActive': true,
       'isElected': true,
       'numNominators': 0,
