@@ -369,9 +369,9 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
             itemCount: list.length,
             itemBuilder: (BuildContext context, int i) {
               // we already have the index_0 - index_3 Widget
-              // if (i < 4) {
-              //   return list[i];
-              // }
+              if (i < 1) {
+                return list[i];
+              }
               ValidatorData acc = list[i];
               Map accInfo = widget.plugin.store.accounts.addressIndexMap[acc.accountId];
               final icon = widget.plugin.store.accounts.addressIconsMap[acc.accountId];
