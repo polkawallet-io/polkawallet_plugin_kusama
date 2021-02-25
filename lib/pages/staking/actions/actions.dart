@@ -142,7 +142,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     return RoundedCard(
       margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
       padding: EdgeInsets.all(16),
-      child: !hasData || true
+      child: !hasData && false
           ? Container(
               padding: EdgeInsets.only(top: 80, bottom: 80),
               child: CupertinoActivityIndicator(),
