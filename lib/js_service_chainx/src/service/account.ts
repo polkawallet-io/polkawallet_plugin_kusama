@@ -89,36 +89,55 @@ async function queryAccountsBonded(api: ApiPromise, pubKeys: string[]) {
  * get network native token balance of an address
  */
 async function getBalance(api: ApiPromise, address: string, msgChannel: string) {
-  let accInfo = await api.query.system.account(address)
-  let accountId = await (await api.derive.balances.account(address)).accountId
-
-  const transform = (res) => {
+  const transfrom = (res: any) => {
+    const lockedBreakdown = res.lockedBreakdown.map((i: any) => {
+      return {
+        ...i,
+        use: hexToString(i.id.toHex()),
+      }
+    })
     return {
-      accountId: accountId,
-      accountNonce: res.nonce,
-      availableBalance: res.data.free,
-      freeBalance: res.data.free,
-      reserved: res.data.reserved,
+      ...res,
+      lockedBreakdown,
     }
   }
-
-  /*
-  Balance     8,012.2985194 PCX
-  Reserved    10 PCX
-  Locked      8,000 PCX
-
-  res.data = {
-    free: 8.0022 kPCX,
-    reserved: 10.0000 PCX,
-    feeFrozen: 8.0000 kPCX
-  }
-  */
-
   if (msgChannel) {
-    subscribeMessage(api.query.system.account, [address], msgChannel, transform)
+    subscribeMessage(api.derive.balances.all, [address], msgChannel, transfrom)
     return
   }
-  return transform(accInfo)
+
+  const res = await api.derive.balances.all(address)
+  return transfrom(res)
+  // let accInfo = await api.query.system.account(address)
+  // let accountId = await (await api.derive.balances.account(address)).accountId
+
+  // const transform = (res) => {
+  //   return {
+  //     accountId: accountId,
+  //     accountNonce: res.nonce,
+  //     availableBalance: res.data.free,
+  //     freeBalance: res.data.free,
+  //     reserved: res.data.reserved,
+  //   }
+  // }
+
+  // /*
+  // Balance     8,012.2985194 PCX
+  // Reserved    10 PCX
+  // Locked      8,000 PCX
+
+  // res.data = {
+  //   free: 8.0022 kPCX,
+  //   reserved: 10.0000 PCX,
+  //   feeFrozen: 8.0000 kPCX
+  // }
+  // */
+
+  // if (msgChannel) {
+  //   subscribeMessage(api.query.system.account, [address], msgChannel, transform)
+  //   return
+  // }
+  // return transform(accInfo)
 }
 
 /**
