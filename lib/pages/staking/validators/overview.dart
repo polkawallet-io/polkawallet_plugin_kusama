@@ -247,6 +247,23 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
   @override
   Widget build(BuildContext context) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+
+    List<ValidatorData> validatorsInfo = [];
+    Map<String, dynamic> account1 = {
+      'accountId': '15fzipQgL4rtnLckM4DiETBNNp3v2bpXguhQxLB6ne6VgXKM',
+      'exposure': {'total': 2056244.9369, 'own': 2044.1234},
+      'isActive': true,
+      'isElected': true,
+      'numNominators': 0,
+      'rankBondTotal': 0,
+      'rankReward': 0,
+      'stakedReturn': 13.82,
+      'stakedReturnCmp': 10.16,
+      'validatorPrefs': {'commission': 3000000000},
+      'nominators': []
+    };
+    validatorsInfo.add(ValidatorData.fromJson(account1));
+
     return Observer(
       builder: (_) {
         final int decimals = widget.plugin.networkState.tokenDecimals;
@@ -263,7 +280,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
           _buildTopCard(context),
           // index_1: the 'Validators' label
         ];
-        if (widget.plugin.store.staking.validatorsInfo.length > 0) {
+        // if (widget.plugin.store.staking.validatorsInfo.length > 0) {
+        if (validatorsInfo.length > 0) {
           // index_2: the filter Widget
           list.add(Container(
             color: Colors.white,
