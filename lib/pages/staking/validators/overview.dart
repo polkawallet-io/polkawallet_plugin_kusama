@@ -251,7 +251,11 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
     List<ValidatorData> validatorsInfo = [];
     Map<String, dynamic> account1 = {
       'accountId': '15fzipQgL4rtnLckM4DiETBNNp3v2bpXguhQxLB6ne6VgXKM',
-      'exposure': {'total': 20562449369, 'own': 20441234},
+      'exposure': {
+        'total': 20562449369,
+        'own': 20441234,
+        'others': {'1f2': 230412}
+      },
       'isActive': true,
       'isElected': true,
       'numNominators': 0,
@@ -260,7 +264,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
       'stakedReturn': 13.82,
       'stakedReturnCmp': 10.16,
       'validatorPrefs': {'commission': 3000000000},
-      'nominators': []
     };
     validatorsInfo.add(ValidatorData.fromJson(account1));
 
