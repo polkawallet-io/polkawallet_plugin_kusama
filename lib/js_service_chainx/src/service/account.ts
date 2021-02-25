@@ -89,8 +89,20 @@ async function queryAccountsBonded(api: ApiPromise, pubKeys: string[]) {
  * get network native token balance of an address
  */
 async function getBalance(api: ApiPromise, address: string, msgChannel: string) {
-  let res = await api.query.system.account(address)
-  let accountId = await (await api.derive.balances.account(address)).accountId
+  const getBalanceAsync = (address: string) => {
+    return new Promise(async (resolve, reject) => {
+      let res = await api.query.system.account(address)
+      let accountId = await (await api.derive.balances.account(address)).accountId
+
+      resolve({
+        accountId: accountId,
+        accountNonce: res.nonce,
+        availableBalance: res.data.free,
+        freeBalance: res.data.free,
+        reserved: res.data.reserved,
+      })
+    })
+  }
 
   /*
   Balance     8,012.2985194 PCX
@@ -104,13 +116,14 @@ async function getBalance(api: ApiPromise, address: string, msgChannel: string) 
   }
   */
 
-  return {
-    accountId: accountId,
-    accountNonce: res.nonce,
-    availableBalance: res.data.free,
-    freeBalance: res.data.free,
-    reserved: res.data.reserved,
+  if (msgChannel) {
+    subscribeMessage(getBalanceAsync, [address], msgChannel, null)
+    return
   }
+
+  const res = await getBalanceAsync(address)
+
+  return res
 }
 
 /**
