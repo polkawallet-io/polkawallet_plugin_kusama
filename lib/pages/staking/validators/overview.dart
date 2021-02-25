@@ -369,7 +369,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
             itemCount: list.length,
             itemBuilder: (BuildContext context, int i) {
               // we already have the index_0 - index_3 Widget
-              if (i < 1) {
+              if (i < 2) {
                 return list[i];
               }
               ValidatorData acc = list[i];
