@@ -38,6 +38,20 @@ class StakingActions extends StatefulWidget {
   _StakingActions createState() => _StakingActions();
 }
 
+class StakedInfo {
+  String address;
+  String votes;
+  String interests;
+  String freeze;
+
+  StakedInfo(String _address, String _votes, String _interests, String _freeze) {
+    address = _address;
+    votes = _votes;
+    interests = _interests;
+    freeze = _freeze;
+  }
+}
+
 class _StakingActions extends State<StakingActions> with SingleTickerProviderStateMixin {
   final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey<RefreshIndicatorState>();
 
@@ -201,6 +215,44 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     );
   }
 
+  List<Widget> _buildMyStakedValidatorsList() {
+    // final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+    List<Widget> res = [];
+
+    List<StakedInfo> txs = [];
+    txs.add(StakedInfo('5RXaXG…VegwD6', '1.0000 PCX', '0.0002 PCX', '0.0000'));
+    txs.add(StakedInfo('6FRaXG…VegwD6', '21.0000 PCX', '0.0012 PCX', '5.0000'));
+
+    res.addAll(txs.map((i) {
+      return Container(
+        color: Theme.of(context).cardColor,
+        child: ListTile(
+          leading: Container(
+            width: 32,
+            padding: EdgeInsets.only(top: 4),
+            child: Image.asset('packages/polkawallet_plugin_chainx/assets/images/staking/ok.png'),
+          ),
+          title: Text(i.address),
+          subtitle: Text(i.votes),
+          trailing: Text(
+            i.interests,
+            style: TextStyle(color: Colors.green),
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
+          },
+        ),
+      );
+    }));
+
+    res.add(ListTail(
+      isLoading: true,
+      isEmpty: txs.length == 0,
+    ));
+
+    return res;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -263,7 +315,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
           //   ),
           // ),
         ];
-        // list.addAll(_tab == 0 ? _buildTxList() : _buildRewardsList());
+        list.addAll(_buildMyStakedValidatorsList());
         return RefreshIndicator(
           key: _refreshKey,
           onRefresh: _updateStakingInfo,

@@ -165,240 +165,65 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
   }
 
   Widget _buildTopCard(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final decimals = widget.plugin.networkState.tokenDecimals ?? 8;
-    final stashInfo = widget.plugin.store.staking.ownStashInfo;
-    final overview = widget.plugin.store.staking.overview;
-    final hashData = stashInfo != null && stashInfo.stakingLedger != null;
-
-    int bonded = 0;
-    List nominators = [];
-    double nominatorListHeight = 48;
-    bool isController = false;
-    bool isStash = true;
-    if (hashData) {
-      bonded = int.parse(stashInfo.stakingLedger['active'].toString());
-      nominators = stashInfo.nominating.toList();
-      if (nominators.length > 0) {
-        nominatorListHeight = double.parse((nominators.length * 56).toString());
-      }
-      isController = stashInfo.isOwnController;
-      isStash = stashInfo.isOwnStash || (!stashInfo.isOwnStash && !stashInfo.isOwnController);
-    }
-
-    double stakedRatio = 0;
-    if (overview['totalStaked'] != null) {
-      stakedRatio = Fmt.balanceInt('0x${overview['totalStaked']}') / Fmt.balanceInt(overview['totalIssuance']);
-    }
-
-    Color actionButtonColor = Theme.of(context).primaryColor;
-    Color disabledColor = Theme.of(context).disabledColor;
-
     return RoundedCard(
       margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
-      padding: EdgeInsets.only(top: 8, bottom: 8),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
-            child: Column(
-              children: [
-                Text(
-                  '${dicStaking['overview.total']} (${(stakedRatio * 100).toStringAsFixed(1)}%)',
-                  style: TextStyle(fontSize: 12),
-                ),
-                Text(
-                  Fmt.balance('0x${overview['totalStaked']}', decimals, length: 0),
-                  style: Theme.of(context).textTheme.headline4,
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-            child: Row(
-              children: [
-                InfoItem(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  title: dicStaking['overview.reward'],
-                  content: Fmt.ratio(overview['stakedReturn'] / 100),
-                ),
-                InfoItem(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  title: dicStaking['overview.min'],
-                  content: Fmt.balance(overview['minNominated'], decimals),
-                ),
-              ],
-            ),
-          ),
-          Divider(),
-          ListTile(
-            leading: Container(
-              width: 32,
-              child: IconButton(
-                icon: Icon(
-                  _expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                  size: 32,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _expanded = !_expanded;
-                  });
-                },
-              ),
-            ),
-            title: Text(
-              hashData ? stashInfo.nominating.length.toString() : '0',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            subtitle: Text(dicStaking['nominating']),
-            trailing: Container(
-              width: 100,
-              child: stashInfo?.controllerId == null && isStash
-                  ? GestureDetector(
+      padding: EdgeInsets.all(16),
+      child: false
+          ? Container(
+              padding: EdgeInsets.only(top: 80, bottom: 80),
+              child: CupertinoActivityIndicator(),
+            )
+          : Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          OutlinedCircle(
-                            icon: Icons.add,
-                            color: actionButtonColor,
-                          ),
                           Text(
-                            dicStaking['action.nominate'],
-                            style: TextStyle(color: actionButtonColor),
-                          )
+                            "Elector",
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          Text("50 / 124")
                         ],
                       ),
-                      onTap: _goToBond,
-                    )
-                  : isStash && !isController
-                      ? Column(
-                          children: <Widget>[
-                            OutlinedCircle(
-                              icon: Icons.add,
-                              color: disabledColor,
-                            ),
-                            Text(
-                              dicStaking['action.nominate'],
-                              style: TextStyle(color: disabledColor),
-                            )
-                          ],
-                        )
-                      : GestureDetector(
-                          child: Column(
-                            children: <Widget>[
-                              OutlinedCircle(
-                                icon: Icons.add,
-                                color: actionButtonColor,
-                              ),
-                              Text(
-                                dicStaking[nominators.length > 0 ? 'action.nominee' : 'action.nominate'],
-                                style: TextStyle(color: actionButtonColor),
-                              )
-                            ],
-                          ),
-                          onTap: bonded > 0 ? _onSetNomination : () => _goToBond(bondExtra: true),
-                        ),
-            ),
-          ),
-          AnimatedContainer(
-            height: _expanded ? nominatorListHeight : 0,
-            duration: Duration(seconds: 1),
-            curve: Curves.fastOutSlowIn,
-            child: AnimatedOpacity(
-              opacity: _expanded ? 1.0 : 0.0,
-              duration: Duration(seconds: 1),
-              curve: Curves.fastLinearToSlowEaseIn,
-              child: nominators.length > 0
-                  ? _buildNominatingList()
-                  : Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text(
-                        I18n.of(context).getDic(i18n_full_dic_ui, 'common')['list.empty'],
-                        style: TextStyle(color: Colors.black54),
-                      ),
                     ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            '1,327,631',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          Text(
+                            'Last Block',
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                Divider(),
+                Text(
+                  'Block Producer',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(right: 16),
+                    child: AddressIcon(
+                      widget.keyring.current.address,
+                      svg: widget.keyring.current.icon,
+                    ),
+                  ),
+                  Text("BEARPOOL")
+                ])
+              ],
             ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNominatingList() {
-    if (widget.plugin.store.staking.ownStashInfo == null || widget.plugin.store.staking.validatorsInfo.length == 0) {
-      return Container();
-    }
-
-    final stashId = widget.plugin.store.staking.ownStashInfo.stashId;
-    final NomineesInfoData nomineesInfo = widget.plugin.store.staking.ownStashInfo.inactives;
-    List<Widget> list = [];
-    if (nomineesInfo != null) {
-      list.addAll(nomineesInfo.nomsActive.map((id) {
-        return Expanded(
-          child: _NomineeItem(
-            id,
-            widget.plugin.store.staking.validatorsInfo,
-            stashId,
-            NomStatus.active,
-            widget.plugin.networkState.tokenDecimals,
-            widget.plugin.store.accounts.addressIndexMap,
-            widget.plugin.store.accounts.addressIconsMap,
-          ),
-        );
-      }));
-
-      list.addAll(nomineesInfo.nomsOver.map((id) {
-        return Expanded(
-          child: _NomineeItem(
-            id,
-            widget.plugin.store.staking.validatorsInfo,
-            stashId,
-            NomStatus.over,
-            widget.plugin.networkState.tokenDecimals,
-            widget.plugin.store.accounts.addressIndexMap,
-            widget.plugin.store.accounts.addressIconsMap,
-          ),
-        );
-      }).toList());
-
-      list.addAll(nomineesInfo.nomsInactive.map((id) {
-        return Expanded(
-          child: _NomineeItem(
-            id,
-            widget.plugin.store.staking.validatorsInfo,
-            stashId,
-            NomStatus.inactive,
-            widget.plugin.networkState.tokenDecimals,
-            widget.plugin.store.accounts.addressIndexMap,
-            widget.plugin.store.accounts.addressIconsMap,
-          ),
-        );
-      }).toList());
-
-      list.addAll(nomineesInfo.nomsWaiting.map((id) {
-        return Expanded(
-          child: _NomineeItem(
-            id,
-            widget.plugin.store.staking.validatorsInfo,
-            stashId,
-            NomStatus.waiting,
-            widget.plugin.networkState.tokenDecimals,
-            widget.plugin.store.accounts.addressIndexMap,
-            widget.plugin.store.accounts.addressIconsMap,
-          ),
-        );
-      }).toList());
-    }
-    return Container(
-      padding: EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Theme.of(context).dividerColor, width: 0.5),
-        ),
-      ),
-      child: Column(
-        children: list,
-      ),
     );
   }
 
@@ -437,20 +262,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
           // index_0: the overview card
           _buildTopCard(context),
           // index_1: the 'Validators' label
-          Container(
-            color: Theme.of(context).cardColor,
-            child: TabBar(
-              labelColor: Colors.black87,
-              labelStyle: TextStyle(fontSize: 18),
-              controller: _tabController,
-              tabs: _listTabs,
-              onTap: (i) {
-                setState(() {
-                  _tab = i;
-                });
-              },
-            ),
-          ),
         ];
         if (widget.plugin.store.staking.validatorsInfo.length > 0) {
           // index_2: the filter Widget
