@@ -87,84 +87,6 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
-  Future<void> _onChangeAccount(KeyPairData acc) async {
-    widget.keyring.setCurrent(acc);
-    widget.plugin.changeAccount(acc);
-    _refreshKey.currentState.show();
-  }
-
-  List<Widget> _buildTxList() {
-    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
-    List<Widget> res = [];
-    res.addAll(widget.plugin.store.staking.txs.map((i) {
-      return Container(
-        color: Theme.of(context).cardColor,
-        child: ListTile(
-          leading: Container(
-            width: 32,
-            padding: EdgeInsets.only(top: 4),
-            child: i.success ? Image.asset('packages/polkawallet_plugin_chainx/assets/images/staking/ok.png') : Image.asset('packages/polkawallet_plugin_chainx/assets/images/staking/error.png'),
-          ),
-          title: Text(i.call),
-          subtitle: Text(Fmt.dateTime(DateTime.fromMillisecondsSinceEpoch(i.blockTimestamp * 1000))),
-          trailing: i.success
-              ? Text(
-                  dic['success'],
-                  style: TextStyle(color: Colors.green),
-                )
-              : Text(
-                  dic['failed'],
-                  style: TextStyle(color: Colors.pink),
-                ),
-          onTap: () {
-            Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
-          },
-        ),
-      );
-    }));
-
-    res.add(ListTail(
-      isLoading: widget.plugin.store.staking.txsLoading,
-      isEmpty: widget.plugin.store.staking.txs.length == 0,
-    ));
-
-    return res;
-  }
-
-  List<Widget> _buildRewardsList() {
-    final int decimals = widget.plugin.networkState.tokenDecimals;
-    final String symbol = widget.plugin.networkState.tokenSymbol;
-
-    List<Widget> res = [];
-    res.addAll(widget.plugin.store.staking.txsRewards.map((i) {
-      return Container(
-        color: Theme.of(context).cardColor,
-        child: ListTile(
-          leading: Container(
-            width: 32,
-            padding: EdgeInsets.only(top: 4),
-            child: i.eventId == 'Reward'
-                ? SvgPicture.asset('packages/polkawallet_plugin_chainx/assets/images/staking/reward.svg')
-                : SvgPicture.asset('packages/polkawallet_plugin_chainx/assets/images/staking/slash.svg'),
-          ),
-          title: Text(i.eventId),
-          subtitle: Text(Fmt.dateTime(DateTime.fromMillisecondsSinceEpoch(i.blockTimestamp * 1000))),
-          trailing: Text('${Fmt.balance(i.amount, decimals)} $symbol'),
-          onTap: () {
-            Navigator.of(context).pushNamed(RewardDetailPage.route, arguments: i);
-          },
-        ),
-      );
-    }));
-
-    res.add(ListTail(
-      isLoading: _rewardLoading,
-      isEmpty: widget.plugin.store.staking.txsRewards.length == 0,
-    ));
-
-    return res;
-  }
-
   Widget _buildActionCard() {
     var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final bool hasData = widget.plugin.store.staking.ownStashInfo != null;
@@ -230,22 +152,15 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 16),
-                      child: AddressIcon(
-                        widget.keyring.current.address,
-                        svg: widget.keyring.current.icon,
-                      ),
-                    ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            UI.accountName(context, widget.keyring.current),
+                            "Elector",
                             style: Theme.of(context).textTheme.headline4,
                           ),
-                          Text(Fmt.address(widget.keyring.current.address))
+                          Text("50 / 124")
                         ],
                       ),
                     ),
@@ -254,11 +169,11 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '${Fmt.priceFloorBigInt(totalBalance, decimals, lengthMax: 4)}',
+                            '1,327,631',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
-                            dic['balance'],
+                            'Last Block',
                             style: TextStyle(fontSize: 13),
                           ),
                         ],
@@ -266,39 +181,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                     )
                   ],
                 ),
-                RowAccount02(
-                  acc02: acc02,
-                  accountId: widget.plugin.store.staking.ownStashInfo.account.accountId ?? widget.keyring.current.address,
-                  isController: isController,
-                  isSelfControl: isSelfControl,
-                  stashInfo: widget.plugin.store.staking.ownStashInfo,
-                  keyring: widget.keyring,
-                  onChangeAccount: _onChangeAccount,
-                ),
                 Divider(),
-                StakingInfoPanel(
-                  hasData: hasData,
-                  isController: isController,
-                  accountId: widget.keyring.current.address,
-                  stashInfo: widget.plugin.store.staking.ownStashInfo,
-                  decimals: decimals,
-                  blockDuration: int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']),
-                  bonded: bonded,
-                  unlocking: unlocking,
-                  redeemable: redeemable,
-                  available: available,
-                  networkLoading: !hasData,
-                  onSuccess: () => _refreshKey.currentState.show(),
-                ),
-                Divider(),
-                StakingActionsPanel(
-                  isStash: isStash,
-                  isController: isController,
-                  stashInfo: widget.plugin.store.staking.ownStashInfo,
-                  bonded: bonded,
-                  controller: acc02,
-                  onSuccess: () => _refreshKey.currentState.show(),
-                ),
               ],
             ),
     );
@@ -366,7 +249,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
           //   ),
           // ),
         ];
-        list.addAll(_tab == 0 ? _buildTxList() : _buildRewardsList());
+        // list.addAll(_tab == 0 ? _buildTxList() : _buildRewardsList());
         return RefreshIndicator(
           key: _refreshKey,
           onRefresh: _updateStakingInfo,
