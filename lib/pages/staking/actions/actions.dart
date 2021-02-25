@@ -230,7 +230,10 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
           leading: Container(
             width: 32,
             padding: EdgeInsets.only(top: 4),
-            child: Image.asset('packages/polkawallet_plugin_chainx/assets/images/staking/ok.png'),
+            child: AddressIcon(
+              widget.keyring.current.address,
+              svg: widget.keyring.current.icon,
+            ),
           ),
           title: Text(i.address),
           subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
