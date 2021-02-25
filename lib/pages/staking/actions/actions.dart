@@ -342,29 +342,29 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
       builder: (_) {
         List<Widget> list = <Widget>[
           _buildActionCard(),
-          Container(
-            color: Theme.of(context).cardColor,
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-            child: TabBar(
-              labelColor: Colors.black87,
-              labelStyle: TextStyle(fontSize: 18),
-              controller: _tabController,
-              tabs: <Tab>[
-                Tab(
-                  text: dic['txs'],
-                ),
-                Tab(
-                  text: dic['txs.reward'],
-                ),
-              ],
-              onTap: (i) {
-                i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
-                setState(() {
-                  _tab = i;
-                });
-              },
-            ),
-          ),
+          // Container(
+          //   color: Theme.of(context).cardColor,
+          //   padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+          //   child: TabBar(
+          //     labelColor: Colors.black87,
+          //     labelStyle: TextStyle(fontSize: 18),
+          //     controller: _tabController,
+          //     tabs: <Tab>[
+          //       Tab(
+          //         text: dic['txs'],
+          //       ),
+          //       Tab(
+          //         text: dic['txs.reward'],
+          //       ),
+          //     ],
+          //     onTap: (i) {
+          //       i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
+          //       setState(() {
+          //         _tab = i;
+          //       });
+          //     },
+          //   ),
+          // ),
         ];
         list.addAll(_tab == 0 ? _buildTxList() : _buildRewardsList());
         return RefreshIndicator(

@@ -304,7 +304,7 @@ type Result = Record<string, string[]>;
  * Query nominations of staking module.
  */
 async function queryNominations(api: ApiPromise) {
-  const nominators: [StorageKey, Option<Nominations>][] = await api.query.staking.nominators.entries();
+  const nominators: [StorageKey, Option<Nominations>][] = await api.query.xStaking.nominators.entries();
   return nominators.reduce((mapped: Result, [key, optNoms]) => {
     if (optNoms.isSome && key.args.length) {
       const nominatorId = key.args[0].toString();
