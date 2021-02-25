@@ -223,7 +223,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     txs.add(StakedInfo('5RXaXG…VegwD6', '1.0000 PCX', '0.0002 PCX', '0.0000'));
     txs.add(StakedInfo('6FRaXG…VegwD6', '21.0000 PCX', '0.0012 PCX', '5.0000'));
 
-    res.add(Text("My Stake", style: TextStyle(fontSize: 20)));
+    res.add(Padding(padding: EdgeInsets.only(left: 10), child: Text("My Stake", style: TextStyle(fontSize: 22))));
 
     res.addAll(txs.map((i) {
       return Container(
