@@ -343,7 +343,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
           ));
           // add validators
           // List<ValidatorData> ls = _tab == 0 ? widget.plugin.store.staking.electedInfo.toList() : widget.plugin.store.staking.nextUpsInfo.toList();
-          List<ValidatorData> ls = validatorsInfo;
+          List<ValidatorData> ls = validatorsInfo.toList();
           // filter list
           ls = PluginFmt.filterValidatorList(ls, _filter, widget.plugin.store.accounts.addressIndexMap);
           // sort list
