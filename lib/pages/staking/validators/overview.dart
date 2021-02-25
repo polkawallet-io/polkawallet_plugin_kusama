@@ -261,7 +261,33 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
       'stakedReturnCmp': 10.16,
       'validatorPrefs': {'commission': 3000000000},
     };
+    Map<String, dynamic> account2 = {
+      'accountId': '15fzipQgL4rtnLckM4DiETBNNp3v2bpXguhQxLB6ne6VgXKM',
+      'exposure': {'total': 20562449369, 'own': 20441234, 'others': []},
+      'isActive': true,
+      'isElected': true,
+      'numNominators': 0,
+      'rankBondTotal': 0,
+      'rankReward': 0,
+      'stakedReturn': 13.82,
+      'stakedReturnCmp': 10.16,
+      'validatorPrefs': {'commission': 3000000000},
+    };
+    Map<String, dynamic> account3 = {
+      'accountId': '15fzipQgL4rtnLckM4DiETBNNp3v2bpXguhQxLB6ne6VgXKM',
+      'exposure': {'total': 20562449369, 'own': 20441234, 'others': []},
+      'isActive': true,
+      'isElected': true,
+      'numNominators': 0,
+      'rankBondTotal': 0,
+      'rankReward': 0,
+      'stakedReturn': 13.82,
+      'stakedReturnCmp': 10.16,
+      'validatorPrefs': {'commission': 3000000000},
+    };
     validatorsInfo.add(ValidatorData.fromJson(account1));
+    validatorsInfo.add(ValidatorData.fromJson(account2));
+    validatorsInfo.add(ValidatorData.fromJson(account3));
 
     return Observer(
       builder: (_) {
