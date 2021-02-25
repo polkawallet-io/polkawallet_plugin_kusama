@@ -233,7 +233,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
             child: Image.asset('packages/polkawallet_plugin_chainx/assets/images/staking/ok.png'),
           ),
           title: Text(i.address),
-          subtitle: Column(children: [
+          subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Votes: ${i.votes}', style: TextStyle(color: Colors.green)),
             Text('Interests: ${i.interests}', style: TextStyle(color: Colors.red)),
           ]),
