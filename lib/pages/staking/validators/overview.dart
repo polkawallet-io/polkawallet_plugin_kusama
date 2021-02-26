@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_chainx/common/components/infoItem.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/bondExtraPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/validators/nominatePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validator.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorListFilter.dart';
@@ -66,101 +64,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
     Map res = await WalletApi.getRecommended();
     if (res != null && res['validators'] != null) {
       widget.plugin.store.staking.setRecommendedValidatorList(res['validators']);
-    }
-  }
-
-  void _goToBond({bondExtra = false}) {
-    if (widget.plugin.store.staking.ownStashInfo == null) return;
-
-    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    showCupertinoDialog(
-      context: context,
-      builder: (_) {
-        return CupertinoAlertDialog(
-          title: Text(dicStaking['action.nominate']),
-          content: Text(dicStaking['action.nominate.bond']),
-          actions: <Widget>[
-            CupertinoButton(
-              child: Text(dic['cancel']),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            CupertinoButton(
-              child: Text(dic['ok']),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                final res = Navigator.pushNamed(context, bondExtra ? BondExtraPage.route : StakePage.route);
-                if (res != null) {
-                  _refreshKey.currentState.show();
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _onSetNomination() {
-    if (widget.plugin.store.staking.ownStashInfo == null) return;
-
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final hasNomination = widget.plugin.store.staking.ownStashInfo.nominating.length > 0;
-    showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        actions: <Widget>[
-          CupertinoActionSheetAction(
-            child: Text(
-              dicStaking['action.nominee'],
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-              _nominate();
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: Text(
-              dicStaking['action.chill'],
-              style: TextStyle(color: hasNomination ? Theme.of(context).primaryColor : Theme.of(context).disabledColor),
-            ),
-            onPressed: hasNomination
-                ? () {
-                    Navigator.of(context).pop();
-                    _chill();
-                  }
-                : () => null,
-          ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          child: Text(I18n.of(context).getDic(i18n_full_dic_chainx, 'common')['cancel']),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-    );
-  }
-
-  Future<void> _nominate() async {
-    final res = await Navigator.of(context).pushNamed(NominatePage.route);
-    if (res != null && res) {
-      _refreshKey.currentState.show();
-    }
-  }
-
-  Future<void> _chill() async {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final params = TxConfirmParams(
-      txTitle: dicStaking['action.chill'],
-      module: 'staking',
-      call: 'chill',
-      txDisplay: {'action': 'chill'},
-      params: [],
-    );
-    final res = await Navigator.of(context).pushNamed(TxConfirmPage.route, arguments: params);
-    if (res != null && res) {
-      _refreshKey.currentState.show();
     }
   }
 
@@ -248,47 +151,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
   Widget build(BuildContext context) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
-    List<ValidatorData> validatorsInfo = [];
-    Map<String, dynamic> account1 = {
-      'accountId': '15fzipQgL4rtnLckM4DiETBNNp3v2bpXguhQxLB6ne6VgXKM',
-      'exposure': {'total': 20562449369, 'own': 20441234, 'others': []},
-      'isActive': true,
-      'isElected': true,
-      'numNominators': 0,
-      'rankBondTotal': 0,
-      'rankReward': 0,
-      'stakedReturn': 13.82,
-      'stakedReturnCmp': 10.16,
-      'validatorPrefs': {'commission': 3000000000},
-    };
-    Map<String, dynamic> account2 = {
-      'accountId': '15fzipQgL4rtnLckM4DiETBNNp3v2bpXguhQxLB6ne6VgXKM',
-      'exposure': {'total': 20562449369, 'own': 20441234, 'others': []},
-      'isActive': true,
-      'isElected': true,
-      'numNominators': 0,
-      'rankBondTotal': 0,
-      'rankReward': 0,
-      'stakedReturn': 13.82,
-      'stakedReturnCmp': 10.16,
-      'validatorPrefs': {'commission': 3000000000},
-    };
-    Map<String, dynamic> account3 = {
-      'accountId': '15fzipQgL4rtnLckM4DiETBNNp3v2bpXguhQxLB6ne6VgXKM',
-      'exposure': {'total': 20562449369, 'own': 20441234, 'others': []},
-      'isActive': true,
-      'isElected': true,
-      'numNominators': 0,
-      'rankBondTotal': 0,
-      'rankReward': 0,
-      'stakedReturn': 13.82,
-      'stakedReturnCmp': 10.16,
-      'validatorPrefs': {'commission': 3000000000},
-    };
-    validatorsInfo.add(ValidatorData.fromJson(account1));
-    validatorsInfo.add(ValidatorData.fromJson(account2));
-    validatorsInfo.add(ValidatorData.fromJson(account3));
-
     return Observer(
       builder: (_) {
         final int decimals = widget.plugin.networkState.tokenDecimals;
@@ -305,8 +167,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
           _buildTopCard(context),
           // index_1: the 'Validators' label
         ];
-        // if (widget.plugin.store.staking.validatorsInfo.length > 0) {
-        if (validatorsInfo.length > 0) {
+        if (widget.plugin.store.staking.validatorsInfo.length > 0) {
           // index_2: the filter Widget
           list.add(Container(
             color: Colors.white,
@@ -331,12 +192,12 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
           ));
           // index_3: the recommended validators
           // add recommended
-          List<ValidatorData> recommended = [];
-          final recommendList = widget.plugin.store.staking.recommendedValidators[widget.plugin.basic.name];
-          if (recommendList != null) {
-            recommended = _tab == 0 ? widget.plugin.store.staking.electedInfo.toList() : widget.plugin.store.staking.nextUpsInfo.toList();
-            recommended.retainWhere((i) => widget.plugin.store.staking.recommendedValidators[widget.plugin.basic.name].indexOf(i.accountId) > -1);
-          }
+          // List<ValidatorData> recommended = [];
+          // final recommendList = widget.plugin.store.staking.recommendedValidators[widget.plugin.basic.name];
+          // if (recommendList != null) {
+          //   recommended = _tab == 0 ? widget.plugin.store.staking.electedInfo.toList() : widget.plugin.store.staking.nextUpsInfo.toList();
+          //   recommended.retainWhere((i) => widget.plugin.store.staking.recommendedValidators[widget.plugin.basic.name].indexOf(i.accountId) > -1);
+          // }
           // list.add(Container(
           //   color: Theme.of(context).cardColor,
           //   child: recommended.length > 0
@@ -368,8 +229,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
           //       : Container(),
           // ));
           // add validators
-          // List<ValidatorData> ls = _tab == 0 ? widget.plugin.store.staking.electedInfo.toList() : widget.plugin.store.staking.nextUpsInfo.toList();
-          List<ValidatorData> ls = validatorsInfo;
+          List<ValidatorData> ls = widget.plugin.store.staking.validatorsInfo.toList();
           // filter list
           ls = PluginFmt.filterValidatorList(ls, _filter, widget.plugin.store.accounts.addressIndexMap);
           // sort list

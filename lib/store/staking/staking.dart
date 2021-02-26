@@ -21,12 +21,6 @@ abstract class _StakingStore with Store {
   List<ValidatorData> validatorsInfo = List<ValidatorData>();
 
   @observable
-  List<ValidatorData> electedInfo = List<ValidatorData>();
-
-  @observable
-  List<ValidatorData> nextUpsInfo = List<ValidatorData>();
-
-  @observable
   Map overview = Map();
 
   @observable
@@ -87,28 +81,16 @@ abstract class _StakingStore with Store {
     print('setValidatorsInfo func: $data');
     // {validators: [], waitingIds: []}
 
-    overview = {
-      'stakedReturn': data['inflation']['stakedReturn'],
-      'totalStaked': data['totalStaked'],
-      'totalIssuance': data['totalIssuance'],
-      'minNominated': data['minNominated'],
-    };
+    // overview = {
+    //   'stakedReturn': data['inflation']['stakedReturn'],
+    //   'totalStaked': data['totalStaked'],
+    //   'totalIssuance': data['totalIssuance'],
+    //   'minNominated': data['minNominated'],
+    // };
 
     // all validators
     final validatorsAll = List.of(data['validators']).map((i) => ValidatorData.fromJson(i)).toList();
     validatorsInfo = validatorsAll;
-
-    // elected validators
-    final elected = validatorsAll.toList();
-    elected.removeWhere((e) => !e.isElected);
-    electedInfo = elected;
-
-    // waiting validators
-    nextUpsInfo = List.of(data['waitingIds']).map((i) {
-      final e = ValidatorData();
-      e.accountId = i;
-      return e;
-    }).toList();
 
     // cache data
     if (shouldCache) {

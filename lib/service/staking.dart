@@ -21,8 +21,7 @@ class ApiStaking {
 
   // this query takes extremely long time
   Future<Map> fetchAccountRewards(int eras) async {
-    if (store.staking.ownStashInfo != null &&
-        store.staking.ownStashInfo.stakingLedger != null) {
+    if (store.staking.ownStashInfo != null && store.staking.ownStashInfo.stakingLedger != null) {
       int bonded = store.staking.ownStashInfo.stakingLedger['active'];
       List unlocking = store.staking.ownStashInfo.stakingLedger['unlocking'];
       if (bonded > 0 || unlocking.length > 0) {
@@ -80,8 +79,7 @@ class ApiStaking {
       network: plugin.basic.name,
     );
 
-    await store.staking
-        .addTxsRewards(res, keyring.current.pubKey, shouldCache: true);
+    await store.staking.addTxsRewards(res, keyring.current.pubKey, shouldCache: true);
     return res;
   }
 
@@ -91,10 +89,9 @@ class ApiStaking {
     final res = await api.staking.queryElectedInfo();
     store.staking.setValidatorsInfo(res);
 
-    queryNominations();
+    // queryNominations(); // TODO-touch
 
     List validatorAddressList = res['validatorIds'];
-    validatorAddressList.addAll(res['waitingIds']);
     plugin.service.gov.updateIconsAndIndices(validatorAddressList);
   }
 
@@ -122,14 +119,10 @@ class ApiStaking {
   }
 
   Future<Map> queryOwnStashInfo() async {
-    final data =
-        await api.service.staking.queryOwnStashInfo(keyring.current.address);
+    final data = await api.service.staking.queryOwnStashInfo(keyring.current.address);
     store.staking.setOwnStashInfo(keyring.current.pubKey, data);
 
-    final List<String> addressesNeedIcons =
-        store.staking.ownStashInfo?.nominating != null
-            ? store.staking.ownStashInfo.nominating.toList()
-            : [];
+    final List<String> addressesNeedIcons = store.staking.ownStashInfo?.nominating != null ? store.staking.ownStashInfo.nominating.toList() : [];
     final List<String> addressesNeedDecode = [];
     if (store.staking.ownStashInfo?.stashId != null) {
       addressesNeedIcons.add(store.staking.ownStashInfo.stashId);
@@ -145,15 +138,13 @@ class ApiStaking {
 
     // get stash&controller's pubKey
     final pubKeys = await api.account.decodeAddress(addressesNeedDecode);
-    store.accounts.setPubKeyAddressMap(
-        Map<String, Map>.from({api.connectedNode.ss58.toString(): pubKeys}));
+    store.accounts.setPubKeyAddressMap(Map<String, Map>.from({api.connectedNode.ss58.toString(): pubKeys}));
 
     return data;
   }
 
   Future<void> queryAccountBondedInfo() async {
-    final data = await api.staking
-        .queryBonded(keyring.allAccounts.map((e) => e.pubKey).toList());
+    final data = await api.staking.queryBonded(keyring.allAccounts.map((e) => e.pubKey).toList());
     store.staking.setAccountBondedMap(data);
   }
 }

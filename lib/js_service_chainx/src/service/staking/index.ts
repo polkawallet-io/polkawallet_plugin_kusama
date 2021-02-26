@@ -548,20 +548,27 @@ const _transfromEra = ({ activeEra, eraLength, sessionLength }: DeriveSessionInf
 /**
  * Query all validators info.
  */
-async function querySortedTargets(api: ApiPromise) {
- const data = await Promise.all([
-  api.query.staking.historyDepth(),
-  api.query.balances.totalIssuance(),
-  api.derive.staking.electedInfo({withExposure: true, withPrefs: true}),
-  api.derive.staking.waitingInfo({withPrefs: true}),
-  api.derive.session.info(),
- ]);
+// async function querySortedTargets(api: ApiPromise) {
+//  const data = await Promise.all([
+//   api.query.staking.historyDepth(),
+//   api.query.balances.totalIssuance(),
+//   api.derive.staking.electedInfo({withExposure: true, withPrefs: true}),
+//   api.derive.staking.waitingInfo({withPrefs: true}),
+//   api.derive.session.info(),
+//  ]);
  
- const partial = data[1] && data[2] && data[3] && data[4]
- ? _extractTargetsInfo(api, data[2], data[3], data[1], _transfromEra(data[4]), data[0])
- : {};
- return { inflation: { inflation: 0, stakedReturn: 0 }, medianComm: 0, ...partial };
-}
+//  const partial = data[1] && data[2] && data[3] && data[4]
+//  ? _extractTargetsInfo(api, data[2], data[3], data[1], _transfromEra(data[4]), data[0])
+//  : {};
+//  return { inflation: { inflation: 0, stakedReturn: 0 }, medianComm: 0, ...partial };
+// }
+
+async function querySortedTargets(api: ApiPromise) {
+  const validators = await api.rpc.xstaking.getValidators();
+  const validatorIds = validators.map(validator => validator.account.toString())
+  
+  return { validators, validatorIds };
+ }
 
 async function _getOwnStash(api: ApiPromise, accountId: string): Promise<[string, boolean]> {
   let stashId = accountId;

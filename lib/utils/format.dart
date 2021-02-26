@@ -42,59 +42,31 @@ class PluginFmt {
     };
   }
 
-  static int sortValidatorList(
-      Map addressIndexMap, ValidatorData a, ValidatorData b, int sortType) {
-    if (a.commission == null || a.commission.isEmpty) {
-      return 1;
-    }
-    if (b.commission == null || b.commission.isEmpty) {
-      return -1;
-    }
-    double comA = double.parse(a.commission.split('%')[0]);
-    double comB = double.parse(b.commission.split('%')[0]);
+  static int sortValidatorList(Map addressIndexMap, ValidatorData a, ValidatorData b, int sortType) {
     switch (sortType) {
       case 0:
-        return a.rankReward < b.rankReward ? 1 : -1;
+        return BigInt.parse(a.totalNomination) < BigInt.parse(b.totalNomination) ? 1 : -1;
       case 1:
-        return a.rankBondTotal > b.rankBondTotal ? 1 : -1;
+        return BigInt.parse(a.selfBonded) < BigInt.parse(b.selfBonded) ? 1 : -1;
       case 2:
-        return comA == comB
-            ? a.rankReward < b.rankReward
-                ? 1
-                : -1
-            : comA > comB
-                ? 1
-                : -1;
+        return a.rewardPotBalance < b.rewardPotBalance ? 1 : -1;
       case 3:
-        final infoA = addressIndexMap[a.accountId];
-        if (infoA != null && infoA['identity'] != null) {
-          final List judgements = infoA['identity']['judgements'];
-          if (judgements != null && judgements.length > 0) {
-            return -1;
-          }
-        }
         return 1;
       default:
         return -1;
     }
   }
 
-  static List<ValidatorData> filterValidatorList(
-      List<ValidatorData> ls, String filter, Map accIndexMap) {
+  static List<ValidatorData> filterValidatorList(List<ValidatorData> ls, String filter, Map accIndexMap) {
     ls.retainWhere((i) {
       final Map accInfo = accIndexMap[i.accountId];
       final value = filter.trim().toLowerCase();
-      return UI
-              .accountDisplayNameString(i.accountId, accInfo)
-              .toLowerCase()
-              .contains(value) ||
-          i.accountId.toLowerCase().contains(value);
+      return UI.accountDisplayNameString(i.accountId, accInfo).toLowerCase().contains(value) || i.accountId.toLowerCase().contains(value);
     });
     return ls;
   }
 
-  static List<List> filterCandidateList(
-      List<List> ls, String filter, Map accIndexMap) {
+  static List<List> filterCandidateList(List<List> ls, String filter, Map accIndexMap) {
     ls.retainWhere((i) {
       String value = filter.trim().toLowerCase();
       String accName = '';
@@ -102,8 +74,7 @@ class PluginFmt {
       if (accInfo != null) {
         accName = accInfo['identity']['display'] ?? '';
       }
-      return i[0].toLowerCase().contains(value) ||
-          accName.toLowerCase().contains(value);
+      return i[0].toLowerCase().contains(value) || accName.toLowerCase().contains(value);
     });
     return ls;
   }
