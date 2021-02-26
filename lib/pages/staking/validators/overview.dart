@@ -68,6 +68,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
   }
 
   Widget _buildTopCard(BuildContext context) {
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final validatorCount = widget.plugin.store.staking.validatorsInfo.where((i) => i.isValidating).length;
     return RoundedCard(
       margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
       padding: EdgeInsets.all(16),
@@ -86,10 +88,10 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Elector",
+                            dicStaking['top.elector'],
                             style: Theme.of(context).textTheme.headline4,
                           ),
-                          Text("50 / 124")
+                          Text('${validatorCount} / ${widget.plugin.store.staking.validatorsInfo.length}')
                         ],
                       ),
                     ),
