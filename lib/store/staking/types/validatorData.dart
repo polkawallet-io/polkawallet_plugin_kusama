@@ -45,7 +45,7 @@ abstract class _ValidatorData {
   bool isChilled = false;
   String totalNomination = '';
   String lastTotalVoteWeight = '';
-  String lastTotalVoteWeightUpdate = '';
+  int lastTotalVoteWeightUpdate = 0;
   bool isValidating = false;
   String referralId = '';
   String selfBonded = '';
