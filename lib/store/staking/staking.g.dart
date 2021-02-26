@@ -39,36 +39,6 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
-  final _$electedInfoAtom = Atom(name: '_StakingStore.electedInfo');
-
-  @override
-  List<ValidatorData> get electedInfo {
-    _$electedInfoAtom.reportRead();
-    return super.electedInfo;
-  }
-
-  @override
-  set electedInfo(List<ValidatorData> value) {
-    _$electedInfoAtom.reportWrite(value, super.electedInfo, () {
-      super.electedInfo = value;
-    });
-  }
-
-  final _$nextUpsInfoAtom = Atom(name: '_StakingStore.nextUpsInfo');
-
-  @override
-  List<ValidatorData> get nextUpsInfo {
-    _$nextUpsInfoAtom.reportRead();
-    return super.nextUpsInfo;
-  }
-
-  @override
-  set nextUpsInfo(List<ValidatorData> value) {
-    _$nextUpsInfoAtom.reportWrite(value, super.nextUpsInfo, () {
-      super.nextUpsInfo = value;
-    });
-  }
-
   final _$overviewAtom = Atom(name: '_StakingStore.overview');
 
   @override
@@ -365,8 +335,6 @@ mixin _$StakingStore on _StakingStore, Store {
   String toString() {
     return '''
 validatorsInfo: ${validatorsInfo},
-electedInfo: ${electedInfo},
-nextUpsInfo: ${nextUpsInfo},
 overview: ${overview},
 nominationsMap: ${nominationsMap},
 ownStashInfo: ${ownStashInfo},
