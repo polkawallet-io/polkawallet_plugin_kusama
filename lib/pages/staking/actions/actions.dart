@@ -101,61 +101,15 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
   }
 
   Widget _buildActionCard() {
-    var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final bool hasData = widget.plugin.store.staking.ownStashInfo != null;
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final bool hasData = widget.plugin.store.staking.validatorsInfo != null;
 
-    bool isStash = true;
-    bool isController = true;
-    bool isSelfControl = true;
-    final acc02 = KeyPairData();
-    acc02.address = widget.keyring.current.address;
-    acc02.pubKey = widget.keyring.current.pubKey;
-    if (hasData) {
-      // we assume an address is stash if it's stakingData
-      // is empty (!isOwnStash && !isOwnController).
-      isStash = widget.plugin.store.staking.ownStashInfo.isOwnStash || (!widget.plugin.store.staking.ownStashInfo.isOwnStash && !widget.plugin.store.staking.ownStashInfo.isOwnController);
-      isController = widget.plugin.store.staking.ownStashInfo.isOwnController;
-      isSelfControl = isStash && isController;
-
-      widget.plugin.store.accounts.pubKeyAddressMap[widget.plugin.basic.ss58]?.forEach((k, v) {
-        if (widget.plugin.store.staking.ownStashInfo.isOwnStash && v == widget.plugin.store.staking.ownStashInfo.controllerId) {
-          acc02.address = v;
-          acc02.pubKey = k;
-          return;
-        }
-        if (widget.plugin.store.staking.ownStashInfo.isOwnController && v == widget.plugin.store.staking.ownStashInfo.stashId) {
-          acc02.address = v;
-          acc02.pubKey = k;
-          return;
-        }
-      });
-
-      // update account icon
-      if (acc02.icon == null) {
-        acc02.icon = widget.plugin.store.accounts.addressIconsMap[acc02.address];
-      }
-    }
-
-    final decimals = widget.plugin.networkState.tokenDecimals;
-
-    final info = widget.plugin.balances.native;
-    final freeBalance = info?.freeBalance == null ? BigInt.zero : BigInt.parse(info.freeBalance.toString());
-    final reservedBalance = info?.reservedBalance == null ? BigInt.zero : BigInt.parse(info.reservedBalance.toString());
-    final available = info?.availableBalance == null ? BigInt.zero : BigInt.parse(info.availableBalance.toString());
-    final totalBalance = freeBalance + reservedBalance;
-    BigInt bonded = BigInt.zero;
-    BigInt redeemable = BigInt.zero;
-    if (hasData && widget.plugin.store.staking.ownStashInfo.stakingLedger != null) {
-      bonded = BigInt.parse(widget.plugin.store.staking.ownStashInfo.stakingLedger['active'].toString());
-      redeemable = BigInt.parse(widget.plugin.store.staking.ownStashInfo.account.redeemable.toString());
-    }
-    BigInt unlocking = widget.plugin.store.staking.accountUnlockingTotal;
-    unlocking -= redeemable;
+    final validatorCount = widget.plugin.store.staking.validatorsInfo.where((i) => i.isValidating).length;
 
     return RoundedCard(
       margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
       padding: EdgeInsets.all(16),
-      child: !hasData && false
+      child: !hasData
           ? Container(
               padding: EdgeInsets.only(top: 80, bottom: 80),
               child: CupertinoActivityIndicator(),
@@ -167,13 +121,13 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                   children: <Widget>[
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            "Elector",
+                            dicStaking['top.elector'],
                             style: Theme.of(context).textTheme.headline4,
                           ),
-                          Text("50 / 124")
+                          Text('$validatorCount / ${widget.plugin.store.staking.validatorsInfo.length}')
                         ],
                       ),
                     ),
@@ -182,11 +136,11 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '1,327,631',
+                            '2',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
-                            'Last Block',
+                            dicStaking['top.myvotes'],
                             style: TextStyle(fontSize: 13),
                           ),
                         ],
@@ -194,21 +148,6 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                     )
                   ],
                 ),
-                Divider(),
-                Text(
-                  'Block Producer',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: 16),
-                    child: AddressIcon(
-                      widget.keyring.current.address,
-                      svg: widget.keyring.current.icon,
-                    ),
-                  ),
-                  Text("BEARPOOL")
-                ])
               ],
             ),
     );

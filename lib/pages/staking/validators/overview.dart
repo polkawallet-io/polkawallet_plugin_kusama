@@ -69,11 +69,14 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
 
   Widget _buildTopCard(BuildContext context) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final bool hasData = widget.plugin.store.staking.validatorsInfo != null;
+
     final validatorCount = widget.plugin.store.staking.validatorsInfo.where((i) => i.isValidating).length;
+
     return RoundedCard(
       margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
       padding: EdgeInsets.all(16),
-      child: false
+      child: !hasData
           ? Container(
               padding: EdgeInsets.only(top: 80, bottom: 80),
               child: CupertinoActivityIndicator(),
@@ -112,7 +115,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
                     )
                   ],
                 ),
-                Divider()
               ],
             ),
     );
