@@ -153,7 +153,7 @@ class PluginChainX extends PolkawalletPlugin {
 
   @override
   Future<void> onStarted(Keyring keyring) async {
-    // _service.staking.queryElectedInfo();
+    _service.staking.queryElectedInfo();
   }
 
   @override

@@ -56,7 +56,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
     });
 
     // _fetchRecommendedValidators();
-    // widget.plugin.service.staking.queryElectedInfo();
+    widget.plugin.service.staking.queryElectedInfo();
     // await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
