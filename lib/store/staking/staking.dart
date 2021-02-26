@@ -114,8 +114,8 @@ abstract class _StakingStore with Store {
 
   @action
   void setNominations(Map data, String currentAccount) {
-    userInterests = List.of(data['allDividended']).map((i) => UserInterestData.fromJson(i)).toList().where((dvd) => dvd.account == currentAccount);
-    validNominations = List.of(data['allNominations']).map((i) => NominationData.fromJson(i)).toList().where((nmn) => filterNomination(nmn, userInterests));
+    userInterests = List.of(data['allDividended']).map((i) => UserInterestData.fromJson(i)).where((dvd) => dvd.account == currentAccount).toList();
+    validNominations = List.of(data['allNominations']).map((i) => NominationData.fromJson(i)).where((nmn) => filterNomination(nmn, userInterests)).toList();
   }
 
   @action
