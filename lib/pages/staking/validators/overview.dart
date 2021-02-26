@@ -154,14 +154,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
     return Observer(
       builder: (_) {
         final int decimals = widget.plugin.networkState.tokenDecimals;
-        final List<Tab> _listTabs = <Tab>[
-          Tab(
-            text: '${dicStaking['elected']} (${widget.plugin.store.staking.electedInfo.length})',
-          ),
-          Tab(
-            text: '${dicStaking['waiting']} (${widget.plugin.store.staking.nextUpsInfo.length})',
-          ),
-        ];
+
         List list = [
           // index_0: the overview card
           _buildTopCard(context),
