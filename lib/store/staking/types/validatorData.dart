@@ -50,5 +50,5 @@ abstract class _ValidatorData {
   String referralId = '';
   String selfBonded = '';
   String rewardPotAccount = '';
-  int rewardPotBalance = 0;
+  String rewardPotBalance = '';
 }
