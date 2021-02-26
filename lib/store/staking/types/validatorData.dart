@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 class ValidatorData extends _ValidatorData {
   static ValidatorData fromJson(Map<String, dynamic> json) {
     ValidatorData data = ValidatorData();
-    data.accountId = json['accountId'];
+    data.accountId = json['account'];
     data.registeredAt = json['registeredAt'];
     data.isChilled = json['isChilled'];
     data.totalNomination = json['totalNomination'];
