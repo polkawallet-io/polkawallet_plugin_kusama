@@ -15,6 +15,8 @@ import 'package:polkawallet_plugin_chainx/pages/staking/actions/setPayeePage.dar
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakingDetailPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/unbondPage.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/subscan.dart';
 import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
@@ -154,14 +156,30 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
   }
 
   List<Widget> _buildMyStakedValidatorsList() {
-    // final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+    List<NominationData> validNominations = widget.plugin.store.staking.validNominations;
+    List<UserInterestData> userInterests = widget.plugin.store.staking.userInterests;
+
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+
     List<Widget> res = [];
 
     List<StakedInfo> txs = [];
-    txs.add(StakedInfo('5RXaXG…VegwD6', '1.0000 PCX', '0.0002 PCX', '0.0000'));
-    txs.add(StakedInfo('6FRaXG…VegwD6', '21.0000 PCX', '0.0012 PCX', '5.0000'));
 
     res.add(Padding(padding: EdgeInsets.only(left: 20, bottom: 10), child: Text("My Stake", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
+
+    String currentAccount = widget.keyring.current.address;
+
+    if (currentAccount.isNotEmpty) {
+      validNominations.forEach((nmn) {
+        BigInt chunks = BigInt.zero;
+        nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
+
+        if (nmn.account == currentAccount) {
+          BigInt interest = userInterests.length > 0 ? BigInt.parse(userInterests[0].interests.firstWhere((i) => i.validator == nmn.validatorId)?.interest) : BigInt.zero;
+          txs.add(StakedInfo(nmn.validatorId, '${nmn.nomination} PCX', '${interest.toString()}', '${chunks.toString()}'));
+        }
+      });
+    }
 
     res.addAll(txs.map((i) {
       return Container(
@@ -178,9 +196,9 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
           title: Text(i.address),
           subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Votes: ${i.votes}', style: TextStyle(color: Colors.green)),
-            Text('Interests: ${i.interests}', style: TextStyle(color: Colors.red)),
+            Text('Freeze: ${i.freeze}'),
           ]),
-          trailing: Text('Freeze: ${i.freeze}'),
+          trailing: Text('Interests: ${i.interests}', style: TextStyle(color: Colors.red)),
           onTap: () {
             Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
           },
@@ -234,29 +252,6 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
       builder: (_) {
         List<Widget> list = <Widget>[
           _buildActionCard(),
-          // Container(
-          //   color: Theme.of(context).cardColor,
-          //   padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-          //   child: TabBar(
-          //     labelColor: Colors.black87,
-          //     labelStyle: TextStyle(fontSize: 18),
-          //     controller: _tabController,
-          //     tabs: <Tab>[
-          //       Tab(
-          //         text: dic['txs'],
-          //       ),
-          //       Tab(
-          //         text: dic['txs.reward'],
-          //       ),
-          //     ],
-          //     onTap: (i) {
-          //       i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
-          //       setState(() {
-          //         _tab = i;
-          //       });
-          //     },
-          //   ),
-          // ),
         ];
         list.addAll(_buildMyStakedValidatorsList());
         return RefreshIndicator(

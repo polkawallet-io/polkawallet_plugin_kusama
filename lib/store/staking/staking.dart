@@ -5,6 +5,8 @@ import 'package:polkawallet_sdk/api/types/txData.dart';
 import 'package:polkawallet_plugin_chainx/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/txData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.dart';
 
 part 'staking.g.dart';
 
@@ -25,6 +27,12 @@ abstract class _StakingStore with Store {
 
   @observable
   Map nominationsMap = Map();
+
+  @observable
+  List<UserInterestData> userInterests = List<UserInterestData>();
+
+  @observable
+  List<NominationData> validNominations = List<NominationData>();
 
   @observable
   OwnStashInfoData ownStashInfo;
@@ -79,14 +87,6 @@ abstract class _StakingStore with Store {
     if (data['validators'] == null) return;
 
     print('setValidatorsInfo func: $data');
-    // {validators: [], waitingIds: []}
-
-    // overview = {
-    //   'stakedReturn': data['inflation']['stakedReturn'],
-    //   'totalStaked': data['totalStaked'],
-    //   'totalIssuance': data['totalIssuance'],
-    //   'minNominated': data['minNominated'],
-    // };
 
     // all validators
     final validatorsAll = List.of(data['validators']).map((i) => ValidatorData.fromJson(i)).toList();
@@ -98,9 +98,24 @@ abstract class _StakingStore with Store {
     }
   }
 
+  bool filterNomination(NominationData nmn, List<UserInterestData> userInterests) {
+    if (userInterests.length == 0) return false;
+    List<Dividended> interestNode = userInterests[0].interests.where((i) => i.validator == nmn.validatorId);
+    bool blInterestNode = interestNode.length > 0 && BigInt.parse(interestNode[0].interest) != BigInt.zero ? true : false;
+    BigInt chunks = BigInt.zero;
+
+    nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
+
+    if (BigInt.parse(nmn.nomination) == BigInt.zero) return false;
+    if (chunks == BigInt.zero) return false;
+    if (!blInterestNode) return false;
+    return true;
+  }
+
   @action
-  void setNominations(Map data) {
-    nominationsMap = data;
+  void setNominations(Map data, String currentAccount) {
+    userInterests = List<UserInterestData>.of(data['allDividended']).where((dvd) => dvd.account == currentAccount);
+    validNominations = List.of(data['allNominations']).where((nmn) => filterNomination(nmn, userInterests));
   }
 
   @action

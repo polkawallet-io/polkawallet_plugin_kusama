@@ -9,6 +9,7 @@ import type { Option, StorageKey } from '@polkadot/types';
 import { u8aConcat, u8aToHex, BN_ZERO, BN_MILLION, BN_ONE, formatBalance, isFunction, arrayFlatten } from '@polkadot/util';
 import {  Nominations } from "@polkadot/types/interfaces";
 import BN from "bn.js";
+import { Nomination, UserInterest } from './types';
 
 import { getInflationParams, Inflation } from './inflation';
 
@@ -783,29 +784,89 @@ function _extractUnbondings(stakingInfo: any, progress: any) {
 }
 
 async function getOwnStashInfo(api: ApiPromise, accountId: string) {
-  const [stashId, isOwnStash] = await _getOwnStash(api, accountId);
-  const [account, validators, allStashes, progress] = await Promise.all([
-    api.derive.staking.account(stashId),
-    api.query.staking.validators(stashId),
-    api.derive.staking.stashes().then((res) => res.map((i) => i.toString())),
-    api.derive.session.progress(),
-  ]);
-  const stashInfo = _extractStakerState(accountId, stashId, allStashes, [
-    isOwnStash,
-    account,
-    validators,
-  ]);
-  const unbondings = _extractUnbondings(account, progress);
-  let inactives: any;
-  if (stashInfo.nominating && stashInfo.nominating.length) {
-    inactives = await _getInactives(api, stashId, stashInfo.nominating);
-  }
-  return {
-    account,
-    ...stashInfo,
-    inactives,
-    unbondings,
+  // This function name doesn't make sense with the implementation!
+  // Here this function is used to serve queryNominations and queryAccountsBonded for ChainX
+  // The reason is that there is no such function used in polkawallet sdk with accounId parameter in staking module.
+  // Feel free to reach out me if you have any better solution! Thanks!
+
+  const allNominations: Nomination[] = [];
+  const allDividended: UserInterest[] = [];
+
+  const [jsonNominations, jsonDivided] = await Promise.all([
+    api.rpc.xstaking.getNominationByAccount(accountId),
+    api.rpc.xstaking.getDividendByAccount(accountId),
+  ])
+
+  let currentNomination: any = {};
+  const userNominations = JSON.parse(jsonNominations);
+
+  Object.keys(userNominations).forEach((key: string) => {
+    currentNomination = userNominations[key] as Nomination;
+    currentNomination = Object.assign(currentNomination, {
+      validatorId: key
+    });
+    currentNomination = Object.assign(currentNomination, {
+      account: accountId
+    });
+    allNominations.push(currentNomination as Nomination);
+  });
+
+  let current: any = {};
+  const dividedArray: Dividended[] = [];
+  const userDivided = JSON.parse(jsonDivided);
+
+  Object.keys(userDivided).forEach((key: string) => {
+    current = {
+      validator: key,
+      interest: userDivided[key]
+    };
+    dividedArray.push(current);
+  });
+
+  const userInterest: UserInterest = {
+    account: accountId,
+    interests: dividedArray
   };
+
+  allDividended.push(userInterest);
+
+  return {
+    account: {
+      accountId: "",
+      controllerId: "",
+      stashId: "",
+      exposure: {},
+      stakingLedger: {},
+      validatorPrefs: {},
+      redeemable: ""
+    },
+    controllerId: "",
+    destination: "",
+    destinationId: 0,
+    exposure: {
+      allNominations,
+      allDividended
+    },
+    hexSessionIdNext: "",
+    hexSessionIdQueue: "",
+    isOwnController: false,
+    isOwnStash: false,
+    isStashNominating: false,
+    isStashValidating: false,
+    nominating: [],
+    sessionIds: [],
+    stakingLedger: {},
+    stashId: "",
+    validatorPrefs: {},
+    inactives: {
+      nomsActive: [],
+      nomsChilled: [],
+      nomsInactive: [],
+      nomsOver: [],
+      nomsWaiting: [],
+    },
+    unbondings: {}
+  }
 }
 
 /**

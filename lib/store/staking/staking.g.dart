@@ -69,6 +69,36 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
+  final _$userInterestsAtom = Atom(name: '_StakingStore.userInterests');
+
+  @override
+  List<UserInterestData> get userInterests {
+    _$userInterestsAtom.reportRead();
+    return super.userInterests;
+  }
+
+  @override
+  set userInterests(List<UserInterestData> value) {
+    _$userInterestsAtom.reportWrite(value, super.userInterests, () {
+      super.userInterests = value;
+    });
+  }
+
+  final _$validNominationsAtom = Atom(name: '_StakingStore.validNominations');
+
+  @override
+  List<NominationData> get validNominations {
+    _$validNominationsAtom.reportRead();
+    return super.validNominations;
+  }
+
+  @override
+  set validNominations(List<NominationData> value) {
+    _$validNominationsAtom.reportWrite(value, super.validNominations, () {
+      super.validNominations = value;
+    });
+  }
+
   final _$ownStashInfoAtom = Atom(name: '_StakingStore.ownStashInfo');
 
   @override
@@ -276,11 +306,11 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setNominations(Map<dynamic, dynamic> data) {
+  void setNominations(Map<dynamic, dynamic> data, String currentAccount) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
         name: '_StakingStore.setNominations');
     try {
-      return super.setNominations(data);
+      return super.setNominations(data, currentAccount);
     } finally {
       _$_StakingStoreActionController.endAction(_$actionInfo);
     }
@@ -337,6 +367,8 @@ mixin _$StakingStore on _StakingStore, Store {
 validatorsInfo: ${validatorsInfo},
 overview: ${overview},
 nominationsMap: ${nominationsMap},
+userInterests: ${userInterests},
+validNominations: ${validNominations},
 ownStashInfo: ${ownStashInfo},
 accountBondedMap: ${accountBondedMap},
 txsLoading: ${txsLoading},

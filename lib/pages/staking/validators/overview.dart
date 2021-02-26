@@ -217,13 +217,13 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
           ls = PluginFmt.filterValidatorList(ls, _filter, widget.plugin.store.accounts.addressIndexMap);
           // sort list
           ls.sort((a, b) => PluginFmt.sortValidatorList(widget.plugin.store.accounts.addressIndexMap, a, b, _sort));
-          if (_tab == 1) {
-            ls.sort((a, b) {
-              final aLength = widget.plugin.store.staking.nominationsMap[a.accountId]?.length ?? 0;
-              final bLength = widget.plugin.store.staking.nominationsMap[b.accountId]?.length ?? 0;
-              return 0 - aLength.compareTo(bLength);
-            });
-          }
+          // if (_tab == 1) {
+          //   ls.sort((a, b) {
+          //     final aLength = widget.plugin.store.staking.nominationsMap[a.accountId]?.length ?? 0;
+          //     final bLength = widget.plugin.store.staking.nominationsMap[b.accountId]?.length ?? 0;
+          //     return 0 - aLength.compareTo(bLength);
+          //   });
+          // }
           list.addAll(ls);
         } else {
           list.add(Container(

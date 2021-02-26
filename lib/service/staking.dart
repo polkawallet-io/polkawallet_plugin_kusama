@@ -89,16 +89,18 @@ class ApiStaking {
     final res = await api.staking.queryElectedInfo();
     store.staking.setValidatorsInfo(res);
 
-    // queryNominations(); // TODO-touch
+    queryNominations(keyring.current.address);
 
     List validatorAddressList = res['validatorIds'];
     plugin.service.gov.updateIconsAndIndices(validatorAddressList);
   }
 
-  Future<void> queryNominations() async {
+  Future<void> queryNominations(String accountId) async {
     // fetch nominators for all validators
-    final res = await api.staking.queryNominations();
-    store.staking.setNominations(res);
+    // tricky part here: just using exposure field for getting nominations and dividend of accounts. Other fields are empty
+
+    final res = await api.staking.queryOwnStashInfo(accountId);
+    store.staking.setNominations(res.exposure, accountId);
   }
 
   Future<Map> queryValidatorRewards(String accountId) async {
@@ -118,30 +120,30 @@ class ApiStaking {
     return data;
   }
 
-  Future<Map> queryOwnStashInfo() async {
-    final data = await api.service.staking.queryOwnStashInfo(keyring.current.address);
-    store.staking.setOwnStashInfo(keyring.current.pubKey, data);
+  // Future<Map> queryOwnStashInfo() async {
+  //   final data = await api.service.staking.queryOwnStashInfo(keyring.current.address);
+  //   store.staking.setOwnStashInfo(keyring.current.pubKey, data);
 
-    final List<String> addressesNeedIcons = store.staking.ownStashInfo?.nominating != null ? store.staking.ownStashInfo.nominating.toList() : [];
-    final List<String> addressesNeedDecode = [];
-    if (store.staking.ownStashInfo?.stashId != null) {
-      addressesNeedIcons.add(store.staking.ownStashInfo.stashId);
-      addressesNeedDecode.add(store.staking.ownStashInfo.stashId);
-    }
-    if (store.staking.ownStashInfo?.controllerId != null) {
-      addressesNeedIcons.add(store.staking.ownStashInfo.controllerId);
-      addressesNeedDecode.add(store.staking.ownStashInfo.controllerId);
-    }
+  //   final List<String> addressesNeedIcons = store.staking.ownStashInfo?.nominating != null ? store.staking.ownStashInfo.nominating.toList() : [];
+  //   final List<String> addressesNeedDecode = [];
+  //   if (store.staking.ownStashInfo?.stashId != null) {
+  //     addressesNeedIcons.add(store.staking.ownStashInfo.stashId);
+  //     addressesNeedDecode.add(store.staking.ownStashInfo.stashId);
+  //   }
+  //   if (store.staking.ownStashInfo?.controllerId != null) {
+  //     addressesNeedIcons.add(store.staking.ownStashInfo.controllerId);
+  //     addressesNeedDecode.add(store.staking.ownStashInfo.controllerId);
+  //   }
 
-    final icons = await api.account.getAddressIcons(addressesNeedIcons);
-    store.accounts.setAddressIconsMap(icons);
+  //   final icons = await api.account.getAddressIcons(addressesNeedIcons);
+  //   store.accounts.setAddressIconsMap(icons);
 
-    // get stash&controller's pubKey
-    final pubKeys = await api.account.decodeAddress(addressesNeedDecode);
-    store.accounts.setPubKeyAddressMap(Map<String, Map>.from({api.connectedNode.ss58.toString(): pubKeys}));
+  //   // get stash&controller's pubKey
+  //   final pubKeys = await api.account.decodeAddress(addressesNeedDecode);
+  //   store.accounts.setPubKeyAddressMap(Map<String, Map>.from({api.connectedNode.ss58.toString(): pubKeys}));
 
-    return data;
-  }
+  //   return data;
+  // }
 
   Future<void> queryAccountBondedInfo() async {
     // final data = await api.staking.queryBonded(keyring.allAccounts.map((e) => e.pubKey).toList());
