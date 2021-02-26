@@ -85,13 +85,13 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
                   children: <Widget>[
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
                             dicStaking['top.elector'],
                             style: Theme.of(context).textTheme.headline4,
                           ),
-                          Text('${validatorCount} / ${widget.plugin.store.staking.validatorsInfo.length}')
+                          Text('$validatorCount / ${widget.plugin.store.staking.validatorsInfo.length}')
                         ],
                       ),
                     ),
@@ -100,11 +100,11 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '1,327,631',
+                            '2',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
-                            'Last Block',
+                            dicStaking['top.myvotes'],
                             style: TextStyle(fontSize: 13),
                           ),
                         ],
@@ -112,21 +112,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
                     )
                   ],
                 ),
-                Divider(),
-                Text(
-                  'Block Producer',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: 16),
-                    child: AddressIcon(
-                      widget.keyring.current.address,
-                      svg: widget.keyring.current.icon,
-                    ),
-                  ),
-                  Text("BEARPOOL")
-                ])
+                Divider()
               ],
             ),
     );
