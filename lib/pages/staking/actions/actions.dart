@@ -95,9 +95,9 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
   }
 
   Future<void> _updateStakingInfo() async {
-    _tab == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
+    // _tab == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
 
-    await widget.plugin.service.staking.queryOwnStashInfo();
+    // await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
   Widget _buildActionCard() {
