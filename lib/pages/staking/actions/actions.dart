@@ -165,7 +165,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
 
     List<StakedInfo> txs = [];
 
-    res.add(Padding(padding: EdgeInsets.only(left: 20, bottom: 10), child: Text("My Stake", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
+    res.add(Padding(padding: EdgeInsets.only(left: 20, bottom: 10), child: Text(dicStaking['mystaking.label'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
 
     String currentAccount = widget.keyring.current.address;
 
@@ -195,10 +195,10 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
           ),
           title: Text(i.address),
           subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Votes: ${i.votes}', style: TextStyle(color: Colors.green)),
-            Text('Freeze: ${i.freeze}'),
+            Text('${dicStaking['mystaking.votes']}: ${i.votes}', style: TextStyle(color: Colors.green)),
+            Text('${dicStaking['mystaking.freeze']}: ${i.freeze}'),
           ]),
-          trailing: Text('Interests: ${i.interests}', style: TextStyle(color: Colors.red)),
+          trailing: Text('${i.interests}', style: TextStyle(color: Colors.red)),
           onTap: () {
             Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
           },
@@ -207,7 +207,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     }));
 
     res.add(ListTail(
-      isLoading: true,
+      isLoading: widget.plugin.store.staking.nominationLoading,
       isEmpty: txs.length == 0,
     ));
 

@@ -99,6 +99,21 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
+  final _$nominationLoadingAtom = Atom(name: '_StakingStore.nominationLoading');
+
+  @override
+  bool get nominationLoading {
+    _$nominationLoadingAtom.reportRead();
+    return super.nominationLoading;
+  }
+
+  @override
+  set nominationLoading(bool value) {
+    _$nominationLoadingAtom.reportWrite(value, super.nominationLoading, () {
+      super.nominationLoading = value;
+    });
+  }
+
   final _$ownStashInfoAtom = Atom(name: '_StakingStore.ownStashInfo');
 
   @override
@@ -247,6 +262,15 @@ mixin _$StakingStore on _StakingStore, Store {
     return _$setTxsLoadingAsyncAction.run(() => super.setTxsLoading(loading));
   }
 
+  final _$setNominationLoadingAsyncAction =
+      AsyncAction('_StakingStore.setNominationLoading');
+
+  @override
+  Future<void> setNominationLoading(bool loading) {
+    return _$setNominationLoadingAsyncAction
+        .run(() => super.setNominationLoading(loading));
+  }
+
   final _$addTxsAsyncAction = AsyncAction('_StakingStore.addTxs');
 
   @override
@@ -369,6 +393,7 @@ overview: ${overview},
 nominationsMap: ${nominationsMap},
 userInterests: ${userInterests},
 validNominations: ${validNominations},
+nominationLoading: ${nominationLoading},
 ownStashInfo: ${ownStashInfo},
 accountBondedMap: ${accountBondedMap},
 txsLoading: ${txsLoading},

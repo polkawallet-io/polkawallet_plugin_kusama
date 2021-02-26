@@ -35,6 +35,9 @@ abstract class _StakingStore with Store {
   List<NominationData> validNominations = List<NominationData>();
 
   @observable
+  bool nominationLoading = false;
+
+  @observable
   OwnStashInfoData ownStashInfo;
 
   @observable
@@ -137,6 +140,11 @@ abstract class _StakingStore with Store {
   @action
   Future<void> setTxsLoading(bool loading) async {
     txsLoading = loading;
+  }
+
+  @action
+  Future<void> setNominationLoading(bool loading) async {
+    nominationLoading = loading;
   }
 
   @action

@@ -99,8 +99,10 @@ class ApiStaking {
     // fetch nominators for all validators
     // tricky part here: just using exposure field for getting nominations and dividend of accounts. Other fields are empty
 
+    store.staking.setNominationLoading(false);
     final res = await api.staking.queryOwnStashInfo(accountId);
     store.staking.setNominations(res.exposure, accountId);
+    store.staking.setNominationLoading(true);
   }
 
   Future<Map> queryValidatorRewards(String accountId) async {
