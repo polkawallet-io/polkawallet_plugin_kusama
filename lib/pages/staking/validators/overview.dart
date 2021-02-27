@@ -6,6 +6,7 @@ import 'package:polkawallet_plugin_chainx/pages/staking/actions/bondExtraPage.da
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validator.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorListFilter.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/topCard.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/service/walletApi.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
@@ -61,86 +62,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
     // await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
-  Future<void> _fetchRecommendedValidators() async {
-    Map res = await WalletApi.getRecommended();
-    if (res != null && res['validators'] != null) {
-      widget.plugin.store.staking.setRecommendedValidatorList(res['validators']);
-    }
-  }
-
-  Widget _buildTopCard(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final bool hasData = widget.plugin.store.staking.validatorsInfo != null && widget.plugin.store.staking.nominationLoading;
-
-    final validatorCount = widget.plugin.store.staking.validatorsInfo.where((i) => i.isValidating).length;
-
-    List<NominationData> validNominations = widget.plugin.store.staking.validNominations;
-
-    List<Widget> res = [];
-    BigInt total = BigInt.zero;
-
-    res.add(Padding(padding: EdgeInsets.only(left: 20, bottom: 10), child: Text(dicStaking['mystaking.label'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
-
-    String currentAccount = widget.keyring.current.address;
-
-    if (currentAccount.isNotEmpty) {
-      validNominations.forEach((nmn) {
-        BigInt chunks = BigInt.zero;
-        nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
-
-        if (nmn.account == currentAccount) {
-          total += BigInt.parse(nmn.nomination);
-        }
-      });
-    }
-
-    return RoundedCard(
-      margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
-      padding: EdgeInsets.all(16),
-      child: !hasData
-          ? Container(
-              padding: EdgeInsets.only(top: 80, bottom: 80),
-              child: CupertinoActivityIndicator(),
-            )
-          : Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            dicStaking['top.elector'],
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          Text('$validatorCount / ${widget.plugin.store.staking.validatorsInfo.length}')
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            total.toString(),
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          Text(
-                            dicStaking['top.myvotes'],
-                            style: TextStyle(fontSize: 13),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -160,15 +81,13 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-
     return Observer(
       builder: (_) {
         final int decimals = widget.plugin.networkState.tokenDecimals;
 
         List list = [
           // index_0: the overview card
-          _buildTopCard(context),
+          TopCard(widget.plugin.store.staking.validatorsInfo, widget.plugin.store.staking.validNominations, widget.plugin.store.staking.nominationLoading, widget.keyring.current.address),
           // index_1: the 'Validators' label
         ];
         if (widget.plugin.store.staking.validatorsInfo.length > 0) {
