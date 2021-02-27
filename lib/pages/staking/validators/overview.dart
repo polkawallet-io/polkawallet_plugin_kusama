@@ -8,6 +8,7 @@ import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDeta
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorListFilter.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/service/walletApi.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_chainx/utils/format.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
@@ -69,9 +70,29 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
 
   Widget _buildTopCard(BuildContext context) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final bool hasData = widget.plugin.store.staking.validatorsInfo != null;
+    final bool hasData = widget.plugin.store.staking.validatorsInfo != null && widget.plugin.store.staking.nominationLoading;
 
     final validatorCount = widget.plugin.store.staking.validatorsInfo.where((i) => i.isValidating).length;
+
+    List<NominationData> validNominations = widget.plugin.store.staking.validNominations;
+
+    List<Widget> res = [];
+    BigInt total = BigInt.zero;
+
+    res.add(Padding(padding: EdgeInsets.only(left: 20, bottom: 10), child: Text(dicStaking['mystaking.label'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
+
+    String currentAccount = widget.keyring.current.address;
+
+    if (currentAccount.isNotEmpty) {
+      validNominations.forEach((nmn) {
+        BigInt chunks = BigInt.zero;
+        nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
+
+        if (nmn.account == currentAccount) {
+          total += BigInt.parse(nmn.nomination);
+        }
+      });
+    }
 
     return RoundedCard(
       margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
@@ -103,7 +124,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '2',
+                            total.toString(),
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
