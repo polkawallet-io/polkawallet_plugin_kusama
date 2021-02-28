@@ -25,7 +25,7 @@ class _ValidatorListFilterState extends State<ValidatorListFilter> {
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: ValidatorSortOptions.values
             .map((i) => CupertinoActionSheetAction(
-                  child: Text(dicStaking['overview.${i.toString()}']),
+                  child: Text(dicStaking['overview.' + i.toString().split('.')[1]]),
                   onPressed: () {
                     setState(() {
                       _sort = i.index;
@@ -81,7 +81,7 @@ class _ValidatorListFilterState extends State<ValidatorListFilter> {
                           borderRadius: BorderRadius.all(Radius.circular(24)),
                           border: Border.all(width: 0.5, color: theme.dividerColor),
                         ),
-                        child: Text(dic['overview.${ValidatorSortOptions.values[_sort].toString()}']),
+                        child: Text(dic['overview.' + ValidatorSortOptions.values[_sort].toString().split('.')[1]]),
                       ),
                       onTap: _showActions,
                     )
