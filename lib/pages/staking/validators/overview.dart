@@ -104,7 +104,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
             color: Theme.of(context).cardColor,
             child: TabBar(
               labelColor: Colors.black87,
-              labelStyle: TextStyle(fontSize: 18),
+              labelStyle: TextStyle(fontSize: 16),
               controller: _tabController,
               tabs: _listTabs,
               onTap: (i) {
