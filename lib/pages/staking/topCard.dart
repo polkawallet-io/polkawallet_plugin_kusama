@@ -42,7 +42,7 @@ class TopCard extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: !hasData
           ? Container(
-              padding: EdgeInsets.only(top: 80, bottom: 80),
+              // padding: EdgeInsets.only(top: 80, bottom: 80),
               child: CupertinoActivityIndicator(),
             )
           : Column(

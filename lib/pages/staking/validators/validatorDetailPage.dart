@@ -71,10 +71,7 @@ class ValidatorDetailPage extends StatelessWidget {
                           title: dicStaking['overview.pots'],
                           content: detail.rewardPotBalanceFmt,
                         ),
-                        // InfoItem(
-                        //   title: dicStaking['reward'],
-                        //   content: '${detail.stakedReturnCmp.toStringAsFixed(2)}%',
-                        // ),
+                        InfoItem(title: dicStaking['overview.potacc'], content: Fmt.address(detail.rewardPotAccount)),
                       ],
                     ),
                   ),

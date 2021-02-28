@@ -93,4 +93,5 @@ const Map<String, String> zhStaking = {
   'overview.all': '所有人质押的金额',
   'overview.own': '自己质押的金额',
   'overview.pots': '奖池金额',
+  'overview.potacc': '奖励账户',
 };
