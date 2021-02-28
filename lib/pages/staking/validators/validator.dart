@@ -26,7 +26,8 @@ class Validator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-//    print(accInfo['identity']);
+    var theme = Theme.of(context);
+
     return GestureDetector(
       child: Container(
         color: Colors.white,
@@ -69,13 +70,25 @@ class Validator extends StatelessWidget {
                 ],
               ),
             ),
-            // Column(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     Text(dic['reward']),
-            //     Text('${validator.rewardPotBalance}'),
-            //   ],
-            // )
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 8),
+                    padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(24)),
+                      border: Border.all(width: 0.5, color: theme.dividerColor),
+                    ),
+                    child: Text(dic['mystaking.action.vote']),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(ValidatorDetailPage.route, arguments: validator);
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),
