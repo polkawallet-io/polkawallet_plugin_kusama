@@ -16,7 +16,6 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class VotePage extends StatefulWidget {
   VotePage(this.plugin, this.keyring, {this.onNext});
-  static final String route = '/staking/vote';
   final PluginChainX plugin;
   final Keyring keyring;
   final Function(TxConfirmParams) onNext;

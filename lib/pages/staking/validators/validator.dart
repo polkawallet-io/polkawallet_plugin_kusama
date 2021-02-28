@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/votePage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
@@ -85,7 +85,7 @@ class Validator extends StatelessWidget {
                     child: Text(dic['mystaking.action.vote']),
                   ),
                   onTap: () {
-                    Navigator.of(context).pushNamed(VotePage.route, arguments: validator);
+                    Navigator.of(context).pushNamed(StakePage.route, arguments: validator);
                   },
                 ),
               ],
