@@ -573,6 +573,11 @@ function formatPCXBalance(value, label = '', labelPost = '', _isShort = false, w
     return `0.0000${labelPost || ''}`
   }
 
+  formatBalance.setDefaults({
+    decimals: 8,
+    unit: 'PCX'
+  });
+
   const [prefix, postfix] = formatBalance(value, { forceUnit: '-', withSi: false }).split('.');
   const isShort = _isShort || (withSi && prefix.length >= K_LENGTH);
   const unitPost = 'PCX'
@@ -585,7 +590,7 @@ function formatPCXBalance(value, label = '', labelPost = '', _isShort = false, w
     return `${major}.${minor}${unit}${unit ? unitPost : ` ${unitPost}`}${labelPost || ''}`
   }
 
-  return `${prefix}.${isShort ? '' : '.'}${!isShort && `0000${postfix || ''}`.slice(-4)}${` ${unitPost}`}${labelPost || ''}`
+  return `${prefix}${isShort ? '' : '.'}${!isShort && `0000${postfix || ''}`.slice(-4)}${` ${unitPost}`}${labelPost || ''}`
 }
 
 async function querySortedTargets(api: ApiPromise) {
@@ -914,4 +919,6 @@ export default {
   queryNominations,
   getOwnStashInfo,
   getSlashingSpans,
+  formatBalance,
+  formatPCXBalance
 };
