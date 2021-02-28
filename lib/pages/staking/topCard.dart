@@ -7,7 +7,7 @@ import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dar
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 
 class TopCard extends StatelessWidget {
-  TopCard(this.validatorsInfo, this.validNominations, this.nominationLoading, this.currentAccount) : hasData = validatorsInfo != null && nominationLoading;
+  TopCard(this.validatorsInfo, this.validNominations, this.nominationLoading, this.currentAccount) : hasData = validatorsInfo != null && !nominationLoading;
 
   final bool nominationLoading;
   final List<ValidatorData> validatorsInfo;
@@ -42,7 +42,7 @@ class TopCard extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: !hasData
           ? Container(
-              // padding: EdgeInsets.only(top: 80, bottom: 80),
+              padding: EdgeInsets.only(top: 20, bottom: 20),
               child: CupertinoActivityIndicator(),
             )
           : Column(
