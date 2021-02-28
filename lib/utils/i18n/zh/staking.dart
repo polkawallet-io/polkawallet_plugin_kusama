@@ -90,4 +90,7 @@ const Map<String, String> zhStaking = {
   'overview.validator': '验证人',
   'overview.candidate': '参选',
   'overview.dropout': '已退选',
+  'overview.all': '所有人质押的金额',
+  'overview.own': '自己质押的金额',
+  'overview.pots': '奖池金额',
 };

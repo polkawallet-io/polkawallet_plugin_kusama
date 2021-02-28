@@ -564,11 +564,40 @@ const _transfromEra = ({ activeEra, eraLength, sessionLength }: DeriveSessionInf
 //  return { inflation: { inflation: 0, stakedReturn: 0 }, medianComm: 0, ...partial };
 // }
 
+// for million, 2 * 3-grouping + comma
+const M_LENGTH = 6 + 1;
+const K_LENGTH = 3 + 1;
+
+function formatPCXBalance(value, label = '', labelPost = '', _isShort = false, withCurrency = false, withSi = false) {
+  if (!value?.length) {
+    return `0.0000${labelPost || ''}`
+  }
+
+  const [prefix, postfix] = formatBalance(value, { forceUnit: '-', withSi: false }).split('.');
+  const isShort = _isShort || (withSi && prefix.length >= K_LENGTH);
+  const unitPost = 'PCX'
+
+  if (prefix.length > M_LENGTH) {
+    const [major, rest] = formatBalance(value, { withUnit: false }).split('.');
+    const minor = rest.substr(0, 4);
+    const unit = rest.substr(4);
+
+    return `${major}.${minor}${unit}${unit ? unitPost : ` ${unitPost}`}${labelPost || ''}`
+  }
+
+  return `${prefix}.${isShort ? '' : '.'}${!isShort && `0000${postfix || ''}`.slice(-4)}${` ${unitPost}`}${labelPost || ''}`
+}
+
 async function querySortedTargets(api: ApiPromise) {
   const validators = await api.rpc.xstaking.getValidators();
   const validatorIds = validators.map(validator => validator.account.toString())
   
-  return { validators, validatorIds };
+  return { validators: validators.map(validator => ({
+    ...validator,
+    totalNomination: formatPCXBalance(validator['totalNomination']),
+    selfBonded: formatBalance(validator['selfBonded']),
+    rewardPotBalance: formatBalance(validator['rewardPotBalance'])
+  })), validatorIds };
  }
 
 async function _getOwnStash(api: ApiPromise, accountId: string): Promise<[string, boolean]> {

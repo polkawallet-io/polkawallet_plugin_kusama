@@ -90,4 +90,7 @@ const Map<String, String> enStaking = {
   'overview.validator': 'Validator',
   'overview.candidate': 'Candidate',
   'overview.dropout': 'Drop Out',
+  'overview.all': 'All Stake',
+  'overview.own': 'Own Stake',
+  'overview.pots': 'Pots Balance',
 };

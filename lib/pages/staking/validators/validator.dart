@@ -5,7 +5,6 @@ import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
-import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class Validator extends StatelessWidget {
@@ -47,14 +46,21 @@ class Validator extends StatelessWidget {
                     accInfo,
                   ),
                   Text(
-                    'All Stake: ${validator.totalNomination}',
+                    '${dic['overview.all']}: ${validator.totalNomination}',
                     style: TextStyle(
                       color: Theme.of(context).unselectedWidgetColor,
                       fontSize: 12,
                     ),
                   ),
                   Text(
-                    'Own Stake: ${validator.selfBonded}',
+                    '${dic['overview.own']}: ${validator.selfBonded}',
+                    style: TextStyle(
+                      color: Theme.of(context).unselectedWidgetColor,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Text(
+                    '${dic['overview.pots']}: ${validator.rewardPotBalance}',
                     style: TextStyle(
                       color: Theme.of(context).unselectedWidgetColor,
                       fontSize: 12,
@@ -63,13 +69,13 @@ class Validator extends StatelessWidget {
                 ],
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(dic['reward']),
-                Text('${validator.rewardPotBalance}'),
-              ],
-            )
+            // Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: <Widget>[
+            //     Text(dic['reward']),
+            //     Text('${validator.rewardPotBalance}'),
+            //   ],
+            // )
           ],
         ),
       ),
