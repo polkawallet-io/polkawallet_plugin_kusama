@@ -23,6 +23,7 @@ import 'package:polkawallet_plugin_chainx/pages/governance/treasury/submitTipPag
 import 'package:polkawallet_plugin_chainx/pages/governance/treasury/tipDetailPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/governance/treasury/treasuryPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/votePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/controllerSelectPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/payoutPage.dart';
@@ -98,6 +99,7 @@ class PluginChainX extends PolkawalletPlugin {
       TxConfirmPage.route: (_) => TxConfirmPage(this, keyring, _service.getPassword),
 
       // staking pages
+      VotePage.route: (_) => VotePage(this, keyring),
       // BondExtraPage.route: (_) => BondExtraPage(this, keyring),
       // ControllerSelectPage.route: (_) => ControllerSelectPage(this, keyring),
       // SetControllerPage.route: (_) => SetControllerPage(this, keyring),
