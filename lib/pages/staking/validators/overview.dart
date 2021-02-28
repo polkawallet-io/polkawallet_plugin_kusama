@@ -66,7 +66,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
   void initState() {
     super.initState();
 
-    _tabController = TabController(vsync: this, length: 2);
+    _tabController = TabController(vsync: this, length: 3);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshData();
