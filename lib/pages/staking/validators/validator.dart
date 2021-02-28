@@ -46,21 +46,21 @@ class Validator extends StatelessWidget {
                     accInfo,
                   ),
                   Text(
-                    '${dic['overview.all']}: ${validator.totalNomination}',
+                    '${dic['overview.all']}: ${validator.totalNominationFmt}',
                     style: TextStyle(
                       color: Theme.of(context).unselectedWidgetColor,
                       fontSize: 12,
                     ),
                   ),
                   Text(
-                    '${dic['overview.own']}: ${validator.selfBonded}',
+                    '${dic['overview.own']}: ${validator.selfBondedFmt}',
                     style: TextStyle(
                       color: Theme.of(context).unselectedWidgetColor,
                       fontSize: 12,
                     ),
                   ),
                   Text(
-                    '${dic['overview.pots']}: ${validator.rewardPotBalance}',
+                    '${dic['overview.pots']}: ${validator.rewardPotBalanceFmt}',
                     style: TextStyle(
                       color: Theme.of(context).unselectedWidgetColor,
                       fontSize: 12,
