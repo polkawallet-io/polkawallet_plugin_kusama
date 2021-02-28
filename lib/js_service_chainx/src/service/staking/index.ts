@@ -599,9 +599,9 @@ async function querySortedTargets(api: ApiPromise) {
   
   return { validators: validators.map(validator => ({
     ...validator,
-    totalNominationFmt: formatPCXBalance(validator['totalNomination']),
-    selfBondedFmt: formatBalance(validator['selfBonded']),
-    rewardPotBalanceFmt: formatBalance(validator['rewardPotBalance'])
+    totalNominationFmt: formatPCXBalance(validator['totalNomination'].toString()),
+    selfBondedFmt: formatBalance(validator['selfBonded'].toString()),
+    rewardPotBalanceFmt: formatBalance(validator['rewardPotBalance'].toString())
   })), validatorIds };
  }
 
