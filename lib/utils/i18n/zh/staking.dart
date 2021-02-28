@@ -87,4 +87,7 @@ const Map<String, String> zhStaking = {
   'mystaking.action.claim': '提息',
   'mystaking.action.unbound': '撤票',
   'mystaking.action.rebound': '切换',
+  'overview.validator': '验证人',
+  'overview.candidate': '参选',
+  'overview.dropout': '已退选',
 };

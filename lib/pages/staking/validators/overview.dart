@@ -81,14 +81,39 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
 
   @override
   Widget build(BuildContext context) {
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     return Observer(
       builder: (_) {
         final int decimals = widget.plugin.networkState.tokenDecimals;
-
+        final List<Tab> _listTabs = <Tab>[
+          Tab(
+            text: dicStaking['overview.validator'],
+          ),
+          Tab(
+            text: dicStaking['overview.candidate'],
+          ),
+          Tab(
+            text: dicStaking['overview.dropout'],
+          ),
+        ];
         List list = [
           // index_0: the overview card
           TopCard(widget.plugin.store.staking.validatorsInfo, widget.plugin.store.staking.validNominations, widget.plugin.store.staking.nominationLoading, widget.keyring.current.address),
           // index_1: the 'Validators' label
+          Container(
+            color: Theme.of(context).cardColor,
+            child: TabBar(
+              labelColor: Colors.black87,
+              labelStyle: TextStyle(fontSize: 18),
+              controller: _tabController,
+              tabs: _listTabs,
+              onTap: (i) {
+                setState(() {
+                  _tab = i;
+                });
+              },
+            ),
+          ),
         ];
         if (widget.plugin.store.staking.validatorsInfo.length > 0) {
           // index_2: the filter Widget
@@ -178,7 +203,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
             itemCount: list.length,
             itemBuilder: (BuildContext context, int i) {
               // we already have the index_0 - index_3 Widget
-              if (i < 2) {
+              if (i < 3) {
                 return list[i];
               }
               ValidatorData acc = list[i];
