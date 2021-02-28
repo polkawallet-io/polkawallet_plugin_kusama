@@ -121,7 +121,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
             color: Colors.white,
             padding: EdgeInsets.only(top: 8),
             child: ValidatorListFilter(
-              needSort: _tab == 0,
+              needSort: true,
               onSortChange: (value) {
                 if (value != _sort) {
                   setState(() {

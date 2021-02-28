@@ -50,8 +50,6 @@ class PluginFmt {
         return BigInt.parse(a.selfBonded) < BigInt.parse(b.selfBonded) ? 1 : -1;
       case 2:
         return BigInt.parse(a.rewardPotBalance) < BigInt.parse(b.rewardPotBalance) ? 1 : -1;
-      case 3:
-        return 1;
       default:
         return -1;
     }
