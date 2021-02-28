@@ -83,32 +83,17 @@ class _VotePageState extends State<VotePage> {
             child: ListView(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: TextTag(
-                        I18n.of(context).getDic(i18n_full_dic_chainx, 'staking')['stake.warn'],
-                        color: Colors.deepOrange,
-                        fontSize: 12,
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(8),
-                      ))
-                    ],
-                  ),
-                ),
-                Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: AddressFormItem(
                     widget.keyring.current,
-                    label: dicStaking['stash'],
+                    label: dicStaking['mystaking.action.vote.myaccount'],
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: AddressFormItem(
                     _controller ?? widget.keyring.current,
-                    label: dicStaking['controller'],
+                    label: dicStaking['mystaking.action.vote.validator'],
                     // do not allow change controller here.
                     // onTap: () => _changeControllerId(context),
                   ),
@@ -137,12 +122,12 @@ class _VotePageState extends State<VotePage> {
                     },
                   ),
                 ),
-                PayeeSelector(
-                  widget.plugin,
-                  widget.keyring,
-                  initialValue: widget.plugin.store.staking.ownStashInfo,
-                  onChange: _onPayeeChanged,
-                ),
+                // PayeeSelector(
+                //   widget.plugin,
+                //   widget.keyring,
+                //   initialValue: widget.plugin.store.staking.ownStashInfo,
+                //   onChange: _onPayeeChanged,
+                // ),
               ],
             ),
           ),
@@ -150,7 +135,7 @@ class _VotePageState extends State<VotePage> {
         Padding(
           padding: EdgeInsets.all(16),
           child: RoundedButton(
-            text: dicStaking['action.bond'],
+            text: dicStaking['mystaking.action.vote.label'],
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 final inputAmount = _amountCtrl.text.trim();
@@ -159,7 +144,7 @@ class _VotePageState extends State<VotePage> {
                   controllerId = _controller.address;
                 }
                 widget.onNext(TxConfirmParams(
-                  txTitle: dicStaking['action.bond'],
+                  txTitle: dicStaking['mystaking.action.vote.label'],
                   module: 'staking',
                   call: 'bond',
                   txDisplay: {

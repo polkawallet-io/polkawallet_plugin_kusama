@@ -51,7 +51,7 @@ class _StakePageState extends State<StakePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dic['staking']),
+        title: Text(dic['mystaking.action.vote.label']),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),

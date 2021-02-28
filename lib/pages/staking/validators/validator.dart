@@ -82,7 +82,7 @@ class Validator extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(24)),
                       border: Border.all(width: 0.5, color: theme.dividerColor),
                     ),
-                    child: Text(dic['mystaking.action.vote']),
+                    child: Text(dic['mystaking.action.vote.label']),
                   ),
                   onTap: () {
                     Navigator.of(context).pushNamed(StakePage.route, arguments: validator);
