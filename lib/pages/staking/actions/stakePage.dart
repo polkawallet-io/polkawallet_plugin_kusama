@@ -47,7 +47,7 @@ class _StakePageState extends State<StakePage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
     return Scaffold(
       appBar: AppBar(
