@@ -177,7 +177,11 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
           //       : Container(),
           // ));
           // add validators
-          List<ValidatorData> ls = widget.plugin.store.staking.validatorsInfo.toList();
+          List<ValidatorData> ls = widget.plugin.store.staking.validatorsInfo.toList().where((validator) {
+            if (_tab == 0) return validator.isValidating;
+            if (_tab == 2) return validator.isChilled;
+            return !validator.isValidating && !validator.isChilled;
+          });
           // filter list
           ls = PluginFmt.filterValidatorList(ls, _filter, widget.plugin.store.accounts.addressIndexMap);
           // sort list
