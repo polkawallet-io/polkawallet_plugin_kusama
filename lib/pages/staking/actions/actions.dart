@@ -149,7 +149,13 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
             Text('${dicStaking['mystaking.votes']}: ${i.votes}', style: TextStyle(color: Colors.green)),
             Text('${dicStaking['mystaking.freeze']}: ${i.freeze}'),
           ]),
-          trailing: Text('${i.interests}', style: TextStyle(color: Colors.red)),
+          trailing: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(dicStaking['mystaking.interests'], style: TextStyle(color: Colors.red)),
+              Text(Fmt.priceFloorBigInt(Fmt.balanceInt(i.interests.toString()), 8, lengthMax: 4), style: TextStyle(color: Colors.red))
+            ],
+          ),
           onTap: () {
             Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
           },
