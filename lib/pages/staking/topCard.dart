@@ -8,9 +8,9 @@ import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart
 import 'package:polkawallet_ui/utils/format.dart';
 
 class TopCard extends StatelessWidget {
-  TopCard(this.validatorsInfo, this.validNominations, this.nominationLoading, this.currentAccount) : hasData = validatorsInfo != null && !nominationLoading;
+  TopCard(this.validatorsInfo, this.validNominations, this.loading, this.currentAccount) : hasData = validatorsInfo != null && !loading;
 
-  final bool nominationLoading;
+  final bool loading;
   final List<ValidatorData> validatorsInfo;
   final List<NominationData> validNominations;
   final String currentAccount;

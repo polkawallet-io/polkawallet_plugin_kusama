@@ -98,7 +98,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
         ];
         List list = [
           // index_0: the overview card
-          TopCard(widget.plugin.store.staking.validatorsInfo, widget.plugin.store.staking.validNominations, widget.plugin.store.staking.nominationLoading, widget.keyring.current.address),
+          TopCard(widget.plugin.store.staking.validatorsInfo, widget.plugin.store.staking.validNominations,
+              widget.plugin.store.staking.nominationLoading || widget.plugin.sdk.api.connectedNode == null, widget.keyring.current.address),
           // index_1: the 'Validators' label
           Container(
             color: Theme.of(context).cardColor,

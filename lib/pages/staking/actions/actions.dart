@@ -164,7 +164,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     }));
 
     res.add(ListTail(
-      isLoading: widget.plugin.store.staking.nominationLoading,
+      isLoading: widget.plugin.store.staking.nominationLoading || widget.plugin.sdk.api.connectedNode == null,
       isEmpty: txs.length == 0,
     ));
 
@@ -206,7 +206,8 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     return Observer(
       builder: (_) {
         List<Widget> list = <Widget>[
-          TopCard(widget.plugin.store.staking.validatorsInfo, widget.plugin.store.staking.validNominations, widget.plugin.store.staking.nominationLoading, widget.keyring.current.address),
+          TopCard(widget.plugin.store.staking.validatorsInfo, widget.plugin.store.staking.validNominations,
+              widget.plugin.store.staking.nominationLoading || widget.plugin.sdk.api.connectedNode == null, widget.keyring.current.address),
         ];
         list.addAll(_buildMyStakedValidatorsList());
         return RefreshIndicator(
