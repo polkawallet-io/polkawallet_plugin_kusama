@@ -109,7 +109,7 @@ abstract class _StakingStore with Store {
 
     nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
 
-    if (BigInt.parse(nmn.nomination) == BigInt.zero) return false;
+    if (nmn.nomination == BigInt.zero) return false;
     if (chunks == BigInt.zero) return false;
     if (!blInterestNode) return false;
     return true;
