@@ -138,6 +138,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       print('WidgetsBinding.instance.addPostFrameCallback');
+      _updateStakingTxs();
       // if (widget.plugin.store.staking.ownStashInfo == null) {
       //   if (_refreshKey.currentState != null) {
       //     _refreshKey.currentState.show();
