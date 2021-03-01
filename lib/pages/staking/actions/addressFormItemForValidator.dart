@@ -5,11 +5,12 @@ import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class AddressFormItemForValidator extends StatelessWidget {
-  AddressFormItemForValidator(this.address, this.icon, {this.label, this.svg, this.onTap});
+  AddressFormItemForValidator(this.address, this.icon, this.accInfo, {this.label, this.svg, this.onTap});
   final String label;
   final String svg;
   final String address;
   final String icon;
+  final Map accInfo;
   final Future<void> Function() onTap;
 
   @override
@@ -50,7 +51,10 @@ class AddressFormItemForValidator extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    // Text(UI.accountName(context, account)),
+                    UI.accountDisplayName(
+                      address,
+                      accInfo,
+                    ),
                     Text(
                       Fmt.address(address),
                       style: TextStyle(fontSize: 14, color: grey),

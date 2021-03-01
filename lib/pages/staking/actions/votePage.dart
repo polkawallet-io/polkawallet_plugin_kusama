@@ -77,6 +77,7 @@ class _VotePageState extends State<VotePage> {
     }
 
     final accIcon = widget.plugin.store.accounts.addressIconsMap[widget.validatorAccountId];
+    final accInfo = widget.plugin.store.accounts.addressIndexMap[widget.validatorAccountId];
 
     return Column(
       children: <Widget>[
@@ -97,6 +98,7 @@ class _VotePageState extends State<VotePage> {
                   child: AddressFormItemForValidator(
                     widget.validatorAccountId,
                     accIcon,
+                    accInfo,
                     label: dicStaking['mystaking.action.vote.validator'],
                     // do not allow change controller here.
                     // onTap: () => _changeControllerId(context),
