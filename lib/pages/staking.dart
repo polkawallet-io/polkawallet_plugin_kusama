@@ -25,33 +25,42 @@ class _StakingState extends State<Staking> {
 
   @override
   Widget build(BuildContext context) {
+    var dicCommon = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     var tabs = [dic['actions'], dic['validators']];
     return SafeArea(
-      child: Container(
-        padding: EdgeInsets.only(top: 16),
-        color: Colors.transparent,
-        child: Column(
-          children: <Widget>[
-            PageTitleTabs(
-              names: tabs,
-              activeTab: _tab,
-              onTab: (v) {
-                if (_tab != v) {
-                  setState(() {
-                    _tab = v;
-                  });
-                }
-              },
+      child: widget.plugin.sdk.api.connectedNode == null
+          ? Container(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.width / 2),
+              child: Column(
+                children: [
+                  CupertinoActivityIndicator(),
+                  Text(dicCommon['node.connecting']),
+                ],
+              ),
+            )
+          : Container(
+              padding: EdgeInsets.only(top: 16),
+              color: Colors.transparent,
+              child: Column(
+                children: <Widget>[
+                  PageTitleTabs(
+                    names: tabs,
+                    activeTab: _tab,
+                    onTab: (v) {
+                      if (_tab != v) {
+                        setState(() {
+                          _tab = v;
+                        });
+                      }
+                    },
+                  ),
+                  Expanded(
+                    child: _tab == 1 ? StakingOverviewPage(widget.plugin, widget.keyring) : StakingActions(widget.plugin, widget.keyring),
+                  ),
+                ],
+              ),
             ),
-            Expanded(
-              child: _tab == 1
-                  ? StakingOverviewPage(widget.plugin, widget.keyring)
-                  : StakingActions(widget.plugin, widget.keyring),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
