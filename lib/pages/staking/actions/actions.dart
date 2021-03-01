@@ -146,8 +146,8 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
             widget.plugin.store.accounts.addressIndexMap[i.address],
           ),
           subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('${dicStaking['mystaking.votes']}: ${i.votes}', style: TextStyle(color: Colors.green)),
-            Text('${dicStaking['mystaking.freeze']}: ${i.freeze}'),
+            Text('${dicStaking['mystaking.votes']}: ${Fmt.priceFloorBigInt(Fmt.balanceInt(i.votes.toString()), 8, lengthMax: 4)}', style: TextStyle(color: Colors.green)),
+            Text('${dicStaking['mystaking.freeze']}: ${Fmt.priceFloorBigInt(Fmt.balanceInt(i.freeze.toString()), 8, lengthMax: 4)}'),
           ]),
           trailing: Column(
             crossAxisAlignment: CrossAxisAlignment.end,

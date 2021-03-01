@@ -5,6 +5,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
+import 'package:polkawallet_ui/utils/format.dart';
 
 class TopCard extends StatelessWidget {
   TopCard(this.validatorsInfo, this.validNominations, this.nominationLoading, this.currentAccount) : hasData = validatorsInfo != null && !nominationLoading;
@@ -67,7 +68,7 @@ class TopCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            total.toString(),
+                            Fmt.priceFloorBigInt(Fmt.balanceInt(total.toString()), 8, lengthMax: 4),
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
