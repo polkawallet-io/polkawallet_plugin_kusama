@@ -15,9 +15,9 @@ class NominationData extends _NominationData {
     NominationData data = NominationData();
     data.validatorId = json['validatorId'];
     data.account = json['account'];
-    data.nomination = json['nomination'] == null ? BigInt.zero : BigInt.parse(json['nomination']);
-    data.lastVoteWeight = json['lastVoteWeight'] != null ? json['lastVoteWeight'] : '';
-    data.lastVoteWeightUpdate = json['lastVoteWeightUpdate'] != null ? json['lastVoteWeightUpdate'] : '';
+    data.nomination = BigInt.from(json['nomination']);
+    data.lastVoteWeight = BigInt.from(json['lastVoteWeight']);
+    data.lastVoteWeightUpdate = BigInt.from(json['lastVoteWeightUpdate']);
     data.unbondedChunks = List<BondedChunksData>.from((json['unbondedChunks'] as List).map((i) => BondedChunksData.fromJson(i)));
     return data;
   }
@@ -27,7 +27,7 @@ abstract class _NominationData {
   String validatorId;
   String account;
   BigInt nomination;
-  String lastVoteWeight;
-  String lastVoteWeightUpdate;
+  BigInt lastVoteWeight;
+  BigInt lastVoteWeightUpdate;
   List<BondedChunksData> unbondedChunks;
 }
