@@ -29,6 +29,7 @@ class _StakingState extends State<Staking> {
     var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     var tabs = [dic['actions'], dic['validators']];
     return SafeArea(
+        child: Expanded(
       child: widget.plugin.sdk.api.connectedNode == null
           ? Container(
               padding: EdgeInsets.only(top: MediaQuery.of(context).size.width / 2),
@@ -61,6 +62,6 @@ class _StakingState extends State<Staking> {
                 ],
               ),
             ),
-    );
+    ));
   }
 }
