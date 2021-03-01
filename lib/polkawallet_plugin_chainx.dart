@@ -24,16 +24,6 @@ import 'package:polkawallet_plugin_chainx/pages/governance/treasury/tipDetailPag
 import 'package:polkawallet_plugin_chainx/pages/governance/treasury/treasuryPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/bondExtraPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/controllerSelectPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/payoutPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/redeemPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/rewardDetailPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/setControllerPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/setPayeePage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakingDetailPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/unbondPage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_chainx/service/index.dart';
 import 'package:polkawallet_plugin_chainx/store/cache/storeCache.dart';
@@ -100,16 +90,6 @@ class PluginChainX extends PolkawalletPlugin {
 
       // staking pages
       StakePage.route: (_) => StakePage(this, keyring),
-      // BondExtraPage.route: (_) => BondExtraPage(this, keyring),
-      // ControllerSelectPage.route: (_) => ControllerSelectPage(this, keyring),
-      // SetControllerPage.route: (_) => SetControllerPage(this, keyring),
-      // UnBondPage.route: (_) => UnBondPage(this, keyring),
-      // RebondPage.route: (_) => RebondPage(this, keyring),
-      // SetPayeePage.route: (_) => SetPayeePage(this, keyring),
-      // RedeemPage.route: (_) => RedeemPage(this, keyring),
-      // PayoutPage.route: (_) => PayoutPage(this, keyring),
-      // StakingDetailPage.route: (_) => StakingDetailPage(this, keyring),
-      // RewardDetailPage.route: (_) => RewardDetailPage(this, keyring),
       ValidatorDetailPage.route: (_) => ValidatorDetailPage(this, keyring),
 
       // governance pages

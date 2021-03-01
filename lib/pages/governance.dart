@@ -7,7 +7,6 @@ import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/entryPageCard.dart';
-import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
 
 class Gov extends StatelessWidget {
   Gov(this.plugin);
@@ -102,26 +101,6 @@ class Gov extends StatelessWidget {
                             onTap: () => Navigator.of(context).pushNamed(TreasuryPage.route),
                           ),
                         ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(bottom: 16),
-                        //   child: GestureDetector(
-                        //     child: EntryPageCard(
-                        //       'Polkassembly',
-                        //       dic['polkassembly'],
-                        //       Image.asset(
-                        //         'packages/polkawallet_plugin_chainx/assets/images/public/polkassembly.png',
-                        //         width: 56,
-                        //       ),
-                        //       color: Colors.black87,
-                        //     ),
-                        //     onTap: () => Navigator.of(context).pushNamed(
-                        //       DAppWrapperPage.route,
-                        //       arguments:
-                        //           'https://${plugin.basic.name}.polkassembly.io/',
-                        //       // "https://polkadot.js.org/apps/",
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
             )
