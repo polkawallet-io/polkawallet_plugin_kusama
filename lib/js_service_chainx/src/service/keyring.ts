@@ -11,7 +11,7 @@ import { ApiPromise, SubmittableResult } from "@polkadot/api"
 import { SubmittableExtrinsic } from "@polkadot/api/types"
 import { ITuple } from "@polkadot/types/types"
 import { DispatchError } from "@polkadot/types/interfaces"
-let keyring = new Keyring({ ss58Format: 0, type: "sr25519" })
+let keyring = new Keyring({ ss58Format: 44, type: "sr25519" })
 
 /**
  * Generate a set of new mnemonic.

@@ -8,7 +8,7 @@ import { Keyring } from "@polkadot/keyring"
 import { ApiPromise } from "@polkadot/api"
 
 import { subscribeMessage } from "./setting"
-let keyring = new Keyring({ ss58Format: 0, type: "sr25519" })
+let keyring = new Keyring({ ss58Format: 44, type: "sr25519" })
 
 /**
  * Get svg icons of addresses.
