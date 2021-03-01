@@ -15,8 +15,7 @@ const node_list_chainx = [
     'endpoint': 'wss://chainx.elara.patract.io',
   },
 ];
-// const home_nav_items = ['staking', 'governance'];
-const home_nav_items = [];
+const home_nav_items = ['staking', 'governance'];
 
 const MaterialColor chainx_yellow = const MaterialColor(
   0xFFF6C94A,

@@ -27,16 +27,12 @@ class _UnBondPageState extends State<UnBondPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final symbol = widget.plugin.networkState.tokenSymbol;
+    final decimals = widget.plugin.networkState.tokenDecimals;
 
     double bonded = 0;
     if (widget.plugin.store.staking.ownStashInfo != null) {
-      bonded = Fmt.bigIntToDouble(
-          BigInt.parse(widget
-              .plugin.store.staking.ownStashInfo.stakingLedger['active']
-              .toString()),
-          decimals);
+      bonded = Fmt.bigIntToDouble(BigInt.parse(widget.plugin.store.staking.ownStashInfo.stakingLedger['active'].toString()), decimals);
     }
 
     return Scaffold(
@@ -61,16 +57,14 @@ class _UnBondPageState extends State<UnBondPage> {
                       TextFormField(
                         decoration: InputDecoration(
                           hintText: dic['amount'],
-                          labelText:
-                              '${dic['amount']} (${dicStaking['bonded']}: ${Fmt.priceFloor(
+                          labelText: '${dic['amount']} (${dicStaking['bonded']}: ${Fmt.priceFloor(
                             bonded,
                             lengthMax: 4,
                           )} $symbol)',
                         ),
                         inputFormatters: [UI.decimalInputFormatter(decimals)],
                         controller: _amountCtrl,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
                         validator: (v) {
                           if (v.isEmpty) {
                             return dic['amount.error'];

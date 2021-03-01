@@ -30,8 +30,7 @@ class Gov extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    I18n.of(context)
-                        .getDic(i18n_full_dic_chainx, 'common')['governance'],
+                    I18n.of(context).getDic(i18n_full_dic_chainx, 'common')['governance'],
                     style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).cardColor,
@@ -44,8 +43,7 @@ class Gov extends StatelessWidget {
             Expanded(
               child: plugin.sdk.api.connectedNode == null
                   ? Container(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.width / 2),
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.width / 2),
                       child: Column(
                         children: [
                           CupertinoActivityIndicator(),
@@ -69,8 +67,7 @@ class Gov extends StatelessWidget {
                               ),
                               color: Theme.of(context).primaryColor,
                             ),
-                            onTap: () => Navigator.of(context)
-                                .pushNamed(DemocracyPage.route),
+                            onTap: () => Navigator.of(context).pushNamed(DemocracyPage.route),
                           ),
                         ),
                         Padding(
@@ -86,8 +83,7 @@ class Gov extends StatelessWidget {
                               ),
                               color: Theme.of(context).primaryColor,
                             ),
-                            onTap: () => Navigator.of(context)
-                                .pushNamed(CouncilPage.route),
+                            onTap: () => Navigator.of(context).pushNamed(CouncilPage.route),
                           ),
                         ),
                         Padding(
@@ -103,30 +99,29 @@ class Gov extends StatelessWidget {
                               ),
                               color: Theme.of(context).primaryColor,
                             ),
-                            onTap: () => Navigator.of(context)
-                                .pushNamed(TreasuryPage.route),
+                            onTap: () => Navigator.of(context).pushNamed(TreasuryPage.route),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 16),
-                          child: GestureDetector(
-                            child: EntryPageCard(
-                              'Polkassembly',
-                              dic['polkassembly'],
-                              Image.asset(
-                                'packages/polkawallet_plugin_chainx/assets/images/public/polkassembly.png',
-                                width: 56,
-                              ),
-                              color: Colors.black87,
-                            ),
-                            onTap: () => Navigator.of(context).pushNamed(
-                              DAppWrapperPage.route,
-                              arguments:
-                                  'https://${plugin.basic.name}.polkassembly.io/',
-                              // "https://polkadot.js.org/apps/",
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(bottom: 16),
+                        //   child: GestureDetector(
+                        //     child: EntryPageCard(
+                        //       'Polkassembly',
+                        //       dic['polkassembly'],
+                        //       Image.asset(
+                        //         'packages/polkawallet_plugin_chainx/assets/images/public/polkassembly.png',
+                        //         width: 56,
+                        //       ),
+                        //       color: Colors.black87,
+                        //     ),
+                        //     onTap: () => Navigator.of(context).pushNamed(
+                        //       DAppWrapperPage.route,
+                        //       arguments:
+                        //           'https://${plugin.basic.name}.polkassembly.io/',
+                        //       // "https://polkadot.js.org/apps/",
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
             )

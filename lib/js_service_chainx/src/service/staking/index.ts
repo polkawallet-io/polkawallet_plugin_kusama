@@ -9,6 +9,7 @@ import type { Option, StorageKey } from '@polkadot/types';
 import { u8aConcat, u8aToHex, BN_ZERO, BN_MILLION, BN_ONE, formatBalance, isFunction, arrayFlatten } from '@polkadot/util';
 import {  Nominations } from "@polkadot/types/interfaces";
 import BN from "bn.js";
+import { Nomination, UserInterest } from './types';
 
 import { getInflationParams, Inflation } from './inflation';
 
@@ -304,7 +305,7 @@ type Result = Record<string, string[]>;
  * Query nominations of staking module.
  */
 async function queryNominations(api: ApiPromise) {
-  const nominators: [StorageKey, Option<Nominations>][] = await api.query.staking.nominators.entries();
+  const nominators: [StorageKey, Option<Nominations>][] = await api.query.xStaking.nominators.entries();
   return nominators.reduce((mapped: Result, [key, optNoms]) => {
     if (optNoms.isSome && key.args.length) {
       const nominatorId = key.args[0].toString();
@@ -548,20 +549,61 @@ const _transfromEra = ({ activeEra, eraLength, sessionLength }: DeriveSessionInf
 /**
  * Query all validators info.
  */
-async function querySortedTargets(api: ApiPromise) {
- const data = await Promise.all([
-  api.query.staking.historyDepth(),
-  api.query.balances.totalIssuance(),
-  api.derive.staking.electedInfo({withExposure: true, withPrefs: true}),
-  api.derive.staking.waitingInfo({withPrefs: true}),
-  api.derive.session.info(),
- ]);
+// async function querySortedTargets(api: ApiPromise) {
+//  const data = await Promise.all([
+//   api.query.staking.historyDepth(),
+//   api.query.balances.totalIssuance(),
+//   api.derive.staking.electedInfo({withExposure: true, withPrefs: true}),
+//   api.derive.staking.waitingInfo({withPrefs: true}),
+//   api.derive.session.info(),
+//  ]);
  
- const partial = data[1] && data[2] && data[3] && data[4]
- ? _extractTargetsInfo(api, data[2], data[3], data[1], _transfromEra(data[4]), data[0])
- : {};
- return { inflation: { inflation: 0, stakedReturn: 0 }, medianComm: 0, ...partial };
+//  const partial = data[1] && data[2] && data[3] && data[4]
+//  ? _extractTargetsInfo(api, data[2], data[3], data[1], _transfromEra(data[4]), data[0])
+//  : {};
+//  return { inflation: { inflation: 0, stakedReturn: 0 }, medianComm: 0, ...partial };
+// }
+
+// for million, 2 * 3-grouping + comma
+const M_LENGTH = 6 + 1;
+const K_LENGTH = 3 + 1;
+
+function formatPCXBalance(value, label = '', labelPost = '', _isShort = false, withCurrency = false, withSi = false) {
+  if (!value?.length) {
+    return `0.0000${labelPost || ''}`
+  }
+
+  formatBalance.setDefaults({
+    decimals: 8,
+    unit: 'PCX'
+  });
+
+  const [prefix, postfix] = formatBalance(value, { forceUnit: '-', withSi: false }).split('.');
+  const isShort = _isShort || (withSi && prefix.length >= K_LENGTH);
+  const unitPost = 'PCX'
+
+  if (prefix.length > M_LENGTH) {
+    const [major, rest] = formatBalance(value, { withUnit: false }).split('.');
+    const minor = rest.substr(0, 4);
+    const unit = rest.substr(4);
+
+    return `${major}.${minor}${unit}${unit ? unitPost : ` ${unitPost}`}${labelPost || ''}`
+  }
+
+  return `${prefix}${isShort ? '' : '.'}${!isShort && `0000${postfix || ''}`.slice(-4)}${` ${unitPost}`}${labelPost || ''}`
 }
+
+async function querySortedTargets(api: ApiPromise) {
+  const validators = await api.rpc.xstaking.getValidators();
+  const validatorIds = validators.map(validator => validator.account.toString())
+  
+  return { validators: validators.map(validator => ({
+    ...validator,
+    totalNominationFmt: formatPCXBalance(validator['totalNomination'].toString()),
+    selfBondedFmt: formatBalance(validator['selfBonded'].toString()),
+    rewardPotBalanceFmt: formatBalance(validator['rewardPotBalance'].toString())
+  })), validatorIds };
+ }
 
 async function _getOwnStash(api: ApiPromise, accountId: string): Promise<[string, boolean]> {
   let stashId = accountId;
@@ -776,29 +818,89 @@ function _extractUnbondings(stakingInfo: any, progress: any) {
 }
 
 async function getOwnStashInfo(api: ApiPromise, accountId: string) {
-  const [stashId, isOwnStash] = await _getOwnStash(api, accountId);
-  const [account, validators, allStashes, progress] = await Promise.all([
-    api.derive.staking.account(stashId),
-    api.query.staking.validators(stashId),
-    api.derive.staking.stashes().then((res) => res.map((i) => i.toString())),
-    api.derive.session.progress(),
-  ]);
-  const stashInfo = _extractStakerState(accountId, stashId, allStashes, [
-    isOwnStash,
-    account,
-    validators,
-  ]);
-  const unbondings = _extractUnbondings(account, progress);
-  let inactives: any;
-  if (stashInfo.nominating && stashInfo.nominating.length) {
-    inactives = await _getInactives(api, stashId, stashInfo.nominating);
-  }
-  return {
-    account,
-    ...stashInfo,
-    inactives,
-    unbondings,
+  // This function name doesn't make sense with the implementation!
+  // Here this function is used to serve queryNominations and queryAccountsBonded for ChainX
+  // The reason is that there is no such function used in polkawallet sdk with accounId parameter in staking module.
+  // Feel free to reach out me if you have any better solution! Thanks!
+
+  const allNominations: Nomination[] = [];
+  const allDividended: UserInterest[] = [];
+
+  const [jsonNominations, jsonDivided] = await Promise.all([
+    api.rpc.xstaking.getNominationByAccount(accountId),
+    api.rpc.xstaking.getDividendByAccount(accountId),
+  ])
+
+  let currentNomination: any = {};
+  const userNominations = JSON.parse(jsonNominations);
+
+  Object.keys(userNominations).forEach((key: string) => {
+    currentNomination = userNominations[key] as Nomination;
+    currentNomination = Object.assign(currentNomination, {
+      validatorId: key
+    });
+    currentNomination = Object.assign(currentNomination, {
+      account: accountId
+    });
+    allNominations.push(currentNomination as Nomination);
+  });
+
+  let current: any = {};
+  const dividedArray: Dividended[] = [];
+  const userDivided = JSON.parse(jsonDivided);
+
+  Object.keys(userDivided).forEach((key: string) => {
+    current = {
+      validator: key,
+      interest: userDivided[key]
+    };
+    dividedArray.push(current);
+  });
+
+  const userInterest: UserInterest = {
+    account: accountId,
+    interests: dividedArray
   };
+
+  allDividended.push(userInterest);
+
+  return {
+    account: {
+      accountId: "",
+      controllerId: "",
+      stashId: "",
+      exposure: {},
+      stakingLedger: {},
+      validatorPrefs: {},
+      redeemable: ""
+    },
+    controllerId: "",
+    destination: "",
+    destinationId: 0,
+    exposure: {
+      allNominations,
+      allDividended
+    },
+    hexSessionIdNext: "",
+    hexSessionIdQueue: "",
+    isOwnController: false,
+    isOwnStash: false,
+    isStashNominating: false,
+    isStashValidating: false,
+    nominating: [],
+    sessionIds: [],
+    stakingLedger: {},
+    stashId: "",
+    validatorPrefs: {},
+    inactives: {
+      nomsActive: [],
+      nomsChilled: [],
+      nomsInactive: [],
+      nomsOver: [],
+      nomsWaiting: [],
+    },
+    unbondings: {}
+  }
 }
 
 /**
@@ -817,4 +919,6 @@ export default {
   queryNominations,
   getOwnStashInfo,
   getSlashingSpans,
+  formatBalance,
+  formatPCXBalance
 };

@@ -22,13 +22,11 @@ class ProposalPanel extends StatelessWidget {
   Widget build(BuildContext context) => Observer(
         builder: (_) {
           final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-          final decimals = plugin.networkState.tokenDecimals[0];
-          final symbol = plugin.networkState.tokenSymbol[0] ?? '';
+          final decimals = plugin.networkState.tokenDecimals;
+          final symbol = plugin.networkState.tokenSymbol ?? '';
           final CouncilProposalData proposalMeta = proposal.image?.proposal;
-          final Map accInfo =
-              plugin.store.accounts.addressIndexMap[proposal.proposer];
-          final proposerIcon =
-              plugin.store.accounts.addressIconsMap[proposal.proposer];
+          final Map accInfo = plugin.store.accounts.addressIndexMap[proposal.proposer];
+          final proposerIcon = plugin.store.accounts.addressIconsMap[proposal.proposer];
           final List seconding = proposal.seconds.toList();
           seconding.removeAt(0);
           return GestureDetector(
@@ -41,13 +39,11 @@ class ProposalPanel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        proposalMeta != null
-                            ? '${proposalMeta.section}.${proposalMeta.method}'
-                            : 'preimage: ${Fmt.address(proposal.imageHash)}',
+                        proposalMeta != null ? '${proposalMeta.section}.${proposalMeta.method}' : 'preimage: ${Fmt.address(proposal.imageHash)}',
                         style: Theme.of(context).textTheme.headline4,
                       ),
                       Text(
-                        '#${BigInt.parse(proposal.index)}',
+                        '#${proposal.index}',
                         style: Theme.of(context).textTheme.headline4,
                       ),
                     ],
@@ -69,8 +65,7 @@ class ProposalPanel extends StatelessWidget {
                                   decimals,
                                 )} $symbol',
                                 style: TextStyle(
-                                  color:
-                                      Theme.of(context).unselectedWidgetColor,
+                                  color: Theme.of(context).unselectedWidgetColor,
                                 ),
                               ),
                             ],
@@ -91,8 +86,7 @@ class ProposalPanel extends StatelessWidget {
                 ],
               ),
             ),
-            onTap: () => Navigator.of(context)
-                .pushNamed(ProposalDetailPage.route, arguments: proposal),
+            onTap: () => Navigator.of(context).pushNamed(ProposalDetailPage.route, arguments: proposal),
           );
         },
       );

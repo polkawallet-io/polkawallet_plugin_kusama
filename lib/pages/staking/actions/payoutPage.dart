@@ -26,13 +26,11 @@ class _PayoutPageState extends State<PayoutPage> {
   Map _rewards;
 
   Future<void> _queryLatestRewards() async {
-    final options =
-        await widget.plugin.service.staking.fetchAccountRewardsEraOptions();
+    final options = await widget.plugin.service.staking.fetchAccountRewardsEraOptions();
     setState(() {
       _eraOptions = options;
     });
-    final res = await widget.plugin.service.staking
-        .fetchAccountRewards(options[0]['value']);
+    final res = await widget.plugin.service.staking.fetchAccountRewards(options[0]['value']);
     if (mounted) {
       setState(() {
         _loading = false;
@@ -45,8 +43,7 @@ class _PayoutPageState extends State<PayoutPage> {
     setState(() {
       _loading = true;
     });
-    final res = await widget.plugin.service.staking
-        .fetchAccountRewards(_eraOptions[selectedEra]['value']);
+    final res = await widget.plugin.service.staking.fetchAccountRewards(_eraOptions[selectedEra]['value']);
     if (mounted) {
       setState(() {
         _loading = false;
@@ -114,7 +111,7 @@ class _PayoutPageState extends State<PayoutPage> {
 
   Future<TxConfirmParams> _getParams() async {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final decimals = widget.plugin.networkState.tokenDecimals;
 
     List rewards = _rewards['validators'];
     if (rewards.length == 1 && List.of(rewards[0]['eras']).length == 1) {
@@ -144,8 +141,7 @@ class _PayoutPageState extends State<PayoutPage> {
     rewards.forEach((i) {
       String validatorId = i['validatorId'];
       List.of(i['eras']).forEach((era) {
-        params
-            .add('api.tx.staking.payoutStakers("$validatorId", ${era['era']})');
+        params.add('api.tx.staking.payoutStakers("$validatorId", ${era['era']})');
       });
     });
     final total = Fmt.balanceInt('0x${_rewards['available']}');
@@ -170,7 +166,7 @@ class _PayoutPageState extends State<PayoutPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final decimals = widget.plugin.networkState.tokenDecimals;
 
     BigInt rewardTotal;
     if (_rewards != null) {
@@ -203,8 +199,7 @@ class _PayoutPageState extends State<PayoutPage> {
                     _eraOptions.length > 0
                         ? ListTile(
                             title: Text(dicStaking['reward.time']),
-                            subtitle:
-                                Text(_getEraText(_eraOptions[_eraSelected])),
+                            subtitle: Text(_getEraText(_eraOptions[_eraSelected])),
                             trailing: Icon(Icons.arrow_forward_ios, size: 18),
                             onTap: _loading ? null : () => _showEraSelect(),
                           )

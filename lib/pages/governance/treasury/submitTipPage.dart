@@ -34,7 +34,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
   Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-      final int decimals = widget.plugin.networkState.tokenDecimals[0];
+      final int decimals = widget.plugin.networkState.tokenDecimals;
       final bool isCouncil = ModalRoute.of(context).settings.arguments;
       final String amt = _amountCtrl.text.trim();
       final String address = _beneficiary.address;
@@ -93,8 +93,8 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final dicCommon = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    final decimals = widget.plugin.networkState.tokenDecimals;
+    final symbol = widget.plugin.networkState.tokenSymbol;
     final bool isCouncil = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
@@ -117,8 +117,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
                           onTap: () async {
                             final acc = await Navigator.of(context).pushNamed(
                               AccountListPage.route,
-                              arguments: AccountListPageParams(
-                                  list: widget.keyring.allAccounts),
+                              arguments: AccountListPageParams(list: widget.keyring.allAccounts),
                             );
                             if (acc != null) {
                               setState(() {
@@ -140,8 +139,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
                                 maxLines: 3,
                                 validator: (v) {
                                   final String reason = v.trim();
-                                  if (reason.length < MIN_REASON_LEN ||
-                                      reason.length > MAX_REASON_LEN) {
+                                  if (reason.length < MIN_REASON_LEN || reason.length > MAX_REASON_LEN) {
                                     return dicCommon['input.invalid'];
                                   }
                                   return null;
@@ -151,16 +149,11 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
                                   ? TextFormField(
                                       decoration: InputDecoration(
                                         hintText: dicCommon['amount'],
-                                        labelText:
-                                            '${dicCommon['amount']} ($symbol)',
+                                        labelText: '${dicCommon['amount']} ($symbol)',
                                       ),
-                                      inputFormatters: [
-                                        UI.decimalInputFormatter(decimals)
-                                      ],
+                                      inputFormatters: [UI.decimalInputFormatter(decimals)],
                                       controller: _amountCtrl,
-                                      keyboardType:
-                                          TextInputType.numberWithOptions(
-                                              decimal: true),
+                                      keyboardType: TextInputType.numberWithOptions(decimal: true),
                                       validator: (v) {
                                         if (v.isEmpty) {
                                           return dicCommon['amount.error'];

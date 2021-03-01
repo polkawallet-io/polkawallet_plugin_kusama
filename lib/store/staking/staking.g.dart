@@ -39,36 +39,6 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
-  final _$electedInfoAtom = Atom(name: '_StakingStore.electedInfo');
-
-  @override
-  List<ValidatorData> get electedInfo {
-    _$electedInfoAtom.reportRead();
-    return super.electedInfo;
-  }
-
-  @override
-  set electedInfo(List<ValidatorData> value) {
-    _$electedInfoAtom.reportWrite(value, super.electedInfo, () {
-      super.electedInfo = value;
-    });
-  }
-
-  final _$nextUpsInfoAtom = Atom(name: '_StakingStore.nextUpsInfo');
-
-  @override
-  List<ValidatorData> get nextUpsInfo {
-    _$nextUpsInfoAtom.reportRead();
-    return super.nextUpsInfo;
-  }
-
-  @override
-  set nextUpsInfo(List<ValidatorData> value) {
-    _$nextUpsInfoAtom.reportWrite(value, super.nextUpsInfo, () {
-      super.nextUpsInfo = value;
-    });
-  }
-
   final _$overviewAtom = Atom(name: '_StakingStore.overview');
 
   @override
@@ -96,6 +66,51 @@ mixin _$StakingStore on _StakingStore, Store {
   set nominationsMap(Map<dynamic, dynamic> value) {
     _$nominationsMapAtom.reportWrite(value, super.nominationsMap, () {
       super.nominationsMap = value;
+    });
+  }
+
+  final _$userInterestsAtom = Atom(name: '_StakingStore.userInterests');
+
+  @override
+  List<UserInterestData> get userInterests {
+    _$userInterestsAtom.reportRead();
+    return super.userInterests;
+  }
+
+  @override
+  set userInterests(List<UserInterestData> value) {
+    _$userInterestsAtom.reportWrite(value, super.userInterests, () {
+      super.userInterests = value;
+    });
+  }
+
+  final _$validNominationsAtom = Atom(name: '_StakingStore.validNominations');
+
+  @override
+  List<NominationData> get validNominations {
+    _$validNominationsAtom.reportRead();
+    return super.validNominations;
+  }
+
+  @override
+  set validNominations(List<NominationData> value) {
+    _$validNominationsAtom.reportWrite(value, super.validNominations, () {
+      super.validNominations = value;
+    });
+  }
+
+  final _$nominationLoadingAtom = Atom(name: '_StakingStore.nominationLoading');
+
+  @override
+  bool get nominationLoading {
+    _$nominationLoadingAtom.reportRead();
+    return super.nominationLoading;
+  }
+
+  @override
+  set nominationLoading(bool value) {
+    _$nominationLoadingAtom.reportWrite(value, super.nominationLoading, () {
+      super.nominationLoading = value;
     });
   }
 
@@ -247,6 +262,15 @@ mixin _$StakingStore on _StakingStore, Store {
     return _$setTxsLoadingAsyncAction.run(() => super.setTxsLoading(loading));
   }
 
+  final _$setNominationLoadingAsyncAction =
+      AsyncAction('_StakingStore.setNominationLoading');
+
+  @override
+  Future<void> setNominationLoading(bool loading) {
+    return _$setNominationLoadingAsyncAction
+        .run(() => super.setNominationLoading(loading));
+  }
+
   final _$addTxsAsyncAction = AsyncAction('_StakingStore.addTxs');
 
   @override
@@ -306,11 +330,11 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setNominations(Map<dynamic, dynamic> data) {
+  void setNominations(Map<dynamic, dynamic> data, String currentAccount) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
         name: '_StakingStore.setNominations');
     try {
-      return super.setNominations(data);
+      return super.setNominations(data, currentAccount);
     } finally {
       _$_StakingStoreActionController.endAction(_$actionInfo);
     }
@@ -365,10 +389,11 @@ mixin _$StakingStore on _StakingStore, Store {
   String toString() {
     return '''
 validatorsInfo: ${validatorsInfo},
-electedInfo: ${electedInfo},
-nextUpsInfo: ${nextUpsInfo},
 overview: ${overview},
 nominationsMap: ${nominationsMap},
+userInterests: ${userInterests},
+validNominations: ${validNominations},
+nominationLoading: ${nominationLoading},
 ownStashInfo: ${ownStashInfo},
 accountBondedMap: ${accountBondedMap},
 txsLoading: ${txsLoading},

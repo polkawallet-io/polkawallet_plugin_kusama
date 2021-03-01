@@ -8,7 +8,7 @@ import { Keyring } from "@polkadot/keyring"
 import { ApiPromise } from "@polkadot/api"
 
 import { subscribeMessage } from "./setting"
-let keyring = new Keyring({ ss58Format: 0, type: "sr25519" })
+let keyring = new Keyring({ ss58Format: 44, type: "sr25519" })
 
 /**
  * Get svg icons of addresses.
@@ -26,7 +26,7 @@ async function genIcons(addresses: string[]) {
  * Get svg icons of pubKeys.
  */
 async function genPubKeyIcons(pubKeys: string[]) {
-  const icons = await genIcons(pubKeys.map((key) => keyring.encodeAddress(hexToU8a(key), 2)))
+  const icons = await genIcons(pubKeys.map((key) => keyring.encodeAddress(hexToU8a(key), 44)))
   return icons.map((i, index) => {
     i[0] = pubKeys[index]
     return i
@@ -54,7 +54,8 @@ async function decodeAddress(addresses: string[]) {
 /**
  * encode pubKey to addresses with different prefixes
  */
-async function encodeAddress(pubKeys: string[], ss58Formats: number[]) {
+async function encodeAddress(pubKeys: string[], _ss58Formats: number[]) {
+  const ss58Formats = _ss58Formats.includes(44) ? _ss58Formats : [..._ss58Formats, 44]
   await cryptoWaitReady()
   const res = {}
   ss58Formats.forEach((ss58) => {
@@ -80,7 +81,7 @@ async function queryAddressWithAccountIndex(api: ApiPromise, accIndex: string, s
  */
 async function queryAccountsBonded(api: ApiPromise, pubKeys: string[]) {
   console.log("queryAccountsBonded", api.query)
-  return Promise.all(pubKeys.map((key) => keyring.encodeAddress(hexToU8a(key), 2)).map((i) => Promise.all([api.query.staking.bonded(i), api.query.staking.ledger(i)]))).then((ls) =>
+  return Promise.all(pubKeys.map((key) => keyring.encodeAddress(hexToU8a(key), 44)).map((i) => Promise.all([api.query.staking.bonded(i), api.query.staking.ledger(i)]))).then((ls) =>
     ls.map((i, index) => [pubKeys[index], i[0], i[1].toHuman() ? i[1].toHuman()["stash"] : null])
   )
 }
@@ -89,28 +90,55 @@ async function queryAccountsBonded(api: ApiPromise, pubKeys: string[]) {
  * get network native token balance of an address
  */
 async function getBalance(api: ApiPromise, address: string, msgChannel: string) {
-  let res = await api.query.system.account(address)
-  let accountId = await (await api.derive.balances.account(address)).accountId
-
-  /*
-  Balance     8,012.2985194 PCX
-  Reserved    10 PCX
-  Locked      8,000 PCX
-
-  res.data = {
-    free: 8.0022 kPCX,
-    reserved: 10.0000 PCX,
-    feeFrozen: 8.0000 kPCX
+  const transfrom = (res: any) => {
+    const lockedBreakdown = res.lockedBreakdown.map((i: any) => {
+      return {
+        ...i,
+        use: hexToString(i.id.toHex()),
+      }
+    })
+    return {
+      ...res,
+      lockedBreakdown,
+    }
   }
-  */
-
-  return {
-    accountId: accountId,
-    accountNonce: res.nonce,
-    availableBalance: res.data.free,
-    freeBalance: res.data.free,
-    reserved: res.data.reserved,
+  if (msgChannel) {
+    subscribeMessage(api.derive.balances.all, [address], msgChannel, transfrom)
+    return
   }
+
+  const res = await api.derive.balances.all(address)
+  return transfrom(res)
+  // let accInfo = await api.query.system.account(address)
+  // let accountId = await (await api.derive.balances.account(address)).accountId
+
+  // const transform = (res) => {
+  //   return {
+  //     accountId: accountId,
+  //     accountNonce: res.nonce,
+  //     availableBalance: res.data.free,
+  //     freeBalance: res.data.free,
+  //     reserved: res.data.reserved,
+  //   }
+  // }
+
+  // /*
+  // Balance     8,012.2985194 PCX
+  // Reserved    10 PCX
+  // Locked      8,000 PCX
+
+  // res.data = {
+  //   free: 8.0022 kPCX,
+  //   reserved: 10.0000 PCX,
+  //   feeFrozen: 8.0000 kPCX
+  // }
+  // */
+
+  // if (msgChannel) {
+  //   subscribeMessage(api.query.system.account, [address], msgChannel, transform)
+  //   return
+  // }
+  // return transform(accInfo)
 }
 
 /**

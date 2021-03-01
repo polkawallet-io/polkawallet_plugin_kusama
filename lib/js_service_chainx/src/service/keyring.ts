@@ -11,7 +11,7 @@ import { ApiPromise, SubmittableResult } from "@polkadot/api"
 import { SubmittableExtrinsic } from "@polkadot/api/types"
 import { ITuple } from "@polkadot/types/types"
 import { DispatchError } from "@polkadot/types/interfaces"
-let keyring = new Keyring({ ss58Format: 0, type: "sr25519" })
+let keyring = new Keyring({ ss58Format: 44, type: "sr25519" })
 
 /**
  * Generate a set of new mnemonic.
@@ -81,9 +81,10 @@ function recover(keyType: string, cryptoType: KeypairType, key: string, password
  * We use a list of ss58Formats to encode the accounts
  * into different address formats for different networks.
  */
-async function initKeys(accounts: KeyringPair$Json[], ss58Formats: number[]) {
+async function initKeys(accounts: KeyringPair$Json[], _ss58Formats: number[]) {
   await cryptoWaitReady()
   const res = {}
+  const ss58Formats = _ss58Formats.includes(44) ? _ss58Formats : [..._ss58Formats, 44]
   ss58Formats.forEach((ss58) => {
     ;(<any>res)[ss58] = {}
   })

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/actions.dart';
+import 'package:polkawallet_plugin_chainx/common/components/pageTitleTaps.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/overview.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
-import 'package:polkawallet_ui/components/pageTitleTaps.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 
 class Staking extends StatefulWidget {
@@ -45,9 +45,7 @@ class _StakingState extends State<Staking> {
               },
             ),
             Expanded(
-              child: _tab == 1
-                  ? StakingOverviewPage(widget.plugin, widget.keyring)
-                  : StakingActions(widget.plugin, widget.keyring),
+              child: _tab == 1 ? StakingOverviewPage(widget.plugin, widget.keyring) : StakingActions(widget.plugin, widget.keyring),
             ),
           ],
         ),

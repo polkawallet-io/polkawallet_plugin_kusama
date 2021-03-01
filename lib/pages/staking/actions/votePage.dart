@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/setPayeePage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/addressFormItemForValidator.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -8,52 +8,25 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
-import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/pages/accountListPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
-class BondPage extends StatefulWidget {
-  BondPage(this.plugin, this.keyring, {this.onNext});
+class VotePage extends StatefulWidget {
+  VotePage(this.plugin, this.keyring, this.validatorAccountId, {this.onNext});
   final PluginChainX plugin;
   final Keyring keyring;
+  final String validatorAccountId;
   final Function(TxConfirmParams) onNext;
   @override
-  _BondPageState createState() => _BondPageState();
+  _VotePageState createState() => _VotePageState();
 }
 
-class _BondPageState extends State<BondPage> {
+class _VotePageState extends State<VotePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountCtrl = new TextEditingController();
 
-  final _rewardToOptions = ['Staked', 'Stash', 'Controller'];
-
-  KeyPairData _controller;
-
   int _rewardTo = 0;
-  String _rewardAccount;
-
-  Future<void> _changeControllerId(BuildContext context) async {
-    final accounts = widget.keyring.keyPairs.toList();
-    accounts.addAll(widget.keyring.externals);
-    final acc = await Navigator.of(context).pushNamed(
-      AccountListPage.route,
-      arguments: AccountListPageParams(list: accounts),
-    );
-    if (acc != null) {
-      setState(() {
-        _controller = acc;
-      });
-    }
-  }
-
-  void _onPayeeChanged(int to, String address) {
-    setState(() {
-      _rewardTo = to;
-      _rewardAccount = address;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +40,14 @@ class _BondPageState extends State<BondPage> {
       available = Fmt.balanceDouble(widget.plugin.balances.native.availableBalance.toString(), decimals);
     }
 
-    final rewardToOptions = _rewardToOptions.map((i) => dicStaking['reward.$i']).toList();
-
     List<KeyPairData> accounts;
     if (_rewardTo == 3) {
       accounts = widget.keyring.keyPairs;
       accounts.addAll(widget.keyring.externals);
     }
+
+    final accIcon = widget.plugin.store.accounts.addressIconsMap[widget.validatorAccountId];
+    final accInfo = widget.plugin.store.accounts.addressIndexMap[widget.validatorAccountId];
 
     return Column(
       children: <Widget>[
@@ -83,32 +57,19 @@ class _BondPageState extends State<BondPage> {
             child: ListView(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: TextTag(
-                        I18n.of(context).getDic(i18n_full_dic_chainx, 'staking')['stake.warn'],
-                        color: Colors.deepOrange,
-                        fontSize: 12,
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(8),
-                      ))
-                    ],
-                  ),
-                ),
-                Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: AddressFormItem(
                     widget.keyring.current,
-                    label: dicStaking['stash'],
+                    label: dicStaking['mystaking.action.vote.myaccount'],
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
-                  child: AddressFormItem(
-                    _controller ?? widget.keyring.current,
-                    label: dicStaking['controller'],
+                  child: AddressFormItemForValidator(
+                    widget.validatorAccountId,
+                    accIcon,
+                    accInfo,
+                    label: dicStaking['mystaking.action.vote.validator'],
                     // do not allow change controller here.
                     // onTap: () => _changeControllerId(context),
                   ),
@@ -137,12 +98,12 @@ class _BondPageState extends State<BondPage> {
                     },
                   ),
                 ),
-                PayeeSelector(
-                  widget.plugin,
-                  widget.keyring,
-                  initialValue: widget.plugin.store.staking.ownStashInfo,
-                  onChange: _onPayeeChanged,
-                ),
+                // PayeeSelector(
+                //   widget.plugin,
+                //   widget.keyring,
+                //   initialValue: widget.plugin.store.staking.ownStashInfo,
+                //   onChange: _onPayeeChanged,
+                // ),
               ],
             ),
           ),
@@ -150,29 +111,27 @@ class _BondPageState extends State<BondPage> {
         Padding(
           padding: EdgeInsets.all(16),
           child: RoundedButton(
-            text: dicStaking['action.bond'],
+            text: dicStaking['mystaking.action.vote.label'],
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 final inputAmount = _amountCtrl.text.trim();
-                String controllerId = widget.keyring.current.address;
-                if (_controller != null) {
-                  controllerId = _controller.address;
-                }
+                // String controllerId = widget.keyring.current.address;
+                // if (_controller != null) {
+                //   controllerId = _controller.address;
+                // }
                 widget.onNext(TxConfirmParams(
-                  txTitle: dicStaking['action.bond'],
-                  module: 'staking',
+                  txTitle: dicStaking['mystaking.action.vote.label'],
+                  module: 'xStaking',
                   call: 'bond',
                   txDisplay: {
                     "amount": '$inputAmount $symbol',
-                    "reward_destination": _rewardTo == 3 ? {'Account': _rewardAccount} : rewardToOptions[_rewardTo],
+                    "validatorId": widget.validatorAccountId,
                   },
                   params: [
                     // "controllerId":
-                    controllerId,
+                    widget.validatorAccountId,
                     // "amount"
                     Fmt.tokenInt(inputAmount, decimals).toString(),
-                    // "to"
-                    _rewardTo == 3 ? {'Account': _rewardAccount} : _rewardTo,
                   ],
                 ));
               }

@@ -22,8 +22,7 @@ class Democracy extends StatefulWidget {
 }
 
 class _DemocracyState extends State<Democracy> {
-  final GlobalKey<RefreshIndicatorState> _refreshKey =
-      new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey<RefreshIndicatorState>();
 
   final Map<BigInt, List> _links = {};
 
@@ -31,8 +30,7 @@ class _DemocracyState extends State<Democracy> {
     if (_links[id] != null) return _links[id];
 
     final List res = await widget.plugin.sdk.api.gov.getExternalLinks(
-      GenExternalLinksParams.fromJson(
-          {'data': id.toString(), 'type': 'referendum'}),
+      GenExternalLinksParams.fromJson({'data': id.toString(), 'type': 'referendum'}),
     );
     if (res != null) {
       setState(() {
@@ -59,8 +57,7 @@ class _DemocracyState extends State<Democracy> {
       txDisplay: {"id": id},
       params: [id],
     );
-    final res = await Navigator.of(context)
-        .pushNamed(TxConfirmPage.route, arguments: params);
+    final res = await Navigator.of(context).pushNamed(TxConfirmPage.route, arguments: params);
     if (res ?? false) {
       _refreshKey.currentState.show();
     }
@@ -89,8 +86,8 @@ class _DemocracyState extends State<Democracy> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        final decimals = widget.plugin.networkState.tokenDecimals[0];
-        final symbol = widget.plugin.networkState.tokenSymbol[0];
+        final decimals = widget.plugin.networkState.tokenDecimals;
+        final symbol = widget.plugin.networkState.tokenSymbol;
         final list = widget.plugin.store.gov.referendums;
         final bestNumber = widget.plugin.store.gov.bestNumber;
         return RefreshIndicator(
@@ -112,10 +109,7 @@ class _DemocracyState extends State<Democracy> {
                             bestNumber: bestNumber,
                             symbol: symbol,
                             decimals: decimals,
-                            blockDuration: BigInt.parse(widget.plugin
-                                    .networkConst['babe']['expectedBlockTime']
-                                    .toString())
-                                .toInt(),
+                            blockDuration: BigInt.parse(widget.plugin.networkConst['babe']['expectedBlockTime'].toString()).toInt(),
                             onCancelVote: _submitCancelVote,
                             links: FutureBuilder(
                               future: _getExternalLinks(list[i].index),

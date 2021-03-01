@@ -57,8 +57,7 @@ class _CandidateList extends State<CandidateListPage> {
       List<List> ls = List<List>.from(args);
       setState(() {
         _selected.addAll(ls);
-        _notSelected
-            .removeWhere((i) => ls.indexWhere((arg) => arg[0] == i[0]) > -1);
+        _notSelected.removeWhere((i) => ls.indexWhere((arg) => arg[0] == i[0]) > -1);
         ls.forEach((i) {
           _selectedMap[i[0]] = true;
         });
@@ -69,15 +68,14 @@ class _CandidateList extends State<CandidateListPage> {
   @override
   Widget build(BuildContext context) {
     var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    final decimals = widget.plugin.networkState.tokenDecimals;
+    final symbol = widget.plugin.networkState.tokenSymbol;
 
     List<List> list = [];
     list.addAll(_selected);
     // filter the _notSelected list
     List<List> retained = List.of(_notSelected);
-    retained = PluginFmt.filterCandidateList(
-        retained, _filter, widget.plugin.store.accounts.addressIndexMap);
+    retained = PluginFmt.filterCandidateList(retained, _filter, widget.plugin.store.accounts.addressIndexMap);
     list.addAll(retained);
 
     return Scaffold(
@@ -96,12 +94,10 @@ class _CandidateList extends State<CandidateListPage> {
                   Expanded(
                     child: CupertinoTextField(
                       padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
-                      placeholder: I18n.of(context)
-                          .getDic(i18n_full_dic_chainx, 'staking')['filter'],
+                      placeholder: I18n.of(context).getDic(i18n_full_dic_chainx, 'staking')['filter'],
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(24)),
-                        border: Border.all(
-                            width: 0.5, color: Theme.of(context).dividerColor),
+                        border: Border.all(width: 0.5, color: Theme.of(context).dividerColor),
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -118,8 +114,7 @@ class _CandidateList extends State<CandidateListPage> {
                 children: list.map(
                   (i) {
                     return CandidateItem(
-                      accInfo:
-                          widget.plugin.store.accounts.addressIndexMap[i[0]],
+                      accInfo: widget.plugin.store.accounts.addressIndexMap[i[0]],
                       icon: widget.plugin.store.accounts.addressIconsMap[i[0]],
                       balance: i,
                       tokenSymbol: symbol,
@@ -134,11 +129,9 @@ class _CandidateList extends State<CandidateListPage> {
                             setState(() {
                               if (value) {
                                 _selected.add(i);
-                                _notSelected
-                                    .removeWhere((item) => item[0] == i[0]);
+                                _notSelected.removeWhere((item) => item[0] == i[0]);
                               } else {
-                                _selected
-                                    .removeWhere((item) => item[0] == i[0]);
+                                _selected.removeWhere((item) => item[0] == i[0]);
                                 _notSelected.add(i);
                               }
                             });

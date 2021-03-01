@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_chainx/pages/governance/democracy/democracy.dart';
 import 'package:polkawallet_plugin_chainx/pages/governance/democracy/proposals.dart';
+import 'package:polkawallet_plugin_chainx/common/components/topTabs.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/ui.dart';
-import 'package:polkawallet_ui/components/topTaps.dart';
 
 class DemocracyPage extends StatefulWidget {
   DemocracyPage(this.plugin, this.keyring);
@@ -57,9 +57,7 @@ class _DemocracyPageState extends State<DemocracyPage> {
                 ],
               ),
               Expanded(
-                child: _tab == 0
-                    ? Democracy(widget.plugin)
-                    : Proposals(widget.plugin),
+                child: _tab == 0 ? Democracy(widget.plugin) : Proposals(widget.plugin),
               ),
             ],
           ),

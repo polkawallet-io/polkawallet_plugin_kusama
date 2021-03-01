@@ -5,6 +5,8 @@ import 'package:polkawallet_sdk/api/types/txData.dart';
 import 'package:polkawallet_plugin_chainx/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/txData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.dart';
 
 part 'staking.g.dart';
 
@@ -21,16 +23,19 @@ abstract class _StakingStore with Store {
   List<ValidatorData> validatorsInfo = List<ValidatorData>();
 
   @observable
-  List<ValidatorData> electedInfo = List<ValidatorData>();
-
-  @observable
-  List<ValidatorData> nextUpsInfo = List<ValidatorData>();
-
-  @observable
   Map overview = Map();
 
   @observable
   Map nominationsMap = Map();
+
+  @observable
+  List<UserInterestData> userInterests = List<UserInterestData>();
+
+  @observable
+  List<NominationData> validNominations = List<NominationData>();
+
+  @observable
+  bool nominationLoading = false;
 
   @observable
   OwnStashInfoData ownStashInfo;
@@ -85,30 +90,10 @@ abstract class _StakingStore with Store {
     if (data['validators'] == null) return;
 
     print('setValidatorsInfo func: $data');
-    // {validators: [], waitingIds: []}
-
-    overview = {
-      'stakedReturn': data['inflation']['stakedReturn'],
-      'totalStaked': data['totalStaked'],
-      'totalIssuance': data['totalIssuance'],
-      'minNominated': data['minNominated'],
-    };
 
     // all validators
     final validatorsAll = List.of(data['validators']).map((i) => ValidatorData.fromJson(i)).toList();
     validatorsInfo = validatorsAll;
-
-    // elected validators
-    final elected = validatorsAll.toList();
-    elected.removeWhere((e) => !e.isElected);
-    electedInfo = elected;
-
-    // waiting validators
-    nextUpsInfo = List.of(data['waitingIds']).map((i) {
-      final e = ValidatorData();
-      e.accountId = i;
-      return e;
-    }).toList();
 
     // cache data
     if (shouldCache) {
@@ -116,9 +101,25 @@ abstract class _StakingStore with Store {
     }
   }
 
+  bool filterNomination(NominationData nmn, List<UserInterestData> userInterests) {
+    if (userInterests.length > 0) {
+      List<Dividended> interestNode = userInterests[0].interests.where((i) => i.validator == nmn.validatorId).toList();
+      bool blInterestNode = interestNode.length > 0 && BigInt.parse(interestNode[0].interest) != BigInt.zero ? true : false;
+      if (blInterestNode) return true;
+    }
+
+    BigInt chunks = BigInt.zero;
+    nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
+
+    if (nmn.nomination != BigInt.zero) return true;
+    if (chunks != BigInt.zero) return true;
+    return false;
+  }
+
   @action
-  void setNominations(Map data) {
-    nominationsMap = data;
+  void setNominations(Map data, String currentAccount) {
+    userInterests = List.of(data['allDividended']).map((i) => UserInterestData.fromJson(i)).where((dvd) => dvd.account == currentAccount).toList();
+    validNominations = List.of(data['allNominations']).map((i) => NominationData.fromJson(i)).where((nmn) => filterNomination(nmn, userInterests)).toList();
   }
 
   @action
@@ -140,6 +141,11 @@ abstract class _StakingStore with Store {
   @action
   Future<void> setTxsLoading(bool loading) async {
     txsLoading = loading;
+  }
+
+  @action
+  Future<void> setNominationLoading(bool loading) async {
+    nominationLoading = loading;
   }
 
   @action

@@ -1,53 +1,56 @@
-import 'dart:math';
-
-import 'package:intl/intl.dart';
-
 class ValidatorData extends _ValidatorData {
   static ValidatorData fromJson(Map<String, dynamic> json) {
     ValidatorData data = ValidatorData();
-    data.accountId = json['accountId'];
-    if (json['exposure'] != null) {
-      data.total = BigInt.parse(json['exposure']['total'].toString());
-      data.bondOwn = BigInt.parse(json['exposure']['own'].toString());
-      data.bondOther = data.total - data.bondOwn;
+    data.accountId = json['account'];
+    data.registeredAt = json['registeredAt'];
+    data.isChilled = json['isChilled'];
+    data.totalNomination = json['totalNomination'];
+    data.totalNominationFmt = json['totalNominationFmt'];
+    data.lastTotalVoteWeight = json['lastTotalVoteWeight'];
+    data.lastTotalVoteWeightUpdate = json['lastTotalVoteWeightUpdate'];
+    data.isValidating = json['isValidating'];
+    data.referralId = json['referralId'];
+    data.selfBonded = json['selfBonded'];
+    data.selfBondedFmt = json['selfBondedFmt'];
+    data.rewardPotAccount = json['rewardPotAccount'];
+    data.rewardPotBalance = json['rewardPotBalance'];
+    data.rewardPotBalanceFmt = json['rewardPotBalanceFmt'];
 
-      data.isActive = json['isActive'];
-      data.isElected = json['isElected'];
+    // if (json['exposure'] != null) {
+    //   data.total = BigInt.parse(json['exposure']['total'].toString());
+    //   data.bondOwn = BigInt.parse(json['exposure']['own'].toString());
+    //   data.bondOther = data.total - data.bondOwn;
 
-      data.numNominators = json['numNominators'];
-      data.rankBondTotal = json['rankBondTotal'];
-      data.rankReward = json['rankReward'];
+    //   data.isActive = json['isActive'];
+    //   data.isElected = json['isElected'];
 
-      data.stakedReturn = double.parse(json['stakedReturn'].toString());
-      data.stakedReturnCmp = double.parse(json['stakedReturnCmp'].toString());
+    //   data.numNominators = json['numNominators'];
+    //   data.rankBondTotal = json['rankBondTotal'];
+    //   data.rankReward = json['rankReward'];
 
-      data.commission = NumberFormat('0.00%')
-          .format(json['validatorPrefs']['commission'] / pow(10, 9));
-      data.nominators =
-          List<Map<String, dynamic>>.from(json['exposure']['others']);
-    }
+    //   data.stakedReturn = double.parse(json['stakedReturn'].toString());
+    //   data.stakedReturnCmp = double.parse(json['stakedReturnCmp'].toString());
+
+    //   data.commission = NumberFormat('0.00%').format(json['validatorPrefs']['commission'] / pow(10, 9));
+    //   data.nominators = List<Map<String, dynamic>>.from(json['exposure']['others']);
+    // }
     return data;
   }
 }
 
 abstract class _ValidatorData {
   String accountId = '';
-
-  BigInt total = BigInt.zero;
-  BigInt bondOwn = BigInt.zero;
-  BigInt bondOther = BigInt.zero;
-
-  bool isActive = false;
-  bool isElected = false;
-
-  int numNominators = 0;
-  int rankBondTotal = 0;
-  int rankReward = 0;
-
-  double stakedReturn = 0;
-  double stakedReturnCmp = 0;
-
-  String commission = '';
-
-  List<Map<String, dynamic>> nominators = List<Map<String, dynamic>>();
+  int registeredAt = 0;
+  bool isChilled = false;
+  String totalNomination = '';
+  String totalNominationFmt = '';
+  String lastTotalVoteWeight = '';
+  int lastTotalVoteWeightUpdate = 0;
+  bool isValidating = false;
+  String referralId = '';
+  String selfBonded = '';
+  String selfBondedFmt = '';
+  String rewardPotAccount = '';
+  String rewardPotBalance = '';
+  String rewardPotBalanceFmt = '';
 }

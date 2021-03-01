@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
-import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class Validator extends StatelessWidget {
@@ -15,7 +15,7 @@ class Validator extends StatelessWidget {
     this.icon,
     this.decimals,
     this.nominations,
-  ) : isWaiting = validator.total == BigInt.zero;
+  ) : isWaiting = false;
 
   final ValidatorData validator;
   final Map accInfo;
@@ -27,8 +27,8 @@ class Validator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-//    print(accInfo['identity']);
-    bool hasDetail = validator.commission.isNotEmpty;
+    var theme = Theme.of(context);
+
     return GestureDetector(
       child: Container(
         color: Colors.white,
@@ -48,47 +48,55 @@ class Validator extends StatelessWidget {
                     accInfo,
                   ),
                   Text(
-                    !isWaiting
-                        ? '${dic['total']}: ${hasDetail ? Fmt.token(validator.total, decimals) : '~'}'
-                        : '${dic['nominators']}: ${nominations.length}',
+                    '${dic['overview.all']}: ${validator.totalNominationFmt}',
                     style: TextStyle(
                       color: Theme.of(context).unselectedWidgetColor,
                       fontSize: 12,
                     ),
                   ),
-                  !isWaiting
-                      ? Text(
-                          '${dic['commission']}: ${hasDetail ? validator.commission : '~'}',
-                          style: TextStyle(
-                            color: Theme.of(context).unselectedWidgetColor,
-                            fontSize: 12,
-                          ),
-                        )
-                      : Container()
+                  Text(
+                    '${dic['overview.own']}: ${validator.selfBondedFmt}',
+                    style: TextStyle(
+                      color: Theme.of(context).unselectedWidgetColor,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Text(
+                    '${dic['overview.pots']}: ${validator.rewardPotBalanceFmt}',
+                    style: TextStyle(
+                      color: Theme.of(context).unselectedWidgetColor,
+                      fontSize: 12,
+                    ),
+                  )
                 ],
               ),
             ),
-            !isWaiting
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(dic['reward']),
-                      Text(hasDetail
-                          ? '${validator.stakedReturnCmp.toStringAsFixed(2)}%'
-                          : '~'),
-                    ],
-                  )
-                : Container()
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 8),
+                    padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(24)),
+                      border: Border.all(width: 0.5, color: theme.dividerColor),
+                    ),
+                    child: Text(dic['mystaking.action.vote.label']),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(StakePage.route, arguments: validator);
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),
-      onTap: hasDetail
-          ? () {
-              // webApi.staking.queryValidatorRewards(validator.accountId);
-              Navigator.of(context)
-                  .pushNamed(ValidatorDetailPage.route, arguments: validator);
-            }
-          : null,
+      onTap: () {
+        // webApi.staking.queryValidatorRewards(validator.accountId);
+        Navigator.of(context).pushNamed(ValidatorDetailPage.route, arguments: validator);
+      },
     );
   }
 }

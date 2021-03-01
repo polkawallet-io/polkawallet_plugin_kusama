@@ -37,8 +37,7 @@ class ApiGov {
   }
 
   Future<void> updateBestNumber() async {
-    final bestNumber = await api.service.webView
-        .evalJavascript('api.derive.chain.bestNumber()');
+    final bestNumber = await api.service.webView.evalJavascript('api.derive.chain.bestNumber()');
     store.gov.setBestNumber(BigInt.parse(bestNumber.toString()));
   }
 
@@ -75,8 +74,7 @@ class ApiGov {
   }
 
   Future<Map> queryUserCouncilVote() async {
-    final Map votes =
-        await api.gov.queryUserCouncilVote(keyring.current.address);
+    final Map votes = await api.gov.queryUserCouncilVote(keyring.current.address);
     store.gov.setUserCouncilVotes(votes);
     return votes;
   }
@@ -107,8 +105,7 @@ class ApiGov {
     store.gov.setTreasuryOverview(data);
 
     final List<String> addresses = [];
-    final List<SpendProposalData> allProposals =
-        store.gov.treasuryOverview.proposals.toList();
+    final List<SpendProposalData> allProposals = store.gov.treasuryOverview.proposals.toList();
     allProposals.addAll(store.gov.treasuryOverview.approvals);
     allProposals.forEach((e) {
       addresses.add(e.proposal.proposer);

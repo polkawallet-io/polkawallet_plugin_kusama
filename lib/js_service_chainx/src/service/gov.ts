@@ -158,11 +158,13 @@ async function getTreasuryOverview(api: ApiPromise) {
   const balance = await api.derive.balances.account(TREASURY_ACCOUNT as AccountId)
   const res: any = {
     ...proposals,
+    proposalCount: proposals.proposalCount.toString(),
   }
   res["balance"] = formatBalance(balance.freeBalance, {
     forceUnit: "-",
     withSi: false,
   }).split(".")[0]
+  console.log(res)
   res.proposals.forEach((e: any) => {
     if (e.council.length) {
       e.council = e.council.map((i: any) => ({

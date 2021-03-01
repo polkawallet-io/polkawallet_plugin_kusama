@@ -53,14 +53,17 @@ abstract class _GovernanceStore with Store {
 
   @action
   void setCouncilInfo(Map info, {bool shouldCache = true}) {
+    info["candidacyBond"] = info["candidacyBond"].toString();
+    info["candidateCount"] = info["candidateCount"].toString();
+    info["desiredRunnersUp"] = info["desiredRunnersUp"].toString();
+    info["desiredSeats"] = info["desiredSeats"].toString();
+    info["termDuration"] = info["termDuration"].toString();
+    info["votingBond"] = info["votingBond"].toString();
     council = CouncilInfoData.fromJson(info);
 
     if (shouldCache) {
       cacheCouncilTimestamp = DateTime.now().millisecondsSinceEpoch;
-      cache.councilInfo.val = {
-        'data': info,
-        'cacheTime': cacheCouncilTimestamp
-      };
+      cache.councilInfo.val = {'data': info, 'cacheTime': cacheCouncilTimestamp};
     }
   }
 

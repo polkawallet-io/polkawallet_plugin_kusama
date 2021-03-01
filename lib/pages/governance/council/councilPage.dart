@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_chainx/pages/governance/council/council.dart';
 import 'package:polkawallet_plugin_chainx/pages/governance/council/motions.dart';
+import 'package:polkawallet_plugin_chainx/common/components/topTabs.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/ui.dart';
-import 'package:polkawallet_ui/components/topTaps.dart';
 
 class CouncilPage extends StatefulWidget {
   CouncilPage(this.plugin, this.keyring);

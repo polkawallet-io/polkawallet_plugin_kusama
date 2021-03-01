@@ -32,8 +32,7 @@ class ProposalDetailPage extends StatefulWidget {
 }
 
 class _ProposalDetailPageState extends State<ProposalDetailPage> {
-  final GlobalKey<RefreshIndicatorState> _refreshKey =
-      new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey<RefreshIndicatorState>();
 
   List _links;
 
@@ -41,8 +40,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
     if (_links != null) return _links;
 
     final List res = await widget.plugin.sdk.api.gov.getExternalLinks(
-      GenExternalLinksParams.fromJson(
-          {'data': id.toString(), 'type': 'proposal'}),
+      GenExternalLinksParams.fromJson({'data': id.toString(), 'type': 'proposal'}),
     );
     if (res != null) {
       setState(() {
@@ -73,8 +71,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
       ],
     );
 
-    final res = await Navigator.of(context)
-        .pushNamed(TxConfirmPage.route, arguments: params);
+    final res = await Navigator.of(context).pushNamed(TxConfirmPage.route, arguments: params);
     if (res ?? false) {
       _refreshKey.currentState.show();
     }
@@ -83,37 +80,27 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
   @override
   Widget build(BuildContext context) {
     var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-    final ProposalInfoData proposalPara =
-        ModalRoute.of(context).settings.arguments;
+    final ProposalInfoData proposalPara = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-              '${dic['proposal']} #${BigInt.parse(proposalPara.index.toString())}'),
-          centerTitle: true),
+      appBar: AppBar(title: Text('${dic['proposal']} #${BigInt.parse(proposalPara.index.toString())}'), centerTitle: true),
       body: SafeArea(
         child: RefreshIndicator(
           key: _refreshKey,
           onRefresh: _fetchData,
           child: Observer(
             builder: (_) {
-              final ProposalInfoData proposal = widget
-                  .plugin.store.gov.proposals
-                  .firstWhere((e) => e.index == proposalPara.index);
-              final decimals = widget.plugin.networkState.tokenDecimals[0];
-              final symbol = widget.plugin.networkState.tokenSymbol[0] ?? '';
+              final ProposalInfoData proposal = widget.plugin.store.gov.proposals.firstWhere((e) => e.index == proposalPara.index);
+              final decimals = widget.plugin.networkState.tokenDecimals;
+              final symbol = widget.plugin.networkState.tokenSymbol ?? '';
               final List<List<String>> params = [];
               bool hasProposal = false;
               if (proposal.image?.proposal != null) {
                 proposal.image.proposal.meta.args.asMap().forEach((k, v) {
-                  params.add([
-                    '${v.name}: ${v.type}',
-                    proposal.image.proposal.args[k].toString()
-                  ]);
+                  params.add(['${v.name}: ${v.type}', proposal.image.proposal.args[k].toString()]);
                 });
                 hasProposal = true;
               }
-              final bool isSecondOn =
-                  proposal.seconds.indexOf(widget.keyring.current.address) >= 0;
+              final bool isSecondOn = proposal.seconds.indexOf(widget.keyring.current.address) >= 0;
               return ListView(
                 children: <Widget>[
                   RoundedCard(
@@ -128,10 +115,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                                 style: Theme.of(context).textTheme.headline4,
                               )
                             : Container(),
-                        hasProposal
-                            ? Text(proposal.image.proposal.meta.documentation
-                                .trim())
-                            : Container(),
+                        hasProposal ? Text(proposal.image.proposal.meta.documentation.trim()) : Container(),
                         hasProposal ? Divider(height: 24) : Container(),
                         Padding(
                           padding: EdgeInsets.only(bottom: 8),
@@ -147,25 +131,19 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                         params.length > 0
                             ? Text(
                                 dic['proposal.params'],
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .unselectedWidgetColor),
+                                style: TextStyle(color: Theme.of(context).unselectedWidgetColor),
                               )
                             : Container(),
-                        params.length > 0
-                            ? ProposalArgsList(params)
-                            : Container(),
+                        params.length > 0 ? ProposalArgsList(params) : Container(),
                         Text(
                           dic['treasury.proposer'],
-                          style: TextStyle(
-                              color: Theme.of(context).unselectedWidgetColor),
+                          style: TextStyle(color: Theme.of(context).unselectedWidgetColor),
                         ),
                         ListTile(
                           contentPadding: EdgeInsets.all(0),
                           leading: AddressIcon(
                             proposal.proposer,
-                            svg: widget.plugin.store.accounts
-                                .addressIconsMap[proposal.proposer],
+                            svg: widget.plugin.store.accounts.addressIconsMap[proposal.proposer],
                           ),
                           title: Text(Fmt.address(proposal.proposer)),
                         ),
@@ -176,9 +154,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                               Expanded(
                                 child: Text(
                                   dic['treasury.bond'],
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .unselectedWidgetColor),
+                                  style: TextStyle(color: Theme.of(context).unselectedWidgetColor),
                                 ),
                               ),
                               Text(
@@ -189,8 +165,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                           ),
                         ),
                         FutureBuilder(
-                          future: _getExternalLinks(
-                              BigInt.parse(proposalPara.index.toString())),
+                          future: _getExternalLinks(BigInt.parse(proposalPara.index.toString())),
                           builder: (_, AsyncSnapshot snapshot) {
                             if (snapshot.hasData) {
                               return GovExternalLinks(snapshot.data);
@@ -204,9 +179,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                             Expanded(
                               child: Text(
                                 dic['proposal.second'],
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .unselectedWidgetColor),
+                                style: TextStyle(color: Theme.of(context).unselectedWidgetColor),
                               ),
                             ),
                             CupertinoSwitch(
@@ -222,8 +195,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                       ],
                     ),
                   ),
-                  ProposalSecondsList(
-                      store: widget.plugin.store.accounts, proposal: proposal),
+                  ProposalSecondsList(store: widget.plugin.store.accounts, proposal: proposal),
                 ],
               );
             },
@@ -254,8 +226,7 @@ class ProposalSecondsList extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(16),
-            child: BorderedTitle(
-                title: '${dic['proposal.seconds']}(${seconding.length})'),
+            child: BorderedTitle(title: '${dic['proposal.seconds']}(${seconding.length})'),
           ),
           Column(
             children: seconding.map((e) {
