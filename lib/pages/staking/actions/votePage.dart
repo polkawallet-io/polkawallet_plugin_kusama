@@ -145,9 +145,10 @@ class _VotePageState extends State<VotePage> {
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 final inputAmount = _amountCtrl.text.trim();
-                if (_controller != null) {
-                  controllerId = _controller.address;
-                }
+                // String controllerId = widget.keyring.current.address;
+                // if (_controller != null) {
+                //   controllerId = _controller.address;
+                // }
                 widget.onNext(TxConfirmParams(
                   txTitle: dicStaking['mystaking.action.vote.label'],
                   module: 'xStaking',
