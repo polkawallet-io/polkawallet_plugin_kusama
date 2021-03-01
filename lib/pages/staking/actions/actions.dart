@@ -124,7 +124,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
 
         if (nmn.account == currentAccount) {
           BigInt interest = userInterests.length > 0 ? BigInt.parse(userInterests[0].interests.firstWhere((i) => i.validator == nmn.validatorId)?.interest) : BigInt.zero;
-          txs.add(StakedInfo(nmn.validatorId, '${nmn.nomination} PCX', '${interest.toString()}', '${chunks.toString()}'));
+          txs.add(StakedInfo(nmn.validatorId, nmn.nomination.toString(), interest.toString(), chunks.toString()));
         }
       });
     }
