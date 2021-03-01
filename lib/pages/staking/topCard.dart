@@ -32,7 +32,7 @@ class TopCard extends StatelessWidget {
         nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
 
         if (nmn.account == currentAccount) {
-          total += BigInt.parse(nmn.nomination);
+          total += nmn.nomination;
         }
       });
     }
