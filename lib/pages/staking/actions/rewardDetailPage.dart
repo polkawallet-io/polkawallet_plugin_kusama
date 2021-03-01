@@ -30,10 +30,11 @@ class RewardDetailPage extends StatelessWidget {
       hash: detail.extrinsicHash,
       eventId: detail.eventIndex,
       infoItems: <TxDetailInfoItem>[
-        TxDetailInfoItem(label: dicStaking['txs.event'], title: detail.eventId),
+        TxDetailInfoItem(
+            label: dicStaking['txs.event'], content: Text(detail.eventId)),
         TxDetailInfoItem(
           label: dic['amount'],
-          title: '${Fmt.balance(detail.amount, decimals)} $symbol',
+          content: Text('${Fmt.balance(detail.amount, decimals)} $symbol'),
         ),
       ],
       blockTime: Fmt.dateTime(

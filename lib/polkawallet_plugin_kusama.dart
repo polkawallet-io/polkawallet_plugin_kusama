@@ -57,6 +57,8 @@ class PluginKusama extends PolkawalletPlugin {
           ss58: name == network_name_kusama ? 2 : 0,
           primaryColor:
               name == network_name_kusama ? kusama_black : Colors.pink,
+          gradientColor:
+              name == network_name_kusama ? Color(0xFF555555) : Colors.red,
           icon: Image.asset(
               'packages/polkawallet_plugin_kusama/assets/images/public/$name.png'),
           iconDisabled: Image.asset(

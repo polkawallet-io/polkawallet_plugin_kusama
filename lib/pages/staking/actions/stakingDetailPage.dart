@@ -22,7 +22,7 @@ class StakingDetailPage extends StatelessWidget {
     final decimals = plugin.networkState.tokenDecimals[0];
     final TxData detail = ModalRoute.of(context).settings.arguments;
     List<TxDetailInfoItem> info = <TxDetailInfoItem>[
-      TxDetailInfoItem(label: dicStaking['action'], title: detail.call),
+      TxDetailInfoItem(label: dicStaking['action'], content: Text(detail.call)),
     ];
     List params = jsonDecode(detail.params);
     info.addAll(params.map((i) {
@@ -44,7 +44,7 @@ class StakingDetailPage extends StatelessWidget {
       }
       return TxDetailInfoItem(
         label: i['name'],
-        title: value,
+        content: Text(value),
       );
     }));
     return TxDetail(
