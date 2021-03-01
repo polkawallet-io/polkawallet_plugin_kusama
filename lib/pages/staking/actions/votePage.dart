@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/setPayeePage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/addressFormItemForValidator.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -76,8 +76,7 @@ class _VotePageState extends State<VotePage> {
       accounts.addAll(widget.keyring.externals);
     }
 
-    Map accInfo = widget.plugin.store.accounts.addressIndexMap[widget.validatorAccountId];
-    print('accInfo: $accInfo');
+    final accIcon = widget.plugin.store.accounts.addressIconsMap[widget.validatorAccountId];
 
     return Column(
       children: <Widget>[
@@ -95,8 +94,9 @@ class _VotePageState extends State<VotePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
-                  child: AddressFormItem(
-                    widget.keyring.current,
+                  child: AddressFormItemForValidator(
+                    widget.validatorAccountId,
+                    accIcon,
                     label: dicStaking['mystaking.action.vote.validator'],
                     // do not allow change controller here.
                     // onTap: () => _changeControllerId(context),
