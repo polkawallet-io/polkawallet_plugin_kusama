@@ -4,8 +4,8 @@ class BondedChunksData {
 
   static BondedChunksData fromJson(Map<String, dynamic> json) {
     BondedChunksData data = BondedChunksData();
-    data.lockedUntil = json['lockedUntil'] ?? '';
-    data.value = json['value'] ?? '';
+    data.lockedUntil = json['lockedUntil'];
+    data.value = json['value'];
     return data;
   }
 }
@@ -15,9 +15,9 @@ class NominationData extends _NominationData {
     NominationData data = NominationData();
     data.validatorId = json['validatorId'];
     data.account = json['account'];
-    data.nomination = json['nomination'] ?? '';
-    data.lastVoteWeight = json['lastVoteWeight'] ?? '';
-    data.lastVoteWeightUpdate = json['lastVoteWeightUpdate'] ?? '';
+    data.nomination = json['nomination'] != null ? json['nomination'] : '';
+    data.lastVoteWeight = json['lastVoteWeight'] != null ? json['lastVoteWeight'] : '';
+    data.lastVoteWeightUpdate = json['lastVoteWeightUpdate'] != null ? json['lastVoteWeightUpdate'] : '';
     data.unbondedChunks = List<BondedChunksData>.from((json['unbondedChunks'] as List).map((i) => BondedChunksData.fromJson(i)));
     return data;
   }
