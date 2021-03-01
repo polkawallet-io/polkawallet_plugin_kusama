@@ -145,25 +145,22 @@ class _VotePageState extends State<VotePage> {
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 final inputAmount = _amountCtrl.text.trim();
-                String controllerId = widget.keyring.current.address;
                 if (_controller != null) {
                   controllerId = _controller.address;
                 }
                 widget.onNext(TxConfirmParams(
                   txTitle: dicStaking['mystaking.action.vote.label'],
-                  module: 'staking',
+                  module: 'xStaking',
                   call: 'bond',
                   txDisplay: {
                     "amount": '$inputAmount $symbol',
-                    "reward_destination": _rewardTo == 3 ? {'Account': _rewardAccount} : rewardToOptions[_rewardTo],
+                    "validatorId": widget.validatorAccountId,
                   },
                   params: [
                     // "controllerId":
-                    controllerId,
+                    widget.validatorAccountId,
                     // "amount"
                     Fmt.tokenInt(inputAmount, decimals).toString(),
-                    // "to"
-                    _rewardTo == 3 ? {'Account': _rewardAccount} : _rewardTo,
                   ],
                 ));
               }

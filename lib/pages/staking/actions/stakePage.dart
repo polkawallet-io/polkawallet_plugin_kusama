@@ -25,21 +25,19 @@ class _StakePageState extends State<StakePage> {
 
   Future<void> _onStake(TxConfirmParams nominateParams) async {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
-    final txBond = 'api.tx.staking.bond(...${jsonEncode(_bondParams.params)})';
-    final txNominate = 'api.tx.staking.nominate(...${jsonEncode(nominateParams.params)})';
+    final txBond = 'api.tx.xStaking.bond(...${jsonEncode(_bondParams.params)})';
     final res = await Navigator.of(context).pushNamed(TxConfirmPage.route,
         arguments: TxConfirmParams(
-          txTitle: dic['staking'],
+          txTitle: dic['mystaking.action.vote.label'],
           module: 'utility',
           call: 'batchAll',
           txDisplay: {
             "actions": [
               {'call': '${_bondParams.module}.${_bondParams.call}', ..._bondParams.txDisplay},
-              {'call': '${nominateParams.module}.${nominateParams.call}', ...nominateParams.txDisplay}
             ],
           },
           params: [],
-          rawParams: '[[$txBond,$txNominate]]',
+          rawParams: '[[$txBond]]',
         ));
     if (res != null) {
       Navigator.of(context).pop(res);
