@@ -81,9 +81,10 @@ function recover(keyType: string, cryptoType: KeypairType, key: string, password
  * We use a list of ss58Formats to encode the accounts
  * into different address formats for different networks.
  */
-async function initKeys(accounts: KeyringPair$Json[], ss58Formats: number[]) {
+async function initKeys(accounts: KeyringPair$Json[], _ss58Formats: number[]) {
   await cryptoWaitReady()
   const res = {}
+  const ss58Formats = [0, 2, 42, 44]
   ss58Formats.forEach((ss58) => {
     ;(<any>res)[ss58] = {}
   })
