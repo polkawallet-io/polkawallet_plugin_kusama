@@ -141,7 +141,10 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
               svg: widget.keyring.current.icon,
             ),
           ),
-          title: Text(i.address),
+          title: UI.accountDisplayName(
+            i.address,
+            widget.plugin.store.accounts.addressIndexMap[i.address],
+          ),
           subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('${dicStaking['mystaking.votes']}: ${i.votes}', style: TextStyle(color: Colors.green)),
             Text('${dicStaking['mystaking.freeze']}: ${i.freeze}'),
