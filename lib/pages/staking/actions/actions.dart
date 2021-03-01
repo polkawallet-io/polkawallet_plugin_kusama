@@ -1,34 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:polkawallet_plugin_chainx/common/components/infoItem.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/bondExtraPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/payoutPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/redeemPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/rewardDetailPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/setControllerPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/setPayeePage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakingDetailPage.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/unbondPage.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/topCard.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
-import 'package:polkawallet_sdk/api/subscan.dart';
-import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
-import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
-import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
-import 'package:polkawallet_ui/components/outlinedCircle.dart';
-import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
@@ -58,49 +39,20 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
   final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey<RefreshIndicatorState>();
 
   bool _loading = false;
-  bool _rewardLoading = false;
 
-  TabController _tabController;
-  int _tab = 0;
-
-  int _txsPage = 0;
-  bool _isLastPage = false;
   ScrollController _scrollController;
 
   Future<void> _updateStakingTxs() async {
+    if (_loading) return;
     setState(() {
       _loading = true;
     });
-    Map res = await widget.plugin.service.staking.updateStakingTxs(_txsPage);
+    await widget.plugin.service.staking.queryNominations(widget.keyring.current.address);
     if (mounted) {
       setState(() {
         _loading = false;
       });
-
-      if (res == null || res['extrinsics'] == null || res['extrinsics'].length < tx_list_page_size) {
-        setState(() {
-          _isLastPage = true;
-        });
-      }
     }
-  }
-
-  Future<void> _updateStakingRewardTxs() async {
-    setState(() {
-      _rewardLoading = true;
-    });
-    await widget.plugin.service.staking.updateStakingRewards();
-    if (mounted) {
-      setState(() {
-        _rewardLoading = false;
-      });
-    }
-  }
-
-  Future<void> _updateStakingInfo() async {
-    // _tab == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
-
-    // await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
   List<Widget> _buildMyStakedValidatorsList() {
@@ -157,7 +109,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
             ],
           ),
           onTap: () {
-            Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
+            // Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
           },
         ),
       );
@@ -175,29 +127,25 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
   void initState() {
     super.initState();
 
-    _tabController = TabController(vsync: this, length: 2);
-
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
         setState(() {
-          if (!_isLastPage) {
-            _txsPage += 1;
-            _updateStakingTxs();
-          }
+          _updateStakingTxs();
         });
       }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.plugin.store.staking.ownStashInfo == null) {
-        if (_refreshKey.currentState != null) {
-          _refreshKey.currentState.show();
-        }
-      } else {
-        _updateStakingInfo();
-      }
-      widget.plugin.service.staking.queryAccountBondedInfo();
+      print('WidgetsBinding.instance.addPostFrameCallback');
+      // if (widget.plugin.store.staking.ownStashInfo == null) {
+      //   if (_refreshKey.currentState != null) {
+      //     _refreshKey.currentState.show();
+      //   }
+      // } else {
+      //   _updateStakingInfo();
+      // }
+      // widget.plugin.service.staking.queryAccountBondedInfo();
     });
   }
 
@@ -212,7 +160,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
         list.addAll(_buildMyStakedValidatorsList());
         return RefreshIndicator(
           key: _refreshKey,
-          onRefresh: _updateStakingInfo,
+          onRefresh: _updateStakingTxs,
           child: ListView(
             controller: _scrollController,
             children: list,

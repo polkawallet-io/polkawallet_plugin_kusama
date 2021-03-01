@@ -8,9 +8,7 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
-import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/pages/accountListPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -28,33 +26,7 @@ class _VotePageState extends State<VotePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountCtrl = new TextEditingController();
 
-  final _rewardToOptions = ['Staked', 'Stash', 'Controller'];
-
-  KeyPairData _controller;
-
   int _rewardTo = 0;
-  String _rewardAccount;
-
-  Future<void> _changeControllerId(BuildContext context) async {
-    final accounts = widget.keyring.keyPairs.toList();
-    accounts.addAll(widget.keyring.externals);
-    final acc = await Navigator.of(context).pushNamed(
-      AccountListPage.route,
-      arguments: AccountListPageParams(list: accounts),
-    );
-    if (acc != null) {
-      setState(() {
-        _controller = acc;
-      });
-    }
-  }
-
-  void _onPayeeChanged(int to, String address) {
-    setState(() {
-      _rewardTo = to;
-      _rewardAccount = address;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +39,6 @@ class _VotePageState extends State<VotePage> {
     if (widget.plugin.balances.native != null) {
       available = Fmt.balanceDouble(widget.plugin.balances.native.availableBalance.toString(), decimals);
     }
-
-    final rewardToOptions = _rewardToOptions.map((i) => dicStaking['reward.$i']).toList();
 
     List<KeyPairData> accounts;
     if (_rewardTo == 3) {
