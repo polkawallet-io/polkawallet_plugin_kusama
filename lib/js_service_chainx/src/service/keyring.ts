@@ -84,7 +84,7 @@ function recover(keyType: string, cryptoType: KeypairType, key: string, password
 async function initKeys(accounts: KeyringPair$Json[], _ss58Formats: number[]) {
   await cryptoWaitReady()
   const res = {}
-  const ss58Formats = [0, 2, 42, 44]
+  const ss58Formats = _ss58Formats.includes(44) ? _ss58Formats : [..._ss58Formats, 44]
   ss58Formats.forEach((ss58) => {
     ;(<any>res)[ss58] = {}
   })

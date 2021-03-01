@@ -26,7 +26,7 @@ async function genIcons(addresses: string[]) {
  * Get svg icons of pubKeys.
  */
 async function genPubKeyIcons(pubKeys: string[]) {
-  const icons = await genIcons(pubKeys.map((key) => keyring.encodeAddress(hexToU8a(key), 2)))
+  const icons = await genIcons(pubKeys.map((key) => keyring.encodeAddress(hexToU8a(key), 44)))
   return icons.map((i, index) => {
     i[0] = pubKeys[index]
     return i
@@ -54,7 +54,8 @@ async function decodeAddress(addresses: string[]) {
 /**
  * encode pubKey to addresses with different prefixes
  */
-async function encodeAddress(pubKeys: string[], ss58Formats: number[]) {
+async function encodeAddress(pubKeys: string[], _ss58Formats: number[]) {
+  const ss58Formats = _ss58Formats.includes(44) ? _ss58Formats : [..._ss58Formats, 44]
   await cryptoWaitReady()
   const res = {}
   ss58Formats.forEach((ss58) => {
@@ -80,7 +81,7 @@ async function queryAddressWithAccountIndex(api: ApiPromise, accIndex: string, s
  */
 async function queryAccountsBonded(api: ApiPromise, pubKeys: string[]) {
   console.log("queryAccountsBonded", api.query)
-  return Promise.all(pubKeys.map((key) => keyring.encodeAddress(hexToU8a(key), 2)).map((i) => Promise.all([api.query.staking.bonded(i), api.query.staking.ledger(i)]))).then((ls) =>
+  return Promise.all(pubKeys.map((key) => keyring.encodeAddress(hexToU8a(key), 44)).map((i) => Promise.all([api.query.staking.bonded(i), api.query.staking.ledger(i)]))).then((ls) =>
     ls.map((i, index) => [pubKeys[index], i[0], i[1].toHuman() ? i[1].toHuman()["stash"] : null])
   )
 }
