@@ -15,9 +15,10 @@ import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class VotePage extends StatefulWidget {
-  VotePage(this.plugin, this.keyring, {this.onNext});
+  VotePage(this.plugin, this.keyring, this.validatorAccountId, {this.onNext});
   final PluginChainX plugin;
   final Keyring keyring;
+  final String validatorAccountId;
   final Function(TxConfirmParams) onNext;
   @override
   _VotePageState createState() => _VotePageState();
@@ -75,6 +76,9 @@ class _VotePageState extends State<VotePage> {
       accounts.addAll(widget.keyring.externals);
     }
 
+    List<KeyPairData> filter = widget.keyring.allAccounts.where((i) => i.address == widget.validatorAccountId).toList();
+    KeyPairData validatorKeyPair = filter.isNotEmpty ? filter.first : KeyPairData();
+
     return Column(
       children: <Widget>[
         Expanded(
@@ -92,7 +96,7 @@ class _VotePageState extends State<VotePage> {
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: AddressFormItem(
-                    _controller ?? widget.keyring.current,
+                    validatorKeyPair,
                     label: dicStaking['mystaking.action.vote.validator'],
                     // do not allow change controller here.
                     // onTap: () => _changeControllerId(context),
