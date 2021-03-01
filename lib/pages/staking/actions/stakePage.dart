@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/votePage.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -48,6 +49,7 @@ class _StakePageState extends State<StakePage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final ValidatorData detail = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
@@ -65,6 +67,7 @@ class _StakePageState extends State<StakePage> {
             child: VotePage(
           widget.plugin,
           widget.keyring,
+          detail.accountId,
           onNext: (TxConfirmParams params) => _onStake(params),
         ));
       }),
