@@ -22,7 +22,7 @@ class StakePage extends StatefulWidget {
 
 class _StakePageState extends State<StakePage> {
   Future<void> _onStake(TxConfirmParams _bondParams) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final txBond = 'api.tx.xStaking.bond(...${jsonEncode(_bondParams.params)})';
     final res = await Navigator.of(context).pushNamed(TxConfirmPage.route,
         arguments: TxConfirmParams(
