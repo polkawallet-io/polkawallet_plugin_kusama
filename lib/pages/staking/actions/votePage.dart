@@ -76,8 +76,8 @@ class _VotePageState extends State<VotePage> {
       accounts.addAll(widget.keyring.externals);
     }
 
-    List<KeyPairData> filter = widget.keyring.allAccounts.where((i) => i.address == widget.validatorAccountId).toList();
-    KeyPairData validatorKeyPair = filter.isNotEmpty ? filter.first : KeyPairData();
+    Map accInfo = widget.plugin.store.accounts.addressIndexMap[widget.validatorAccountId];
+    print('accInfo: $accInfo');
 
     return Column(
       children: <Widget>[
@@ -96,7 +96,7 @@ class _VotePageState extends State<VotePage> {
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: AddressFormItem(
-                    validatorKeyPair,
+                    widget.keyring.current,
                     label: dicStaking['mystaking.action.vote.validator'],
                     // do not allow change controller here.
                     // onTap: () => _changeControllerId(context),
