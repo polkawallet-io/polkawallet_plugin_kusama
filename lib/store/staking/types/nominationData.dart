@@ -15,7 +15,7 @@ class NominationData extends _NominationData {
     NominationData data = NominationData();
     data.validatorId = json['validatorId'];
     data.account = json['account'];
-    data.nomination = json['nomination'] != null ? json['nomination'] : '';
+    data.nomination = json['nomination'];
     data.lastVoteWeight = json['lastVoteWeight'] != null ? json['lastVoteWeight'] : '';
     data.lastVoteWeightUpdate = json['lastVoteWeightUpdate'] != null ? json['lastVoteWeightUpdate'] : '';
     data.unbondedChunks = List<BondedChunksData>.from((json['unbondedChunks'] as List).map((i) => BondedChunksData.fromJson(i)));
@@ -26,7 +26,7 @@ class NominationData extends _NominationData {
 abstract class _NominationData {
   String validatorId;
   String account;
-  String nomination;
+  int nomination;
   String lastVoteWeight;
   String lastVoteWeightUpdate;
   List<BondedChunksData> unbondedChunks;
