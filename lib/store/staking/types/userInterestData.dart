@@ -7,7 +7,7 @@ class UserInterestData extends _UserInterestData {
   static UserInterestData fromJson(Map<String, dynamic> json) {
     UserInterestData data = UserInterestData();
     data.account = json['account'];
-    data.interests = List<Dividended>.from(json['interests']);
+    data.interests = List<Dividended>.from(json['interests'] ?? []);
     return data;
   }
 }
