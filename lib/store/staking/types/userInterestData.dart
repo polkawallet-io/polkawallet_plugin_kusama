@@ -1,13 +1,21 @@
 class Dividended {
   String validator;
   String interest;
+
+  static Dividended fromJson(Map<String, dynamic> json) {
+    Dividended data = Dividended();
+    data.validator = json['validator'];
+    data.interest = json['interest'];
+    return data;
+  }
 }
 
 class UserInterestData extends _UserInterestData {
   static UserInterestData fromJson(Map<String, dynamic> json) {
     UserInterestData data = UserInterestData();
     data.account = json['account'];
-    data.interests = List<Dividended>.from(json['interests'] ?? []);
+    var list = json['interests'] as List;
+    data.interests = list.map((i) => Dividended.fromJson(i)).toList();
     return data;
   }
 }
