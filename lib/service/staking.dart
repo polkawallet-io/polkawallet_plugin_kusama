@@ -122,31 +122,6 @@ class ApiStaking {
     return data;
   }
 
-  // Future<Map> queryOwnStashInfo() async {
-  //   final data = await api.service.staking.queryOwnStashInfo(keyring.current.address);
-  //   store.staking.setOwnStashInfo(keyring.current.pubKey, data);
-
-  //   final List<String> addressesNeedIcons = store.staking.ownStashInfo?.nominating != null ? store.staking.ownStashInfo.nominating.toList() : [];
-  //   final List<String> addressesNeedDecode = [];
-  //   if (store.staking.ownStashInfo?.stashId != null) {
-  //     addressesNeedIcons.add(store.staking.ownStashInfo.stashId);
-  //     addressesNeedDecode.add(store.staking.ownStashInfo.stashId);
-  //   }
-  //   if (store.staking.ownStashInfo?.controllerId != null) {
-  //     addressesNeedIcons.add(store.staking.ownStashInfo.controllerId);
-  //     addressesNeedDecode.add(store.staking.ownStashInfo.controllerId);
-  //   }
-
-  //   final icons = await api.account.getAddressIcons(addressesNeedIcons);
-  //   store.accounts.setAddressIconsMap(icons);
-
-  //   // get stash&controller's pubKey
-  //   final pubKeys = await api.account.decodeAddress(addressesNeedDecode);
-  //   store.accounts.setPubKeyAddressMap(Map<String, Map>.from({api.connectedNode.ss58.toString(): pubKeys}));
-
-  //   return data;
-  // }
-
   Future<void> queryAccountBondedInfo() async {
     // final data = await api.staking.queryBonded(keyring.allAccounts.map((e) => e.pubKey).toList());
     // store.staking.setAccountBondedMap(data);

@@ -8,11 +8,8 @@ import 'package:polkawallet_plugin_chainx/pages/staking/validators/accountInfo.d
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/addressIcon.dart';
-import 'package:polkawallet_ui/components/borderedTitle.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/utils/format.dart';
-import 'package:polkawallet_ui/utils/index.dart';
 
 class ValidatorDetailPage extends StatelessWidget {
   ValidatorDetailPage(this.plugin, this.keyring);
@@ -25,7 +22,6 @@ class ValidatorDetailPage extends StatelessWidget {
   Widget build(BuildContext context) => Observer(
         builder: (_) {
           final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-          final int decimals = plugin.networkState.tokenDecimals;
           final ValidatorData detail = ModalRoute.of(context).settings.arguments;
 
           final accInfo = plugin.store.accounts.addressIndexMap[detail.accountId];
