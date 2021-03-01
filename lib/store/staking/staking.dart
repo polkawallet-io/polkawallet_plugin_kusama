@@ -102,6 +102,7 @@ abstract class _StakingStore with Store {
   }
 
   bool filterNomination(NominationData nmn, List<UserInterestData> userInterests) {
+    return true;
     if (userInterests.length == 0) return false;
     List<Dividended> interestNode = userInterests[0].interests.where((i) => i.validator == nmn.validatorId).toList();
     bool blInterestNode = interestNode.length > 0 && BigInt.parse(interestNode[0].interest) != BigInt.zero ? true : false;
