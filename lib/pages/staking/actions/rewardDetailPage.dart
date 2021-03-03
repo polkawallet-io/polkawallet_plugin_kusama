@@ -27,6 +27,7 @@ class RewardDetailPage extends StatelessWidget {
       networkName: plugin.basic.name,
       success: true,
       action: detail.eventId,
+      fee: '0',
       hash: detail.extrinsicHash,
       eventId: detail.eventIndex,
       infoItems: <TxDetailInfoItem>[

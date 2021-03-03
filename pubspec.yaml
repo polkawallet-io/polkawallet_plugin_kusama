@@ -17,14 +17,14 @@ dependencies:
   json_annotation: ^3.0.1
   flutter_svg: ^0.18.0
   get_storage: ^1.2.1
-  polkawallet_sdk: ^0.1.0
-#  polkawallet_sdk:
-#    path: ../sdk
+#  polkawallet_sdk: ^0.1.0
+  polkawallet_sdk:
+    path: ../sdk
   polkawallet_ui:
-    git:
-      url: https://github.com/polkawallet-io/ui.git
-      ref: 9ff8f1ebbaad3bbda904756f650414cf7cfe3163
-#    path: ../ui
+#    git:
+#      url: https://github.com/polkawallet-io/ui.git
+#      ref: 9ff8f1ebbaad3bbda904756f650414cf7cfe3163
+    path: ../ui
 
 dev_dependencies:
   build_runner: ^1.10.11
@@ -39,6 +39,8 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
+    - assets/images/public/bg_kusama.png
+    - assets/images/public/bg_polkadot.png
     - assets/images/public/kusama.png
     - assets/images/public/kusama_gray.png
     - assets/images/public/polkadot.png
@@ -56,6 +58,8 @@ flutter:
     - assets/images/tokens/KSM.png
     - assets/images/tokens/DOT.png
     - assets/images/public/polkassembly.png
+    - assets/images/public/nav_staking.svg
+    - assets/images/public/nav_governance.svg
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

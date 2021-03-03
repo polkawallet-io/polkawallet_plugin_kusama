@@ -198,9 +198,10 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     }
 
     double stakedRatio = 0;
+    BigInt totalStaked = BigInt.zero;
     if (overview['totalStaked'] != null) {
-      stakedRatio = Fmt.balanceInt('0x${overview['totalStaked']}') /
-          Fmt.balanceInt(overview['totalIssuance']);
+      totalStaked = Fmt.balanceInt('0x${overview['totalStaked']}');
+      stakedRatio = totalStaked / Fmt.balanceInt(overview['totalIssuance']);
     }
 
     Color actionButtonColor = Theme.of(context).primaryColor;
@@ -220,8 +221,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
                   style: TextStyle(fontSize: 12),
                 ),
                 Text(
-                  Fmt.balance('0x${overview['totalStaked']}', decimals,
-                      length: 0),
+                  Fmt.priceFloorBigInt(totalStaked, decimals),
                   style: Theme.of(context).textTheme.headline4,
                 )
               ],

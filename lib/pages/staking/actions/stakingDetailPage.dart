@@ -20,6 +20,7 @@ class StakingDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     final decimals = plugin.networkState.tokenDecimals[0];
+    final symbol = plugin.networkState.tokenSymbol[0];
     final TxData detail = ModalRoute.of(context).settings.arguments;
     List<TxDetailInfoItem> info = <TxDetailInfoItem>[
       TxDetailInfoItem(label: dicStaking['action'], content: Text(detail.call)),
@@ -32,7 +33,6 @@ class StakingDetailPage extends StatelessWidget {
           value = Fmt.address(value);
           break;
         case "Compact<BalanceOf>":
-          final symbol = plugin.networkState.tokenSymbol[0];
           value = '${Fmt.balance(value, decimals)} $symbol';
           break;
         case "AccountId":
@@ -40,6 +40,9 @@ class StakingDetailPage extends StatelessWidget {
           String address = plugin.store.accounts
               .pubKeyAddressMap[plugin.sdk.api.connectedNode.ss58][value];
           value = Fmt.address(address);
+          break;
+        case "RewardDestination<AccountId>":
+          value = 'Account: ${Fmt.address(i['value']['Account'])}';
           break;
       }
       return TxDetailInfoItem(
@@ -51,6 +54,7 @@ class StakingDetailPage extends StatelessWidget {
       networkName: plugin.basic.name,
       success: detail.success,
       action: detail.call,
+      fee: '${Fmt.balance(detail.fee, decimals)} $symbol',
       hash: detail.hash,
       eventId: detail.txNumber,
       infoItems: info,

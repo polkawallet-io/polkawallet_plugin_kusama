@@ -404,7 +404,6 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                           Icons.airplanemode_active,
                                           color: Theme.of(context).cardColor,
                                         ),
-                                        text: '',
                                         onPressed: isCouncil && isTipped
                                             ? () => _onTip(median)
                                             : null,

@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance.dart';
@@ -59,6 +60,8 @@ class PluginKusama extends PolkawalletPlugin {
               name == network_name_kusama ? kusama_black : Colors.pink,
           gradientColor:
               name == network_name_kusama ? Color(0xFF555555) : Colors.red,
+          backgroundImage: AssetImage(
+              'packages/polkawallet_plugin_kusama/assets/images/public/bg_$name.png'),
           icon: Image.asset(
               'packages/polkawallet_plugin_kusama/assets/images/public/$name.png'),
           iconDisabled: Image.asset(
@@ -99,17 +102,18 @@ class PluginKusama extends PolkawalletPlugin {
 
   @override
   List<HomeNavItem> getNavItems(BuildContext context, Keyring keyring) {
-    final color = basic.name == network_name_polkadot ? 'pink' : 'black';
     return home_nav_items.map((e) {
       final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
       return HomeNavItem(
         text: dic[e],
-        icon: Image(
-            image: AssetImage('assets/images/public/$e.png',
-                package: 'polkawallet_plugin_kusama')),
-        iconActive: Image(
-            image: AssetImage('assets/images/public/${e}_$color.png',
-                package: 'polkawallet_plugin_kusama')),
+        icon: SvgPicture.asset(
+          'packages/polkawallet_plugin_kusama/assets/images/public/nav_$e.svg',
+          color: Theme.of(context).disabledColor,
+        ),
+        iconActive: SvgPicture.asset(
+          'packages/polkawallet_plugin_kusama/assets/images/public/nav_$e.svg',
+          color: basic.primaryColor,
+        ),
         content: e == 'staking' ? Staking(this, keyring) : Gov(this),
       );
     }).toList();
