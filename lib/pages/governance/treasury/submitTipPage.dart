@@ -39,7 +39,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
       final String amt = _amountCtrl.text.trim();
       final String address = _beneficiary.address;
       return TxConfirmParams(
-        module: 'treasury',
+        module: 'tips',
         call: isCouncil ? 'tipNew' : 'reportAwesome',
         txTitle: isCouncil ? dic['treasury.tipNew'] : dic['treasury.report'],
         txDisplay: isCouncil

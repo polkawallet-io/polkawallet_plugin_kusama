@@ -78,7 +78,7 @@ class _RebondPageState extends State<RebondPage> {
                           if (v.isEmpty) {
                             return dic['amount.error'];
                           }
-                          if (double.parse(v.trim()) >= available) {
+                          if (double.parse(v.trim()) > available) {
                             return dic['amount.low'];
                           }
                           return null;

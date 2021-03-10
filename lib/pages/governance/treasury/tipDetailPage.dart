@@ -116,7 +116,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
     String amt = _tipInputCtrl.text.trim();
     final args = TxConfirmParams(
-      module: 'treasury',
+      module: 'tips',
       call: 'tip',
       txTitle: '${dic['treasury.tip']} - ${dic['treasury.endorse']}',
       txDisplay: {
@@ -180,7 +180,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     final decimals = widget.plugin.networkState.tokenDecimals[0];
     final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
     final args = TxConfirmParams(
-      module: 'treasury',
+      module: 'tips',
       call: 'tip',
       txTitle: '${dic['treasury.tip']} - ${dic['treasury.jet']}',
       txDisplay: {

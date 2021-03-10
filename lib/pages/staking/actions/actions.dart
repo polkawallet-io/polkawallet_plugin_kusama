@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rebondPage.dart';
@@ -22,6 +21,7 @@ import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
@@ -671,7 +671,7 @@ class StakingInfoPanel extends StatelessWidget {
                           ),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -718,7 +718,7 @@ class StakingInfoPanel extends StatelessWidget {
                               )
                             : Container()
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -765,7 +765,7 @@ class StakingInfoPanel extends StatelessWidget {
                           });
                         }
                       },
-                    )
+                    ),
                   ],
                 ),
               ),

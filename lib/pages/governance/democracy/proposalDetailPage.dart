@@ -167,7 +167,10 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                             svg: widget.plugin.store.accounts
                                 .addressIconsMap[proposal.proposer],
                           ),
-                          title: Text(Fmt.address(proposal.proposer)),
+                          title: UI.accountDisplayName(
+                              proposal.proposer,
+                              widget.plugin.store.accounts
+                                  .addressIndexMap[proposal.proposer]),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 8, bottom: 8),
