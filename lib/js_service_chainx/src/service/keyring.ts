@@ -11,6 +11,9 @@ import { ApiPromise, SubmittableResult } from "@polkadot/api"
 import { SubmittableExtrinsic } from "@polkadot/api/types"
 import { ITuple } from "@polkadot/types/types"
 import { DispatchError } from "@polkadot/types/interfaces"
+import metaDataMap from "../constants/networkMetadata";
+import { TypeRegistry } from "@polkadot/types";
+import Metadata from "@polkadot/metadata";
 let keyring = new Keyring({ ss58Format: 44, type: "sr25519" })
 
 /**
@@ -294,7 +297,7 @@ async function checkDerivePath(seed: string, derivePath: string, pairType: Keypa
 /**
  * sign tx with QR
  */
-async function signAsync(api: ApiPromise, password: string) {
+async function signAsync(chain: string, password: string) {
   return new Promise((resolve) => {
     const { unsignedData } = getSigner()
     const keyPair = keyring.getPair(unsignedData.data.account)
@@ -303,7 +306,20 @@ async function signAsync(api: ApiPromise, password: string) {
         keyPair.lock()
       }
       keyPair.decodePkcs8(password)
-      const payload = api.registry.createType("ExtrinsicPayload", unsignedData.data.data, { version: api.extrinsicVersion })
+
+      let payload: any;
+      if (!(<any>window).api) {
+        const registry = new TypeRegistry();
+        registry.setMetadata(new Metadata(registry, metaDataMap[chain]));
+        payload = registry.createType("ExtrinsicPayload", unsignedData.data.data, {
+          version: 4,
+        });
+      } else {
+        payload = (<any>window).api.registry.createType("ExtrinsicPayload", unsignedData.data.data, {
+          version: (<any>window).api.extrinsicVersion,
+        });
+      }
+
       const signed = payload.sign(keyPair)
       resolve(signed)
     } catch (err) {
