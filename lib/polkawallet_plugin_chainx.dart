@@ -45,6 +45,8 @@ class PluginChainX extends PolkawalletPlugin {
           name: name,
           ss58: 44,
           primaryColor: chainx_yellow,
+          gradientColor: Colors.yellow,
+          backgroundImage: AssetImage('packages/polkawallet_plugin_chainx/assets/images/public/chainx.png'),
           icon: Image.asset('packages/polkawallet_plugin_chainx/assets/images/public/$name.png'),
           iconDisabled: Image.asset('packages/polkawallet_plugin_chainx/assets/images/public/${name}_gray.png'),
           jsCodeVersion: 11301,
