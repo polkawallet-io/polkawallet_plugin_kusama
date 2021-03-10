@@ -40,6 +40,7 @@ dev_dependencies:
 flutter:
   assets:
     - lib/js_service_chainx/dist/main.js
+    - assets/images/public/bg.png
     - assets/images/public/chainx.png
     - assets/images/public/chainx_gray.png
     - assets/images/public/polkadot.png
