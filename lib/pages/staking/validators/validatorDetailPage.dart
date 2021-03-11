@@ -54,6 +54,22 @@ class ValidatorDetailPage extends StatelessWidget {
                       margin: EdgeInsets.all(16),
                       child: Column(
                         children: <Widget>[
+                          detail.isBlocking
+                              ? Padding(
+                                  padding: EdgeInsets.only(top: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.remove_circle,
+                                        color: Theme.of(context).errorColor,
+                                        size: 16,
+                                      ),
+                                      Text(dicStaking['blocking'])
+                                    ],
+                                  ),
+                                )
+                              : Container(),
                           AccountInfo(
                             network: plugin.basic.name,
                             accInfo: accInfo,

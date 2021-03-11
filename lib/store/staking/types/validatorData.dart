@@ -13,6 +13,7 @@ class ValidatorData extends _ValidatorData {
 
       data.isActive = json['isActive'];
       data.isElected = json['isElected'];
+      data.isBlocking = json['isBlocking'];
 
       data.numNominators = json['numNominators'];
       data.rankBondTotal = json['rankBondTotal'];
@@ -39,6 +40,7 @@ abstract class _ValidatorData {
 
   bool isActive = false;
   bool isElected = false;
+  bool isBlocking = false;
 
   int numNominators = 0;
   int rankBondTotal = 0;

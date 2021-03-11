@@ -21,6 +21,7 @@ const Map<String, String> zhStaking = {
   'commission': '佣金',
   'reward': '收益',
   'judgements': '评价',
+  'blocking': '不可提名',
   'txs': '操作记录',
   'txs.reward': '收益/罚金',
   'txs.reward.reward': '收益',

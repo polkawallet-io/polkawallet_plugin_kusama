@@ -178,6 +178,8 @@ class _NominateFormState extends State<NominateForm> {
     // add validators
     // filter the _notSelected list
     List<ValidatorData> retained = List.of(_notSelected);
+    // filter the blocking validators
+    retained.removeWhere((e) => e.isBlocking);
     retained = PluginFmt.filterValidatorList(
         retained, _filter, widget.plugin.store.accounts.addressIndexMap);
     // and sort it
