@@ -22,6 +22,7 @@ const Map<String, String> enStaking = {
   'commission': 'Commission',
   'reward': 'Return',
   'judgements': 'Judgements',
+  'blocking': 'Blocks nominations',
   'txs': 'Tx history',
   'txs.reward': 'Reward/Slash',
   'txs.reward.reward': 'Reward',
