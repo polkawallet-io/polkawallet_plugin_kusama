@@ -43,16 +43,12 @@ flutter:
     - assets/images/public/bg.png
     - assets/images/public/chainx.png
     - assets/images/public/chainx_gray.png
-    - assets/images/public/polkadot.png
-    - assets/images/public/polkadot_gray.png
     - assets/images/public/staking.png
-    - assets/images/public/staking_black.png
-    - assets/images/public/staking_pink.png
     - assets/images/public/staking_yellow.png
     - assets/images/public/governance.png
-    - assets/images/public/governance_black.png
-    - assets/images/public/governance_pink.png
     - assets/images/public/governance_yellow.png
+    - assets/images/public/nav_governance.svg
+    - assets/images/public/nav_staking.svg
     - assets/images/staking/ok.png
     - assets/images/staking/error.png
     - assets/images/staking/reward.svg
