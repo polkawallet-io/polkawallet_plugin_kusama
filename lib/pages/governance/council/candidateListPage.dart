@@ -68,8 +68,8 @@ class _CandidateList extends State<CandidateListPage> {
   @override
   Widget build(BuildContext context) {
     var dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-    final decimals = widget.plugin.networkState.tokenDecimals;
-    final symbol = widget.plugin.networkState.tokenSymbol;
+    final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
+    final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
 
     List<List> list = [];
     list.addAll(_selected);

@@ -22,14 +22,12 @@ class AssetsContent extends StatefulWidget {
 }
 
 class _AssetsContentState extends State<AssetsContent> {
-  bool _loading = false;
-
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        final symbol = widget.network.networkState.tokenSymbol ?? '';
-        final decimals = widget.network.networkState.tokenDecimals ?? 8;
+        final symbol = (widget.network.networkState.tokenSymbol ?? ['PCX'])[0];
+        final decimals = (widget.network.networkState.tokenDecimals ?? [8])[0];
 
         final balancesInfo = widget.network.balances.native;
         final tokens = widget.network.balances.tokens;
@@ -46,8 +44,8 @@ class _AssetsContentState extends State<AssetsContent> {
                   children: [
                     Text('address'),
                     Text(widget.keyring.current.address ?? ''),
-                    Text('decimals: ${widget.network.networkState.tokenDecimals}'),
-                    Text('symbol: ${widget.network.networkState.tokenSymbol}'),
+                    Text('decimals: $decimals'),
+                    Text('symbol: $symbol'),
                   ],
                 ),
               ),

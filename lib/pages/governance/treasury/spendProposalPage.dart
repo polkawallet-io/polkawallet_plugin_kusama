@@ -140,8 +140,8 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-    final symbol = widget.plugin.networkState.tokenSymbol ?? '';
-    final decimals = widget.plugin.networkState.tokenDecimals ?? 8;
+    final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
+    final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
     final SpendProposalData proposal = ModalRoute.of(context).settings.arguments;
     final proposer = KeyPairData();
     final beneficiary = KeyPairData();

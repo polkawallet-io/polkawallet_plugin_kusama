@@ -191,6 +191,9 @@ class _ProfileContentState extends State<ProfileContent> {
 
   @override
   Widget build(BuildContext context) {
+    final symbol = (widget.network.networkState.tokenSymbol ?? ['PCX'])[0];
+    final decimals = (widget.network.networkState.tokenDecimals ?? [8])[0];
+
     return ListView(
       children: [
         ListTile(
@@ -217,8 +220,8 @@ class _ProfileContentState extends State<ProfileContent> {
         Column(
           children: [
             Text('network state'),
-            Text('tokenSymbol: ${widget.network.networkState.tokenSymbol}'),
-            Text('tokenDecimals: ${widget.network.networkState.tokenDecimals}'),
+            Text('tokenSymbol: $symbol'),
+            Text('tokenDecimals: $decimals'),
           ],
         ),
         Divider(),

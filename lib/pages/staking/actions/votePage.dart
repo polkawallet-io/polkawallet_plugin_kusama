@@ -32,8 +32,8 @@ class _VotePageState extends State<VotePage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final symbol = widget.plugin.networkState.tokenSymbol;
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
+    final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
 
     double available = 0;
     if (widget.plugin.balances.native != null) {

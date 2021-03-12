@@ -36,7 +36,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
   Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final govDic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-      final decimals = widget.plugin.networkState.tokenDecimals;
+      final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
       final Map args = ModalRoute.of(context).settings.arguments;
       final ReferendumInfo info = args['referenda'];
       final bool voteYes = args['voteYes'];
@@ -103,7 +103,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
       body: Observer(
         builder: (_) {
           final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
-          final decimals = widget.plugin.networkState.tokenDecimals;
+          final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
 
           final balance = Fmt.balanceInt(widget.plugin.balances.native.freeBalance.toString());
 

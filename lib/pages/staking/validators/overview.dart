@@ -67,7 +67,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> with SingleTi
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     return Observer(
       builder: (_) {
-        final int decimals = widget.plugin.networkState.tokenDecimals;
+        final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
         final List<Tab> _listTabs = <Tab>[
           Tab(
             text: dicStaking['overview.validator'],

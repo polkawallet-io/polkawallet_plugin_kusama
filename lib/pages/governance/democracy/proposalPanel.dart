@@ -22,8 +22,8 @@ class ProposalPanel extends StatelessWidget {
   Widget build(BuildContext context) => Observer(
         builder: (_) {
           final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-          final decimals = plugin.networkState.tokenDecimals;
-          final symbol = plugin.networkState.tokenSymbol ?? '';
+          final decimals = (plugin.networkState.tokenDecimals ?? [8])[0];
+          final symbol = (plugin.networkState.tokenSymbol ?? ['PCX'])[0];
           final CouncilProposalData proposalMeta = proposal.image?.proposal;
           final Map accInfo = plugin.store.accounts.addressIndexMap[proposal.proposer];
           final proposerIcon = plugin.store.accounts.addressIconsMap[proposal.proposer];

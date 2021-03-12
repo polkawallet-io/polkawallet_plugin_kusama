@@ -394,8 +394,8 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-    final symbol = widget.plugin.networkState.tokenSymbol;
-    final decimals = widget.plugin.networkState.tokenDecimals;
+    final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
+    final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
     final String voteCountAye = '${widget.council.votes.ayes.length}/${widget.council.votes.threshold}';
     final int thresholdNay = widget.plugin.store.gov.council.members.length - widget.council.votes.threshold + 1;
     final String voteCountNay = '${widget.council.votes.nays.length}/$thresholdNay';

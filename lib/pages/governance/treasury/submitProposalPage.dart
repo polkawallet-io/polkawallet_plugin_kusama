@@ -31,7 +31,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
   Future<TxConfirmParams> _getTxParams() async {
     if (_formKey.currentState.validate()) {
       final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
-      final decimals = widget.plugin.networkState.tokenDecimals;
+      final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
       final amt = _amountCtrl.text.trim();
       return TxConfirmParams(
         module: 'treasury',
@@ -72,8 +72,8 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'gov');
     final dicCommon = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
-    final decimals = widget.plugin.networkState.tokenDecimals;
-    final symbol = widget.plugin.networkState.tokenSymbol;
+    final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
+    final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
     final bondPercentage = Fmt.balanceInt(widget.plugin.networkConst['treasury']['proposalBond'].toString()) * BigInt.from(100) ~/ BigInt.from(1000000);
     final minBond = Fmt.balanceInt(widget.plugin.networkConst['treasury']['proposalBondMinimum'].toString());
     final balance = Fmt.balanceInt((widget.plugin.balances.native.availableBalance != null ? widget.plugin.balances.native.availableBalance : 0).toString());

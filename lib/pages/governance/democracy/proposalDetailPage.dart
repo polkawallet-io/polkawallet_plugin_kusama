@@ -90,8 +90,8 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
           child: Observer(
             builder: (_) {
               final ProposalInfoData proposal = widget.plugin.store.gov.proposals.firstWhere((e) => e.index == proposalPara.index);
-              final decimals = widget.plugin.networkState.tokenDecimals;
-              final symbol = widget.plugin.networkState.tokenSymbol ?? '';
+              final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
+              final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
               final List<List<String>> params = [];
               bool hasProposal = false;
               if (proposal.image?.proposal != null) {
