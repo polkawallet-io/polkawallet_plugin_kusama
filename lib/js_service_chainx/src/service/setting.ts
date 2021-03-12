@@ -38,5 +38,9 @@ export async function getNetworkProperties(api: ApiPromise) {
         tokenDecimals: [10],
         tokenSymbol: ["DOT"],
       })
-    : chainProperties
+    : {
+      ...chainProperties,
+      tokenDecimals: [8],
+      tokenSymbol: ["PCX"],
+    }
 }
