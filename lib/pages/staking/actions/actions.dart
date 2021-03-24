@@ -383,6 +383,7 @@ class _StakingActions extends State<StakingActions>
             padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
             child: TabBar(
               labelColor: Colors.black87,
+              indicatorColor: Theme.of(context).primaryColor,
               labelStyle: TextStyle(fontSize: 18),
               controller: _tabController,
               tabs: <Tab>[
@@ -401,6 +402,21 @@ class _StakingActions extends State<StakingActions>
               },
             ),
           ),
+
+          // Container(
+          //   color: Theme.of(context).cardColor,
+          //   padding: EdgeInsets.all(16),
+          //   child: MainTabBar(
+          //     tabs: [dic['txs'], dic['txs.reward']],
+          //     activeTab: _tab,
+          //     onTap: (i) {
+          //       i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
+          //       setState(() {
+          //         _tab = i;
+          //       });
+          //     },
+          //   ),
+          // ),
         ];
         list.addAll(_tab == 0 ? _buildTxList() : _buildRewardsList());
         return RefreshIndicator(
@@ -684,18 +700,6 @@ class StakingInfoPanel extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(
-                          Fmt.priceFloorBigInt(
-                            redeemable,
-                            decimals,
-                            lengthMax: 4,
-                          ),
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).unselectedWidgetColor,
-                          ),
-                        ),
                         isController && redeemable > BigInt.zero
                             ? GestureDetector(
                                 child: Container(
@@ -716,7 +720,19 @@ class StakingInfoPanel extends StatelessWidget {
                                   });
                                 },
                               )
-                            : Container()
+                            : Container(),
+                        Text(
+                          Fmt.priceFloorBigInt(
+                            redeemable,
+                            decimals,
+                            lengthMax: 4,
+                          ),
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).unselectedWidgetColor,
+                          ),
+                        ),
                       ],
                     ),
                   ],

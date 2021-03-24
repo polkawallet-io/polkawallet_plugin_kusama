@@ -10,6 +10,7 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/addressInputField.dart';
+import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 
 class SetPayeePage extends StatefulWidget {
@@ -151,7 +152,7 @@ class PayeeSelector extends StatefulWidget {
 
 class _PayeeSelectorState extends State<PayeeSelector> {
   int _rewardTo;
-  String _rewardAccount;
+  KeyPairData _rewardAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -198,9 +199,9 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                   onSelectedItemChanged: (v) {
                     setState(() {
                       _rewardTo = v;
-                      _rewardAccount = widget.keyring.current.address;
+                      _rewardAccount = widget.keyring.current;
                     });
-                    widget.onChange(v, _rewardAccount);
+                    widget.onChange(v, widget.keyring.current.address);
                   },
                 ),
               ),
@@ -213,14 +214,29 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                 child: AddressInputField(
                   widget.plugin.sdk.api,
                   widget.keyring.allWithContacts,
-                  initialValue: defaultAcc,
+                  initialValue: _rewardAccount ?? defaultAcc,
                   onChanged: (acc) {
                     setState(() {
-                      _rewardAccount = acc.address;
+                      _rewardAccount = acc;
                     });
                     widget.onChange(_rewardTo, acc.address);
                   },
+                  key: ValueKey<KeyPairData>(_rewardAccount),
                 ),
+              )
+            : Container(),
+        _rewardTo == 3
+            ? Row(
+                children: [
+                  Expanded(
+                      child: TextTag(
+                    dic['stake.payee.warn'],
+                    color: Colors.deepOrange,
+                    fontSize: 12,
+                    margin: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(8),
+                  ))
+                ],
               )
             : Container(),
       ],

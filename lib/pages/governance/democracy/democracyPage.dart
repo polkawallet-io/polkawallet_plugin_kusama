@@ -58,7 +58,7 @@ class _DemocracyPageState extends State<DemocracyPage> {
               ),
               Expanded(
                 child: _tab == 0
-                    ? Democracy(widget.plugin)
+                    ? Democracy(widget.plugin, widget.keyring)
                     : Proposals(widget.plugin),
               ),
             ],
