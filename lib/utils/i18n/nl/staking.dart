@@ -17,7 +17,9 @@ const Map<String, String> enStaking = {
   'stake.own': 'Own',
   'stake.other': 'Other',
   'stake.warn':
-      'Tips: The bonded Tokens will be locked for about 28 days on Polkadot(7 days on Kusama) after unbonding.',
+      '1: The bonded Tokens will be locked for about 28 days on Polkadot(7 days on Kusama) after unbonding.\n2: Your account should always have transferable balance for paying tx fees, so do not bond all your tokens.',
+  'stake.payee.warn':
+      'Tips: The balance of the destination account should not be 0, otherwise you may lose your reward due to existential deposit not met.',
   'staked': 'Staked',
   'commission': 'Commission',
   'reward': 'Return',
