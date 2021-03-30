@@ -156,4 +156,12 @@ class ApiStaking {
         .queryBonded(keyring.allAccounts.map((e) => e.pubKey).toList());
     store.staking.setAccountBondedMap(data);
   }
+
+  Future<bool> queryIsInElection() async {
+    final status = await api.service.webView
+        .evalJavascript('api.query.staking.eraElectionStatus()');
+    final isInElection = Map.of(status).keys.contains('open');
+    store.staking.setIsInElection(isInElection);
+    return isInElection;
+  }
 }

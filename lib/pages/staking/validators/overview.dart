@@ -29,9 +29,10 @@ import 'package:polkawallet_ui/utils/index.dart';
 const validator_list_page_size = 100;
 
 class StakingOverviewPage extends StatefulWidget {
-  StakingOverviewPage(this.plugin, this.keyring);
+  StakingOverviewPage(this.plugin, this.keyring, this.warnInElection);
   final PluginKusama plugin;
   final Keyring keyring;
+  final Function warnInElection;
 
   @override
   _StakingOverviewPageState createState() => _StakingOverviewPageState();
@@ -59,6 +60,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
       _loading = true;
     });
 
+    widget.plugin.service.staking.queryIsInElection();
+
     _fetchRecommendedValidators();
     widget.plugin.service.staking.queryElectedInfo();
     await widget.plugin.service.staking.queryOwnStashInfo();
@@ -70,6 +73,19 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
       widget.plugin.store.staking
           .setRecommendedValidatorList(res['validators']);
     }
+  }
+
+  void _onAction(Future<dynamic> Function() doAction) {
+    if (widget.plugin.store.staking.isInElection) {
+      widget.warnInElection();
+      return;
+    }
+
+    doAction().then((res) {
+      if (res != null) {
+        _refreshKey.currentState.show();
+      }
+    });
   }
 
   void _goToBond({bondExtra = false}) {
@@ -92,11 +108,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
               child: Text(dic['ok']),
               onPressed: () async {
                 Navigator.of(context).pop();
-                final res = Navigator.pushNamed(
-                    context, bondExtra ? BondExtraPage.route : StakePage.route);
-                if (res != null) {
-                  _refreshKey.currentState.show();
-                }
+                _onAction(() => Navigator.pushNamed(context,
+                    bondExtra ? BondExtraPage.route : StakePage.route));
               },
             ),
           ],
@@ -121,7 +134,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              _nominate();
+              _onAction(
+                  () => Navigator.of(context).pushNamed(NominatePage.route));
             },
           ),
           CupertinoActionSheetAction(
@@ -151,13 +165,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     );
   }
 
-  Future<void> _nominate() async {
-    final res = await Navigator.of(context).pushNamed(NominatePage.route);
-    if (res != null && res) {
-      _refreshKey.currentState.show();
-    }
-  }
-
   Future<void> _chill() async {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
     final params = TxConfirmParams(
@@ -167,11 +174,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
       txDisplay: {'action': 'chill'},
       params: [],
     );
-    final res = await Navigator.of(context)
-        .pushNamed(TxConfirmPage.route, arguments: params);
-    if (res != null && res) {
-      _refreshKey.currentState.show();
-    }
+    _onAction(() => Navigator.of(context)
+        .pushNamed(TxConfirmPage.route, arguments: params));
   }
 
   Widget _buildTopCard(BuildContext context) {

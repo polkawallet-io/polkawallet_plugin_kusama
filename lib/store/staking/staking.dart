@@ -60,6 +60,9 @@ abstract class _StakingStore with Store {
       ObservableMap<String, dynamic>();
 
   @observable
+  bool isInElection = false;
+
+  @observable
   Map recommendedValidators = {};
 
   @computed
@@ -237,6 +240,11 @@ abstract class _StakingStore with Store {
     }
 
     loadAccountCache(pubKey);
+  }
+
+  @action
+  void setIsInElection(bool isIn) {
+    isInElection = isIn;
   }
 
   @action

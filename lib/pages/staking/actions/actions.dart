@@ -31,9 +31,10 @@ import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
 class StakingActions extends StatefulWidget {
-  StakingActions(this.plugin, this.keyring);
+  StakingActions(this.plugin, this.keyring, this.warnInElection);
   final PluginKusama plugin;
   final Keyring keyring;
+  final Function warnInElection;
   @override
   _StakingActions createState() => _StakingActions();
 }
@@ -95,6 +96,19 @@ class _StakingActions extends State<StakingActions>
     widget.keyring.setCurrent(acc);
     widget.plugin.changeAccount(acc);
     _refreshKey.currentState.show();
+  }
+
+  void _onAction(Future<dynamic> Function() doAction) {
+    if (widget.plugin.store.staking.isInElection) {
+      widget.warnInElection();
+      return;
+    }
+
+    doAction().then((res) {
+      if (res != null) {
+        _refreshKey.currentState.show();
+      }
+    });
   }
 
   List<Widget> _buildTxList() {
@@ -322,7 +336,7 @@ class _StakingActions extends State<StakingActions>
                   redeemable: redeemable,
                   available: available,
                   networkLoading: !hasData,
-                  onSuccess: () => _refreshKey.currentState.show(),
+                  onAction: _onAction,
                 ),
                 Divider(),
                 StakingActionsPanel(
@@ -331,7 +345,7 @@ class _StakingActions extends State<StakingActions>
                   stashInfo: widget.plugin.store.staking.ownStashInfo,
                   bonded: bonded,
                   controller: acc02,
-                  onSuccess: () => _refreshKey.currentState.show(),
+                  onAction: _onAction,
                 ),
               ],
             ),
@@ -366,6 +380,7 @@ class _StakingActions extends State<StakingActions>
         _updateStakingInfo();
       }
       widget.plugin.service.staking.queryAccountBondedInfo();
+      widget.plugin.service.staking.queryIsInElection();
     });
   }
 
@@ -572,7 +587,7 @@ class StakingInfoPanel extends StatelessWidget {
     this.redeemable,
     this.available,
     this.networkLoading,
-    this.onSuccess,
+    this.onAction,
   });
 
   final bool hasData;
@@ -586,7 +601,7 @@ class StakingInfoPanel extends StatelessWidget {
   final BigInt redeemable;
   final BigInt available;
   final bool networkLoading;
-  final Function onSuccess;
+  final Function(Future<dynamic> Function()) onAction;
 
   void _showUnlocking(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
@@ -617,11 +632,8 @@ class StakingInfoPanel extends StatelessWidget {
                 ? () => {}
                 : () async {
                     Navigator.of(context).pop();
-                    final res =
-                        await Navigator.of(context).pushNamed(RebondPage.route);
-                    if (res != null) {
-                      onSuccess();
-                    }
+                    onAction(() =>
+                        Navigator.of(context).pushNamed(RebondPage.route));
                   },
           ),
         ],
@@ -711,13 +723,8 @@ class StakingInfoPanel extends StatelessWidget {
                                   ),
                                 ),
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(RedeemPage.route)
-                                      .then((res) {
-                                    if (res != null) {
-                                      onSuccess();
-                                    }
-                                  });
+                                  onAction(() => Navigator.of(context)
+                                      .pushNamed(RedeemPage.route));
                                 },
                               )
                             : Container(),
@@ -772,13 +779,8 @@ class StakingInfoPanel extends StatelessWidget {
                       ),
                       onTap: () {
                         if (!networkLoading) {
-                          Navigator.of(context)
-                              .pushNamed(PayoutPage.route)
-                              .then((res) {
-                            if (res != null) {
-                              onSuccess();
-                            }
-                          });
+                          onAction(() => Navigator.of(context)
+                              .pushNamed(PayoutPage.route));
                         }
                       },
                     ),
@@ -800,7 +802,7 @@ class StakingActionsPanel extends StatelessWidget {
     this.stashInfo,
     this.bonded,
     this.controller,
-    this.onSuccess,
+    this.onAction,
   });
 
   final bool isStash;
@@ -808,20 +810,11 @@ class StakingActionsPanel extends StatelessWidget {
   final OwnStashInfoData stashInfo;
   final BigInt bonded;
   final KeyPairData controller;
-  final Function onSuccess;
-
-  void _onAction(Future doAction) {
-    doAction.then((res) {
-      if (res != null) {
-        onSuccess();
-      }
-    });
-  }
+  final Function(Future<dynamic> Function()) onAction;
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> dic =
-        I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
 
     num actionButtonWidth = (MediaQuery.of(context).size.width - 64) / 3;
     Color actionButtonColor = Theme.of(context).primaryColor;
@@ -835,13 +828,13 @@ class StakingActionsPanel extends StatelessWidget {
     if (isStash) {
       if (stashInfo.controllerId != null) {
         setControllerDisabled = false;
-        onSetControllerTap = () => _onAction(Navigator.of(context)
+        onSetControllerTap = () => onAction(() => Navigator.of(context)
             .pushNamed(SetControllerPage.route, arguments: controller));
 
         if (stashInfo.isOwnController) {
           setPayeeDisabled = false;
-          onSetPayeeTap = () =>
-              _onAction(Navigator.of(context).pushNamed(SetPayeePage.route));
+          onSetPayeeTap = () => onAction(
+              () => Navigator.of(context).pushNamed(SetPayeePage.route));
         }
       } else {
         bondButtonString = dic['action.bond'];
@@ -850,7 +843,7 @@ class StakingActionsPanel extends StatelessWidget {
       if (bonded > BigInt.zero) {
         setPayeeDisabled = false;
         onSetPayeeTap = () =>
-            _onAction(Navigator.of(context).pushNamed(SetPayeePage.route));
+            onAction(() => Navigator.of(context).pushNamed(SetPayeePage.route));
       }
     }
 
@@ -881,7 +874,8 @@ class StakingActionsPanel extends StatelessWidget {
                 /// 1. it has no controller
                 /// 2. it's stash is itself(it's not controller of another acc)
                 if (stashInfo.controllerId == null && isStash) {
-                  _onAction(Navigator.of(context).pushNamed(StakePage.route));
+                  onAction(
+                      () => Navigator.of(context).pushNamed(StakePage.route));
                   return;
                 }
                 showCupertinoModalPopup(
@@ -900,7 +894,7 @@ class StakingActionsPanel extends StatelessWidget {
                             ? () => {}
                             : () {
                                 Navigator.of(context).pop();
-                                _onAction(Navigator.of(context)
+                                onAction(() => Navigator.of(context)
                                     .pushNamed(BondExtraPage.route));
                               },
                       ),
@@ -919,7 +913,7 @@ class StakingActionsPanel extends StatelessWidget {
                             ? () => {}
                             : () {
                                 Navigator.of(context).pop();
-                                _onAction(Navigator.of(context)
+                                onAction(() => Navigator.of(context)
                                     .pushNamed(UnBondPage.route));
                               },
                       ),

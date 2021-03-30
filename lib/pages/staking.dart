@@ -23,6 +23,25 @@ class _StakingState extends State<Staking> {
 
   int _tab = 0;
 
+  void _warnInElection() {
+    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          content: Text(dic['action.election']),
+          actions: <Widget>[
+            CupertinoButton(
+              child: Text(I18n.of(context)
+                  .getDic(i18n_full_dic_kusama, 'common')['ok']),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
@@ -46,8 +65,10 @@ class _StakingState extends State<Staking> {
             ),
             Expanded(
               child: _tab == 1
-                  ? StakingOverviewPage(widget.plugin, widget.keyring)
-                  : StakingActions(widget.plugin, widget.keyring),
+                  ? StakingOverviewPage(
+                      widget.plugin, widget.keyring, _warnInElection)
+                  : StakingActions(
+                      widget.plugin, widget.keyring, _warnInElection),
             ),
           ],
         ),
