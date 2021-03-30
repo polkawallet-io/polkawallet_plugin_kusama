@@ -17,7 +17,9 @@ const Map<String, String> enStaking = {
   'stake.own': 'Own',
   'stake.other': 'Other',
   'stake.warn':
-      '1: The bonded Tokens will be locked for about 28 days on Polkadot(7 days on Kusama) after unbonding.\n2: Your account should always have transferable balance for paying tx fees, so do not bond all your tokens.',
+      '1: The bonded Tokens will be locked for about 28 days on Polkadot(7 days on Kusama) after unbonding.\n'
+          '2: Your account should always have transferable balance for paying tx fees, so do not bond all your tokens.\n'
+          '3: The amount of bonded Tokens needs to meet the minimum requirements(see page: Validators), otherwise no reward will be generated.',
   'stake.payee.warn':
       'Tips: The balance of the destination account should not be 0, otherwise you may lose your reward due to existential deposit not met.',
   'staked': 'Staked',
@@ -56,6 +58,8 @@ const Map<String, String> enStaking = {
   'action.import': 'Import ',
   'action.use': 'Use ',
   'action.operate': ' to operate',
+  'action.election':
+      'There is currently an ongoing election for new validator candidates. As such staking operations are not permitted.',
   'bond.unlocking': 'Unlocking',
   'bond.reward': 'Reward',
   'bond.redeemable': 'Redeemable',
