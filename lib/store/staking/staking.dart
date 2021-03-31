@@ -18,13 +18,13 @@ abstract class _StakingStore with Store {
   final StoreCache cache;
 
   @observable
-  List<ValidatorData> validatorsInfo = List<ValidatorData>();
+  List<ValidatorData> validatorsInfo = [];
 
   @observable
-  List<ValidatorData> electedInfo = List<ValidatorData>();
+  List<ValidatorData> electedInfo = [];
 
   @observable
-  List<ValidatorData> nextUpsInfo = List<ValidatorData>();
+  List<ValidatorData> nextUpsInfo = [];
 
   @observable
   Map overview = Map();
@@ -93,8 +93,9 @@ abstract class _StakingStore with Store {
   void setValidatorsInfo(Map data, {bool shouldCache = true}) {
     if (data['validators'] == null) return;
 
+    final inflation = data['inflation'];
     overview = {
-      'stakedReturn': data['inflation']['stakedReturn'],
+      'stakedReturn': inflation != null ? inflation['stakedReturn'] : 0,
       'totalStaked': data['totalStaked'],
       'totalIssuance': data['totalIssuance'],
       'minNominated': data['minNominated'],

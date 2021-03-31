@@ -177,9 +177,16 @@ class PluginKusama extends PolkawalletPlugin {
         : plugin_kusama_storage_key);
 
     _store = PluginStore(_cache);
-    _store.staking.loadCache(keyring.current.pubKey);
-    _store.gov.clearState();
-    _store.gov.loadCache();
+
+    try {
+      _store.staking.loadCache(keyring.current.pubKey);
+      _store.gov.clearState();
+      _store.gov.loadCache();
+      print('kusama plugin cache data loaded');
+    } catch (err) {
+      print(err);
+      print('load kusama cache data failed');
+    }
 
     _service = PluginApi(this, keyring);
   }
