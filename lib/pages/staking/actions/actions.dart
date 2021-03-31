@@ -55,6 +55,8 @@ class _StakingActions extends State<StakingActions>
   ScrollController _scrollController;
 
   Future<void> _updateStakingTxs() async {
+    if (_loading) return;
+
     setState(() {
       _loading = true;
     });
@@ -62,6 +64,7 @@ class _StakingActions extends State<StakingActions>
     if (mounted) {
       setState(() {
         _loading = false;
+        _txsPage += 1;
       });
 
       if (res == null ||
@@ -75,6 +78,8 @@ class _StakingActions extends State<StakingActions>
   }
 
   Future<void> _updateStakingRewardTxs() async {
+    if (_rewardLoading) return;
+
     setState(() {
       _rewardLoading = true;
     });
@@ -362,12 +367,9 @@ class _StakingActions extends State<StakingActions>
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        setState(() {
-          if (!_isLastPage) {
-            _txsPage += 1;
-            _updateStakingTxs();
-          }
-        });
+        if (!_isLastPage) {
+          _tab == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
+        }
       }
     });
 

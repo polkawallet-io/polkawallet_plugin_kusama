@@ -367,7 +367,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                             )
                           : Container(),
                       Container(
-                        padding: EdgeInsets.all(16),
+                        padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
                         child: Column(
                           children: <Widget>[
                             Divider(height: 24),

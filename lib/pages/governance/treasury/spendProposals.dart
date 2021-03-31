@@ -251,7 +251,11 @@ class _OverviewCard extends StatelessWidget {
               Expanded(
                 child: RoundedButton(
                   text: dic['treasury.submit'],
-                  icon: Icon(Icons.add, color: Theme.of(context).cardColor),
+                  icon: Icon(
+                    Icons.add,
+                    color: Theme.of(context).cardColor,
+                    size: 20,
+                  ),
                   onPressed: () async {
                     final res = await Navigator.of(context)
                         .pushNamed(SubmitProposalPage.route);
@@ -261,10 +265,14 @@ class _OverviewCard extends StatelessWidget {
                   },
                 ),
               ),
-              Container(width: 16),
+              Container(width: 12),
               RoundedButton(
                 text: dic['treasury.tip'],
-                icon: Icon(Icons.add, color: Theme.of(context).cardColor),
+                icon: Icon(
+                  Icons.add,
+                  color: Theme.of(context).cardColor,
+                  size: 20,
+                ),
                 onPressed: () async {
                   final res = await Navigator.of(context).pushNamed(
                     SubmitTipPage.route,
