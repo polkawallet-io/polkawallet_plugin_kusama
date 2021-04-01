@@ -25,7 +25,7 @@ class TopCard extends StatelessWidget {
     List<Widget> res = [];
     BigInt total = BigInt.zero;
 
-    res.add(Padding(padding: EdgeInsets.only(left: 20, bottom: 10), child: Text(dicStaking['mystaking.label'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
+    res.add(Padding(padding: EdgeInsets.only(top: 50, left: 20, bottom: 10), child: Text(dicStaking['mystaking.label'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
 
     if (currentAccount.isNotEmpty) {
       validNominations.forEach((nmn) {

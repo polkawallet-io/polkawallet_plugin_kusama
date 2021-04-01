@@ -65,7 +65,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
 
     List<StakedInfo> txs = [];
 
-    res.add(Padding(padding: EdgeInsets.only(left: 20, bottom: 10), child: Text(dicStaking['mystaking.label'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
+    res.add(Padding(padding: EdgeInsets.only(top: 50, left: 20, bottom: 10), child: Text(dicStaking['mystaking.label'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))));
 
     String currentAccount = widget.keyring.current.address;
 
