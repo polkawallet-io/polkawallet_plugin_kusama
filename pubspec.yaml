@@ -23,7 +23,7 @@ dependencies:
   polkawallet_ui:
     git:
       url: https://github.com/polkawallet-io/ui.git
-      ref: 9ff8f1ebbaad3bbda904756f650414cf7cfe3163
+      ref: c4346ecf37f277d6b61480f4782a9e78c99c68e2
 #    path: ../ui
 
 dev_dependencies:
