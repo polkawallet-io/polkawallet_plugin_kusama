@@ -40,7 +40,7 @@ class ValidatorData extends _ValidatorData {
 
 abstract class _ValidatorData {
   String accountId = '';
-  String registeredAt = '';
+  int registeredAt = '';
   bool isChilled = false;
   String totalNomination = '';
   String totalNominationFmt = '';
