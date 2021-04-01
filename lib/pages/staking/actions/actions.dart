@@ -82,6 +82,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     }
 
     res.addAll(txs.map((i) {
+      final icon = widget.plugin.store.accounts.addressIconsMap[i.address];
       return Container(
         color: Theme.of(context).cardColor,
         child: ListTile(
@@ -89,8 +90,8 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
             width: 32,
             padding: EdgeInsets.only(top: 4),
             child: AddressIcon(
-              widget.keyring.current.address,
-              svg: widget.keyring.current.icon,
+              i.address,
+              svg: icon,
             ),
           ),
           title: UI.accountDisplayName(
