@@ -47,15 +47,13 @@ class StakingDetailPage extends StatelessWidget {
             break;
           case "Vec<<Lookup as StaticLookup>::Source>":
             // for nominate targets
-            final pubKeys = List.of(i['value'])
-                .map((e) {
-                  if (e is String) {
-                    return '0x${Fmt.address(e)}';
-                  }
+            final pubKeys = List.of(i['value']).map((e) {
+              if (e is String) {
+                return '0x${Fmt.address(e)}';
+              }
               return '0x${Fmt.address(e['Id'])}';
-            })
-                .toList();
-            value = jsonEncode(pubKeys);
+            }).toList();
+            value = pubKeys.join(',\n');
             break;
         }
         return TxDetailInfoItem(
