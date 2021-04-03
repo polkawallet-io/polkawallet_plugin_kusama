@@ -26,30 +26,44 @@ class StakingDetailPage extends StatelessWidget {
       TxDetailInfoItem(label: dicStaking['action'], content: Text(detail.call)),
     ];
     List params = jsonDecode(detail.params);
-    info.addAll(params.map((i) {
-      String value = i['value'].toString();
-      switch (i['type']) {
-        case "Address":
-          value = Fmt.address(value);
-          break;
-        case "Compact<BalanceOf>":
-          value = '${Fmt.balance(value, decimals)} $symbol';
-          break;
-        case "AccountId":
-          value = value.contains('0x') ? value : '0x$value';
-          String address = plugin.store.accounts
-              .pubKeyAddressMap[plugin.sdk.api.connectedNode.ss58][value];
-          value = Fmt.address(address);
-          break;
-        case "RewardDestination<AccountId>":
-          value = 'Account: ${Fmt.address(i['value']['Account'])}';
-          break;
-      }
-      return TxDetailInfoItem(
-        label: i['name'],
-        content: Text(value),
-      );
-    }));
+    if (params != null) {
+      info.addAll(params.map((i) {
+        String value = i['value'].toString();
+        switch (i['type']) {
+          case "Address":
+            value = Fmt.address(value);
+            break;
+          case "Compact<BalanceOf>":
+            value = '${Fmt.balance(value, decimals)} $symbol';
+            break;
+          case "AccountId":
+            value = value.contains('0x') ? value : '0x$value';
+            String address = plugin.store.accounts
+                .pubKeyAddressMap[plugin.sdk.api.connectedNode.ss58][value];
+            value = Fmt.address(address);
+            break;
+          case "RewardDestination<AccountId>":
+            value = 'Account: ${Fmt.address(i['value']['Account'])}';
+            break;
+          case "Vec<<Lookup as StaticLookup>::Source>":
+            // for nominate targets
+            final pubKeys = List.of(i['value'])
+                .map((e) {
+                  if (e is String) {
+                    return '0x${Fmt.address(e)}';
+                  }
+              return '0x${Fmt.address(e['Id'])}';
+            })
+                .toList();
+            value = jsonEncode(pubKeys);
+            break;
+        }
+        return TxDetailInfoItem(
+          label: i['name'],
+          content: Text(value),
+        );
+      }));
+    }
     return TxDetail(
       networkName: plugin.basic.name,
       success: detail.success,
