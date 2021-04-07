@@ -98,15 +98,15 @@ class _RebondPageState extends State<RebondPage> {
                 Padding(
                     padding: EdgeInsets.only(left: 16, right: 16),
                     child: CustomDropdown<ValidatorData>(
-                      dropdownMenuItemList: validatorDropdownList,
-                      onChanged: (ValidatorData newValue) => {
-                        setState(() {
-                          validatorTo = newValue;
-                        })
-                      },
-                      value: validatorTo,
-                      isEnabled: true,
-                    )),
+                        dropdownMenuItemList: validatorDropdownList,
+                        onChanged: (ValidatorData newValue) => {
+                              setState(() {
+                                validatorTo = newValue;
+                              })
+                            },
+                        value: validatorTo,
+                        isEnabled: true,
+                        label: dicStaking['mystaking.rebond.to'])),
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: TextFormField(
