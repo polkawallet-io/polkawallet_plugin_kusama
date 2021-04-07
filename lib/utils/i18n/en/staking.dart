@@ -87,6 +87,7 @@ const Map<String, String> enStaking = {
   'mystaking.action.vote.myaccount': 'My Account',
   'mystaking.action.vote.validator': 'Vote for validator',
   'mystaking.action.vote.amount': 'Vote Amount',
+  'mystaking.action.vote': 'Vote',
   'mystaking.action.claim': 'Claim Interest',
   'mystaking.action.unbound': 'UnBound',
   'mystaking.action.rebound': 'ReBound',

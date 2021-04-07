@@ -13,6 +13,8 @@ import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
+enum ValidatorSortOptions { vote, claim, unbound, rebound }
+
 class StakingActions extends StatefulWidget {
   StakingActions(this.plugin, this.keyring);
   final PluginChainX plugin;
@@ -53,6 +55,31 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
         _loading = false;
       });
     }
+  }
+
+  void _showActions() {
+    final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
+    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: ValidatorSortOptions.values
+            .map((i) => CupertinoActionSheetAction(
+                  child: Text(dicStaking['mystaking.action.' + i.toString().split('.')[1]]),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // widget.onSortChange(i.index);
+                  },
+                ))
+            .toList(),
+        cancelButton: CupertinoActionSheetAction(
+          child: Text(dic['cancel']),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
   }
 
   List<Widget> _buildMyStakedValidatorsList() {
@@ -109,9 +136,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
               Text(Fmt.priceFloorBigInt(Fmt.balanceInt(i.interests.toString()), 8, lengthMax: 4), style: TextStyle(color: Colors.red))
             ],
           ),
-          onTap: () {
-            // Navigator.of(context).pushNamed(StakingDetailPage.route, arguments: i);
-          },
+          onTap: _showActions,
         ),
       );
     }));

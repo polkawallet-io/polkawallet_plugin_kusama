@@ -87,6 +87,7 @@ const Map<String, String> zhStaking = {
   'mystaking.action.vote.myaccount': '我的账户',
   'mystaking.action.vote.validator': '投票节点',
   'mystaking.action.vote.amount': '投票数量',
+  'mystaking.action.vote': '投票',
   'mystaking.action.claim': '提息',
   'mystaking.action.unbound': '撤票',
   'mystaking.action.rebound': '切换',
