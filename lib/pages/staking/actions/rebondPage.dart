@@ -152,14 +152,14 @@ class _RebondPageState extends State<RebondPage> {
                   call: 'rebond',
                   txDisplay: {
                     "from": widget.validatorAccountId,
-                    "to": widget.validatorAccountId,
+                    "to": validatorTo.accountId,
                     "value": '$inputAmount $symbol',
                   },
                   params: [
                     // "from":
                     widget.validatorAccountId,
                     // "to":
-                    widget.validatorAccountId,
+                    validatorTo.accountId,
                     // "amount"
                     Fmt.tokenInt(inputAmount, decimals).toString(),
                   ],
