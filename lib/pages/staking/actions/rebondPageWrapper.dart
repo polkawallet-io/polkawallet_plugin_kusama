@@ -11,22 +11,22 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
-class UnboundPageWrapper extends StatefulWidget {
-  UnboundPageWrapper(this.plugin, this.keyring);
+class RebondPageWrapper extends StatefulWidget {
+  RebondPageWrapper(this.plugin, this.keyring);
   static final String route = '/staking/unbound';
   final PluginChainX plugin;
   final Keyring keyring;
   @override
-  _UnboundPageWrapperState createState() => _UnboundPageWrapperState();
+  _RebondPageWrapperState createState() => _RebondPageWrapperState();
 }
 
-class _UnboundPageWrapperState extends State<UnboundPageWrapper> {
-  Future<void> _onUnbound(TxConfirmParams _bondParams) async {
+class _RebondPageWrapperState extends State<RebondPageWrapper> {
+  Future<void> _onRebond(TxConfirmParams _bondParams) async {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final txBond = 'api.tx.xStaking.unbond(...${jsonEncode(_bondParams.params)})';
+    final txBond = 'api.tx.xStaking.rebond(...${jsonEncode(_bondParams.params)})';
     final res = await Navigator.of(context).pushNamed(TxConfirmPage.route,
         arguments: TxConfirmParams(
-          txTitle: dic['mystaking.action.unbound'],
+          txTitle: dic['mystaking.action.rebond'],
           module: 'utility',
           call: 'batchAll',
           txDisplay: {
@@ -49,7 +49,7 @@ class _UnboundPageWrapperState extends State<UnboundPageWrapper> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dic['mystaking.action.unbound']),
+        title: Text(dic['mystaking.action.rebond']),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
@@ -65,7 +65,7 @@ class _UnboundPageWrapperState extends State<UnboundPageWrapper> {
           widget.keyring,
           detail.validator.accountId,
           double.parse(detail.recovable),
-          onNext: (TxConfirmParams params) => _onUnbound(params),
+          onNext: (TxConfirmParams params) => _onRebond(params),
         ));
       }),
     );

@@ -12,18 +12,18 @@ import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
-class UnboundPage extends StatefulWidget {
-  UnboundPage(this.plugin, this.keyring, this.validatorAccountId, this.recovable, {this.onNext});
+class RebondPage extends StatefulWidget {
+  RebondPage(this.plugin, this.keyring, this.validatorAccountId, this.switchable, {this.onNext});
   final PluginChainX plugin;
   final Keyring keyring;
   final String validatorAccountId;
-  final double recovable;
+  final double switchable;
   final Function(TxConfirmParams) onNext;
   @override
-  _UnboundPageState createState() => _UnboundPageState();
+  _RebondPageState createState() => _RebondPageState();
 }
 
-class _UnboundPageState extends State<UnboundPage> {
+class _RebondPageState extends State<RebondPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountCtrl = new TextEditingController();
 
@@ -61,11 +61,37 @@ class _UnboundPageState extends State<UnboundPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
+                  child: DropdownButton<String>(
+                    value: 'One',
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        // dropdownValue = newValue!;
+                      });
+                    },
+                    items: <String>['One', 'Two', 'Free', 'Four']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  )
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16),
                   child: AddressFormItemForValidator(
                     widget.validatorAccountId,
                     accIcon,
                     accInfo,
-                    label: dicStaking['mystaking.action.unbound.validator'],
+                    label: dicStaking['mystaking.rebond.to'],
                     // do not allow change controller here.
                     // onTap: () => _changeControllerId(context),
                   ),
@@ -75,8 +101,8 @@ class _UnboundPageState extends State<UnboundPage> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       hintText: dic['amount'],
-                      labelText: '${dic['amount']} (${dicStaking['recovable']}: ${Fmt.priceFloor(
-                        widget.recovable,
+                      labelText: '${dic['amount']} (${dicStaking['switchable']}: ${Fmt.priceFloor(
+                        widget.switchable,
                         lengthMax: 4,
                       )} $symbol)',
                     ),
@@ -87,7 +113,7 @@ class _UnboundPageState extends State<UnboundPage> {
                       if (v.isEmpty) {
                         return dic['amount.error'];
                       }
-                      if (double.parse(v.trim()) >= widget.recovable) {
+                      if (double.parse(v.trim()) >= widget.switchable) {
                         return dic['amount.error'];
                       }
                       return null;
@@ -101,7 +127,7 @@ class _UnboundPageState extends State<UnboundPage> {
         Padding(
           padding: EdgeInsets.all(16),
           child: RoundedButton(
-            text: dicStaking['mystaking.action.unbound'],
+            text: dicStaking['mystaking.action.rebond'],
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 final inputAmount = _amountCtrl.text.trim();
@@ -110,17 +136,20 @@ class _UnboundPageState extends State<UnboundPage> {
                 //   controllerId = _controller.address;
                 // }
                 widget.onNext(TxConfirmParams(
-                  txTitle: dicStaking['mystaking.action.unbound'],
+                  txTitle: dicStaking['mystaking.action.rebond'],
                   module: 'xStaking',
-                  call: 'unbond',
+                  call: 'rebond',
                   txDisplay: {
-                    "target": widget.validatorAccountId,
+                    "from": widget.validatorAccountId,
+                    "to": widget.validatorAccountId,
                     "value": '$inputAmount $symbol',
                   },
                   params: [
-                    // "target":
+                    // "from":
                     widget.validatorAccountId,
-                    // "value"
+                    // "to":
+                    widget.validatorAccountId,
+                    // "amount"
                     Fmt.tokenInt(inputAmount, decimals).toString(),
                   ],
                 ));
