@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/addressFormItemForValidator.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/customDropdown.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validator.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
@@ -31,14 +32,31 @@ class _RebondPageState extends State<RebondPage> {
 
   ValidatorData validatorTo;
 
+  List<DropdownMenuItem<ValidatorData>> validatorDropdownList;
+  List<DropdownMenuItem<ValidatorData>> _buildFavouriteFoodModelDropdown(List validatorList) {
+    List<DropdownMenuItem<ValidatorData>> items = List();
+    for (ValidatorData validator in validatorList) {
+      items.add(DropdownMenuItem(
+        value: validator,
+        child: Text(validator.accountId),
+      ));
+    }
+    return items;
+  }
+
+  @override
+  void initState() {
+    validatorDropdownList = _buildFavouriteFoodModelDropdown(widget.plugin.store.staking.validatorsInfo);
+    validatorTo = widget.plugin.store.staking.validatorsInfo[0];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
     final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
-
-    List<ValidatorData> validators = widget.plugin.store.staking.validatorsInfo;
 
     final accIcon = widget.plugin.store.accounts.addressIconsMap[widget.validatorAccountId];
     final accInfo = widget.plugin.store.accounts.addressIndexMap[widget.validatorAccountId];
@@ -70,28 +88,15 @@ class _RebondPageState extends State<RebondPage> {
                 ),
                 Padding(
                     padding: EdgeInsets.only(left: 16, right: 16),
-                    child: DropdownButton<ValidatorData>(
-                      value: validatorTo,
-                      icon: const Icon(Icons.arrow_downward),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (ValidatorData newValue) {
+                    child: CustomDropdown<ValidatorData>(
+                      dropdownMenuItemList: validatorDropdownList,
+                      onChanged: (ValidatorData newValue) => {
                         setState(() {
-                          // dropdownValue = newValue!;
                           validatorTo = newValue;
-                        });
+                        })
                       },
-                      items: validators.map<DropdownMenuItem<ValidatorData>>((ValidatorData validator) {
-                        return DropdownMenuItem<ValidatorData>(
-                          value: validator,
-                          child: Text(validator.accountId),
-                        );
-                      }).toList(),
+                      value: validatorTo,
+                      isEnabled: true,
                     )),
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
