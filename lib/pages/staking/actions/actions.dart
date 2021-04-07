@@ -7,6 +7,7 @@ import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dar
 import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/claimPageWrapper.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/unboundPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -80,6 +81,9 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                         break;
                       case 1:
                         Navigator.of(context).pushNamed(ClaimPageWrapper.route, arguments: validator);
+                        break;
+                      case 2:
+                        Navigator.of(context).pushNamed(UnboundPageWrapper.route, arguments: {"validator": validator, "votes": info.votes});
                         break;
                       default:
                         break;
