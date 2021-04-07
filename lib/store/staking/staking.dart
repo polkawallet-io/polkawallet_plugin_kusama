@@ -109,7 +109,7 @@ abstract class _StakingStore with Store {
     }
 
     BigInt chunks = BigInt.zero;
-    nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
+    nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.from(chunk.value)});
 
     if (nmn.nomination != BigInt.zero) return true;
     if (chunks != BigInt.zero) return true;

@@ -136,7 +136,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     if (currentAccount.isNotEmpty) {
       validNominations.forEach((nmn) {
         BigInt chunks = BigInt.zero;
-        nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
+        nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.from(chunk.value)});
 
         if (nmn.account == currentAccount) {
           BigInt interest = userInterests.length > 0 ? BigInt.parse(userInterests[0].interests.firstWhere((i) => i.validator == nmn.validatorId)?.interest) : BigInt.zero;

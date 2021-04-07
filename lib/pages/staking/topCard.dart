@@ -30,7 +30,7 @@ class TopCard extends StatelessWidget {
     if (currentAccount.isNotEmpty) {
       validNominations.forEach((nmn) {
         BigInt chunks = BigInt.zero;
-        nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.parse(chunk.value)});
+        nmn.unbondedChunks?.forEach((chunk) => {chunks += BigInt.from(chunk.value)});
 
         if (nmn.account == currentAccount) {
           total += nmn.nomination;
