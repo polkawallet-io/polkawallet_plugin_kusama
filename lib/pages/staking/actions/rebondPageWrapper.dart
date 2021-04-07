@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/unboundPage.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPage.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/unboundArgData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
@@ -60,7 +60,7 @@ class _RebondPageWrapperState extends State<RebondPageWrapper> {
       ),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
-            child: UnboundPage(
+            child: RebondPage(
           widget.plugin,
           widget.keyring,
           detail.validator.accountId,
