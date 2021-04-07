@@ -1,6 +1,6 @@
 class BondedChunksData {
-  String lockedUntil;
-  String value;
+  int lockedUntil;
+  int value;
 
   static BondedChunksData fromJson(Map<String, dynamic> json) {
     BondedChunksData data = BondedChunksData();
