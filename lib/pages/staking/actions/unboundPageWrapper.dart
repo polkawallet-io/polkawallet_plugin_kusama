@@ -24,7 +24,7 @@ class UnboundPageWrapper extends StatefulWidget {
 class _UnboundPageWrapperState extends State<UnboundPageWrapper> {
   Future<void> _onUnbound(TxConfirmParams _bondParams) async {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final txBond = 'api.tx.xStaking.unbound(...${jsonEncode(_bondParams.params)})';
+    final txBond = 'api.tx.xStaking.unbond(...${jsonEncode(_bondParams.params)})';
     final res = await Navigator.of(context).pushNamed(TxConfirmPage.route,
         arguments: TxConfirmParams(
           txTitle: dic['mystaking.action.unbound'],

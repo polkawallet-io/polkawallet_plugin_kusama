@@ -112,7 +112,7 @@ class _UnboundPageState extends State<UnboundPage> {
                 widget.onNext(TxConfirmParams(
                   txTitle: dicStaking['mystaking.action.unbound'],
                   module: 'xStaking',
-                  call: 'unbound',
+                  call: 'unbond',
                   txDisplay: {
                     "target": widget.validatorAccountId,
                     "value": '$inputAmount $symbol',
