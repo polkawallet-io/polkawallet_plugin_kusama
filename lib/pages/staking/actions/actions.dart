@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/topCard.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
@@ -9,6 +10,7 @@ import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.d
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/claimPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/unboundPageWrapper.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -17,7 +19,7 @@ import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
-enum ValidatorSortOptions { vote, claim, unbound, rebound }
+enum ValidatorSortOptions { vote, claim, unbound, rebond }
 
 class StakingActions extends StatefulWidget {
   StakingActions(this.plugin, this.keyring);
@@ -85,6 +87,8 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                         break;
                       case 2:
                         Navigator.of(context).pushNamed(UnboundPageWrapper.route, arguments: UnboundArgData(validator, Fmt.priceFloorBigInt(Fmt.balanceInt(info.votes), 8, lengthMax: 4)));
+                      case 3:
+                        Navigator.of(context).pushNamed(RebondPageWrapper.route, arguments: UnboundArgData(validator, Fmt.priceFloorBigInt(Fmt.balanceInt(info.votes), 8, lengthMax: 4)));
                         break;
                       default:
                         break;
