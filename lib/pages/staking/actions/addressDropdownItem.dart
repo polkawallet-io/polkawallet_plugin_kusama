@@ -21,7 +21,6 @@ class AddressDropdownItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.all(8),
           child: Row(
             children: <Widget>[
               Container(
