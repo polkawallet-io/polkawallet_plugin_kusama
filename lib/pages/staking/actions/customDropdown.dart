@@ -43,8 +43,8 @@ class CustomDropdown<T> extends StatelessWidget {
             child: DropdownButtonHideUnderline(
               child: DropdownButton(
                 isExpanded: true,
-                itemHeight: 45.0,
-                // style: TextStyle(fontSize: 15.0, color: isEnabled ? Colors.black : Colors.grey[700]),
+                itemHeight: 40.0,
+                style: TextStyle(fontSize: 15.0, color: isEnabled ? Colors.black : Colors.grey[700]),
                 items: dropdownMenuItemList,
                 onChanged: onChanged,
                 value: value,
