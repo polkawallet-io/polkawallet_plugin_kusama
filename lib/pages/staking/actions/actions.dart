@@ -87,6 +87,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                         break;
                       case 2:
                         Navigator.of(context).pushNamed(UnboundPageWrapper.route, arguments: UnboundArgData(validator, Fmt.priceFloorBigInt(Fmt.balanceInt(info.votes), 8, lengthMax: 4)));
+                        break;
                       case 3:
                         Navigator.of(context).pushNamed(RebondPageWrapper.route, arguments: UnboundArgData(validator, Fmt.priceFloorBigInt(Fmt.balanceInt(info.votes), 8, lengthMax: 4)));
                         break;
