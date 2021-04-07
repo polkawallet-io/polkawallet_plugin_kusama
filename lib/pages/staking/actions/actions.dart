@@ -5,6 +5,7 @@ import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/topCard.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -57,9 +58,12 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     }
   }
 
-  void _showActions() {
+  void _showActions(StakedInfo info) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
+
+    final validator = widget.plugin.store.staking.validatorsInfo.where((val) => val.accountId == info.address)?.first;
+
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -69,6 +73,13 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                   onPressed: () {
                     Navigator.of(context).pop();
                     // widget.onSortChange(i.index);
+                    switch (i.index) {
+                      case 0:
+                        Navigator.of(context).pushNamed(StakePage.route, arguments: validator);
+                        break;
+                      default:
+                        break;
+                    }
                   },
                 ))
             .toList(),
@@ -136,7 +147,9 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
               Text(Fmt.priceFloorBigInt(Fmt.balanceInt(i.interests.toString()), 8, lengthMax: 4), style: TextStyle(color: Colors.red))
             ],
           ),
-          onTap: _showActions,
+          onTap: () {
+            _showActions(i);
+          },
         ),
       );
     }));
