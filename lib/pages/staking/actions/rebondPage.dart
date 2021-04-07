@@ -42,7 +42,7 @@ class _RebondPageState extends State<RebondPage> {
       items.add(DropdownMenuItem(
         value: validator,
         child: AddressDropdownItem(
-          widget.validatorAccountId,
+          validator.accountId,
           accIcon,
           accInfo,
           // do not allow change controller here.
