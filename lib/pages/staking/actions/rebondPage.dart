@@ -36,9 +36,18 @@ class _RebondPageState extends State<RebondPage> {
   List<DropdownMenuItem<ValidatorData>> _buildFavouriteFoodModelDropdown(List validatorList) {
     List<DropdownMenuItem<ValidatorData>> items = List();
     for (ValidatorData validator in validatorList) {
+      final accIcon = widget.plugin.store.accounts.addressIconsMap[validator.accountId];
+      final accInfo = widget.plugin.store.accounts.addressIndexMap[validator.accountId];
       items.add(DropdownMenuItem(
         value: validator,
-        child: Text(validator.accountId),
+        child: AddressFormItemForValidator(
+          widget.validatorAccountId,
+          accIcon,
+          accInfo,
+          label: '',
+          // do not allow change controller here.
+          // onTap: () => _changeControllerId(context),
+        ),
       ));
     }
     return items;
