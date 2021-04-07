@@ -71,6 +71,7 @@ const Map<String, String> enStaking = {
   'controller.warn': 'Controller account is not changed',
   'filter': 'Filter with Address/Name',
   'sort': 'Sort by',
+  'refresh': 'Refresh',
   'nominate.active': 'Active',
   'nominate.over': 'Oversubscribed',
   'nominate.inactive': 'Inactive',

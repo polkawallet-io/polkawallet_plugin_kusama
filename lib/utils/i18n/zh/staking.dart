@@ -71,6 +71,7 @@ const Map<String, String> zhStaking = {
   'controller.controllerOf': '不可用，已关联储值账户：',
   'filter': '地址/名称筛选',
   'sort': '排序',
+  'refresh': '刷新',
   'nominate.active': '活跃',
   'nominate.over': '超额认购',
   'nominate.inactive': '不活跃',

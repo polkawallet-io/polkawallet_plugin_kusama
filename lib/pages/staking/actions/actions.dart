@@ -96,6 +96,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
   List<Widget> _buildMyStakedValidatorsList() {
     List<NominationData> validNominations = widget.plugin.store.staking.validNominations;
     List<UserInterestData> userInterests = widget.plugin.store.staking.userInterests;
+    var theme = Theme.of(context);
 
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
 
@@ -104,14 +105,21 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
     List<StakedInfo> txs = [];
 
     res.add(Padding(
-        padding: EdgeInsets.only(top: 50, left: 20, bottom: 10),
+        padding: EdgeInsets.only(top: 50, left: 20, bottom: 10, right: 20),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(dicStaking['mystaking.label'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          Icon(
-            Icons.account_balance_wallet,
-            color: Theme.of(context).disabledColor,
-            size: 32,
-          ),
+          GestureDetector(
+            child: Container(
+              margin: EdgeInsets.only(left: 8),
+              padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(24)),
+                border: Border.all(width: 0.5, color: theme.dividerColor),
+              ),
+              child: Text(dicStaking['refresh']),
+            ),
+            onTap: _updateStakingTxs,
+          )
         ])));
 
     String currentAccount = widget.keyring.current.address;
