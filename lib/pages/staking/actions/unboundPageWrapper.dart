@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/unboundPage.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/unboundArgData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -45,8 +46,7 @@ class _UnboundPageWrapperState extends State<UnboundPageWrapper> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final ValidatorData detail = json.decode(ModalRoute.of(context).settings.arguments.toString())['validator'];
-    final double votes = json.decode(ModalRoute.of(context).settings.arguments.toString())['votes'];
+    final UnboundArgData detail = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
@@ -64,8 +64,8 @@ class _UnboundPageWrapperState extends State<UnboundPageWrapper> {
             child: UnboundPage(
           widget.plugin,
           widget.keyring,
-          detail.accountId,
-          votes,
+          detail.validator.accountId,
+          double.parse(detail.recovable),
           onNext: (TxConfirmParams params) => _onUnbound(params),
         ));
       }),

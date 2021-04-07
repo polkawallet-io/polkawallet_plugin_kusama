@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/topCard.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/unboundArgData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/claimPageWrapper.dart';
@@ -83,7 +84,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                         Navigator.of(context).pushNamed(ClaimPageWrapper.route, arguments: validator);
                         break;
                       case 2:
-                        Navigator.of(context).pushNamed(UnboundPageWrapper.route, arguments: {"validator": validator, "votes": info.votes});
+                        Navigator.of(context).pushNamed(UnboundPageWrapper.route, arguments: UnboundArgData(validator, Fmt.priceFloorBigInt(Fmt.balanceInt(info.votes), 8, lengthMax: 4)));
                         break;
                       default:
                         break;
