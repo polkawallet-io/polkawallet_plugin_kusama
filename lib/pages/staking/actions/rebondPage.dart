@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/addressDropdownItem.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/addressFormItemForValidator.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/customDropdown.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validator.dart';
@@ -40,11 +41,10 @@ class _RebondPageState extends State<RebondPage> {
       final accInfo = widget.plugin.store.accounts.addressIndexMap[validator.accountId];
       items.add(DropdownMenuItem(
         value: validator,
-        child: AddressFormItemForValidator(
+        child: AddressDropdownItem(
           widget.validatorAccountId,
           accIcon,
           accInfo,
-          label: '',
           // do not allow change controller here.
           // onTap: () => _changeControllerId(context),
         ),
