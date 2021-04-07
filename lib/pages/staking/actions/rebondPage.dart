@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/addressFormItemForValidator.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/validators/validator.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
@@ -27,7 +29,7 @@ class _RebondPageState extends State<RebondPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountCtrl = new TextEditingController();
 
-  int _rewardTo = 0;
+  ValidatorData validatorTo;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +38,7 @@ class _RebondPageState extends State<RebondPage> {
     final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
     final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
 
-    List<KeyPairData> accounts;
-    if (_rewardTo == 3) {
-      accounts = widget.keyring.keyPairs;
-      accounts.addAll(widget.keyring.externals);
-    }
+    List<ValidatorData> validators = widget.plugin.store.staking.validatorsInfo;
 
     final accIcon = widget.plugin.store.accounts.addressIconsMap[widget.validatorAccountId];
     final accInfo = widget.plugin.store.accounts.addressIndexMap[widget.validatorAccountId];
@@ -60,9 +58,20 @@ class _RebondPageState extends State<RebondPage> {
                   ),
                 ),
                 Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                  child: AddressFormItemForValidator(
+                    widget.validatorAccountId,
+                    accIcon,
+                    accInfo,
+                    label: dicStaking['mystaking.rebond.from'],
+                    // do not allow change controller here.
+                    // onTap: () => _changeControllerId(context),
+                  ),
+                ),
+                Padding(
                     padding: EdgeInsets.only(left: 16, right: 16),
-                    child: DropdownButton<String>(
-                      value: 'One',
+                    child: DropdownButton<ValidatorData>(
+                      value: validatorTo,
                       icon: const Icon(Icons.arrow_downward),
                       iconSize: 24,
                       elevation: 16,
@@ -71,29 +80,19 @@ class _RebondPageState extends State<RebondPage> {
                         height: 2,
                         color: Colors.deepPurpleAccent,
                       ),
-                      onChanged: (String newValue) {
+                      onChanged: (ValidatorData newValue) {
                         setState(() {
                           // dropdownValue = newValue!;
+                          validatorTo = newValue;
                         });
                       },
-                      items: <String>['One', 'Two', 'Free', 'Four'].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
+                      items: validators.map<DropdownMenuItem<ValidatorData>>((ValidatorData validator) {
+                        return DropdownMenuItem<ValidatorData>(
+                          value: validator,
+                          child: Text(validator.accountId),
                         );
                       }).toList(),
                     )),
-                Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16),
-                  child: AddressFormItemForValidator(
-                    widget.validatorAccountId,
-                    accIcon,
-                    accInfo,
-                    label: dicStaking['mystaking.rebond.to'],
-                    // do not allow change controller here.
-                    // onTap: () => _changeControllerId(context),
-                  ),
-                ),
                 Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: TextFormField(
