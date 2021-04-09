@@ -54,13 +54,15 @@ class _StakingActions extends State<StakingActions>
   bool _isLastPage = false;
   ScrollController _scrollController;
 
-  Future<void> _updateStakingTxs() async {
+  Future<void> _updateStakingTxs({int page}) async {
     if (_loading) return;
 
     setState(() {
       _loading = true;
+      _txsPage = page ?? _txsPage;
     });
-    Map res = await widget.plugin.service.staking.updateStakingTxs(_txsPage);
+    Map res =
+        await widget.plugin.service.staking.updateStakingTxs(page ?? _txsPage);
     if (mounted) {
       setState(() {
         _loading = false;
@@ -92,7 +94,7 @@ class _StakingActions extends State<StakingActions>
   }
 
   Future<void> _updateStakingInfo() async {
-    _tab == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
+    _tab == 0 ? _updateStakingTxs(page: 0) : _updateStakingRewardTxs();
 
     await widget.plugin.service.staking.queryOwnStashInfo();
   }
@@ -349,6 +351,7 @@ class _StakingActions extends State<StakingActions>
                   isController: isController,
                   stashInfo: widget.plugin.store.staking.ownStashInfo,
                   bonded: bonded,
+                  redeemable: redeemable,
                   controller: acc02,
                   onAction: _onAction,
                 ),
@@ -412,7 +415,7 @@ class _StakingActions extends State<StakingActions>
                 ),
               ],
               onTap: (i) {
-                i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
+                i == 0 ? _updateStakingTxs(page: 0) : _updateStakingRewardTxs();
                 setState(() {
                   _tab = i;
                 });
@@ -803,6 +806,7 @@ class StakingActionsPanel extends StatelessWidget {
     this.isController,
     this.stashInfo,
     this.bonded,
+    this.redeemable,
     this.controller,
     this.onAction,
   });
@@ -811,6 +815,7 @@ class StakingActionsPanel extends StatelessWidget {
   final bool isController;
   final OwnStashInfoData stashInfo;
   final BigInt bonded;
+  final BigInt redeemable;
   final KeyPairData controller;
   final Function(Future<dynamic> Function()) onAction;
 
@@ -917,6 +922,25 @@ class StakingActionsPanel extends StatelessWidget {
                                 Navigator.of(context).pop();
                                 onAction(() => Navigator.of(context)
                                     .pushNamed(UnBondPage.route));
+                              },
+                      ),
+
+                      // redeem unlocked
+                      CupertinoActionSheetAction(
+                        child: Text(
+                          dic['action.redeem'],
+                          style: TextStyle(
+                            color: redeemable == BigInt.zero
+                                ? disabledColor
+                                : actionButtonColor,
+                          ),
+                        ),
+                        onPressed: redeemable == BigInt.zero
+                            ? () => {}
+                            : () {
+                                Navigator.of(context).pop();
+                                onAction(() => Navigator.of(context)
+                                    .pushNamed(RedeemPage.route));
                               },
                       ),
                     ],
