@@ -182,7 +182,7 @@ packages:
       name: dropdown_search
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.8"
+    version: "0.4.9"
   fake_async:
     dependency: transitive
     description:
@@ -574,17 +574,19 @@ packages:
   polkawallet_sdk:
     dependency: "direct main"
     description:
-      path: "../sdk"
-      relative: true
-    source: path
-    version: "0.1.1"
+      name: polkawallet_sdk
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
   polkawallet_ui:
     dependency: "direct main"
     description:
-      path: "../ui"
-      relative: true
-    source: path
-    version: "0.1.2"
+      path: "."
+      ref: "51ebe9ffe2c9a0c524aadffc03cbe413d891fa57"
+      resolved-ref: "51ebe9ffe2c9a0c524aadffc03cbe413d891fa57"
+      url: "https://github.com/polkawallet-io/ui.git"
+    source: git
+    version: "0.1.5"
   pool:
     dependency: transitive
     description:
