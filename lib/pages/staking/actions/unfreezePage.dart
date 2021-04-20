@@ -87,7 +87,7 @@ class _UnfreezePageState extends State<UnfreezePage> {
                         dropdownMenuItemList: chunksDropdownList,
                         onChanged: (BondedChunksData newValue) => {
                               setState(() {
-                                chunkIndex = 0;
+                                chunkIndex = widget.unbondedChunks.indexOf(newValue);
                                 chunkData = newValue;
                               })
                             },

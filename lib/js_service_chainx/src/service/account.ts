@@ -146,13 +146,10 @@ async function getBalance(api: ApiPromise, address: string, msgChannel: string) 
  */
 async function getAccountIndex(api: ApiPromise, addresses: string[]) {
   return api.derive.accounts.indexes().then(async (res) => {
-    const accounts = [];
-    for(let i of addresses) {
-      const accInfo = await api.derive.accounts.info(i);
-      const validatorInfo = await api.query.xStaking.validators(i);
-      accounts.push({ ...accInfo, referralId: validatorInfo ? validatorInfo.referralId : null })
-    }
-    return accounts;
+    const accInfos = await Promise.all(addresses.map((i) => api.derive.accounts.info(i)));
+    const validatorInfos = await Promise.all(addresses.map((i) => api.query.xStaking.validators(i)));
+
+    return addresses.map((_, i) => ({ ...accInfos[i], referralId: validatorInfos[i] ? validatorInfos[i].referralId : null }));
   })
 }
 
