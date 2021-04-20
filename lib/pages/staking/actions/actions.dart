@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/topCard.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';

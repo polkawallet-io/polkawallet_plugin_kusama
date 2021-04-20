@@ -13,7 +13,7 @@ import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
 class RebondPageWrapper extends StatefulWidget {
   RebondPageWrapper(this.plugin, this.keyring);
-  static final String route = '/staking/unbound';
+  static final String route = '/staking/rebond';
   final PluginChainX plugin;
   final Keyring keyring;
   @override
