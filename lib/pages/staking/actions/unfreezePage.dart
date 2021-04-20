@@ -1,25 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_chainx/pages/staking/actions/addressDropdownItem.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/addressFormItemForValidator.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/customDropdown.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
-import 'package:polkawallet_plugin_chainx/store/staking/types/validatorData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/utils/format.dart';
-import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
 
 class UnfreezePage extends StatefulWidget {
-  UnfreezePage(this.plugin, this.keyring, this.validatorAccountId, this.switchable, {this.onNext});
+  UnfreezePage(this.plugin, this.keyring, this.validatorAccountId, this.unbondedChunks, {this.onNext});
   final PluginChainX plugin;
   final Keyring keyring;
   final String validatorAccountId;
-  final double switchable;
+  final List<BondedChunksData> unbondedChunks;
   final Function(TxConfirmParams) onNext;
   @override
   _UnfreezePageState createState() => _UnfreezePageState();
@@ -27,25 +24,17 @@ class UnfreezePage extends StatefulWidget {
 
 class _UnfreezePageState extends State<UnfreezePage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _amountCtrl = new TextEditingController();
 
-  ValidatorData validatorTo;
+  int chunkIndex;
+  BondedChunksData chunkData;
 
-  List<DropdownMenuItem<ValidatorData>> validatorDropdownList;
-  List<DropdownMenuItem<ValidatorData>> _buildFavouriteFoodModelDropdown(List validatorList) {
-    List<DropdownMenuItem<ValidatorData>> items = List();
-    for (ValidatorData validator in validatorList) {
-      final accIcon = widget.plugin.store.accounts.addressIconsMap[validator.accountId];
-      final accInfo = widget.plugin.store.accounts.addressIndexMap[validator.accountId];
+  List<DropdownMenuItem<BondedChunksData>> chunksDropdownList;
+  List<DropdownMenuItem<BondedChunksData>> _buildChunksDropdown(List chunksList) {
+    List<DropdownMenuItem<BondedChunksData>> items = List();
+    for (BondedChunksData chunk in chunksList) {
       items.add(DropdownMenuItem(
-        value: validator,
-        child: AddressDropdownItem(
-          validator.accountId,
-          accIcon,
-          accInfo,
-          // do not allow change controller here.
-          // onTap: () => _changeControllerId(context),
-        ),
+        value: chunk,
+        child: Text('locked until: ${chunk.lockedUntil}'),
       ));
     }
     return items;
@@ -53,16 +42,15 @@ class _UnfreezePageState extends State<UnfreezePage> {
 
   @override
   void initState() {
-    validatorDropdownList = _buildFavouriteFoodModelDropdown(widget.plugin.store.staking.validatorsInfo);
-    validatorTo = widget.plugin.store.staking.validatorsInfo[0];
+    chunksDropdownList = _buildChunksDropdown(widget.unbondedChunks);
+    chunkIndex = 0;
+    chunkData = widget.unbondedChunks.length > 0 ? widget.unbondedChunks[0] : null;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'common');
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final decimals = (widget.plugin.networkState.tokenDecimals ?? [8])[0];
     final symbol = (widget.plugin.networkState.tokenSymbol ?? ['PCX'])[0];
 
     final accIcon = widget.plugin.store.accounts.addressIconsMap[widget.validatorAccountId];
@@ -88,47 +76,24 @@ class _UnfreezePageState extends State<UnfreezePage> {
                     widget.validatorAccountId,
                     accIcon,
                     accInfo,
-                    label: dicStaking['mystaking.rebond.from'],
+                    label: dicStaking['mystaking.unfreeze.node'],
                     // do not allow change controller here.
                     // onTap: () => _changeControllerId(context),
                   ),
                 ),
                 Padding(
                     padding: EdgeInsets.only(left: 16, right: 16),
-                    child: CustomDropdown<ValidatorData>(
-                        dropdownMenuItemList: validatorDropdownList,
-                        onChanged: (ValidatorData newValue) => {
+                    child: CustomDropdown<BondedChunksData>(
+                        dropdownMenuItemList: chunksDropdownList,
+                        onChanged: (BondedChunksData newValue) => {
                               setState(() {
-                                validatorTo = newValue;
+                                chunkIndex = 0;
+                                chunkData = newValue;
                               })
                             },
-                        value: validatorTo,
+                        value: chunkData,
                         isEnabled: true,
-                        label: dicStaking['mystaking.rebond.to'])),
-                Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: dic['amount'],
-                      labelText: '${dic['amount']} (${dicStaking['switchable']}: ${Fmt.priceFloor(
-                        widget.switchable,
-                        lengthMax: 4,
-                      )} $symbol)',
-                    ),
-                    inputFormatters: [UI.decimalInputFormatter(decimals)],
-                    controller: _amountCtrl,
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    validator: (v) {
-                      if (v.isEmpty) {
-                        return dic['amount.error'];
-                      }
-                      if (double.parse(v.trim()) >= widget.switchable) {
-                        return dic['amount.error'];
-                      }
-                      return null;
-                    },
-                  ),
-                ),
+                        label: dicStaking['mystaking.unfreeze.id'])),
               ],
             ),
           ),
@@ -136,30 +101,22 @@ class _UnfreezePageState extends State<UnfreezePage> {
         Padding(
           padding: EdgeInsets.all(16),
           child: RoundedButton(
-            text: dicStaking['mystaking.action.rebond'],
+            text: dicStaking['mystaking.action.unfreeze'],
             onPressed: () {
               if (_formKey.currentState.validate()) {
-                final inputAmount = _amountCtrl.text.trim();
-                // String controllerId = widget.keyring.current.address;
-                // if (_controller != null) {
-                //   controllerId = _controller.address;
-                // }
                 widget.onNext(TxConfirmParams(
-                  txTitle: dicStaking['mystaking.action.rebond'],
+                  txTitle: dicStaking['mystaking.action.unfreeze'],
                   module: 'xStaking',
-                  call: 'rebond',
+                  call: 'unlockUnbondedWithdrawal',
                   txDisplay: {
-                    "from": widget.validatorAccountId,
-                    "to": validatorTo.accountId,
-                    "value": '$inputAmount $symbol',
+                    "target": widget.validatorAccountId,
+                    "unbonded_index": chunkIndex,
                   },
                   params: [
-                    // "from":
+                    // "target":
                     widget.validatorAccountId,
-                    // "to":
-                    validatorTo.accountId,
-                    // "amount"
-                    Fmt.tokenInt(inputAmount, decimals).toString(),
+                    // "unbonded_index":
+                    chunkIndex,
                   ],
                 ));
               }

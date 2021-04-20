@@ -99,6 +99,8 @@ const Map<String, String> enStaking = {
   'mystaking.unbound.validator': 'UnBound for validator',
   'mystaking.rebond.from': 'From Validator',
   'mystaking.rebond.to': 'To Validator',
+  'mystaking.unfreeze.node': 'Redeem the current code',
+  'mystaking.unfreeze.id': 'Unfreeze ID',
   'overview.validator': 'Validator',
   'overview.candidate': 'Candidate',
   'overview.dropout': 'Drop Out',

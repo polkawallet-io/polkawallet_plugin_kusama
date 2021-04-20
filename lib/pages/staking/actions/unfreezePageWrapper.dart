@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/unfreezePage.dart';
 import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
-import 'package:polkawallet_plugin_chainx/store/staking/types/unboundArgData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/unfreezeArgData.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -23,10 +23,10 @@ class UnfreezePageWrapper extends StatefulWidget {
 class _UnfreezePageWrapperState extends State<UnfreezePageWrapper> {
   Future<void> _onRebond(TxConfirmParams _bondParams) async {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final txBond = 'api.tx.xStaking.rebond(...${jsonEncode(_bondParams.params)})';
+    final txUnfreeze = 'api.tx.xStaking.unlockUnbondedWithdrawal(...${jsonEncode(_bondParams.params)})';
     final res = await Navigator.of(context).pushNamed(TxConfirmPage.route,
         arguments: TxConfirmParams(
-          txTitle: dic['mystaking.action.rebond'],
+          txTitle: dic['mystaking.action.unfreeze'],
           module: 'utility',
           call: 'batchAll',
           txDisplay: {
@@ -35,7 +35,7 @@ class _UnfreezePageWrapperState extends State<UnfreezePageWrapper> {
             ],
           },
           params: [],
-          rawParams: '[[$txBond]]',
+          rawParams: '[[$txUnfreeze]]',
         ));
     if (res != null) {
       Navigator.of(context).pop(res);
@@ -45,11 +45,11 @@ class _UnfreezePageWrapperState extends State<UnfreezePageWrapper> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_chainx, 'staking');
-    final UnboundArgData detail = ModalRoute.of(context).settings.arguments;
+    final UnfreezeArgData detail = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dic['mystaking.action.rebond']),
+        title: Text(dic['mystaking.action.unfreeze']),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
@@ -64,7 +64,7 @@ class _UnfreezePageWrapperState extends State<UnfreezePageWrapper> {
           widget.plugin,
           widget.keyring,
           detail.validator.accountId,
-          double.parse(detail.recovable),
+          detail.unbondedChunks,
           onNext: (TxConfirmParams params) => _onRebond(params),
         ));
       }),

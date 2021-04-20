@@ -99,6 +99,8 @@ const Map<String, String> zhStaking = {
   'mystaking.unbound.validator': '验证者不受限制',
   'mystaking.rebond.from': '从验证器',
   'mystaking.rebond.to': '致验证者',
+  'mystaking.unfreeze.node': '兑换当前代码',
+  'mystaking.unfreeze.id': 'Unfreeze ID',
   'overview.validator': '验证人',
   'overview.candidate': '参选',
   'overview.dropout': '已退选',

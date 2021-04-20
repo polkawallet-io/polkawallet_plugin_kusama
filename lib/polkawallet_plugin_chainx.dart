@@ -27,6 +27,7 @@ import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/claimPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/unboundPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPageWrapper.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/unfreezePageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_chainx/service/index.dart';
 import 'package:polkawallet_plugin_chainx/store/cache/storeCache.dart';
@@ -98,6 +99,7 @@ class PluginChainX extends PolkawalletPlugin {
       ClaimPageWrapper.route: (_) => ClaimPageWrapper(this, keyring),
       UnboundPageWrapper.route: (_) => UnboundPageWrapper(this, keyring),
       RebondPageWrapper.route: (_) => RebondPageWrapper(this, keyring),
+      UnfreezePageWrapper.route: (_) => UnfreezePageWrapper(this, keyring),
       ValidatorDetailPage.route: (_) => ValidatorDetailPage(this, keyring),
 
       // governance pages

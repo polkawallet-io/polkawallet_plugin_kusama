@@ -5,6 +5,7 @@ import 'package:polkawallet_plugin_chainx/polkawallet_plugin_chainx.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/topCard.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/nominationData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/unboundArgData.dart';
+import 'package:polkawallet_plugin_chainx/store/staking/types/unfreezeArgData.dart';
 import 'package:polkawallet_plugin_chainx/store/staking/types/userInterestData.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/claimPageWrapper.dart';
@@ -34,12 +35,14 @@ class StakedInfo {
   String votes;
   String interests;
   String freeze;
+  List<BondedChunksData> unbondedChunks;
 
-  StakedInfo(String _address, String _votes, String _interests, String _freeze) {
+  StakedInfo(String _address, String _votes, String _interests, String _freeze, List<BondedChunksData> _unbondedChunks) {
     address = _address;
     votes = _votes;
     interests = _interests;
     freeze = _freeze;
+    unbondedChunks = _unbondedChunks;
   }
 }
 
@@ -93,7 +96,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                         Navigator.of(context).pushNamed(RebondPageWrapper.route, arguments: UnboundArgData(validator, Fmt.priceFloorBigInt(Fmt.balanceInt(info.votes), 8, lengthMax: 4)));
                         break;
                       case 4:
-                        Navigator.of(context).pushNamed(UnfreezePageWrapper.route);
+                        Navigator.of(context).pushNamed(UnfreezePageWrapper.route, arguments: UnfreezeArgData(validator, info.unbondedChunks));
                         break;
                       default:
                         break;
@@ -149,7 +152,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
 
         if (nmn.account == currentAccount) {
           BigInt interest = userInterests.length > 0 ? BigInt.parse(userInterests[0].interests.firstWhere((i) => i.validator == nmn.validatorId)?.interest) : BigInt.zero;
-          txs.add(StakedInfo(nmn.validatorId, nmn.nomination.toString(), interest.toString(), chunks.toString()));
+          txs.add(StakedInfo(nmn.validatorId, nmn.nomination.toString(), interest.toString(), chunks.toString(), nmn.unbondedChunks));
         }
       });
     }
