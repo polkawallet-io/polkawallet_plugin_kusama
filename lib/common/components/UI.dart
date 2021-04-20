@@ -83,7 +83,7 @@ class UI {
   static String accountDisplayNameString(String address, Map accInfo) {
     String display = Fmt.address(address, pad: 6);
     if (accInfo != null) {
-      if (accInfo['referralId']) {
+      if (accInfo['referralId'] != null) {
         display = accInfo['referralId'];
       } else {
         if (accInfo['identity']['display'] != null) {
