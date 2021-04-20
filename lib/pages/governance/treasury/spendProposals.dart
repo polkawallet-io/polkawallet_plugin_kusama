@@ -17,7 +17,7 @@ import 'package:polkawallet_ui/components/listTail.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/utils/format.dart';
-import 'package:polkawallet_ui/utils/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
 
 class SpendProposals extends StatefulWidget {
   SpendProposals(this.plugin, this.keyring);

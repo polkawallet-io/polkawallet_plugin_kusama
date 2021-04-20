@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/utils/format.dart';
-import 'package:polkawallet_ui/utils/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
 
 class CustomDropdown<T> extends StatelessWidget {
   final List<DropdownMenuItem<T>> dropdownMenuItemList;

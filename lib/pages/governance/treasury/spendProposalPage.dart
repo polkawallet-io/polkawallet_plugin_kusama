@@ -18,7 +18,7 @@ import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
-import 'package:polkawallet_ui/utils/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
 
 class SpendProposalPage extends StatefulWidget {
   SpendProposalPage(this.plugin, this.keyring);

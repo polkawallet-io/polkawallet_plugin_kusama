@@ -10,7 +10,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
-import 'package:polkawallet_ui/utils/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
 
 class MoneyTips extends StatefulWidget {
   MoneyTips(this.plugin, this.keyring);
@@ -22,8 +22,7 @@ class MoneyTips extends StatefulWidget {
 }
 
 class _ProposalsState extends State<MoneyTips> {
-  final GlobalKey<RefreshIndicatorState> _refreshKey =
-      new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
     widget.plugin.service.gov.updateBestNumber();
@@ -67,10 +66,8 @@ class _ProposalsState extends State<MoneyTips> {
                     }
                     return Observer(builder: (_) {
                       final TreasuryTipData tip = tips[i];
-                      final icon =
-                          widget.plugin.store.accounts.addressIconsMap[tip.who];
-                      final indices =
-                          widget.plugin.store.accounts.addressIndexMap[tip.who];
+                      final icon = widget.plugin.store.accounts.addressIconsMap[tip.who];
+                      final indices = widget.plugin.store.accounts.addressIndexMap[tip.who];
                       return RoundedCard(
                         margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
                         padding: EdgeInsets.only(top: 16, bottom: 16),
@@ -87,8 +84,7 @@ class _ProposalsState extends State<MoneyTips> {
                                 tip.tips.length.toString(),
                                 style: Theme.of(context).textTheme.headline4,
                               ),
-                              Text(I18n.of(context).getDic(i18n_full_dic_chainx,
-                                  'gov')['treasury.tipper'])
+                              Text(I18n.of(context).getDic(i18n_full_dic_chainx, 'gov')['treasury.tipper'])
                             ],
                           ),
                           onTap: () async {

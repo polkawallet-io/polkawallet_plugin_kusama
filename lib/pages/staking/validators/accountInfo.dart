@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/jumpToBrowserLink.dart';
 import 'package:polkawallet_ui/utils/format.dart';
-import 'package:polkawallet_ui/utils/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
 
 class AccountInfo extends StatelessWidget {
   AccountInfo({this.accInfo, this.address, this.icon, this.network});
@@ -76,9 +76,7 @@ class AccountInfo extends StatelessWidget {
             ? Container()
             : Container(
                 padding: EdgeInsets.only(left: 24, right: 24, bottom: 4),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: list),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: list),
               )
       ],
     );

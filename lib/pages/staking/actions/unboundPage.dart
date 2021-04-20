@@ -10,7 +10,7 @@ import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/utils/format.dart';
-import 'package:polkawallet_ui/utils/index.dart';
+import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
 
 class UnboundPage extends StatefulWidget {
   UnboundPage(this.plugin, this.keyring, this.validatorAccountId, this.recovable, {this.onNext});
