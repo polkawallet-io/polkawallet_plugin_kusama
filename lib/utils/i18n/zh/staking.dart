@@ -94,6 +94,7 @@ const Map<String, String> zhStaking = {
   'mystaking.action.claim': '提息',
   'mystaking.action.unbound': '撤票',
   'mystaking.action.rebond': '切换',
+  'mystaking.action.unfreeze': '解冻',
   'mystaking.claim.validator': '当前利息确认者',
   'mystaking.unbound.validator': '验证者不受限制',
   'mystaking.rebond.from': '从验证器',

@@ -94,6 +94,7 @@ const Map<String, String> enStaking = {
   'mystaking.action.claim': 'Claim Interest',
   'mystaking.action.unbound': 'UnBond',
   'mystaking.action.rebond': 'ReBond',
+  'mystaking.action.unfreeze': 'Unfreeze',
   'mystaking.claim.validator': 'Current interest validator',
   'mystaking.unbound.validator': 'UnBound for validator',
   'mystaking.rebond.from': 'From Validator',

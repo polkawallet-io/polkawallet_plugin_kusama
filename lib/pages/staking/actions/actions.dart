@@ -10,6 +10,7 @@ import 'package:polkawallet_plugin_chainx/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/claimPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/unboundPageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/pages/staking/actions/rebondPageWrapper.dart';
+import 'package:polkawallet_plugin_chainx/pages/staking/actions/unfreezePageWrapper.dart';
 import 'package:polkawallet_plugin_chainx/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -18,7 +19,7 @@ import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
-enum ValidatorSortOptions { vote, claim, unbound, rebond }
+enum ValidatorSortOptions { vote, claim, unbound, rebond, unfreeze }
 
 class StakingActions extends StatefulWidget {
   StakingActions(this.plugin, this.keyring);
@@ -72,6 +73,7 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: ValidatorSortOptions.values
+            .where((i) => Fmt.balanceInt(info.freeze) > BigInt.zero ? true : i.index != 4)
             .map((i) => CupertinoActionSheetAction(
                   child: Text(dicStaking['mystaking.action.' + i.toString().split('.')[1]]),
                   onPressed: () {
@@ -89,6 +91,9 @@ class _StakingActions extends State<StakingActions> with SingleTickerProviderSta
                         break;
                       case 3:
                         Navigator.of(context).pushNamed(RebondPageWrapper.route, arguments: UnboundArgData(validator, Fmt.priceFloorBigInt(Fmt.balanceInt(info.votes), 8, lengthMax: 4)));
+                        break;
+                      case 4:
+                        Navigator.of(context).pushNamed(UnfreezePageWrapper.route);
                         break;
                       default:
                         break;
