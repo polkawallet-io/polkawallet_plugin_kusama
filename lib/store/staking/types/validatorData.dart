@@ -1,7 +1,3 @@
-import 'dart:math';
-
-import 'package:intl/intl.dart';
-
 class ValidatorData extends _ValidatorData {
   static ValidatorData fromJson(Map<String, dynamic> json) {
     ValidatorData data = ValidatorData();
@@ -22,8 +18,7 @@ class ValidatorData extends _ValidatorData {
       data.stakedReturn = double.parse(json['stakedReturn'].toString());
       data.stakedReturnCmp = double.parse(json['stakedReturnCmp'].toString());
 
-      data.commission = NumberFormat('0.00%')
-          .format(json['validatorPrefs']['commission'] / pow(10, 9));
+      data.commission = double.parse(json['commissionPer'].toString());
       data.nominators =
           List<Map<String, dynamic>>.from(json['exposure']['others']);
     }
@@ -49,7 +44,7 @@ abstract class _ValidatorData {
   double stakedReturn = 0;
   double stakedReturnCmp = 0;
 
-  String commission = '';
+  double commission = 0;
 
   List<Map<String, dynamic>> nominators = List<Map<String, dynamic>>();
 }

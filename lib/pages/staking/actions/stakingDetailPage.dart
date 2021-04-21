@@ -45,7 +45,11 @@ class StakingDetailPage extends StatelessWidget {
             value = Fmt.address(address);
             break;
           case "RewardDestination<AccountId>":
-            value = 'Account: ${Fmt.address(i['value']['Account'])}';
+            if (i['value']['Account'] != null) {
+              value = 'Account: ${Fmt.address(i['value']['Account'])}';
+            } else {
+              value = Map.of(i['value']).keys.toList()[0];
+            }
             break;
           case "Vec<<Lookup as StaticLookup>::Source>":
             // for nominate targets

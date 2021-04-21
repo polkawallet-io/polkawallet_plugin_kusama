@@ -42,48 +42,24 @@ class PluginFmt {
     };
   }
 
-  static int sortValidatorList(
-      Map addressIndexMap, ValidatorData a, ValidatorData b, int sortType) {
-    if (a.commission == null || a.commission.isEmpty) {
-      return 1;
-    }
-    if (b.commission == null || b.commission.isEmpty) {
-      return -1;
-    }
-    double comA = double.parse(a.commission.split('%')[0]);
-    double comB = double.parse(b.commission.split('%')[0]);
-    switch (sortType) {
-      case 0:
-        return a.rankReward < b.rankReward ? 1 : -1;
-      case 1:
-        return a.rankBondTotal > b.rankBondTotal ? 1 : -1;
-      case 2:
-        return comA == comB
-            ? a.rankReward < b.rankReward
-                ? 1
-                : -1
-            : comA > comB
-                ? 1
-                : -1;
-      case 3:
-        final infoA = addressIndexMap[a.accountId];
-        if (infoA != null && infoA['identity'] != null) {
-          final List judgements = infoA['identity']['judgements'];
-          if (judgements != null && judgements.length > 0) {
-            return -1;
-          }
-        }
-        return 1;
-      default:
-        return -1;
-    }
-  }
-
-  static List<ValidatorData> filterValidatorList(
-      List<ValidatorData> ls, String filter, Map accIndexMap) {
+  static List<ValidatorData> filterValidatorList(List<ValidatorData> ls,
+      List<bool> filters, String search, Map accIndexMap) {
     ls.retainWhere((i) {
+      // filters[0], no 20%+ comm
+      if (filters[0]) {
+        if (i.commission > 20) return false;
+      }
+
+      // filters[1], only with an ID
       final Map accInfo = accIndexMap[i.accountId];
-      final value = filter.trim().toLowerCase();
+      if (filters[1]) {
+        if (accInfo == null || accInfo['identity']['display'] == null) {
+          return false;
+        }
+      }
+
+      // filter by search input
+      final value = search.trim().toLowerCase();
       return UI
               .accountDisplayNameString(i.accountId, accInfo)
               .toLowerCase()

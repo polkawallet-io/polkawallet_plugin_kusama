@@ -55,6 +55,9 @@ class PluginKusama extends PolkawalletPlugin {
   PluginKusama({name = 'kusama'})
       : basic = PluginBasicData(
           name: name,
+          genesisHash: name == network_name_kusama
+              ? genesis_hash_kusama
+              : genesis_hash_polkadot,
           ss58: name == network_name_kusama ? 2 : 0,
           primaryColor:
               name == network_name_kusama ? kusama_black : Colors.pink,

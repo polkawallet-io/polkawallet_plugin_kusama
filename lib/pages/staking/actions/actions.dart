@@ -21,6 +21,7 @@ import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/MainTabBar.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
@@ -31,23 +32,22 @@ import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
 class StakingActions extends StatefulWidget {
-  StakingActions(this.plugin, this.keyring, this.warnInElection);
+  StakingActions(this.plugin, this.keyring);
   final PluginKusama plugin;
   final Keyring keyring;
-  final Function warnInElection;
   @override
   _StakingActions createState() => _StakingActions();
 }
 
-class _StakingActions extends State<StakingActions>
-    with SingleTickerProviderStateMixin {
+class _StakingActions extends State<StakingActions> {
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       new GlobalKey<RefreshIndicatorState>();
+  final _colorOk = Color(0xFF3394FF);
+  final _colorReward = Color(0xFF62CFE4);
 
   bool _loading = false;
   bool _rewardLoading = false;
 
-  TabController _tabController;
   int _tab = 0;
 
   int _txsPage = 0;
@@ -106,11 +106,6 @@ class _StakingActions extends State<StakingActions>
   }
 
   void _onAction(Future<dynamic> Function() doAction) {
-    if (widget.plugin.store.staking.isInElection) {
-      widget.warnInElection();
-      return;
-    }
-
     doAction().then((res) {
       if (res != null) {
         _refreshKey.currentState.show();
@@ -125,14 +120,15 @@ class _StakingActions extends State<StakingActions>
       return Container(
         color: Theme.of(context).cardColor,
         child: ListTile(
+          dense: true,
           leading: Container(
             width: 32,
             padding: EdgeInsets.only(top: 4),
             child: i.success
-                ? Image.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/ok.png')
-                : Image.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/error.png'),
+                ? SvgPicture.asset(
+                    'packages/polkawallet_plugin_kusama/assets/images/staking/ok.svg')
+                : SvgPicture.asset(
+                    'packages/polkawallet_plugin_kusama/assets/images/staking/error.svg'),
           ),
           title: Text(i.call),
           subtitle: Text(Fmt.dateTime(
@@ -140,11 +136,11 @@ class _StakingActions extends State<StakingActions>
           trailing: i.success
               ? Text(
                   dic['success'],
-                  style: TextStyle(color: Colors.green),
+                  style: TextStyle(color: _colorOk),
                 )
               : Text(
                   dic['failed'],
-                  style: TextStyle(color: Colors.pink),
+                  style: TextStyle(color: Theme.of(context).disabledColor),
                 ),
           onTap: () {
             Navigator.of(context)
@@ -168,22 +164,24 @@ class _StakingActions extends State<StakingActions>
 
     List<Widget> res = [];
     res.addAll(widget.plugin.store.staking.txsRewards.map((i) {
+      final isReward = i.eventId == 'Reward';
       return Container(
         color: Theme.of(context).cardColor,
         child: ListTile(
+          dense: true,
           leading: Container(
             width: 32,
             padding: EdgeInsets.only(top: 4),
-            child: i.eventId == 'Reward'
-                ? SvgPicture.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/reward.svg')
-                : SvgPicture.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/slash.svg'),
+            child: SvgPicture.asset(
+                'packages/polkawallet_plugin_kusama/assets/images/staking/${isReward ? 'reward' : 'slash'}.svg'),
           ),
           title: Text(i.eventId),
           subtitle: Text(Fmt.dateTime(
               DateTime.fromMillisecondsSinceEpoch(i.blockTimestamp * 1000))),
-          trailing: Text('${Fmt.balance(i.amount, decimals)} $symbol'),
+          trailing: Text(
+            '${isReward ? '+' : '-'} ${Fmt.balance(i.amount, decimals)} $symbol',
+            style: TextStyle(color: isReward ? _colorReward : Colors.red),
+          ),
           onTap: () {
             Navigator.of(context)
                 .pushNamed(RewardDetailPage.route, arguments: i);
@@ -364,8 +362,6 @@ class _StakingActions extends State<StakingActions>
   void initState() {
     super.initState();
 
-    _tabController = TabController(vsync: this, length: 2);
-
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
@@ -385,7 +381,6 @@ class _StakingActions extends State<StakingActions>
         _updateStakingInfo();
       }
       widget.plugin.service.staking.queryAccountBondedInfo();
-      widget.plugin.service.staking.queryIsInElection();
     });
   }
 
@@ -400,43 +395,20 @@ class _StakingActions extends State<StakingActions>
           _buildActionCard(),
           Container(
             color: Theme.of(context).cardColor,
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-            child: TabBar(
-              labelColor: Colors.black87,
-              indicatorColor: Theme.of(context).primaryColor,
-              labelStyle: TextStyle(fontSize: 18),
-              controller: _tabController,
-              tabs: <Tab>[
-                Tab(
-                  text: dic['txs'],
-                ),
-                Tab(
-                  text: dic['txs.reward'],
-                ),
-              ],
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: MainTabBar(
+              tabs: [dic['txs'], dic['txs.reward']],
+              activeTab: _tab,
+              fontSize: 18,
+              lineWidth: 6,
               onTap: (i) {
-                i == 0 ? _updateStakingTxs(page: 0) : _updateStakingRewardTxs();
+                i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
                 setState(() {
                   _tab = i;
                 });
               },
             ),
           ),
-
-          // Container(
-          //   color: Theme.of(context).cardColor,
-          //   padding: EdgeInsets.all(16),
-          //   child: MainTabBar(
-          //     tabs: [dic['txs'], dic['txs.reward']],
-          //     activeTab: _tab,
-          //     onTap: (i) {
-          //       i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
-          //       setState(() {
-          //         _tab = i;
-          //       });
-          //     },
-          //   ),
-          // ),
         ];
         list.addAll(_tab == 0 ? _buildTxList() : _buildRewardsList());
         return RefreshIndicator(
@@ -964,7 +936,7 @@ class StakingActionsPanel extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   OutlinedCircle(
-                    icon: Icons.repeat,
+                    icon: Icons.arrow_downward,
                     color: setPayeeDisabled ? disabledColor : actionButtonColor,
                   ),
                   Text(
@@ -988,7 +960,7 @@ class StakingActionsPanel extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   OutlinedCircle(
-                    icon: Icons.repeat,
+                    icon: Icons.people_alt_outlined,
                     color: setControllerDisabled
                         ? disabledColor
                         : actionButtonColor,

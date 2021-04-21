@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -27,8 +28,6 @@ class Validator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-//    print(accInfo['identity']);
-    bool hasDetail = validator.commission.isNotEmpty;
     return GestureDetector(
       child: Container(
         color: Colors.white,
@@ -49,22 +48,20 @@ class Validator extends StatelessWidget {
                   ),
                   Text(
                     !isWaiting
-                        ? '${dic['total']}: ${hasDetail ? Fmt.token(validator.total, decimals) : '~'}'
+                        ? '${dic['total']}: ${validator.total != null ? Fmt.token(validator.total, decimals) : '~'}'
                         : '${dic['nominators']}: ${nominations.length}',
                     style: TextStyle(
                       color: Theme.of(context).unselectedWidgetColor,
                       fontSize: 12,
                     ),
                   ),
-                  !isWaiting
-                      ? Text(
-                          '${dic['commission']}: ${hasDetail ? validator.commission : '~'}',
-                          style: TextStyle(
-                            color: Theme.of(context).unselectedWidgetColor,
-                            fontSize: 12,
-                          ),
-                        )
-                      : Container()
+                  Text(
+                    '${dic['commission']}: ${NumberFormat('0.00%').format(validator.commission / 100)}',
+                    style: TextStyle(
+                      color: Theme.of(context).unselectedWidgetColor,
+                      fontSize: 12,
+                    ),
+                  )
                 ],
               ),
             ),
@@ -73,7 +70,7 @@ class Validator extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(dic['reward']),
-                      Text(hasDetail
+                      Text(validator.isActive
                           ? '${validator.stakedReturnCmp.toStringAsFixed(2)}%'
                           : '~'),
                     ],
@@ -82,7 +79,7 @@ class Validator extends StatelessWidget {
           ],
         ),
       ),
-      onTap: hasDetail
+      onTap: validator.isActive
           ? () {
               // webApi.staking.queryValidatorRewards(validator.accountId);
               Navigator.of(context)

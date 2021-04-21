@@ -60,9 +60,6 @@ abstract class _StakingStore with Store {
       ObservableMap<String, dynamic>();
 
   @observable
-  bool isInElection = false;
-
-  @observable
   Map recommendedValidators = {};
 
   @computed
@@ -107,17 +104,28 @@ abstract class _StakingStore with Store {
         .toList();
     validatorsInfo = validatorsAll;
 
+    List<ValidatorData> elected = [];
+    List<ValidatorData> waiting = [];
+    validatorsAll.forEach((e) {
+      if (e.isActive) {
+        elected.add(e);
+      } else {
+        waiting.add(e);
+      }
+    });
+
     // elected validators
-    final elected = validatorsAll.toList();
-    elected.removeWhere((e) => !e.isElected);
+    // final elected = validatorsAll.toList();
+    // elected.removeWhere((e) => !e.isElected);
     electedInfo = elected;
 
     // waiting validators
-    nextUpsInfo = List.of(data['waitingIds']).map((i) {
-      final e = ValidatorData();
-      e.accountId = i;
-      return e;
-    }).toList();
+    nextUpsInfo = waiting;
+    // nextUpsInfo = List.of(data['waitingIds']).map((i) {
+    //   final e = ValidatorData();
+    //   e.accountId = i;
+    //   return e;
+    // }).toList();
 
     // cache data
     if (shouldCache) {
@@ -241,11 +249,6 @@ abstract class _StakingStore with Store {
     }
 
     loadAccountCache(pubKey);
-  }
-
-  @action
-  void setIsInElection(bool isIn) {
-    isInElection = isIn;
   }
 
   @action

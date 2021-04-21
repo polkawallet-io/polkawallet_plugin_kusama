@@ -29,8 +29,8 @@ class _NominateFormState extends State<NominateForm> {
   final List<ValidatorData> _notSelected = List<ValidatorData>();
   Map<String, bool> _selectedMap = Map<String, bool>();
 
-  String _filter = '';
-  int _sort = 0;
+  String _search = '';
+  List<bool> _filters = [true, false];
 
   void _setNominee() {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
@@ -180,11 +180,10 @@ class _NominateFormState extends State<NominateForm> {
     List<ValidatorData> retained = List.of(_notSelected);
     // filter the blocking validators
     retained.removeWhere((e) => e.isBlocking);
-    retained = PluginFmt.filterValidatorList(
-        retained, _filter, widget.plugin.store.accounts.addressIndexMap);
+    retained = PluginFmt.filterValidatorList(retained, _filters, _search,
+        widget.plugin.store.accounts.addressIndexMap);
     // and sort it
-    retained.sort((a, b) => PluginFmt.sortValidatorList(
-        widget.plugin.store.accounts.addressIndexMap, a, b, _sort));
+    retained.sort((a, b) => a.rankReward < b.rankReward ? 1 : -1);
     list.addAll(retained);
 
     return Column(
@@ -193,17 +192,18 @@ class _NominateFormState extends State<NominateForm> {
           color: Theme.of(context).cardColor,
           padding: EdgeInsets.only(top: 8, bottom: 8),
           child: ValidatorListFilter(
-            onFilterChange: (v) {
-              if (_filter != v) {
+            filters: _filters,
+            onSearchChange: (v) {
+              if (_search != v) {
                 setState(() {
-                  _filter = v;
+                  _search = v;
                 });
               }
             },
-            onSortChange: (v) {
-              if (_sort != v) {
+            onFilterChange: (v) {
+              if (_filters != v) {
                 setState(() {
-                  _sort = v;
+                  _filters = v;
                 });
               }
             },

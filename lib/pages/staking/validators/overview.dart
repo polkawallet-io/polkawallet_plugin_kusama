@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
@@ -15,6 +16,7 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/MainTabBar.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/outlinedCircle.dart';
@@ -29,27 +31,23 @@ import 'package:polkawallet_ui/utils/index.dart';
 const validator_list_page_size = 100;
 
 class StakingOverviewPage extends StatefulWidget {
-  StakingOverviewPage(this.plugin, this.keyring, this.warnInElection);
+  StakingOverviewPage(this.plugin, this.keyring);
   final PluginKusama plugin;
   final Keyring keyring;
-  final Function warnInElection;
-
   @override
   _StakingOverviewPageState createState() => _StakingOverviewPageState();
 }
 
-class _StakingOverviewPageState extends State<StakingOverviewPage>
-    with SingleTickerProviderStateMixin {
+class _StakingOverviewPageState extends State<StakingOverviewPage> {
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       new GlobalKey<RefreshIndicatorState>();
 
   bool _expanded = false;
 
   bool _loading = false;
-  int _sort = 0;
-  String _filter = '';
+  List<bool> _filters = [true, false];
+  String _search = '';
 
-  TabController _tabController;
   int _tab = 0;
 
   Future<void> _refreshData() async {
@@ -59,8 +57,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
     setState(() {
       _loading = true;
     });
-
-    widget.plugin.service.staking.queryIsInElection();
 
     _fetchRecommendedValidators();
     widget.plugin.service.staking.queryElectedInfo();
@@ -76,11 +72,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
   }
 
   void _onAction(Future<dynamic> Function() doAction) {
-    if (widget.plugin.store.staking.isInElection) {
-      widget.warnInElection();
-      return;
-    }
-
     doAction().then((res) {
       if (res != null) {
         _refreshKey.currentState.show();
@@ -270,7 +261,10 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
               hashData ? stashInfo.nominating.length.toString() : '0',
               style: Theme.of(context).textTheme.headline4,
             ),
-            subtitle: Text(dicStaking['nominating']),
+            subtitle: Text(
+              dicStaking['nominating'],
+              style: TextStyle(fontSize: 12),
+            ),
             trailing: Container(
               width: 100,
               child: stashInfo?.controllerId == null && isStash
@@ -283,7 +277,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
                           ),
                           Text(
                             dicStaking['action.nominate'],
-                            style: TextStyle(color: actionButtonColor),
+                            style: TextStyle(
+                                color: actionButtonColor, fontSize: 12),
                           )
                         ],
                       ),
@@ -298,7 +293,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
                             ),
                             Text(
                               dicStaking['action.nominate'],
-                              style: TextStyle(color: disabledColor),
+                              style:
+                                  TextStyle(color: disabledColor, fontSize: 12),
                             )
                           ],
                         )
@@ -313,7 +309,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
                                 dicStaking[nominators.length > 0
                                     ? 'action.nominee'
                                     : 'action.nominate'],
-                                style: TextStyle(color: actionButtonColor),
+                                style: TextStyle(
+                                    color: actionButtonColor, fontSize: 12),
                               )
                             ],
                           ),
@@ -432,17 +429,9 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
   void initState() {
     super.initState();
 
-    _tabController = TabController(vsync: this, length: 2);
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshData();
     });
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   @override
@@ -467,11 +456,15 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
           // index_1: the 'Validators' label
           Container(
             color: Theme.of(context).cardColor,
-            child: TabBar(
-              labelColor: Colors.black87,
-              labelStyle: TextStyle(fontSize: 18),
-              controller: _tabController,
-              tabs: _listTabs,
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: MainTabBar(
+              tabs: [
+                '${dicStaking['elected']} (${widget.plugin.store.staking.electedInfo.length})',
+                '${dicStaking['waiting']} (${widget.plugin.store.staking.nextUpsInfo.length})'
+              ],
+              activeTab: _tab,
+              fontSize: 18,
+              lineWidth: 6,
               onTap: (i) {
                 setState(() {
                   _tab = i;
@@ -486,18 +479,18 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
             color: Colors.white,
             padding: EdgeInsets.only(top: 8),
             child: ValidatorListFilter(
-              needSort: _tab == 0,
-              onSortChange: (value) {
-                if (value != _sort) {
+              filters: _filters,
+              onFilterChange: (value) {
+                if (value != _filters) {
                   setState(() {
-                    _sort = value;
+                    _filters = value;
                   });
                 }
               },
-              onFilterChange: (value) {
-                if (value != _filter) {
+              onSearchChange: (value) {
+                if (value != _search) {
                   setState(() {
-                    _filter = value;
+                    _search = value;
                   });
                 }
               },
@@ -557,11 +550,10 @@ class _StakingOverviewPageState extends State<StakingOverviewPage>
               ? widget.plugin.store.staking.electedInfo.toList()
               : widget.plugin.store.staking.nextUpsInfo.toList();
           // filter list
-          ls = PluginFmt.filterValidatorList(
-              ls, _filter, widget.plugin.store.accounts.addressIndexMap);
+          ls = PluginFmt.filterValidatorList(ls, _filters, _search,
+              widget.plugin.store.accounts.addressIndexMap);
           // sort list
-          ls.sort((a, b) => PluginFmt.sortValidatorList(
-              widget.plugin.store.accounts.addressIndexMap, a, b, _sort));
+          ls.sort((a, b) => a.rankReward < b.rankReward ? 1 : -1);
           if (_tab == 1) {
             ls.sort((a, b) {
               final aLength = widget.plugin.store.staking
@@ -671,7 +663,7 @@ class _NomineeItem extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                  validator.commission.isNotEmpty ? validator.commission : '~'),
+                  NumberFormat('0.00%').format(validator.commission / 100)),
             ),
             Expanded(
               child: Text(dicStaking['commission'],
