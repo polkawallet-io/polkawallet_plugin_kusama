@@ -8,6 +8,8 @@ const Map<String, String> zhStaking = {
   'validator': '验证人',
   'elected': '验证人',
   'waiting': '候选',
+  'filter.comm': '不看 20%+ 佣金',
+  'filter.id': '只看有ID的节点',
   'nominators': '提名人',
   'session': '时期',
   'era': '时代',

@@ -38,14 +38,14 @@ class ValidatorListFilter extends StatelessWidget {
               children: <Widget>[
                 OutlinedButtonSmall(
                   active: filters[0] == true,
-                  content: 'no 20%+ comm',
+                  content: dic['filter.comm'],
                   onPressed: () {
                     onFilterChange([!filters[0], filters[1]]);
                   },
                 ),
                 OutlinedButtonSmall(
                   active: filters[1] == true,
-                  content: 'only with an ID',
+                  content: dic['filter.id'],
                   onPressed: () {
                     onFilterChange([filters[0], !filters[1]]);
                   },

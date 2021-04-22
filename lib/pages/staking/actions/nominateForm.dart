@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
@@ -59,6 +59,7 @@ class _NominateFormState extends State<NominateForm> {
       color: Theme.of(context).unselectedWidgetColor,
       fontSize: 12,
     );
+    final comm = NumberFormat('0.00%').format(validator.commission / 100);
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -78,7 +79,7 @@ class _NominateFormState extends State<NominateForm> {
                     accInfo,
                   ),
                   Text(
-                    '${dicStaking['commission']}: ${validator.commission}',
+                    '${dicStaking['commission']}: $comm',
                     style: textStyle,
                   ),
                   Row(

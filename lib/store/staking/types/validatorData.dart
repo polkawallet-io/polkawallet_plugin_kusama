@@ -46,5 +46,5 @@ abstract class _ValidatorData {
 
   double commission = 0;
 
-  List<Map<String, dynamic>> nominators = List<Map<String, dynamic>>();
+  List<Map<String, dynamic>> nominators = [];
 }

@@ -58,6 +58,9 @@ flutter:
     - assets/images/staking/error.svg
     - assets/images/staking/reward.svg
     - assets/images/staking/slash.svg
+    - assets/images/gov/democracy.svg
+    - assets/images/gov/council.svg
+    - assets/images/gov/treasury.svg
     - assets/images/tokens/KSM.png
     - assets/images/tokens/DOT.png
     - assets/images/public/polkassembly.png

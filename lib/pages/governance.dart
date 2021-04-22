@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracyPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
@@ -62,12 +63,12 @@ class Gov extends StatelessWidget {
                             child: EntryPageCard(
                               dic['democracy'],
                               dic['democracy.brief'],
-                              Icon(
-                                Icons.event_note,
-                                color: Colors.white,
-                                size: 56,
+                              SvgPicture.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/gov/democracy.svg',
+                                width: 96,
+                                color: Theme.of(context).primaryColor,
                               ),
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.transparent,
                             ),
                             onTap: () => Navigator.of(context)
                                 .pushNamed(DemocracyPage.route),
@@ -79,12 +80,12 @@ class Gov extends StatelessWidget {
                             child: EntryPageCard(
                               dic['council'],
                               dic['council.brief'],
-                              Icon(
-                                Icons.people_outline,
-                                color: Colors.white,
-                                size: 56,
+                              SvgPicture.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/gov/council.svg',
+                                width: 96,
+                                color: Theme.of(context).primaryColor,
                               ),
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.transparent,
                             ),
                             onTap: () => Navigator.of(context)
                                 .pushNamed(CouncilPage.route),
@@ -96,12 +97,12 @@ class Gov extends StatelessWidget {
                             child: EntryPageCard(
                               dic['treasury'],
                               dic['treasury.brief'],
-                              Icon(
-                                Icons.account_balance,
-                                color: Colors.white,
-                                size: 56,
+                              SvgPicture.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/gov/treasury.svg',
+                                width: 96,
+                                color: Theme.of(context).primaryColor,
                               ),
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.transparent,
                             ),
                             onTap: () => Navigator.of(context)
                                 .pushNamed(TreasuryPage.route),
@@ -115,9 +116,9 @@ class Gov extends StatelessWidget {
                               dic['polkassembly'],
                               Image.asset(
                                 'packages/polkawallet_plugin_kusama/assets/images/public/polkassembly.png',
-                                width: 56,
+                                width: 48,
                               ),
-                              color: Colors.black87,
+                              color: Colors.transparent,
                             ),
                             onTap: () => Navigator.of(context).pushNamed(
                               DAppWrapperPage.route,
