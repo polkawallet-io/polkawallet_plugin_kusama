@@ -8,6 +8,8 @@ const Map<String, String> enStaking = {
   'validator': 'Validator',
   'elected': 'Elected',
   'waiting': 'Waiting',
+  'filter.comm': 'no 20%+ comm',
+  'filter.id': 'only have an ID',
   'nominators': 'Nominators',
   'session': 'Session',
   'era': 'Era',
