@@ -1,19 +1,16 @@
 const Map<String, String> enGov = {
   'democracy': 'Democracy',
-  'democracy.brief':
-      'This application lets you view proposals and vote for or against a referendum. Anyone can create a proposal by bonding the minimum deposit for a certain period of time (No. of Blocks).',
+  'democracy.brief': 'Proposals and referendums voting.',
   'democracy.referendum': 'Referendums',
   'democracy.proposal': 'Proposals',
   'democracy.expire': 'You have expired locks',
   'democracy.unlock': 'Unlock',
   'council': 'Council',
-  'council.brief':
-      'This application lets you vote for council members or submit a candidate.',
+  'council.brief': 'Vote for council members or candidates.',
   'council.motions': 'Motions',
   'council.motion': 'Motion',
   'treasury': 'Treasury',
-  'treasury.brief':
-      'This application lets you view and vote to approve or deny treasury spend proposals.',
+  'treasury.brief': 'Treasury spend proposals voting.',
   'treasury.proposal': 'Proposals',
   'treasury.tip': 'Tips',
   'treasury.total': 'Total',
