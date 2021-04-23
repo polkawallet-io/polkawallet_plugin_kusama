@@ -10,3 +10,12 @@
 
 * update dependency polkawallet_sdk: 0.1.4.
 * fix load cache data bug while start plugin.
+
+## [0.1.5] - 20210417.
+
+* update dependency polkawallet_sdk: 0.1.5.
+
+## [0.1.6] - 20210423.
+
+* update dependency polkawallet_sdk: 0.1.6.
+* update UI for staking & gov pages.
