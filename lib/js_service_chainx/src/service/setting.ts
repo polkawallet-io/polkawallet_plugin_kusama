@@ -42,5 +42,6 @@ export async function getNetworkProperties(api: ApiPromise) {
       ...chainProperties,
       tokenDecimals: [8],
       tokenSymbol: ["PCX"],
+      genesisHash: api.genesisHash
     }
 }

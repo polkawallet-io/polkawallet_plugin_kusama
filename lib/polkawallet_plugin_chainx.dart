@@ -47,6 +47,7 @@ class PluginChainX extends PolkawalletPlugin {
   PluginChainX({name = 'chainx'})
       : basic = PluginBasicData(
           name: name,
+          genesisHash: chainx_genesis_hash,
           ss58: 44,
           primaryColor: chainx_yellow,
           gradientColor: Colors.yellow,

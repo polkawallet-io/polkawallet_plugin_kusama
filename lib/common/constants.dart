@@ -34,3 +34,5 @@ const MaterialColor chainx_yellow = const MaterialColor(
 );
 
 const String network_name_chainx = 'chainx';
+
+const chainx_genesis_hash = '0x012cfb6997279fed8ff754a5a90cb30627c70fcdd79ee9c480bcef07de754810';
