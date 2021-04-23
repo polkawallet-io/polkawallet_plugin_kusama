@@ -960,7 +960,7 @@ class StakingActionsPanel extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   OutlinedCircle(
-                    icon: Icons.people_alt_outlined,
+                    icon: Icons.person_outline,
                     color: setControllerDisabled
                         ? disabledColor
                         : actionButtonColor,

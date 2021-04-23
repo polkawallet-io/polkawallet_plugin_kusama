@@ -302,7 +302,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                           child: Column(
                             children: <Widget>[
                               OutlinedCircle(
-                                icon: Icons.add,
+                                icon: Icons.people_alt_outlined,
                                 color: actionButtonColor,
                               ),
                               Text(
