@@ -178,7 +178,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
             Padding(
               padding: EdgeInsets.all(16),
               child: TxButton(
-                text: dic['treasury.submit'],
+                text: dic['treasury.report'],
                 getTxParams: _getTxParams,
                 onFinish: (res) {
                   if (res != null) {

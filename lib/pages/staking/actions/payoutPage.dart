@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -185,77 +184,75 @@ class _PayoutPageState extends State<PayoutPage> {
         title: Text(dicStaking['action.payout']),
         centerTitle: true,
       ),
-      body: Observer(builder: (BuildContext context) {
-        return SafeArea(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.only(top: 16),
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      child: AddressFormItem(
-                        widget.keyring.current,
-                        label: dicStaking['reward.sender'],
-                      ),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.only(top: 16),
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: AddressFormItem(
+                      widget.keyring.current,
+                      label: dicStaking['reward.sender'],
                     ),
-                    _eraOptions.length > 0
-                        ? ListTile(
-                            title: Text(dicStaking['reward.time']),
-                            subtitle:
-                                Text(_getEraText(_eraOptions[_eraSelected])),
-                            trailing: Icon(Icons.arrow_forward_ios, size: 18),
-                            onTap: _loading ? null : () => _showEraSelect(),
-                          )
-                        : Container(),
-                    _loading
-                        ? Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(16),
-                                child: CupertinoActivityIndicator(),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: Text(dicStaking['reward.tip']),
-                              ),
-                            ],
-                          )
-                        : Padding(
-                            padding: EdgeInsets.only(left: 16, right: 16),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                labelText: dic['amount'],
-                              ),
-                              initialValue: Fmt.token(
-                                rewardTotal,
-                                decimals,
-                                length: 8,
-                              ),
-                              readOnly: true,
+                  ),
+                  _eraOptions.length > 0
+                      ? ListTile(
+                          title: Text(dicStaking['reward.time']),
+                          subtitle:
+                              Text(_getEraText(_eraOptions[_eraSelected])),
+                          trailing: Icon(Icons.arrow_forward_ios, size: 18),
+                          onTap: _loading ? null : () => _showEraSelect(),
+                        )
+                      : Container(),
+                  _loading
+                      ? Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(16),
+                              child: CupertinoActivityIndicator(),
                             ),
+                            Container(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Text(dicStaking['reward.tip']),
+                            ),
+                          ],
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: dic['amount'],
+                            ),
+                            initialValue: Fmt.token(
+                              rewardTotal,
+                              decimals,
+                              length: 8,
+                            ),
+                            readOnly: true,
                           ),
-                  ],
-                ),
+                        ),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.all(16),
-                child: _rewards != null && _rewards['available'] != null
-                    ? TxButton(
-                        getTxParams: _getParams,
-                        onFinish: (Map res) {
-                          if (res != null) {
-                            Navigator.of(context).pop(res);
-                          }
-                        },
-                      )
-                    : Container(),
-              ),
-            ],
-          ),
-        );
-      }),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: _rewards != null && _rewards['available'] != null
+                  ? TxButton(
+                      getTxParams: _getParams,
+                      onFinish: (Map res) {
+                        if (res != null) {
+                          Navigator.of(context).pop(res);
+                        }
+                      },
+                    )
+                  : Container(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

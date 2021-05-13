@@ -10,16 +10,6 @@ const node_list_kusama = [
     'endpoint': 'wss://kusama.elara.patract.io',
   },
   {
-    'name': 'Kusama (Polkadot Canary, hosted by Polkawallet)',
-    'ss58': 2,
-    'endpoint': 'wss://kusama-1.polkawallet.io:9944/',
-  },
-  {
-    'name': 'Kusama (Polkadot Canary, hosted by Polkawallet Asia)',
-    'ss58': 2,
-    'endpoint': 'wss://kusama-2.polkawallet.io/',
-  },
-  {
     'name': 'Kusama (Polkadot Canary, hosted by Parity)',
     'ss58': 2,
     'endpoint': 'wss://kusama-rpc.polkadot.io/',
@@ -31,7 +21,7 @@ const node_list_kusama = [
   },
   // {
   //   'name': 'Kusama (Polkadot Canary, hosted by nmsl)',
-  //   'ss58': 2,
+  //   'ss58': 42,
   //   'endpoint': 'wss://rococo-community-rpc.laminar.codes/ws',
   // },
 ];
@@ -40,16 +30,6 @@ const node_list_polkadot = [
     'name': 'Polkadot (Live, hosted by PatractLabs)',
     'ss58': 0,
     'endpoint': 'wss://polkadot.elara.patract.io',
-  },
-  {
-    'name': 'Polkadot (Live, hosted by Polkawallet CN)',
-    'ss58': 0,
-    'endpoint': 'wss://polkadot-1.polkawallet.io:9944',
-  },
-  {
-    'name': 'Polkadot (Live, hosted by Polkawallet EU)',
-    'ss58': 0,
-    'endpoint': 'wss://polkadot-2.polkawallet.io',
   },
   {
     'name': 'Polkadot (Live, hosted by Parity)',
