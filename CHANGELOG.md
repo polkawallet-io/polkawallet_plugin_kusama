@@ -19,3 +19,8 @@
 
 * update dependency polkawallet_sdk: 0.1.6.
 * update UI for staking & gov pages.
+
+## [0.1.7] - 20210515.
+
+* update dependency polkawallet_sdk: 0.1.7.
+* remove Kusama council module.

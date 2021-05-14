@@ -96,6 +96,20 @@ class ApiGov {
     return info;
   }
 
+  Future<List> queryCouncilMembers() async {
+    final List members =
+        await api.service.webView.evalJavascript('api.query.council.members()');
+    if (members != null) {
+      store.gov.setCouncilInfo(Map<String, dynamic>.from({
+        'members': members.map((e) => [e]).toList(),
+      }));
+
+      updateIconsAndIndices(members);
+    }
+
+    return members;
+  }
+
   Future<List<CouncilMotionData>> queryCouncilMotions() async {
     final data = await api.gov.queryCouncilMotions();
     store.gov.setCouncilMotions(data);

@@ -28,7 +28,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.plugin.service.gov.queryCouncilInfo();
+      widget.plugin.service.gov.queryCouncilMembers();
     });
   }
 

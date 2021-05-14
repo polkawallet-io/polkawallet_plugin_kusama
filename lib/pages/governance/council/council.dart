@@ -120,7 +120,7 @@ class _CouncilState extends State<Council> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['seats'],
                 content:
-                    '${widget.plugin.store.gov.council.members.length}/${int.parse(widget.plugin.store.gov.council.desiredSeats)}',
+                    '${widget.plugin.store.gov.council.members.length}/${int.parse(widget.plugin.store.gov.council.desiredSeats ?? 13)}',
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -356,7 +356,7 @@ class CandidateItem extends StatelessWidget {
       onTap: noTap
           ? null
           : () => Navigator.of(context).pushNamed(CandidateDetailPage.route,
-              arguments: balance.length == 1 ? [balance[0], '0x0'] : balance),
+              arguments: balance.length == 1 ? ([balance[0], '0x0']) : balance),
       trailing: trailing ?? Container(width: 8),
     );
   }
