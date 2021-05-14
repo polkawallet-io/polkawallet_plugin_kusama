@@ -902,12 +902,12 @@ class StakingActionsPanel extends StatelessWidget {
                         child: Text(
                           dic['action.redeem'],
                           style: TextStyle(
-                            color: redeemable == BigInt.zero
+                            color: redeemable == BigInt.zero || !isController
                                 ? disabledColor
                                 : actionButtonColor,
                           ),
                         ),
-                        onPressed: redeemable == BigInt.zero
+                        onPressed: redeemable == BigInt.zero || !isController
                             ? () => {}
                             : () {
                                 Navigator.of(context).pop();

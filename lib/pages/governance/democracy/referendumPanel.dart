@@ -344,6 +344,7 @@ class _ReferendumArgsList extends State<ReferendumArgsList> {
     ];
     if (_showDetail) {
       args.asMap().forEach((k, v) {
+        final value = proposal['args'][k].toString();
         items.add(Container(
           margin: EdgeInsets.fromLTRB(8, 4, 4, 4),
           padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
@@ -358,7 +359,7 @@ class _ReferendumArgsList extends State<ReferendumArgsList> {
                   children: <Widget>[
                     Text('${v['name']}: ${v['type']['type']}'),
                     Text(
-                      proposal['args'][k].toString(),
+                      value.length > 300 ? Fmt.address(value, pad: 24) : value,
                       style: Theme.of(context).textTheme.headline4,
                     )
                   ],

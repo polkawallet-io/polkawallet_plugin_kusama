@@ -19,11 +19,6 @@ const node_list_kusama = [
     'ss58': 2,
     'endpoint': 'wss://kusama.api.onfinality.io/public-ws',
   },
-  // {
-  //   'name': 'Kusama (Polkadot Canary, hosted by nmsl)',
-  //   'ss58': 42,
-  //   'endpoint': 'wss://rococo-community-rpc.laminar.codes/ws',
-  // },
 ];
 const node_list_polkadot = [
   {
