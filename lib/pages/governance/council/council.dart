@@ -44,7 +44,7 @@ class _CouncilState extends State<Council> {
   Future<void> _submitCancelVotes() async {
     final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final params = TxConfirmParams(
-      module: 'electionsPhragmen',
+      module: 'elections',
       call: 'removeVoter',
       txTitle: govDic['vote.remove'],
       txDisplay: {},

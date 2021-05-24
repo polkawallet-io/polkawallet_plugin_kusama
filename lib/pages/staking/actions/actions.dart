@@ -240,7 +240,7 @@ class _StakingActions extends State<StakingActions> {
       }
     }
 
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final decimals = (widget.plugin.networkState.tokenDecimals ?? [12])[0];
 
     final info = widget.plugin.balances.native;
     final freeBalance = info?.freeBalance == null

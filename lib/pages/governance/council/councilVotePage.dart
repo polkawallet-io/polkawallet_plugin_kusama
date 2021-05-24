@@ -47,7 +47,7 @@ class _CouncilVote extends State<CouncilVotePage> {
       final amt = _amountCtrl.text.trim();
       List selected = _selected.map((i) => i[0]).toList();
       return TxConfirmParams(
-        module: 'electionsPhragmen',
+        module: 'elections',
         call: 'vote',
         txTitle: govDic['vote.candidate'],
         txDisplay: {

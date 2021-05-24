@@ -74,25 +74,23 @@ class Gov extends StatelessWidget {
                                 .pushNamed(DemocracyPage.route),
                           ),
                         ),
-                        plugin.basic.name == 'polkadot'
-                            ? Padding(
-                                padding: EdgeInsets.only(bottom: 16),
-                                child: GestureDetector(
-                                  child: EntryPageCard(
-                                    dic['council'],
-                                    dic['council.brief'],
-                                    SvgPicture.asset(
-                                      'packages/polkawallet_plugin_kusama/assets/images/gov/council.svg',
-                                      width: 96,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    color: Colors.transparent,
-                                  ),
-                                  onTap: () => Navigator.of(context)
-                                      .pushNamed(CouncilPage.route),
-                                ),
-                              )
-                            : Container(),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 16),
+                          child: GestureDetector(
+                            child: EntryPageCard(
+                              dic['council'],
+                              dic['council.brief'],
+                              SvgPicture.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/gov/council.svg',
+                                width: 96,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              color: Colors.transparent,
+                            ),
+                            onTap: () => Navigator.of(context)
+                                .pushNamed(CouncilPage.route),
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 16),
                           child: GestureDetector(
