@@ -145,7 +145,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
     final args = TxConfirmParams(
-      module: 'treasury',
+      module: 'tips',
       call: 'retractTip',
       txTitle: '${dic['treasury.tip']} - ${dic['treasury.retract']}',
       txDisplay: {"hash": Fmt.address(tipData.hash, pad: 16)},
@@ -162,7 +162,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
     final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
     final args = TxConfirmParams(
-      module: 'treasury',
+      module: 'tips',
       call: 'closeTip',
       txTitle: '${dic['treasury.tip']} - ${dic['treasury.closeTip']}',
       txDisplay: {"hash": Fmt.address(tipData.hash, pad: 16)},

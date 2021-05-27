@@ -46,8 +46,10 @@ class _CouncilVote extends State<CouncilVotePage> {
       final decimals = widget.plugin.networkState.tokenDecimals[0];
       final amt = _amountCtrl.text.trim();
       List selected = _selected.map((i) => i[0]).toList();
+      final moduleName = await widget.plugin.service.getRuntimeModuleName(
+          ['electionsPhragmen', 'elections', 'phragmenElection']);
       return TxConfirmParams(
-        module: 'elections',
+        module: moduleName,
         call: 'vote',
         txTitle: govDic['vote.candidate'],
         txDisplay: {

@@ -43,8 +43,10 @@ class _CouncilState extends State<Council> {
 
   Future<void> _submitCancelVotes() async {
     final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final moduleName = await widget.plugin.service.getRuntimeModuleName(
+        ['electionsPhragmen', 'elections', 'phragmenElection']);
     final params = TxConfirmParams(
-      module: 'elections',
+      module: moduleName,
       call: 'removeVoter',
       txTitle: govDic['vote.remove'],
       txDisplay: {},
@@ -120,13 +122,13 @@ class _CouncilState extends State<Council> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['seats'],
                 content:
-                    '${widget.plugin.store.gov.council.members.length}/${int.parse(widget.plugin.store.gov.council.desiredSeats ?? 13)}',
+                    '${widget.plugin.store.gov.council.members.length}/${int.parse(widget.plugin.store.gov.council.desiredSeats ?? '13')}',
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['up'],
-                content:
-                    widget.plugin.store.gov.council.runnersUp.length.toString(),
+                content: widget.plugin.store.gov.council.runnersUp?.length
+                    ?.toString(),
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
