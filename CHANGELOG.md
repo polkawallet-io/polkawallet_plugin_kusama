@@ -24,3 +24,7 @@
 
 * update dependency polkawallet_sdk: 0.1.7.
 * remove Kusama council module.
+
+## [0.1.8] - 20210531.
+
+* update dependency polkawallet_sdk: 0.1.8.

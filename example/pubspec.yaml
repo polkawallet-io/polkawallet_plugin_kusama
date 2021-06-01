@@ -25,11 +25,11 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_mobx: 1.1.0+2
+  flutter_mobx: ^2.0.0
   polkawallet_ui:
     git:
       url: https://github.com/polkawallet-io/ui.git
-      ref: b68da4b7d56dec37ddc34844b204fd095a00f7df
+      ref: a181a240a0c2b098a2e4140e07d036ea8222cea1
 #    path: ../../ui
 
   # The following adds the Cupertino Icons font to your application.
