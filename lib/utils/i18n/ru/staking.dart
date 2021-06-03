@@ -6,6 +6,7 @@ const Map<String, String> enStaking = {
   'actions': 'Account Actions',
   'validators': 'Validators',
   'validator': 'Validator',
+  'validator.chart': 'Charts',
   'elected': 'Elected',
   'waiting': 'Waiting',
   'filter.comm': 'no 20%+ comm',
