@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorChartsPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -35,6 +36,8 @@ class ValidatorDetailPage extends StatelessWidget {
               plugin.store.accounts.addressIndexMap[detail.accountId];
           final accIcon =
               plugin.store.accounts.addressIconsMap[detail.accountId];
+
+          final primaryColor = Theme.of(context).primaryColor;
 
           return Scaffold(
             appBar: AppBar(
@@ -71,11 +74,37 @@ class ValidatorDetailPage extends StatelessWidget {
                                   ),
                                 )
                               : Container(),
-                          AccountInfo(
-                            network: plugin.basic.name,
-                            accInfo: accInfo,
-                            address: detail.accountId,
-                            icon: accIcon,
+                          Stack(
+                            alignment: AlignmentDirectional.topEnd,
+                            children: [
+                              AccountInfo(
+                                network: plugin.basic.name,
+                                accInfo: accInfo,
+                                address: detail.accountId,
+                                icon: accIcon,
+                              ),
+                              GestureDetector(
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 24, right: 24),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Icon(
+                                        Icons.insert_chart_outlined,
+                                        color: primaryColor,
+                                      ),
+                                      Text(
+                                        dicStaking['validator.chart'],
+                                        style: TextStyle(color: primaryColor),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                onTap: () => Navigator.of(context).pushNamed(
+                                    ValidatorChartsPage.route,
+                                    arguments: detail),
+                              ),
+                            ],
                           ),
                           Divider(),
                           Padding(

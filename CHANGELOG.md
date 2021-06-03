@@ -28,3 +28,4 @@
 ## [0.1.8] - 20210531.
 
 * update dependency polkawallet_sdk: 0.1.8.
+* add validator stats charts.

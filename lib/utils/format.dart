@@ -3,16 +3,17 @@ import 'package:polkawallet_ui/utils/index.dart';
 
 class PluginFmt {
   static Map formatRewardsChartData(Map chartData) {
-    List<List> formatChart(String chartName, Map data) {
+    List<List> formatChart(List chartValues) {
       List<List> values = [];
-      List<String> labels = [];
-      List chartValues = data[chartName]['chart'];
 
       chartValues.asMap().forEach((index, ls) {
+        if (ls[0].toString().contains('0x')) {
+          ls = List.of(ls).map((e) => int.parse(e.toString())).toList();
+        }
         if (index == chartValues.length - 1) {
           List average = [];
           List.of(ls).asMap().forEach((i, v) {
-            num avg = v - chartValues[chartValues.length - 2][i];
+            final avg = v - values[values.length - 1][i];
             average.add(avg);
           });
           values.add(average);
@@ -21,24 +22,25 @@ class PluginFmt {
         }
       });
 
-      List<String>.from(data[chartName]['labels']).asMap().forEach((k, v) {
-        if ((k - 2) % 10 == 0) {
-          labels.add(v);
-        } else {
-          labels.add('');
-        }
-      });
-      return [values, labels];
+      return values;
     }
 
-    List<List> rewards = formatChart('rewards', chartData);
-    List<List> points = formatChart('points', chartData);
-    List<List> stakes = formatChart('stakes', chartData);
+    final List<String> labels = [];
+    List<String>.from(chartData['rewards']['labels']).asMap().forEach((k, v) {
+      if ((k - 2) % 10 == 0) {
+        labels.add(v);
+      } else {
+        labels.add('');
+      }
+    });
 
+    List rewards = formatChart(List.of(chartData['rewards']['chart']));
+    List points = formatChart(List.of(chartData['points']['chart']));
+    List stakes = formatChart(List.of(chartData['stakes']['chart']));
     return {
-      'rewards': rewards,
-      'stakes': stakes,
-      'points': points,
+      'rewards': [rewards, labels],
+      'stakes': [stakes, labels],
+      'points': [points, labels],
     };
   }
 

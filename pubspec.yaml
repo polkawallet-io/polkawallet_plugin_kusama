@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.0
+  charts_flutter: ^0.10.0
   http: ^0.13.0
   mobx: ^2.0.1
   flutter_mobx: ^2.0.0

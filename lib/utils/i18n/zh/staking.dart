@@ -6,6 +6,7 @@ const Map<String, String> zhStaking = {
   'actions': '账户操作',
   'validators': '验证人',
   'validator': '验证人',
+  'validator.chart': '图表',
   'elected': '验证人',
   'waiting': '候选',
   'filter.comm': '不看 20%+ 佣金',
