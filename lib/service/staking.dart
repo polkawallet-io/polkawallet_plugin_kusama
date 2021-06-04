@@ -76,6 +76,7 @@ class ApiStaking {
   Future<Map> updateStakingRewards() async {
     final res = await api.subScan.fetchRewardTxsAsync(
       page: 0,
+      size: 20,
       sender: keyring.current.address,
       network: plugin.basic.name,
     );

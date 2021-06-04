@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/common/components/chartLabel.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/rewardsChart.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorRewardsChart.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';

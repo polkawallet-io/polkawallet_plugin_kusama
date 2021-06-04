@@ -9,6 +9,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart'
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rebondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardsChart.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
@@ -22,14 +23,14 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/MainTabBar.dart';
+import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
-import 'package:polkawallet_ui/components/roundedCard.dart';
-import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/outlinedCircle.dart';
+import 'package:polkawallet_ui/components/roundedCard.dart';
+import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
-import 'package:polkawallet_ui/utils/format.dart';
 
 class StakingActions extends StatefulWidget {
   StakingActions(this.plugin, this.keyring);
@@ -163,6 +164,35 @@ class _StakingActions extends State<StakingActions> {
     final String symbol = widget.plugin.networkState.tokenSymbol[0];
 
     List<Widget> res = [];
+    if (widget.plugin.store.staking.txsRewards.length > 0) {
+      res.add(Container(
+        padding: EdgeInsets.all(16),
+        color: Theme.of(context).canvasColor,
+        child: RoundedCard(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 8, top: 8),
+                child:
+                    Text('Rewards ($symbol)', style: TextStyle(fontSize: 12)),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.width / 2.4,
+                child: RewardsChart.withData(widget
+                    .plugin.store.staking.txsRewards
+                    .map((e) => TimeSeriesAmount(
+                        DateTime.fromMillisecondsSinceEpoch(
+                            e.blockTimestamp * 1000),
+                        Fmt.balanceDouble(e.amount, decimals)))
+                    .toList()),
+              )
+            ],
+          ),
+        ),
+      ));
+    }
     res.addAll(widget.plugin.store.staking.txsRewards.map((i) {
       final isReward = i.eventId == 'Reward';
       return Container(
@@ -414,10 +444,12 @@ class _StakingActions extends State<StakingActions> {
         return RefreshIndicator(
           key: _refreshKey,
           onRefresh: _updateStakingInfo,
-          child: ListView(
-            controller: _scrollController,
-            children: list,
-          ),
+          child: ListView.builder(
+              controller: _scrollController,
+              itemCount: list.length,
+              itemBuilder: (_, int i) {
+                return list[i];
+              }),
         );
       },
     );
