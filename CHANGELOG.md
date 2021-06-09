@@ -1,3 +1,8 @@
+## [0.2.1] - 20210609.
+
+* update dependency polkawallet_sdk: 0.2.1.
+* add staking rewards chart.
+
 ## [0.0.7] - 20210112.
 
 * update dependency polkawallet_sdk: 0.0.7.

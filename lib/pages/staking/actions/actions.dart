@@ -164,7 +164,7 @@ class _StakingActions extends State<StakingActions> {
     final String symbol = widget.plugin.networkState.tokenSymbol[0];
 
     List<Widget> res = [];
-    if (widget.plugin.store.staking.txsRewards.length > 0) {
+    if (widget.plugin.store.staking.txsRewards.length > 1) {
       res.add(Container(
         padding: EdgeInsets.all(16),
         color: Theme.of(context).canvasColor,
