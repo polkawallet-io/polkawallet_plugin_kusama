@@ -1,3 +1,8 @@
+## [0.2.2] - 20210623.
+
+* bump polkawallet_sdk & ui: 0.2.2.
+* fix council.vote action for multi-runtimes.
+
 ## [0.2.1] - 20210609.
 
 * update dependency polkawallet_sdk: 0.2.1.
