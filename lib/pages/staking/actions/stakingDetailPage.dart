@@ -25,7 +25,7 @@ class StakingDetailPage extends StatelessWidget {
     List<TxDetailInfoItem> info = <TxDetailInfoItem>[
       TxDetailInfoItem(label: dicStaking['action'], content: Text(detail.call)),
     ];
-    List params = jsonDecode(detail.params);
+    List params = detail.params.isEmpty ? [] : jsonDecode(detail.params);
     if (params != null) {
       info.addAll(params.map((i) {
         String value = i['value'].toString();
@@ -38,11 +38,14 @@ class StakingDetailPage extends StatelessWidget {
             break;
           case "AccountId":
             value = value.contains('0x') ? value : '0x$value';
-            final address = plugin.store.accounts
-                        .pubKeyAddressMap[plugin.sdk.api.connectedNode.ss58]
-                    [value] ??
-                value;
-            value = Fmt.address(address);
+            final ss58 = plugin.sdk.api.connectedNode?.ss58;
+            final pubKeyAddressMap = plugin.store.accounts.pubKeyAddressMap;
+            final address = ss58 != null &&
+                    pubKeyAddressMap != null &&
+                    pubKeyAddressMap[ss58] != null
+                ? pubKeyAddressMap[ss58][value]
+                : value;
+            value = Fmt.address(address ?? value);
             break;
           case "RewardDestination<AccountId>":
             if (i['value']['Account'] != null) {

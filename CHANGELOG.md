@@ -1,3 +1,8 @@
+## [0.2.3] - 20210628.
+
+* bump polkawallet_sdk: 0.2.3.
+* fix stakingDetailPage data parsing.
+
 ## [0.2.2] - 20210623.
 
 * bump polkawallet_sdk & ui: 0.2.2.
