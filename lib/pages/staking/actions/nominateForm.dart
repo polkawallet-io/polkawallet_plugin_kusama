@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:intl/intl.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorListFilter.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -23,6 +24,8 @@ class NominateForm extends StatefulWidget {
   @override
   _NominateFormState createState() => _NominateFormState();
 }
+
+const MAX_NOMINATION = 16;
 
 class _NominateFormState extends State<NominateForm> {
   final List<ValidatorData> _selected = List<ValidatorData>();
@@ -102,6 +105,26 @@ class _NominateFormState extends State<NominateForm> {
             CupertinoSwitch(
               value: _selectedMap[validator.accountId],
               onChanged: (bool value) {
+                if (value && _selected.length >= MAX_NOMINATION) {
+                  showCupertinoDialog(
+                      context: context,
+                      builder: (_) {
+                        return CupertinoAlertDialog(
+                          title: Container(),
+                          content: Text(dicStaking['nominate.max']),
+                          actions: [
+                            CupertinoButton(
+                              child: Text(I18n.of(context).getDic(
+                                  i18n_full_dic_kusama, 'common')['ok']),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
+                  return;
+                }
                 setState(() {
                   _selectedMap[validator.accountId] = value;
                 });

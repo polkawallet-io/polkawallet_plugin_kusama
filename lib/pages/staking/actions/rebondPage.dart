@@ -6,8 +6,8 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class RebondPage extends StatefulWidget {
   RebondPage(this.plugin, this.keyring);
@@ -44,7 +44,7 @@ class _RebondPageState extends State<RebondPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dicStaking['action.bondExtra']),
+        title: Text(dicStaking['action.rebond']),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {

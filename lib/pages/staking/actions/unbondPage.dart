@@ -23,6 +23,25 @@ class _UnBondPageState extends State<UnBondPage> {
 
   final TextEditingController _amountCtrl = new TextEditingController();
 
+  BigInt _minNominate = BigInt.zero;
+
+  Future<void> _queryMinNominate() async {
+    final min = await widget.plugin.sdk.webView
+        .evalJavascript('api.query.staking.minNominatorBond()');
+    setState(() {
+      _minNominate = Fmt.balanceInt(min);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _queryMinNominate();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
@@ -30,13 +49,13 @@ class _UnBondPageState extends State<UnBondPage> {
     final symbol = widget.plugin.networkState.tokenSymbol[0];
     final decimals = widget.plugin.networkState.tokenDecimals[0];
 
+    final stashInfo = widget.plugin.store.staking.ownStashInfo;
     double bonded = 0;
-    if (widget.plugin.store.staking.ownStashInfo != null) {
+    bool hasNomination = false;
+    if (stashInfo != null) {
       bonded = Fmt.bigIntToDouble(
-          BigInt.parse(widget
-              .plugin.store.staking.ownStashInfo.stakingLedger['active']
-              .toString()),
-          decimals);
+          BigInt.parse(stashInfo.stakingLedger['active'].toString()), decimals);
+      hasNomination = stashInfo.nominating.length > 0;
     }
 
     return Scaffold(
@@ -66,6 +85,7 @@ class _UnBondPageState extends State<UnBondPage> {
                             bonded,
                             lengthMax: 4,
                           )} $symbol)',
+                          errorMaxLines: 3,
                         ),
                         inputFormatters: [UI.decimalInputFormatter(decimals)],
                         controller: _amountCtrl,
@@ -75,8 +95,14 @@ class _UnBondPageState extends State<UnBondPage> {
                           if (v.isEmpty) {
                             return dic['amount.error'];
                           }
-                          if (double.parse(v.trim()) > bonded) {
+                          final amount = double.parse(v.trim());
+                          if (amount > bonded) {
                             return dic['amount.low'];
+                          }
+                          if (hasNomination &&
+                              bonded - amount <=
+                                  Fmt.bigIntToDouble(_minNominate, decimals)) {
+                            return dicStaking['bond.unbond.min'];
                           }
                           return null;
                         },

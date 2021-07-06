@@ -62,6 +62,7 @@ const Map<String, String> zhStaking = {
   'bond.unlocking': '解锁中',
   'bond.reward': '分红方式',
   'bond.redeemable': '可取回',
+  'bond.unbond.min': '剩余绑定金额低于最小提名金额，请先取消提名。',
   'payout': '待领取收益',
   'reward.Staked': '储值账户(收益再质押)',
   'reward.Stash': '储值账户(收益不再质押)',
@@ -83,6 +84,7 @@ const Map<String, String> zhStaking = {
   'nominate.over': '超额认购',
   'nominate.inactive': '不活跃',
   'nominate.waiting': '等待',
+  'nominate.max': '提名数量最多 16 个',
   'phala': 'Phala 空投',
   'recommend': '推荐节点',
 };
