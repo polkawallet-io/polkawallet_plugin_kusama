@@ -66,6 +66,8 @@ const Map<String, String> enStaking = {
   'bond.unlocking': 'Unlocking',
   'bond.reward': 'Reward',
   'bond.redeemable': 'Redeemable',
+  'bond.unbond.min':
+      'Remaining bond is lower than the min nomination amount, please cancel the nomination first.',
   'payout': 'Payouts',
   'reward.Staked': 'Stash account (increase the amount at stake)',
   'reward.Stash': 'Stash account (do not increase the amount at stake)',
@@ -89,6 +91,7 @@ const Map<String, String> enStaking = {
   'nominate.over': 'Oversubscribed',
   'nominate.inactive': 'Inactive',
   'nominate.waiting': 'Waiting',
+  'nominate.max': 'Max nomination number is 16.',
   'phala': 'Phala Airdrop',
   'recommend': 'Recommended',
 };
