@@ -124,7 +124,7 @@ class _BondPageState extends State<BondPage> {
                       labelText:
                           '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
                         available,
-                        lengthMax: 3,
+                        lengthMax: 4,
                       )} $symbol)',
                     ),
                     inputFormatters: [UI.decimalInputFormatter(decimals)],
@@ -135,9 +135,15 @@ class _BondPageState extends State<BondPage> {
                       if (v.isEmpty) {
                         return dic['amount.error'];
                       }
-                      // if (double.parse(v.trim()) >= available) {
-                      //   return dic['amount.low'];
-                      // }
+                      final amount = double.parse(v.trim());
+                      if (amount >= available) {
+                        return dic['amount.low'];
+                      }
+                      final minBond = Fmt.balanceInt(widget
+                          .plugin.store.staking.overview['minNominatorBond']);
+                      if (amount < Fmt.bigIntToDouble(minBond, decimals)) {
+                        return '${dicStaking['stake.bond.min']} ${Fmt.priceCeilBigInt(minBond, decimals)}';
+                      }
                       return null;
                     },
                   ),

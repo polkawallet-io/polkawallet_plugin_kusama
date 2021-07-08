@@ -20,9 +20,14 @@ dependencies:
   json_annotation: ^4.0.1
   polkawallet_sdk: ^0.2.2
   polkawallet_ui:
-    git:
-      url: https://github.com/polkawallet-io/ui.git
-      ref: dee6fc6074f546e914c8794fd5e3a3e2b829b53c
+#    git:
+#      url: https://github.com/polkawallet-io/ui.git
+#      ref: dee6fc6074f546e914c8794fd5e3a3e2b829b53c
+    path: ../ui
+
+dependency_overrides:
+  polkawallet_sdk:
+    path: ../sdk
 
 dev_dependencies:
   build_runner: ^2.0.3

@@ -1,3 +1,9 @@
+## [0.2.4] - 20210708.
+
+* bump polkawallet_sdk: 0.2.4.
+* add XCM support.
+* add minNominatorBond.
+
 ## [0.2.3] - 20210628.
 
 * bump polkawallet_sdk: 0.2.3.

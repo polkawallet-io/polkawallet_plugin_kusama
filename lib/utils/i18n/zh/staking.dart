@@ -2,7 +2,7 @@ const Map<String, String> zhStaking = {
   'overview': '概览',
   'overview.total': '质押总量',
   'overview.reward': '平均收益',
-  'overview.min': '最低金额',
+  'overview.min': '最低提名/绑定',
   'actions': '账户操作',
   'validators': '验证人',
   'validator': '验证人',
@@ -19,9 +19,10 @@ const Map<String, String> zhStaking = {
   'stake.ratio': '质押率',
   'stake.own': '节点',
   'stake.other': '他人',
+  'stake.bond.min': '最低质押金额',
   'stake.warn': '1：绑定的资产在解绑时需要约28天的锁定时间（在 Kusama 网络上需要约7天）。\n'
       '2：你的账户应该留有余额以支付交易费，因此不要绑定全部资产。\n'
-      '3：你的绑定数量应该满足最低数量要求（见验证人页面），否则将不会产生质押收益。',
+      '3：你的绑定数量应该满足最低数量要求（见验证人页面）。',
   'stake.payee.warn': '提示: 目标地址余额不能为空，否则您可能会因为不满足存活余额而丢失收益。',
   'staked': '总质押',
   'commission': '佣金',

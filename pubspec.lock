@@ -581,19 +581,17 @@ packages:
   polkawallet_sdk:
     dependency: "direct main"
     description:
-      name: polkawallet_sdk
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.8"
+      path: "../sdk"
+      relative: true
+    source: path
+    version: "0.2.3"
   polkawallet_ui:
     dependency: "direct main"
     description:
-      path: "."
-      ref: a181a240a0c2b098a2e4140e07d036ea8222cea1
-      resolved-ref: a181a240a0c2b098a2e4140e07d036ea8222cea1
-      url: "https://github.com/polkawallet-io/ui.git"
-    source: git
-    version: "0.1.8"
+      path: "../ui"
+      relative: true
+    source: path
+    version: "0.2.2"
   pool:
     dependency: transitive
     description:
@@ -838,7 +836,7 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.8"
+    version: "2.0.9"
   win32:
     dependency: transitive
     description:

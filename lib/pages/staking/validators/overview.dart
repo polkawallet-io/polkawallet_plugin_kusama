@@ -234,7 +234,9 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                 InfoItem(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   title: dicStaking['overview.min'],
-                  content: Fmt.balance(overview['minNominated'], decimals),
+                  content: Fmt.balance(overview['minNominated'], decimals) +
+                      ' / ' +
+                      Fmt.balance(overview['minNominatorBond'], decimals),
                 ),
               ],
             ),
