@@ -136,9 +136,9 @@ class _BondPageState extends State<BondPage> {
                         return dic['amount.error'];
                       }
                       final amount = double.parse(v.trim());
-                      if (amount >= available) {
-                        return dic['amount.low'];
-                      }
+                      // if (amount >= available) {
+                      //   return dic['amount.low'];
+                      // }
                       final minBond = Fmt.balanceInt(widget
                           .plugin.store.staking.overview['minNominatorBond']);
                       if (amount < Fmt.bigIntToDouble(minBond, decimals)) {
