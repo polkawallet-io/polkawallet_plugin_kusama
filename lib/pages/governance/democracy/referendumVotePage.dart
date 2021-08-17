@@ -70,7 +70,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
         value > 0 ? widget.plugin.store.gov.voteConvictions[value - 1] : {};
     return value == 0
         ? dicGov['locked.no']
-        : '${dicGov['locked']} ${conviction['period']} ${dicGov['day']} (${conviction['lock']}x)';
+        : '${dicGov['locked']} ${conviction['period']} ${dicGov['day']} (${conviction['value']}x)';
   }
 
   void _showConvictionSelect() {
