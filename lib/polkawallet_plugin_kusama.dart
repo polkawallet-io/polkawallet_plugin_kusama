@@ -70,7 +70,7 @@ class PluginKusama extends PolkawalletPlugin {
               'packages/polkawallet_plugin_kusama/assets/images/public/$name.png'),
           iconDisabled: Image.asset(
               'packages/polkawallet_plugin_kusama/assets/images/public/${name}_gray.png'),
-          jsCodeVersion: 21101,
+          jsCodeVersion: 22201,
           isTestNet: false,
           isXCMSupport: name == network_name_kusama,
         ),
