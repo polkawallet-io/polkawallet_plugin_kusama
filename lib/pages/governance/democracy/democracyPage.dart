@@ -5,8 +5,8 @@ import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/ui.dart';
 import 'package:polkawallet_ui/components/topTaps.dart';
+import 'package:polkawallet_ui/ui.dart';
 
 class DemocracyPage extends StatefulWidget {
   DemocracyPage(this.plugin, this.keyring);
@@ -28,43 +28,44 @@ class _DemocracyPageState extends State<DemocracyPage> {
     final tabs = [dic['democracy.referendum'], dic['democracy.proposal']];
 
     return Scaffold(
-        body: PageWrapperWithBackground(
-      SafeArea(
-        child: Container(
-          padding: EdgeInsets.only(top: 8),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      color: Theme.of(context).cardColor,
+      body: PageWrapperWithBackground(
+        SafeArea(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Theme.of(context).cardColor,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  TopTabs(
-                    names: tabs,
-                    activeTab: _tab,
-                    onTab: (v) {
-                      setState(() {
-                        if (_tab != v) {
-                          _tab = v;
-                        }
-                      });
-                    },
-                  ),
-                ],
-              ),
-              Expanded(
-                child: _tab == 0
-                    ? Democracy(widget.plugin, widget.keyring)
-                    : Proposals(widget.plugin),
-              ),
-            ],
+                    Expanded(child: Container(width: 8))
+                  ],
+                ),
+                TopTabs(
+                  names: tabs,
+                  activeTab: _tab,
+                  onTab: (v) {
+                    setState(() {
+                      if (_tab != v) {
+                        _tab = v;
+                      }
+                    });
+                  },
+                ),
+                Expanded(
+                  child: _tab == 0
+                      ? Democracy(widget.plugin, widget.keyring)
+                      : Proposals(widget.plugin),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 }

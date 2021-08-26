@@ -39,7 +39,6 @@ class _TreasuryPageState extends State<TreasuryPage> {
     return Scaffold(
       body: PageWrapperWithBackground(SafeArea(
         child: Container(
-          padding: EdgeInsets.only(top: 8),
           child: Column(
             children: <Widget>[
               Row(
@@ -51,18 +50,19 @@ class _TreasuryPageState extends State<TreasuryPage> {
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  TopTabs(
-                    names: tabs,
-                    activeTab: _tab,
-                    onTab: (v) {
-                      setState(() {
-                        if (_tab != v) {
-                          _tab = v;
-                        }
-                      });
-                    },
-                  ),
+                  Expanded(child: Container(width: 8))
                 ],
+              ),
+              TopTabs(
+                names: tabs,
+                activeTab: _tab,
+                onTab: (v) {
+                  setState(() {
+                    if (_tab != v) {
+                      _tab = v;
+                    }
+                  });
+                },
               ),
               Observer(
                 builder: (_) {

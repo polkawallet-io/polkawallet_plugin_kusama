@@ -7,8 +7,8 @@ import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/ui.dart';
 import 'package:polkawallet_ui/components/topTaps.dart';
+import 'package:polkawallet_ui/ui.dart';
 
 class CouncilPage extends StatefulWidget {
   CouncilPage(this.plugin, this.keyring);
@@ -43,7 +43,6 @@ class _GovernanceState extends State<CouncilPage> {
     return Scaffold(
       body: PageWrapperWithBackground(SafeArea(
         child: Container(
-          padding: EdgeInsets.only(top: 8),
           child: Column(
             children: <Widget>[
               Row(
@@ -55,18 +54,19 @@ class _GovernanceState extends State<CouncilPage> {
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  TopTabs(
-                    names: tabs,
-                    activeTab: _tab,
-                    onTab: (v) {
-                      setState(() {
-                        if (_tab != v) {
-                          _tab = v;
-                        }
-                      });
-                    },
-                  ),
+                  Expanded(child: Container(width: 8))
                 ],
+              ),
+              TopTabs(
+                names: tabs,
+                activeTab: _tab,
+                onTab: (v) {
+                  setState(() {
+                    if (_tab != v) {
+                      _tab = v;
+                    }
+                  });
+                },
               ),
               Observer(
                 builder: (_) {
