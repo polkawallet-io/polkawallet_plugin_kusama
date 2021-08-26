@@ -395,21 +395,23 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.2.5"
+    version: "0.3.0"
   polkawallet_sdk:
     dependency: transitive
     description:
-      path: "../../sdk"
-      relative: true
-    source: path
-    version: "0.2.8"
+      name: polkawallet_sdk
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   polkawallet_ui:
     dependency: "direct main"
     description:
-      path: "../../ui"
-      relative: true
-    source: path
-    version: "0.2.8"
+      path: "."
+      ref: "485a9cde97f2446d74a1aeb6d8d63e33683461a5"
+      resolved-ref: "485a9cde97f2446d74a1aeb6d8d63e33683461a5"
+      url: "https://github.com/polkawallet-io/ui.git"
+    source: git
+    version: "0.3.0"
   process:
     dependency: transitive
     description:

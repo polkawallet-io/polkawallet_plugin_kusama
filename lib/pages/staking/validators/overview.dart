@@ -171,6 +171,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
 
   Widget _buildTopCard(BuildContext context) {
     final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final symbol = (widget.plugin.networkState.tokenSymbol ?? ['DOT'])[0];
     final decimals = (widget.plugin.networkState.tokenDecimals ?? [12])[0];
     final stashInfo = widget.plugin.store.staking.ownStashInfo;
     final overview = widget.plugin.store.staking.overview;
@@ -233,7 +234,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                 ),
                 InfoItem(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  title: dicStaking['overview.min'],
+                  title: dicStaking['overview.min'] + '($symbol)',
                   content: Fmt.balance(overview['minNominated'], decimals) +
                       ' / ' +
                       Fmt.balance(overview['minNominatorBond'], decimals),
