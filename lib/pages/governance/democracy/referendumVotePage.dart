@@ -114,8 +114,13 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
           final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
           final decimals = widget.plugin.networkState.tokenDecimals[0];
 
-          final balance = Fmt.balanceInt(
+          BigInt available = Fmt.balanceInt(
               widget.plugin.balances.native.freeBalance.toString());
+          widget.plugin.balances.native.lockedBreakdown.forEach((e) {
+            if (e.use.contains('democrac')) {
+              available -= Fmt.balanceInt(e.amount.toString());
+            }
+          });
 
           Map args = ModalRoute.of(context).settings.arguments;
           ReferendumInfo info = args['referenda'];
@@ -142,7 +147,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                             decoration: InputDecoration(
                               hintText: dic['amount'],
                               labelText:
-                                  '${dic['amount']} (${dic['balance']}: ${Fmt.token(balance, decimals)})',
+                                  '${dic['amount']} (${dic['balance']}: ${Fmt.token(available, decimals)})',
                             ),
                             inputFormatters: [
                               UI.decimalInputFormatter(decimals)
@@ -155,7 +160,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                                 return dic['amount.error'];
                               }
                               if (double.parse(v.trim()) >=
-                                  balance / BigInt.from(pow(10, decimals))) {
+                                  available / BigInt.from(pow(10, decimals))) {
                                 return dic['amount.low'];
                               }
                               return null;

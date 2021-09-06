@@ -6,8 +6,8 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/utils/index.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class BondExtraPage extends StatefulWidget {
   BondExtraPage(this.plugin, this.keyring);
@@ -30,10 +30,16 @@ class _BondExtraPageState extends State<BondExtraPage> {
     final symbol = widget.plugin.networkState.tokenSymbol[0];
     final decimals = widget.plugin.networkState.tokenDecimals[0];
 
-    double available = 0;
+    BigInt available = BigInt.zero;
     if (widget.plugin.balances.native != null) {
-      available = Fmt.balanceDouble(
-          widget.plugin.balances.native.availableBalance.toString(), decimals);
+      available =
+          Fmt.balanceInt(widget.plugin.balances.native.freeBalance.toString());
+      widget.plugin.balances.native.lockedBreakdown.forEach((e) {
+        print(e.use);
+        if (e.use.contains('staking')) {
+          available -= Fmt.balanceInt(e.amount.toString());
+        }
+      });
     }
 
     return Scaffold(
@@ -59,8 +65,9 @@ class _BondExtraPageState extends State<BondExtraPage> {
                         decoration: InputDecoration(
                           hintText: dic['amount'],
                           labelText:
-                              '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
+                              '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloorBigInt(
                             available,
+                            decimals,
                             lengthMax: 4,
                           )} $symbol)',
                         ),
@@ -72,7 +79,8 @@ class _BondExtraPageState extends State<BondExtraPage> {
                           if (v.isEmpty) {
                             return dic['amount.error'];
                           }
-                          if (double.parse(v.trim()) >= available) {
+                          if (double.parse(v.trim()) >=
+                              Fmt.bigIntToDouble(available, decimals)) {
                             return dic['amount.low'];
                           }
                           return null;
