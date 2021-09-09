@@ -150,8 +150,8 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final symbol = widget.plugin.networkState.tokenSymbol![0] ?? '';
-    final decimals = widget.plugin.networkState.tokenDecimals![0] ?? 10;
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
     final SpendProposalData proposal =
         ModalRoute.of(context)!.settings.arguments as SpendProposalData;
     final proposer = KeyPairData();

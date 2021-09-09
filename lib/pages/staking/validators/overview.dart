@@ -661,7 +661,7 @@ class _NomineeItem extends StatelessWidget {
       dense: true,
       leading: AddressIcon(validator.accountId, svg: icon, size: 32),
       title: UI.accountDisplayName(validator.accountId, accInfo),
-      subtitle: Text(subtitle!),
+      subtitle: Text(subtitle),
       trailing: Container(
         width: 100,
         child: Column(

@@ -137,7 +137,7 @@ class _DemocracyState extends State<Democracy> {
         final list = widget.plugin.store!.gov.referendums!;
         final bestNumber = widget.plugin.store!.gov.bestNumber;
 
-        final count = list?.length ?? 0;
+        final count = list.length;
         return RefreshIndicator(
           key: _refreshKey,
           onRefresh: _fetchReferendums,

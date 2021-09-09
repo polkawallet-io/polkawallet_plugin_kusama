@@ -65,8 +65,8 @@ class _ProposalsState extends State<SpendProposals> {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     return Observer(
       builder: (BuildContext context) {
-        final decimals = widget.plugin.networkState.tokenDecimals![0] ?? 10;
-        final symbol = widget.plugin.networkState.tokenSymbol![0] ?? '';
+        final decimals = widget.plugin.networkState.tokenDecimals![0];
+        final symbol = widget.plugin.networkState.tokenSymbol![0];
         final balance = Fmt.balance(
           widget.plugin.store!.gov.treasuryOverview.balance!,
           decimals,
@@ -118,9 +118,11 @@ class _ProposalsState extends State<SpendProposals> {
                                       symbol: symbol,
                                       decimals: decimals,
                                       icon: widget.plugin.store!.accounts
-                                          .addressIconsMap[e.proposal!.proposer],
+                                              .addressIconsMap[
+                                          e.proposal!.proposer],
                                       accInfo: widget.plugin.store!.accounts
-                                          .addressIndexMap[e.proposal!.proposer],
+                                              .addressIndexMap[
+                                          e.proposal!.proposer],
                                       proposal: e,
                                       onRefresh: _refreshPage,
                                     );

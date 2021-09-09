@@ -98,7 +98,7 @@ class _CouncilState extends State<Council> {
   }
 
   Widget _buildTopCard(String tokenView) {
-    final decimals = widget.plugin.networkState.tokenDecimals![0] ?? 12;
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
 
     final userVotes = widget.plugin.store!.gov.userCouncilVotes;
@@ -128,7 +128,7 @@ class _CouncilState extends State<Council> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['up'],
                 content: widget.plugin.store!.gov.council.runnersUp?.length
-                    ?.toString(),
+                    .toString(),
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,25 +295,27 @@ class _CouncilState extends State<Council> {
                   ),
                   Container(
                     color: Theme.of(context).cardColor,
-                    child: widget.plugin.store!.gov.council.candidates!.length > 0
-                        ? Column(
-                            children: widget.plugin.store!.gov.council.candidates!
-                                .map((i) {
-                              return CandidateItem(
-                                accInfo: widget
-                                    .plugin.store!.accounts.addressIndexMap[i],
-                                icon: widget
-                                    .plugin.store!.accounts.addressIconsMap[i],
-                                balance: [i],
-                                tokenSymbol: symbol,
-                                decimals: decimals,
-                              );
-                            }).toList(),
-                          )
-                        : Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Text(dic['candidate.empty']!),
-                          ),
+                    child:
+                        widget.plugin.store!.gov.council.candidates!.length > 0
+                            ? Column(
+                                children: widget
+                                    .plugin.store!.gov.council.candidates!
+                                    .map((i) {
+                                  return CandidateItem(
+                                    accInfo: widget.plugin.store!.accounts
+                                        .addressIndexMap[i],
+                                    icon: widget.plugin.store!.accounts
+                                        .addressIconsMap[i],
+                                    balance: [i],
+                                    tokenSymbol: symbol,
+                                    decimals: decimals,
+                                  );
+                                }).toList(),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.all(16),
+                                child: Text(dic['candidate.empty']!),
+                              ),
                   ),
                 ],
               ),
@@ -358,7 +360,8 @@ class CandidateItem extends StatelessWidget {
       onTap: noTap
           ? null
           : () => Navigator.of(context).pushNamed(CandidateDetailPage.route,
-              arguments: balance!.length == 1 ? ([balance![0], '0x0']) : balance),
+              arguments:
+                  balance!.length == 1 ? ([balance![0], '0x0']) : balance),
       trailing: trailing ?? Container(width: 8),
     );
   }

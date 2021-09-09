@@ -58,7 +58,8 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
 
   Future<void> _onSwitch() async {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final ProposalInfoData proposal = ModalRoute.of(context)!.settings.arguments as ProposalInfoData;
+    final ProposalInfoData proposal =
+        ModalRoute.of(context)!.settings.arguments as ProposalInfoData;
     final TxConfirmParams params = TxConfirmParams(
       module: 'democracy',
       call: 'second',
@@ -100,7 +101,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                   .plugin.store!.gov.proposals
                   .firstWhere((e) => e.index == proposalPara.index);
               final decimals = widget.plugin.networkState.tokenDecimals![0];
-              final symbol = widget.plugin.networkState.tokenSymbol![0] ?? '';
+              final symbol = widget.plugin.networkState.tokenSymbol![0];
               final List<List<String>> params = [];
               bool hasProposal = false;
               if (proposal.image?.proposal != null) {
@@ -113,7 +114,8 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                 hasProposal = true;
               }
               final bool isSecondOn =
-                  proposal.seconds!.indexOf(widget.keyring.current.address!) >= 0;
+                  proposal.seconds!.indexOf(widget.keyring.current.address!) >=
+                      0;
               return ListView(
                 children: <Widget>[
                   RoundedCard(
@@ -129,7 +131,8 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                               )
                             : Container(),
                         hasProposal
-                            ? Text(proposal.image!.proposal!.meta!.documentation!
+                            ? Text(proposal
+                                .image!.proposal!.meta!.documentation!
                                 .trim())
                             : Container(),
                         hasProposal ? Divider(height: 24) : Container(),
