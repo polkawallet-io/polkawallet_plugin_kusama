@@ -18,17 +18,17 @@ class StakingDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final decimals = plugin.networkState.tokenDecimals[0];
-    final symbol = plugin.networkState.tokenSymbol[0];
-    final TxData detail = ModalRoute.of(context).settings.arguments;
+    final dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final decimals = plugin.networkState.tokenDecimals![0];
+    final symbol = plugin.networkState.tokenSymbol![0];
+    final TxData detail = ModalRoute.of(context)!.settings.arguments as TxData;
     List<TxDetailInfoItem> info = <TxDetailInfoItem>[
-      TxDetailInfoItem(label: dicStaking['action'], content: Text(detail.call)),
+      TxDetailInfoItem(label: dicStaking['action'], content: Text(detail.call!)),
     ];
-    List params = detail.params.isEmpty ? [] : jsonDecode(detail.params);
+    List? params = detail.params!.isEmpty ? [] : jsonDecode(detail.params!);
     if (params != null) {
       info.addAll(params.map((i) {
-        String value = i['value'].toString();
+        String? value = i['value'].toString();
         switch (i['type']) {
           case "Address":
             value = Fmt.address(value);
@@ -38,12 +38,12 @@ class StakingDetailPage extends StatelessWidget {
             break;
           case "AccountId":
             value = value.contains('0x') ? value : '0x$value';
-            final ss58 = plugin.sdk.api.connectedNode?.ss58;
-            final pubKeyAddressMap = plugin.store.accounts.pubKeyAddressMap;
+            final ss58 = plugin.sdk.api!.connectedNode?.ss58;
+            final pubKeyAddressMap = plugin.store!.accounts.pubKeyAddressMap;
             final address = ss58 != null &&
                     pubKeyAddressMap != null &&
                     pubKeyAddressMap[ss58] != null
-                ? pubKeyAddressMap[ss58][value]
+                ? pubKeyAddressMap[ss58]![value]
                 : value;
             value = Fmt.address(address ?? value);
             break;
@@ -67,7 +67,7 @@ class StakingDetailPage extends StatelessWidget {
         }
         return TxDetailInfoItem(
           label: i['name'],
-          content: Text(value),
+          content: Text(value!),
         );
       }));
     }
@@ -75,12 +75,12 @@ class StakingDetailPage extends StatelessWidget {
       networkName: plugin.basic.name,
       success: detail.success,
       action: detail.call,
-      fee: '${Fmt.balance(detail.fee, decimals)} $symbol',
+      fee: '${Fmt.balance(detail.fee!, decimals)} $symbol',
       hash: detail.hash,
       eventId: detail.txNumber,
       infoItems: info,
       blockTime: Fmt.dateTime(
-          DateTime.fromMillisecondsSinceEpoch(detail.blockTimestamp * 1000)),
+          DateTime.fromMillisecondsSinceEpoch(detail.blockTimestamp! * 1000)),
       blockNum: detail.blockNum,
     );
   }

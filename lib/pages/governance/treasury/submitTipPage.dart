@@ -29,19 +29,19 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
   static const MAX_REASON_LEN = 128;
   static const MIN_REASON_LEN = 5;
 
-  KeyPairData _beneficiary;
+  KeyPairData? _beneficiary;
 
-  Future<TxConfirmParams> _getTxParams() async {
-    if (_formKey.currentState.validate()) {
-      final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-      final int decimals = widget.plugin.networkState.tokenDecimals[0];
-      final bool isCouncil = ModalRoute.of(context).settings.arguments;
+  Future<TxConfirmParams?> _getTxParams() async {
+    if (_formKey.currentState!.validate()) {
+      final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
+      final int decimals = widget.plugin.networkState.tokenDecimals![0];
+      final bool isCouncil = ModalRoute.of(context)!.settings.arguments as bool;
       final String amt = _amountCtrl.text.trim();
-      final String address = _beneficiary.address;
+      final String? address = _beneficiary!.address;
       return TxConfirmParams(
         module: 'tips',
         call: isCouncil ? 'tipNew' : 'reportAwesome',
-        txTitle: isCouncil ? dic['treasury.tipNew'] : dic['treasury.report'],
+        txTitle: isCouncil ? dic!['treasury.tipNew'] : dic!['treasury.report'],
         txDisplay: isCouncil
             ? {
                 "beneficiary": address,
@@ -75,7 +75,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       setState(() {
         _beneficiary = widget.keyring.current;
       });
@@ -91,15 +91,15 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final dicCommon = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final bool isCouncil = ModalRoute.of(context).settings.arguments;
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final dicCommon = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
+    final bool isCouncil = ModalRoute.of(context)!.settings.arguments as bool;
     return Scaffold(
       appBar: AppBar(
           title: Text(
-            dic[isCouncil ? 'treasury.tipNew' : 'treasury.report'],
+            dic[isCouncil ? 'treasury.tipNew' : 'treasury.report']!,
           ),
           centerTitle: true),
       body: SafeArea(
@@ -122,7 +122,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
                             );
                             if (acc != null) {
                               setState(() {
-                                _beneficiary = acc;
+                                _beneficiary = acc as KeyPairData?;
                               });
                             }
                           },
@@ -139,10 +139,10 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
                                 controller: _reasonCtrl,
                                 maxLines: 3,
                                 validator: (v) {
-                                  final String reason = v.trim();
+                                  final String reason = v!.trim();
                                   if (reason.length < MIN_REASON_LEN ||
                                       reason.length > MAX_REASON_LEN) {
-                                    return dicCommon['input.invalid'];
+                                    return dicCommon!['input.invalid'];
                                   }
                                   return null;
                                 },
@@ -150,19 +150,19 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
                               isCouncil
                                   ? TextFormField(
                                       decoration: InputDecoration(
-                                        hintText: dicCommon['amount'],
+                                        hintText: dicCommon!['amount'],
                                         labelText:
                                             '${dicCommon['amount']} ($symbol)',
                                       ),
                                       inputFormatters: [
-                                        UI.decimalInputFormatter(decimals)
+                                        UI.decimalInputFormatter(decimals)!
                                       ],
                                       controller: _amountCtrl,
                                       keyboardType:
                                           TextInputType.numberWithOptions(
                                               decimal: true),
                                       validator: (v) {
-                                        if (v.isEmpty) {
+                                        if (v!.isEmpty) {
                                           return dicCommon['amount.error'];
                                         }
                                         return null;
@@ -179,7 +179,7 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
               padding: EdgeInsets.all(16),
               child: TxButton(
                 text: dic['treasury.report'],
-                getTxParams: _getTxParams,
+                getTxParams: _getTxParams as Future<TxConfirmParams> Function()?,
                 onFinish: (res) {
                   if (res != null) {
                     Navigator.of(context).pop(res);

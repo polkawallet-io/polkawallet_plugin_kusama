@@ -9,14 +9,14 @@ part of 'staking.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$StakingStore on _StakingStore, Store {
-  Computed<List<ValidatorData>> _$nominatingListComputed;
+  Computed<List<ValidatorData>>? _$nominatingListComputed;
 
   @override
   List<ValidatorData> get nominatingList => (_$nominatingListComputed ??=
           Computed<List<ValidatorData>>(() => super.nominatingList,
               name: '_StakingStore.nominatingList'))
       .value;
-  Computed<BigInt> _$accountUnlockingTotalComputed;
+  Computed<BigInt>? _$accountUnlockingTotalComputed;
 
   @override
   BigInt get accountUnlockingTotal => (_$accountUnlockingTotalComputed ??=
@@ -87,13 +87,13 @@ mixin _$StakingStore on _StakingStore, Store {
   final _$nominationsMapAtom = Atom(name: '_StakingStore.nominationsMap');
 
   @override
-  Map<dynamic, dynamic> get nominationsMap {
+  Map<dynamic, dynamic>? get nominationsMap {
     _$nominationsMapAtom.reportRead();
     return super.nominationsMap;
   }
 
   @override
-  set nominationsMap(Map<dynamic, dynamic> value) {
+  set nominationsMap(Map<dynamic, dynamic>? value) {
     _$nominationsMapAtom.reportWrite(value, super.nominationsMap, () {
       super.nominationsMap = value;
     });
@@ -102,13 +102,13 @@ mixin _$StakingStore on _StakingStore, Store {
   final _$ownStashInfoAtom = Atom(name: '_StakingStore.ownStashInfo');
 
   @override
-  OwnStashInfoData get ownStashInfo {
+  OwnStashInfoData? get ownStashInfo {
     _$ownStashInfoAtom.reportRead();
     return super.ownStashInfo;
   }
 
   @override
-  set ownStashInfo(OwnStashInfoData value) {
+  set ownStashInfo(OwnStashInfoData? value) {
     _$ownStashInfoAtom.reportWrite(value, super.ownStashInfo, () {
       super.ownStashInfo = value;
     });
@@ -117,13 +117,13 @@ mixin _$StakingStore on _StakingStore, Store {
   final _$accountBondedMapAtom = Atom(name: '_StakingStore.accountBondedMap');
 
   @override
-  Map<String, AccountBondedInfo> get accountBondedMap {
+  Map<String?, AccountBondedInfo> get accountBondedMap {
     _$accountBondedMapAtom.reportRead();
     return super.accountBondedMap;
   }
 
   @override
-  set accountBondedMap(Map<String, AccountBondedInfo> value) {
+  set accountBondedMap(Map<String?, AccountBondedInfo> value) {
     _$accountBondedMapAtom.reportWrite(value, super.accountBondedMap, () {
       super.accountBondedMap = value;
     });
@@ -147,13 +147,13 @@ mixin _$StakingStore on _StakingStore, Store {
   final _$txsCountAtom = Atom(name: '_StakingStore.txsCount');
 
   @override
-  int get txsCount {
+  int? get txsCount {
     _$txsCountAtom.reportRead();
     return super.txsCount;
   }
 
   @override
-  set txsCount(int value) {
+  set txsCount(int? value) {
     _$txsCountAtom.reportWrite(value, super.txsCount, () {
       super.txsCount = value;
     });
@@ -227,13 +227,13 @@ mixin _$StakingStore on _StakingStore, Store {
       Atom(name: '_StakingStore.recommendedValidators');
 
   @override
-  Map<dynamic, dynamic> get recommendedValidators {
+  Map<dynamic, dynamic>? get recommendedValidators {
     _$recommendedValidatorsAtom.reportRead();
     return super.recommendedValidators;
   }
 
   @override
-  set recommendedValidators(Map<dynamic, dynamic> value) {
+  set recommendedValidators(Map<dynamic, dynamic>? value) {
     _$recommendedValidatorsAtom.reportWrite(value, super.recommendedValidators,
         () {
       super.recommendedValidators = value;
@@ -250,7 +250,7 @@ mixin _$StakingStore on _StakingStore, Store {
   final _$addTxsAsyncAction = AsyncAction('_StakingStore.addTxs');
 
   @override
-  Future<void> addTxs(Map<dynamic, dynamic> data, String pubKey,
+  Future<void> addTxs(Map<dynamic, dynamic>? data, String? pubKey,
       {bool shouldCache = false, dynamic reset = false}) {
     return _$addTxsAsyncAction.run(() =>
         super.addTxs(data, pubKey, shouldCache: shouldCache, reset: reset));
@@ -259,7 +259,7 @@ mixin _$StakingStore on _StakingStore, Store {
   final _$addTxsRewardsAsyncAction = AsyncAction('_StakingStore.addTxsRewards');
 
   @override
-  Future<void> addTxsRewards(Map<dynamic, dynamic> data, String pubKey,
+  Future<void> addTxsRewards(Map<dynamic, dynamic> data, String? pubKey,
       {bool shouldCache = false}) {
     return _$addTxsRewardsAsyncAction
         .run(() => super.addTxsRewards(data, pubKey, shouldCache: shouldCache));
@@ -269,7 +269,7 @@ mixin _$StakingStore on _StakingStore, Store {
       AsyncAction('_StakingStore.loadAccountCache');
 
   @override
-  Future<void> loadAccountCache(String pubKey) {
+  Future<void> loadAccountCache(String? pubKey) {
     return _$loadAccountCacheAsyncAction
         .run(() => super.loadAccountCache(pubKey));
   }
@@ -277,7 +277,7 @@ mixin _$StakingStore on _StakingStore, Store {
   final _$loadCacheAsyncAction = AsyncAction('_StakingStore.loadCache');
 
   @override
-  Future<void> loadCache(String pubKey) {
+  Future<void> loadCache(String? pubKey) {
     return _$loadCacheAsyncAction.run(() => super.loadCache(pubKey));
   }
 
@@ -285,7 +285,7 @@ mixin _$StakingStore on _StakingStore, Store {
       AsyncAction('_StakingStore.setRecommendedValidatorList');
 
   @override
-  Future<void> setRecommendedValidatorList(Map<dynamic, dynamic> data) {
+  Future<void> setRecommendedValidatorList(Map<dynamic, dynamic>? data) {
     return _$setRecommendedValidatorListAsyncAction
         .run(() => super.setRecommendedValidatorList(data));
   }
@@ -306,7 +306,7 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setNominations(Map<dynamic, dynamic> data) {
+  void setNominations(Map<dynamic, dynamic>? data) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
         name: '_StakingStore.setNominations');
     try {
@@ -317,7 +317,7 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setOwnStashInfo(String pubKey, Map<dynamic, dynamic> data,
+  void setOwnStashInfo(String? pubKey, Map<dynamic, dynamic> data,
       {bool shouldCache = true}) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
         name: '_StakingStore.setOwnStashInfo');
@@ -329,7 +329,7 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setAccountBondedMap(Map<String, AccountBondedInfo> data) {
+  void setAccountBondedMap(Map<String?, AccountBondedInfo> data) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
         name: '_StakingStore.setAccountBondedMap');
     try {

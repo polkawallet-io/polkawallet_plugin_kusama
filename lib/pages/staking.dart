@@ -8,6 +8,8 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_ui/components/pageTitleTaps.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 
+import '../polkawallet_plugin_kusama.dart';
+
 class Staking extends StatefulWidget {
   Staking(this.plugin, this.keyring);
 
@@ -25,7 +27,7 @@ class _StakingState extends State<Staking> {
 
   @override
   Widget build(BuildContext context) {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     var tabs = [dic['actions'], dic['validators']];
     return SafeArea(
       child: Container(
@@ -34,7 +36,7 @@ class _StakingState extends State<Staking> {
         child: Column(
           children: <Widget>[
             PageTitleTabs(
-              names: tabs,
+              names: tabs as List<String>?,
               activeTab: _tab,
               onTab: (v) {
                 if (_tab != v) {
@@ -46,8 +48,10 @@ class _StakingState extends State<Staking> {
             ),
             Expanded(
               child: _tab == 1
-                  ? StakingOverviewPage(widget.plugin, widget.keyring)
-                  : StakingActions(widget.plugin, widget.keyring),
+                  ? StakingOverviewPage(
+                      widget.plugin as PluginKusama, widget.keyring)
+                  : StakingActions(
+                      widget.plugin as PluginKusama, widget.keyring),
             ),
           ],
         ),

@@ -19,7 +19,7 @@ abstract class _GovernanceStore with Store {
   final StoreCache cache;
 
   @observable
-  int cacheCouncilTimestamp = 0;
+  int? cacheCouncilTimestamp = 0;
 
   @observable
   BigInt bestNumber = BigInt.zero;
@@ -31,16 +31,16 @@ abstract class _GovernanceStore with Store {
   List<CouncilMotionData> councilMotions = [];
 
   @observable
-  Map<String, Map<String, dynamic>> councilVotes;
+  Map<String, Map<String, dynamic>>? councilVotes;
 
   @observable
-  Map<String, dynamic> userCouncilVotes;
+  Map<String, dynamic>? userCouncilVotes;
 
   @observable
-  List<ReferendumInfo> referendums;
+  List<ReferendumInfo>? referendums;
 
   @observable
-  List voteConvictions;
+  List? voteConvictions;
 
   @observable
   List<ProposalInfoData> proposals = [];
@@ -49,11 +49,11 @@ abstract class _GovernanceStore with Store {
   TreasuryOverviewData treasuryOverview = TreasuryOverviewData();
 
   @observable
-  List<TreasuryTipData> treasuryTips;
+  List<TreasuryTipData>? treasuryTips;
 
   @action
   void setCouncilInfo(Map info, {bool shouldCache = true}) {
-    council = CouncilInfoData.fromJson(info);
+    council = CouncilInfoData.fromJson(info as Map<String, dynamic>);
 
     if (shouldCache) {
       cacheCouncilTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -85,7 +85,7 @@ abstract class _GovernanceStore with Store {
   }
 
   @action
-  void setReferendumVoteConvictions(List ls) {
+  void setReferendumVoteConvictions(List? ls) {
     voteConvictions = ls;
   }
 

@@ -108,9 +108,9 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   List<HomeNavItem> getNavItems(BuildContext context, Keyring keyring) {
     return home_nav_items.map((e) {
-      final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+      final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
       return HomeNavItem(
-        text: dic[e],
+        text: dic[e]!,
         icon: SvgPicture.asset(
           'packages/polkawallet_plugin_kusama/assets/images/public/nav_$e.svg',
           color: Theme.of(context).disabledColor,
@@ -127,8 +127,11 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   Map<String, WidgetBuilder> getRoutes(Keyring keyring) {
     return {
-      TxConfirmPage.route: (_) =>
-          TxConfirmPage(this, keyring, _service.getPassword),
+      TxConfirmPage.route: (_) => TxConfirmPage(
+          this,
+          keyring,
+          _service!.getPassword as Future<String> Function(
+              BuildContext, KeyPairData)),
 
       // staking pages
       StakePage.route: (_) => StakePage(this, keyring),
@@ -161,18 +164,21 @@ class PluginKusama extends PolkawalletPlugin {
       SubmitTipPage.route: (_) => SubmitTipPage(this, keyring),
       TipDetailPage.route: (_) => TipDetailPage(this, keyring),
       DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
-      WalletExtensionSignPage.route: (_) =>
-          WalletExtensionSignPage(this, keyring, _service.getPassword),
+      WalletExtensionSignPage.route: (_) => WalletExtensionSignPage(
+          this,
+          keyring,
+          _service!.getPassword as Future<String> Function(
+              BuildContext, KeyPairData)),
     };
   }
 
   @override
-  Future<String> loadJSCode() => null;
+  Future<String>? loadJSCode() => null;
 
-  PluginStore _store;
-  PluginApi _service;
-  PluginStore get store => _store;
-  PluginApi get service => _service;
+  PluginStore? _store;
+  PluginApi? _service;
+  PluginStore? get store => _store;
+  PluginApi? get service => _service;
 
   final StoreCache _cache;
 
@@ -187,9 +193,9 @@ class PluginKusama extends PolkawalletPlugin {
     try {
       loadBalances(keyring.current);
 
-      _store.staking.loadCache(keyring.current.pubKey);
-      _store.gov.clearState();
-      _store.gov.loadCache();
+      _store!.staking.loadCache(keyring.current.pubKey);
+      _store!.gov.clearState();
+      _store!.gov.loadCache();
       print('kusama plugin cache data loaded');
     } catch (err) {
       print(err);
@@ -206,12 +212,12 @@ class PluginKusama extends PolkawalletPlugin {
 
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
-    _store.staking.loadAccountCache(acc.pubKey);
+    _store!.staking.loadAccountCache(acc.pubKey);
   }
 
   List _randomList(List input) {
     final data = input.toList();
-    final res = List();
+    final res = [];
     final _random = Random();
     for (var i = 0; i < input.length; i++) {
       final item = data[_random.nextInt(data.length)];

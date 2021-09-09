@@ -26,14 +26,14 @@ class _ProposalsState extends State<MoneyTips> {
       new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
-    widget.plugin.service.gov.updateBestNumber();
-    await widget.plugin.service.gov.queryTreasuryTips();
+    widget.plugin.service!.gov.updateBestNumber();
+    await widget.plugin.service!.gov.queryTreasuryTips();
   }
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _refreshKey.currentState?.show();
     });
   }
@@ -42,9 +42,9 @@ class _ProposalsState extends State<MoneyTips> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (BuildContext context) {
-        final tips = List<TreasuryTipData>();
-        if (widget.plugin.store.gov.treasuryTips != null) {
-          tips.addAll(widget.plugin.store.gov.treasuryTips.reversed);
+        final tips = <TreasuryTipData>[];
+        if (widget.plugin.store!.gov.treasuryTips != null) {
+          tips.addAll(widget.plugin.store!.gov.treasuryTips!.reversed);
         }
         return RefreshIndicator(
           key: _refreshKey,
@@ -67,10 +67,10 @@ class _ProposalsState extends State<MoneyTips> {
                     }
                     return Observer(builder: (_) {
                       final TreasuryTipData tip = tips[i];
-                      final icon =
-                          widget.plugin.store.accounts.addressIconsMap[tip.who];
-                      final indices =
-                          widget.plugin.store.accounts.addressIndexMap[tip.who];
+                      final icon = widget
+                          .plugin.store!.accounts.addressIconsMap[tip.who];
+                      final indices = widget
+                          .plugin.store!.accounts.addressIndexMap[tip.who];
                       return RoundedCard(
                         margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
                         padding: EdgeInsets.only(top: 16, bottom: 16),
@@ -80,15 +80,16 @@ class _ProposalsState extends State<MoneyTips> {
                             svg: icon,
                           ),
                           title: UI.accountDisplayName(tip.who, indices),
-                          subtitle: Text(tip.reason),
+                          subtitle: Text(tip.reason!),
                           trailing: Column(
                             children: <Widget>[
                               Text(
-                                tip.tips.length.toString(),
+                                tip.tips!.length.toString(),
                                 style: Theme.of(context).textTheme.headline4,
                               ),
-                              Text(I18n.of(context).getDic(i18n_full_dic_kusama,
-                                  'gov')['treasury.tipper'])
+                              Text(I18n.of(context)!.getDic(
+                                  i18n_full_dic_kusama,
+                                  'gov')!['treasury.tipper']!)
                             ],
                           ),
                           onTap: () async {
@@ -97,7 +98,7 @@ class _ProposalsState extends State<MoneyTips> {
                               arguments: tip,
                             );
                             if (res != null) {
-                              _refreshKey.currentState.show();
+                              _refreshKey.currentState!.show();
                             }
                           },
                         ),

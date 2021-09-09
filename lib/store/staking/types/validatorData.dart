@@ -27,19 +27,19 @@ class ValidatorData extends _ValidatorData {
 }
 
 abstract class _ValidatorData {
-  String accountId = '';
+  String? accountId = '';
 
   BigInt total = BigInt.zero;
   BigInt bondOwn = BigInt.zero;
   BigInt bondOther = BigInt.zero;
 
-  bool isActive = false;
-  bool isElected = false;
-  bool isBlocking = false;
+  bool? isActive = false;
+  bool? isElected = false;
+  bool? isBlocking = false;
 
-  int numNominators = 0;
-  int rankBondTotal = 0;
-  int rankReward = 0;
+  int? numNominators = 0;
+  int? rankBondTotal = 0;
+  int? rankReward = 0;
 
   double stakedReturn = 0;
   double stakedReturnCmp = 0;

@@ -30,13 +30,13 @@ class _DemocracyState extends State<Democracy> {
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  final Map<BigInt, List> _links = {};
+  final Map<BigInt?, List> _links = {};
 
   List _unlocks = [];
 
   Future<void> _queryDemocracyUnlocks() async {
-    final List unlocks = await widget.plugin.sdk.api.gov
-        .getDemocracyUnlocks(widget.keyring.current.address);
+    final List? unlocks = await widget.plugin.sdk.api!.gov!
+        .getDemocracyUnlocks(widget.keyring.current.address!);
     if (mounted && unlocks != null) {
       setState(() {
         _unlocks = unlocks;
@@ -44,10 +44,10 @@ class _DemocracyState extends State<Democracy> {
     }
   }
 
-  Future<List> _getExternalLinks(BigInt id) async {
+  Future<List?> _getExternalLinks(BigInt? id) async {
     if (_links[id] != null) return _links[id];
 
-    final List res = await widget.plugin.sdk.api.gov.getExternalLinks(
+    final List? res = await widget.plugin.sdk.api!.gov!.getExternalLinks(
       GenExternalLinksParams.fromJson(
           {'data': id.toString(), 'type': 'referendum'}),
     );
@@ -60,17 +60,17 @@ class _DemocracyState extends State<Democracy> {
   }
 
   Future<void> _fetchReferendums() async {
-    if (widget.plugin.sdk.api.connectedNode == null) {
+    if (widget.plugin.sdk.api!.connectedNode == null) {
       return;
     }
-    widget.plugin.service.gov.getReferendumVoteConvictions();
-    await widget.plugin.service.gov.queryReferendums();
+    widget.plugin.service!.gov.getReferendumVoteConvictions();
+    await widget.plugin.service!.gov.queryReferendums();
 
     _queryDemocracyUnlocks();
   }
 
   Future<void> _submitCancelVote(int id) async {
-    final govDic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final govDic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final params = TxConfirmParams(
       module: 'democracy',
       call: 'removeVote',
@@ -81,12 +81,12 @@ class _DemocracyState extends State<Democracy> {
     final res = await Navigator.of(context)
         .pushNamed(TxConfirmPage.route, arguments: params);
     if (res != null) {
-      _refreshKey.currentState.show();
+      _refreshKey.currentState!.show();
     }
   }
 
   void _onUnlock() async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final txs = _unlocks
         .map(
             (e) => 'api.tx.democracy.removeVote(${BigInt.parse(e.toString())})')
@@ -104,38 +104,38 @@ class _DemocracyState extends State<Democracy> {
           rawParams: '[[${txs.join(',')}]]',
         ));
     if (res != null) {
-      _refreshKey.currentState.show();
+      _refreshKey.currentState!.show();
     }
   }
 
   @override
   void initState() {
     super.initState();
-    if (widget.plugin.sdk.api.connectedNode != null) {
-      widget.plugin.service.gov.subscribeBestNumber();
+    if (widget.plugin.sdk.api!.connectedNode != null) {
+      widget.plugin.service!.gov.subscribeBestNumber();
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _refreshKey.currentState.show();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _refreshKey.currentState!.show();
     });
   }
 
   @override
   void dispose() {
-    widget.plugin.service.gov.unsubscribeBestNumber();
+    widget.plugin.service!.gov.unsubscribeBestNumber();
 
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     return Observer(
       builder: (_) {
-        final decimals = widget.plugin.networkState.tokenDecimals[0];
-        final symbol = widget.plugin.networkState.tokenSymbol[0];
-        final list = widget.plugin.store.gov.referendums;
-        final bestNumber = widget.plugin.store.gov.bestNumber;
+        final decimals = widget.plugin.networkState.tokenDecimals![0];
+        final symbol = widget.plugin.networkState.tokenSymbol![0];
+        final list = widget.plugin.store!.gov.referendums!;
+        final bestNumber = widget.plugin.store!.gov.bestNumber;
 
         final count = list?.length ?? 0;
         return RefreshIndicator(
@@ -152,7 +152,7 @@ class _DemocracyState extends State<Democracy> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(dic['democracy.expire']),
+                            Text(dic!['democracy.expire']!),
                             OutlinedButtonSmall(
                               active: true,
                               content: dic['democracy.unlock'],
@@ -196,7 +196,7 @@ class _DemocracyState extends State<Democracy> {
                         },
                       ),
                       onRefresh: () {
-                        _refreshKey.currentState.show();
+                        _refreshKey.currentState!.show();
                       },
                     );
             },

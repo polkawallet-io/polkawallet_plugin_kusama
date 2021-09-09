@@ -9,13 +9,13 @@ class ValidatorListFilter extends StatelessWidget {
       {this.onSearchChange,
       this.onFilterChange,
       this.filters = const [true, false]});
-  final Function(String) onSearchChange;
-  final Function(List<bool>) onFilterChange;
+  final Function(String)? onSearchChange;
+  final Function(List<bool>)? onFilterChange;
   final List<bool> filters;
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     var theme = Theme.of(context);
     return Container(
       color: theme.cardColor,
@@ -30,7 +30,7 @@ class ValidatorListFilter extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(24)),
               border: Border.all(width: 0.5, color: theme.dividerColor),
             ),
-            onChanged: (value) => onSearchChange(value.trim()),
+            onChanged: (value) => onSearchChange!(value.trim()),
           ),
           Container(
             margin: EdgeInsets.only(top: 8),
@@ -40,14 +40,14 @@ class ValidatorListFilter extends StatelessWidget {
                   active: filters[0] == true,
                   content: dic['filter.comm'],
                   onPressed: () {
-                    onFilterChange([!filters[0], filters[1]]);
+                    onFilterChange!([!filters[0], filters[1]]);
                   },
                 ),
                 OutlinedButtonSmall(
                   active: filters[1] == true,
                   content: dic['filter.id'],
                   onPressed: () {
-                    onFilterChange([filters[0], !filters[1]]);
+                    onFilterChange!([filters[0], !filters[1]]);
                   },
                 ),
               ],

@@ -32,13 +32,13 @@ class _TipDetailPageState extends State<TipDetailPage> {
   final TextEditingController _tipInputCtrl = TextEditingController();
 
   Future<void> _onEndorse() async {
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
     showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
-        final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-        final dicGov = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+        final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
+        final dicGov = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
         return CupertinoAlertDialog(
           title: Padding(
             padding: EdgeInsets.only(bottom: 16),
@@ -51,12 +51,12 @@ class _TipDetailPageState extends State<TipDetailPage> {
               padding: EdgeInsets.only(right: 8),
               child: Text(symbol),
             ),
-            inputFormatters: [UI.decimalInputFormatter(decimals)],
+            inputFormatters: [UI.decimalInputFormatter(decimals)!],
             keyboardType: TextInputType.numberWithOptions(decimal: true),
           ),
           actions: <Widget>[
             CupertinoButton(
-              child: Text(dic['cancel']),
+              child: Text(dic['cancel']!),
               onPressed: () {
                 setState(() {
                   _tipInputCtrl.text = '';
@@ -65,7 +65,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
               },
             ),
             CupertinoButton(
-              child: Text(dic['ok']),
+              child: Text(dic['ok']!),
               onPressed: () {
                 try {
                   final value = double.parse(_tipInputCtrl.text);
@@ -90,13 +90,13 @@ class _TipDetailPageState extends State<TipDetailPage> {
     showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
-        final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+        final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
         return CupertinoAlertDialog(
           title: Container(),
-          content: Text(dic['input.invalid']),
+          content: Text(dic['input.invalid']!),
           actions: <Widget>[
             CupertinoButton(
-              child: Text(dic['cancel']),
+              child: Text(dic['cancel']!),
               onPressed: () {
                 setState(() {
                   _tipInputCtrl.text = '';
@@ -111,9 +111,9 @@ class _TipDetailPageState extends State<TipDetailPage> {
   }
 
   Future<void> _onEndorseSubmit() async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
+    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     String amt = _tipInputCtrl.text.trim();
     final args = TxConfirmParams(
       module: 'tips',
@@ -142,8 +142,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
   }
 
   Future<void> _onCancel() async {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
+    var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'retractTip',
@@ -159,8 +159,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
   }
 
   Future<void> _onCloseTip() async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'closeTip',
@@ -176,9 +176,9 @@ class _TipDetailPageState extends State<TipDetailPage> {
   }
 
   Future<void> _onTip(BigInt median) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
+    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'tip',
@@ -198,32 +198,32 @@ class _TipDetailPageState extends State<TipDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final TreasuryTipData tipData = ModalRoute.of(context).settings.arguments;
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
+    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final who = KeyPairData();
     final finder = KeyPairData();
     who.address = tipData.who;
-    final Map accInfo =
-        widget.plugin.store.accounts.addressIndexMap[who.address];
-    Map accInfoFinder;
+    final Map? accInfo =
+        widget.plugin.store!.accounts.addressIndexMap[who.address];
+    Map? accInfoFinder;
     if (tipData.finder != null) {
       finder.address = tipData.finder;
       accInfoFinder =
-          widget.plugin.store.accounts.addressIndexMap[finder.address];
+          widget.plugin.store!.accounts.addressIndexMap[finder.address];
     }
     bool isFinder = false;
     if (widget.keyring.current.address == finder.address) {
       isFinder = true;
     }
     bool isCouncil = false;
-    widget.plugin.store.gov.council.members.forEach((e) {
+    widget.plugin.store!.gov.council.members!.forEach((e) {
       if (widget.keyring.current.address == e[0]) {
         isCouncil = true;
       }
     });
-    bool isTipped = tipData.tips.length > 0;
+    bool isTipped = tipData.tips!.length > 0;
     int blockTime = 6000;
     if (widget.plugin.networkConst['treasury'] != null) {
       blockTime =
@@ -231,7 +231,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     }
 
     final List<BigInt> values =
-        tipData.tips.map((e) => BigInt.parse(e.value.toString())).toList();
+        tipData.tips!.map((e) => BigInt.parse(e.value.toString())).toList();
     values.sort();
     final int midIndex = (values.length / 2).floor();
     BigInt median = BigInt.zero;
@@ -241,7 +241,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
           : (values[midIndex - 1] + values[midIndex]) ~/ BigInt.two;
     }
     return Scaffold(
-      appBar: AppBar(title: Text(dic['treasury.tip']), centerTitle: true),
+      appBar: AppBar(title: Text(dic['treasury.tip']!), centerTitle: true),
       body: SafeArea(
         child: Observer(
           builder: (BuildContext context) {
@@ -249,7 +249,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                 ? BigInt.parse(tipData.closes.toString())
                 : null;
             final bool canClose = closeBlock != null &&
-                closeBlock <= widget.plugin.store.gov.bestNumber;
+                closeBlock <= widget.plugin.store!.gov.bestNumber;
             return ListView(
               children: <Widget>[
                 RoundedCard(
@@ -259,24 +259,24 @@ class _TipDetailPageState extends State<TipDetailPage> {
                       ListTile(
                         leading: AddressIcon(
                           who.address,
-                          svg: widget.plugin.store.accounts
+                          svg: widget.plugin.store!.accounts
                               .addressIconsMap[who.address],
                         ),
                         title: UI.accountDisplayName(who.address, accInfo),
-                        subtitle: Text(dic['treasury.who']),
+                        subtitle: Text(dic['treasury.who']!),
                       ),
                       tipData.finder != null
                           ? ListTile(
                               leading: AddressIcon(
                                 finder.address,
-                                svg: widget.plugin.store.accounts
+                                svg: widget.plugin.store!.accounts
                                     .addressIconsMap[finder.address],
                               ),
                               title: UI.accountDisplayName(
                                 finder.address,
                                 accInfoFinder,
                               ),
-                              subtitle: Text(dic['treasury.finder']),
+                              subtitle: Text(dic['treasury.finder']!),
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -288,7 +288,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                     style:
                                         Theme.of(context).textTheme.headline4,
                                   ),
-                                  Text(dic['treasury.bond']),
+                                  Text(dic['treasury.bond']!),
                                 ],
                               ),
                             )
@@ -297,7 +297,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                         padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                         child: Row(
                           children: <Widget>[
-                            Text(dic['treasury.reason']),
+                            Text(dic['treasury.reason']!),
                             Expanded(
                               child: Padding(
                                 padding: EdgeInsets.only(left: 16),
@@ -326,7 +326,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                               child: Padding(
                                 padding: EdgeInsets.only(left: 16),
                                 child: Text(
-                                  Fmt.address(tipData.hash, pad: 10),
+                                  Fmt.address(tipData.hash, pad: 10)!,
                                   textAlign: TextAlign.right,
                                 ),
                               ),
@@ -335,12 +335,12 @@ class _TipDetailPageState extends State<TipDetailPage> {
                         ),
                       ),
                       closeBlock != null &&
-                              closeBlock > widget.plugin.store.gov.bestNumber
+                              closeBlock > widget.plugin.store!.gov.bestNumber
                           ? Padding(
                               padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
                               child: Row(
                                 children: <Widget>[
-                                  Text(dic['treasury.closeTip']),
+                                  Text(dic['treasury.closeTip']!),
                                   Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 16),
@@ -351,7 +351,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                           Text(
                                             Fmt.blockToTime(
                                               (closeBlock -
-                                                      widget.plugin.store.gov
+                                                      widget.plugin.store!.gov
                                                           .bestNumber)
                                                   .toInt(),
                                               blockTime,
@@ -376,9 +376,9 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                 Expanded(
                                   child: RoundedButton(
                                     color: Colors.orange,
-                                    text: I18n.of(context).getDic(
+                                    text: I18n.of(context)!.getDic(
                                         i18n_full_dic_kusama,
-                                        'common')['cancel'],
+                                        'common')!['cancel'],
                                     onPressed: isFinder ? _onCancel : null,
                                   ),
                                 ),
@@ -416,7 +416,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                     ],
                   ),
                 ),
-                tipData.tips.length > 0
+                tipData.tips!.length > 0
                     ? Container(
                         color: Theme.of(context).cardColor,
                         margin: EdgeInsets.only(top: 8),
@@ -428,17 +428,17 @@ class _TipDetailPageState extends State<TipDetailPage> {
                               padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
                               child: BorderedTitle(
                                   title:
-                                      '${tipData.tips.length} ${dic['treasury.tipper']} (${Fmt.token(median, decimals)} $symbol)'),
+                                      '${tipData.tips!.length} ${dic['treasury.tipper']} (${Fmt.token(median, decimals)} $symbol)'),
                             ),
                             Column(
-                              children: tipData.tips.map((e) {
+                              children: tipData.tips!.map((e) {
                                 return ListTile(
                                   leading: AddressIcon(e.address,
-                                      svg: widget.plugin.store.accounts
+                                      svg: widget.plugin.store!.accounts
                                           .addressIconsMap[e.address]),
                                   title: UI.accountDisplayName(
                                       e.address,
-                                      widget.plugin.store.accounts
+                                      widget.plugin.store!.accounts
                                           .addressIndexMap[e.address]),
                                   trailing: Text(
                                     '${Fmt.balance(
@@ -452,7 +452,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                     Navigator.of(context).pushNamed(
                                       CandidateDetailPage.route,
                                       arguments: widget
-                                          .plugin.store.gov.council.members
+                                          .plugin.store!.gov.council.members!
                                           .firstWhere((i) {
                                         return i[0] == e.address;
                                       }),

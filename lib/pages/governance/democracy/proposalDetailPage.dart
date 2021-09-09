@@ -35,12 +35,12 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  List _links;
+  List? _links;
 
-  Future<List> _getExternalLinks(BigInt id) async {
+  Future<List?> _getExternalLinks(BigInt id) async {
     if (_links != null) return _links;
 
-    final List res = await widget.plugin.sdk.api.gov.getExternalLinks(
+    final List? res = await widget.plugin.sdk.api!.gov!.getExternalLinks(
       GenExternalLinksParams.fromJson(
           {'data': id.toString(), 'type': 'proposal'}),
     );
@@ -53,38 +53,38 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
   }
 
   Future<void> _fetchData() async {
-    await widget.plugin.service.gov.queryProposals();
+    await widget.plugin.service!.gov.queryProposals();
   }
 
   Future<void> _onSwitch() async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final ProposalInfoData proposal = ModalRoute.of(context).settings.arguments;
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final ProposalInfoData proposal = ModalRoute.of(context)!.settings.arguments as ProposalInfoData;
     final TxConfirmParams params = TxConfirmParams(
       module: 'democracy',
       call: 'second',
       txTitle: dic['proposal.second'],
       txDisplay: {
         "proposal": BigInt.parse(proposal.index.toString()).toInt(),
-        "seconds": proposal.seconds.length,
+        "seconds": proposal.seconds!.length,
       },
       params: [
         BigInt.parse(proposal.index.toString()).toInt(),
-        proposal.seconds.length,
+        proposal.seconds!.length,
       ],
     );
 
     final res = await Navigator.of(context)
         .pushNamed(TxConfirmPage.route, arguments: params);
-    if (res ?? false) {
-      _refreshKey.currentState.show();
+    if (res as bool? ?? false) {
+      _refreshKey.currentState!.show();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final ProposalInfoData proposalPara =
-        ModalRoute.of(context).settings.arguments;
+        ModalRoute.of(context)!.settings.arguments as ProposalInfoData;
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -97,23 +97,23 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
           child: Observer(
             builder: (_) {
               final ProposalInfoData proposal = widget
-                  .plugin.store.gov.proposals
+                  .plugin.store!.gov.proposals
                   .firstWhere((e) => e.index == proposalPara.index);
-              final decimals = widget.plugin.networkState.tokenDecimals[0];
-              final symbol = widget.plugin.networkState.tokenSymbol[0] ?? '';
+              final decimals = widget.plugin.networkState.tokenDecimals![0];
+              final symbol = widget.plugin.networkState.tokenSymbol![0] ?? '';
               final List<List<String>> params = [];
               bool hasProposal = false;
               if (proposal.image?.proposal != null) {
-                proposal.image.proposal.meta.args.asMap().forEach((k, v) {
+                proposal.image!.proposal!.meta!.args!.asMap().forEach((k, v) {
                   params.add([
                     '${v.name}: ${v.type}',
-                    proposal.image.proposal.args[k].toString()
+                    proposal.image!.proposal!.args![k].toString()
                   ]);
                 });
                 hasProposal = true;
               }
               final bool isSecondOn =
-                  proposal.seconds.indexOf(widget.keyring.current.address) >= 0;
+                  proposal.seconds!.indexOf(widget.keyring.current.address!) >= 0;
               return ListView(
                 children: <Widget>[
                   RoundedCard(
@@ -124,12 +124,12 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                       children: <Widget>[
                         hasProposal
                             ? Text(
-                                '${proposal.image.proposal.section}.${proposal.image.proposal.method}',
+                                '${proposal.image!.proposal!.section}.${proposal.image!.proposal!.method}',
                                 style: Theme.of(context).textTheme.headline4,
                               )
                             : Container(),
                         hasProposal
-                            ? Text(proposal.image.proposal.meta.documentation
+                            ? Text(proposal.image!.proposal!.meta!.documentation!
                                 .trim())
                             : Container(),
                         hasProposal ? Divider(height: 24) : Container(),
@@ -138,7 +138,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                           child: ProposalArgsItem(
                             label: Text('Hash'),
                             content: Text(
-                              Fmt.address(proposal.imageHash, pad: 10),
+                              Fmt.address(proposal.imageHash, pad: 10)!,
                               style: Theme.of(context).textTheme.headline4,
                             ),
                             margin: EdgeInsets.all(0),
@@ -146,7 +146,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                         ),
                         params.length > 0
                             ? Text(
-                                dic['proposal.params'],
+                                dic['proposal.params']!,
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .unselectedWidgetColor),
@@ -156,7 +156,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                             ? ProposalArgsList(params)
                             : Container(),
                         Text(
-                          dic['treasury.proposer'],
+                          dic['treasury.proposer']!,
                           style: TextStyle(
                               color: Theme.of(context).unselectedWidgetColor),
                         ),
@@ -164,12 +164,12 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                           contentPadding: EdgeInsets.all(0),
                           leading: AddressIcon(
                             proposal.proposer,
-                            svg: widget.plugin.store.accounts
+                            svg: widget.plugin.store!.accounts
                                 .addressIconsMap[proposal.proposer],
                           ),
                           title: UI.accountDisplayName(
                               proposal.proposer,
-                              widget.plugin.store.accounts
+                              widget.plugin.store!.accounts
                                   .addressIndexMap[proposal.proposer]),
                         ),
                         Padding(
@@ -178,7 +178,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  dic['treasury.bond'],
+                                  dic['treasury.bond']!,
                                   style: TextStyle(
                                       color: Theme.of(context)
                                           .unselectedWidgetColor),
@@ -206,7 +206,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                dic['proposal.second'],
+                                dic['proposal.second']!,
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .unselectedWidgetColor),
@@ -226,7 +226,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                     ),
                   ),
                   ProposalSecondsList(
-                      store: widget.plugin.store.accounts, proposal: proposal),
+                      store: widget.plugin.store!.accounts, proposal: proposal),
                 ],
               );
             },
@@ -240,13 +240,13 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
 class ProposalSecondsList extends StatelessWidget {
   ProposalSecondsList({this.store, this.proposal});
 
-  final AccountsStore store;
-  final ProposalInfoData proposal;
+  final AccountsStore? store;
+  final ProposalInfoData? proposal;
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final List seconding = proposal.seconds.toList();
+    final Map dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final List seconding = proposal!.seconds!.toList();
     seconding.removeAt(0);
     return Container(
       padding: EdgeInsets.only(bottom: 24),
@@ -262,9 +262,9 @@ class ProposalSecondsList extends StatelessWidget {
           ),
           Column(
             children: seconding.map((e) {
-              final Map accInfo = store.addressIndexMap[e];
+              final Map? accInfo = store!.addressIndexMap[e];
               return ListTile(
-                leading: AddressIcon(e, svg: store.addressIconsMap[e]),
+                leading: AddressIcon(e, svg: store!.addressIconsMap[e]),
                 title: UI.accountDisplayName(e, accInfo),
               );
             }).toList(),

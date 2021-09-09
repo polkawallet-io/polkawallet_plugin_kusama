@@ -59,14 +59,14 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
     });
 
     _fetchRecommendedValidators();
-    widget.plugin.service.staking.queryElectedInfo();
-    await widget.plugin.service.staking.queryOwnStashInfo();
+    widget.plugin.service!.staking.queryElectedInfo();
+    await widget.plugin.service!.staking.queryOwnStashInfo();
   }
 
   Future<void> _fetchRecommendedValidators() async {
-    Map res = await WalletApi.getRecommended();
+    Map? res = await WalletApi.getRecommended();
     if (res != null && res['validators'] != null) {
-      widget.plugin.store.staking
+      widget.plugin.store!.staking
           .setRecommendedValidatorList(res['validators']);
     }
   }
@@ -74,29 +74,30 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   void _onAction(Future<dynamic> Function() doAction) {
     doAction().then((res) {
       if (res != null) {
-        _refreshKey.currentState.show();
+        _refreshKey.currentState!.show();
       }
     });
   }
 
   void _goToBond({bondExtra = false}) {
-    if (widget.plugin.store.staking.ownStashInfo == null) return;
+    if (widget.plugin.store!.staking.ownStashInfo == null) return;
 
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
     showCupertinoDialog(
       context: context,
       builder: (_) {
         return CupertinoAlertDialog(
-          title: Text(dicStaking['action.nominate']),
-          content: Text(dicStaking['action.nominate.bond']),
+          title: Text(dicStaking!['action.nominate']!),
+          content: Text(dicStaking['action.nominate.bond']!),
           actions: <Widget>[
             CupertinoButton(
-              child: Text(dic['cancel']),
+              child: Text(dic!['cancel']!),
               onPressed: () => Navigator.of(context).pop(),
             ),
             CupertinoButton(
-              child: Text(dic['ok']),
+              child: Text(dic['ok']!),
               onPressed: () async {
                 Navigator.of(context).pop();
                 _onAction(() => Navigator.pushNamed(context,
@@ -110,18 +111,19 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   }
 
   void _onSetNomination() {
-    if (widget.plugin.store.staking.ownStashInfo == null) return;
+    if (widget.plugin.store!.staking.ownStashInfo == null) return;
 
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
     final hasNomination =
-        widget.plugin.store.staking.ownStashInfo.nominating.length > 0;
+        widget.plugin.store!.staking.ownStashInfo!.nominating!.length > 0;
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <Widget>[
           CupertinoActionSheetAction(
             child: Text(
-              dicStaking['action.nominee'],
+              dicStaking!['action.nominee']!,
             ),
             onPressed: () {
               Navigator.of(context).pop();
@@ -131,7 +133,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
           ),
           CupertinoActionSheetAction(
             child: Text(
-              dicStaking['action.chill'],
+              dicStaking['action.chill']!,
               style: TextStyle(
                   color: hasNomination
                       ? Theme.of(context).primaryColor
@@ -146,8 +148,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
-          child: Text(I18n.of(context)
-              .getDic(i18n_full_dic_kusama, 'common')['cancel']),
+          child: Text(I18n.of(context)!
+              .getDic(i18n_full_dic_kusama, 'common')!['cancel']!),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -157,7 +159,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   }
 
   Future<void> _chill() async {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final params = TxConfirmParams(
       txTitle: dicStaking['action.chill'],
       module: 'staking',
@@ -170,27 +173,28 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   }
 
   Widget _buildTopCard(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final symbol = (widget.plugin.networkState.tokenSymbol ?? ['DOT'])[0];
     final decimals = (widget.plugin.networkState.tokenDecimals ?? [12])[0];
-    final stashInfo = widget.plugin.store.staking.ownStashInfo;
-    final overview = widget.plugin.store.staking.overview;
+    final stashInfo = widget.plugin.store!.staking.ownStashInfo;
+    final overview = widget.plugin.store!.staking.overview;
     final hashData = stashInfo != null && stashInfo.stakingLedger != null;
 
     int bonded = 0;
     List nominators = [];
     double nominatorListHeight = 48;
-    bool isController = false;
+    bool? isController = false;
     bool isStash = true;
     if (hashData) {
-      bonded = int.parse(stashInfo.stakingLedger['active'].toString());
-      nominators = stashInfo.nominating.toList();
+      bonded = int.parse(stashInfo!.stakingLedger!['active'].toString());
+      nominators = stashInfo.nominating!.toList();
       if (nominators.length > 0) {
         nominatorListHeight = double.parse((nominators.length * 56).toString());
       }
       isController = stashInfo.isOwnController;
-      isStash = stashInfo.isOwnStash ||
-          (!stashInfo.isOwnStash && !stashInfo.isOwnController);
+      isStash = stashInfo.isOwnStash! ||
+          (!stashInfo.isOwnStash! && !stashInfo.isOwnController!);
     }
 
     double stakedRatio = 0;
@@ -234,7 +238,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                 ),
                 InfoItem(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  title: dicStaking['overview.min'] + '($symbol)',
+                  title: dicStaking['overview.min']! + '($symbol)',
                   content: Fmt.balance(overview['minNominated'], decimals) +
                       ' / ' +
                       Fmt.balance(overview['minNominatorBond'], decimals),
@@ -261,11 +265,11 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
               ),
             ),
             title: Text(
-              hashData ? stashInfo.nominating.length.toString() : '0',
+              hashData ? stashInfo!.nominating!.length.toString() : '0',
               style: Theme.of(context).textTheme.headline4,
             ),
             subtitle: Text(
-              dicStaking['nominating'],
+              dicStaking['nominating']!,
               style: TextStyle(fontSize: 12),
             ),
             trailing: Container(
@@ -279,7 +283,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                             color: actionButtonColor,
                           ),
                           Text(
-                            dicStaking['action.nominate'],
+                            dicStaking['action.nominate']!,
                             style: TextStyle(
                                 color: actionButtonColor, fontSize: 12),
                           )
@@ -287,7 +291,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                       ),
                       onTap: _goToBond,
                     )
-                  : isStash && !isController
+                  : isStash && !isController!
                       ? Column(
                           children: <Widget>[
                             OutlinedCircle(
@@ -295,7 +299,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                               color: disabledColor,
                             ),
                             Text(
-                              dicStaking['action.nominate'],
+                              dicStaking['action.nominate']!,
                               style:
                                   TextStyle(color: disabledColor, fontSize: 12),
                             )
@@ -311,7 +315,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                               Text(
                                 dicStaking[nominators.length > 0
                                     ? 'action.nominee'
-                                    : 'action.nominate'],
+                                    : 'action.nominate']!,
                                 style: TextStyle(
                                     color: actionButtonColor, fontSize: 12),
                               )
@@ -336,8 +340,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                   : Padding(
                       padding: EdgeInsets.only(top: 16),
                       child: Text(
-                        I18n.of(context)
-                            .getDic(i18n_full_dic_ui, 'common')['list.empty'],
+                        I18n.of(context)!
+                            .getDic(i18n_full_dic_ui, 'common')!['list.empty']!,
                         style: TextStyle(color: Colors.black54),
                       ),
                     ),
@@ -349,68 +353,68 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   }
 
   Widget _buildNominatingList() {
-    if (widget.plugin.store.staking.ownStashInfo == null ||
-        widget.plugin.store.staking.validatorsInfo.length == 0) {
+    if (widget.plugin.store!.staking.ownStashInfo == null ||
+        widget.plugin.store!.staking.validatorsInfo.length == 0) {
       return Container();
     }
 
-    final stashId = widget.plugin.store.staking.ownStashInfo.stashId;
-    final NomineesInfoData nomineesInfo =
-        widget.plugin.store.staking.ownStashInfo.inactives;
+    final stashId = widget.plugin.store!.staking.ownStashInfo!.stashId;
+    final NomineesInfoData? nomineesInfo =
+        widget.plugin.store!.staking.ownStashInfo!.inactives;
     List<Widget> list = [];
     if (nomineesInfo != null) {
-      list.addAll(nomineesInfo.nomsActive.map((id) {
+      list.addAll(nomineesInfo.nomsActive!.map((id) {
         return Expanded(
           child: _NomineeItem(
             id,
-            widget.plugin.store.staking.validatorsInfo,
+            widget.plugin.store!.staking.validatorsInfo,
             stashId,
             NomStatus.active,
-            widget.plugin.networkState.tokenDecimals[0],
-            widget.plugin.store.accounts.addressIndexMap,
-            widget.plugin.store.accounts.addressIconsMap,
+            widget.plugin.networkState.tokenDecimals![0],
+            widget.plugin.store!.accounts.addressIndexMap,
+            widget.plugin.store!.accounts.addressIconsMap,
           ),
         );
       }));
 
-      list.addAll(nomineesInfo.nomsOver.map((id) {
+      list.addAll(nomineesInfo.nomsOver!.map((id) {
         return Expanded(
           child: _NomineeItem(
             id,
-            widget.plugin.store.staking.validatorsInfo,
+            widget.plugin.store!.staking.validatorsInfo,
             stashId,
             NomStatus.over,
-            widget.plugin.networkState.tokenDecimals[0],
-            widget.plugin.store.accounts.addressIndexMap,
-            widget.plugin.store.accounts.addressIconsMap,
+            widget.plugin.networkState.tokenDecimals![0],
+            widget.plugin.store!.accounts.addressIndexMap,
+            widget.plugin.store!.accounts.addressIconsMap,
           ),
         );
       }).toList());
 
-      list.addAll(nomineesInfo.nomsInactive.map((id) {
+      list.addAll(nomineesInfo.nomsInactive!.map((id) {
         return Expanded(
           child: _NomineeItem(
             id,
-            widget.plugin.store.staking.validatorsInfo,
+            widget.plugin.store!.staking.validatorsInfo,
             stashId,
             NomStatus.inactive,
-            widget.plugin.networkState.tokenDecimals[0],
-            widget.plugin.store.accounts.addressIndexMap,
-            widget.plugin.store.accounts.addressIconsMap,
+            widget.plugin.networkState.tokenDecimals![0],
+            widget.plugin.store!.accounts.addressIndexMap,
+            widget.plugin.store!.accounts.addressIconsMap,
           ),
         );
       }).toList());
 
-      list.addAll(nomineesInfo.nomsWaiting.map((id) {
+      list.addAll(nomineesInfo.nomsWaiting!.map((id) {
         return Expanded(
           child: _NomineeItem(
             id,
-            widget.plugin.store.staking.validatorsInfo,
+            widget.plugin.store!.staking.validatorsInfo,
             stashId,
             NomStatus.waiting,
-            widget.plugin.networkState.tokenDecimals[0],
-            widget.plugin.store.accounts.addressIndexMap,
-            widget.plugin.store.accounts.addressIconsMap,
+            widget.plugin.networkState.tokenDecimals![0],
+            widget.plugin.store!.accounts.addressIndexMap,
+            widget.plugin.store!.accounts.addressIconsMap,
           ),
         );
       }).toList());
@@ -432,25 +436,26 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _refreshData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
     return Observer(
       builder: (_) {
-        final int decimals = widget.plugin.networkState.tokenDecimals[0];
+        final int decimals = widget.plugin.networkState.tokenDecimals![0];
         final List<Tab> _listTabs = <Tab>[
           Tab(
             text:
-                '${dicStaking['elected']} (${widget.plugin.store.staking.electedInfo.length})',
+                '${dicStaking!['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
           ),
           Tab(
             text:
-                '${dicStaking['waiting']} (${widget.plugin.store.staking.nextUpsInfo.length})',
+                '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})',
           ),
         ];
         List list = [
@@ -462,8 +467,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
             padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: MainTabBar(
               tabs: [
-                '${dicStaking['elected']} (${widget.plugin.store.staking.electedInfo.length})',
-                '${dicStaking['waiting']} (${widget.plugin.store.staking.nextUpsInfo.length})'
+                '${dicStaking['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
+                '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})'
               ],
               activeTab: _tab,
               fontSize: 18,
@@ -476,7 +481,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
             ),
           ),
         ];
-        if (widget.plugin.store.staking.validatorsInfo.length > 0) {
+        if (widget.plugin.store!.staking.validatorsInfo.length > 0) {
           // index_2: the filter Widget
           list.add(Container(
             color: Colors.white,
@@ -502,15 +507,15 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
           // index_3: the recommended validators
           // add recommended
           List<ValidatorData> recommended = [];
-          final recommendList = widget.plugin.store.staking
-              .recommendedValidators[widget.plugin.basic.name];
+          final recommendList = widget.plugin.store!.staking
+              .recommendedValidators![widget.plugin.basic.name];
           if (recommendList != null) {
             recommended = _tab == 0
-                ? widget.plugin.store.staking.electedInfo.toList()
-                : widget.plugin.store.staking.nextUpsInfo.toList();
+                ? widget.plugin.store!.staking.electedInfo.toList()
+                : widget.plugin.store!.staking.nextUpsInfo.toList();
             recommended.retainWhere((i) =>
-                widget.plugin.store.staking
-                    .recommendedValidators[widget.plugin.basic.name]
+                widget.plugin.store!.staking
+                    .recommendedValidators![widget.plugin.basic.name]
                     .indexOf(i.accountId) >
                 -1);
           }
@@ -528,17 +533,17 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                       ),
                       Column(
                         children: recommended.map((acc) {
-                          Map accInfo = widget.plugin.store.accounts
+                          Map? accInfo = widget.plugin.store!.accounts
                               .addressIndexMap[acc.accountId];
-                          final icon = widget.plugin.store.accounts
+                          final icon = widget.plugin.store!.accounts
                               .addressIconsMap[acc.accountId];
                           return Validator(
                             acc,
                             accInfo,
                             icon,
                             decimals,
-                            widget.plugin.store.staking
-                                    .nominationsMap[acc.accountId] ??
+                            widget.plugin.store!.staking
+                                    .nominationsMap![acc.accountId] ??
                                 [],
                           );
                         }).toList(),
@@ -550,22 +555,22 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
           ));
           // add validators
           List<ValidatorData> ls = _tab == 0
-              ? widget.plugin.store.staking.electedInfo.toList()
-              : widget.plugin.store.staking.nextUpsInfo.toList();
+              ? widget.plugin.store!.staking.electedInfo.toList()
+              : widget.plugin.store!.staking.nextUpsInfo.toList();
           // filter list
           ls = PluginFmt.filterValidatorList(ls, _filters, _search,
-              widget.plugin.store.accounts.addressIndexMap);
+              widget.plugin.store!.accounts.addressIndexMap);
           // sort list
-          ls.sort((a, b) => a.rankReward < b.rankReward ? 1 : -1);
+          ls.sort((a, b) => a.rankReward! < b.rankReward! ? 1 : -1);
           if (_tab == 1) {
             ls.sort((a, b) {
-              final aLength = widget.plugin.store.staking
-                      .nominationsMap[a.accountId]?.length ??
+              final aLength = widget.plugin.store!.staking
+                      .nominationsMap![a.accountId]?.length ??
                   0;
-              final bLength = widget.plugin.store.staking
-                      .nominationsMap[b.accountId]?.length ??
+              final bLength = widget.plugin.store!.staking
+                      .nominationsMap![b.accountId]?.length ??
                   0;
-              return 0 - aLength.compareTo(bLength);
+              return 0 - aLength.compareTo(bLength) as int;
             });
           }
           list.addAll(ls);
@@ -586,16 +591,17 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                 return list[i];
               }
               ValidatorData acc = list[i];
-              Map accInfo =
-                  widget.plugin.store.accounts.addressIndexMap[acc.accountId];
+              Map? accInfo =
+                  widget.plugin.store!.accounts.addressIndexMap[acc.accountId];
               final icon =
-                  widget.plugin.store.accounts.addressIconsMap[acc.accountId];
+                  widget.plugin.store!.accounts.addressIconsMap[acc.accountId];
               return Validator(
                 acc,
                 accInfo,
                 icon,
                 decimals,
-                widget.plugin.store.staking.nominationsMap[acc.accountId] ?? [],
+                widget.plugin.store!.staking.nominationsMap![acc.accountId] ??
+                    [],
               );
             },
           ),
@@ -620,15 +626,16 @@ class _NomineeItem extends StatelessWidget {
 
   final String id;
   final List<ValidatorData> validators;
-  final String stashId;
+  final String? stashId;
   final NomStatus nomStatus;
   final int decimals;
-  final Map<String, Map> accInfoMap;
-  final Map<String, String> accIconMap;
+  final Map<String?, Map?> accInfoMap;
+  final Map<String?, String?> accIconMap;
 
   @override
   Widget build(BuildContext context) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
     final validatorIndex = validators.indexWhere((i) => i.accountId == id);
     final validator = validatorIndex < 0
@@ -639,13 +646,13 @@ class _NomineeItem extends StatelessWidget {
     final icon = accIconMap[validator.accountId];
     final status = nomStatus.toString().split('.')[1];
 
-    BigInt meStaked;
+    BigInt? meStaked;
     int meIndex = validator.nominators.indexWhere((i) => i['who'] == stashId);
     if (meIndex >= 0) {
       meStaked =
           BigInt.parse(validator.nominators[meIndex]['value'].toString());
     }
-    String subtitle = dicStaking['nominate.$status'];
+    String subtitle = dicStaking['nominate.$status']!;
     if (nomStatus == NomStatus.active) {
       subtitle += ' ${Fmt.token(meStaked ?? BigInt.zero, decimals)}';
     }
@@ -654,7 +661,7 @@ class _NomineeItem extends StatelessWidget {
       dense: true,
       leading: AddressIcon(validator.accountId, svg: icon, size: 32),
       title: UI.accountDisplayName(validator.accountId, accInfo),
-      subtitle: Text(subtitle),
+      subtitle: Text(subtitle!),
       trailing: Container(
         width: 100,
         child: Column(
@@ -669,7 +676,7 @@ class _NomineeItem extends StatelessWidget {
                   NumberFormat('0.00%').format(validator.commission / 100)),
             ),
             Expanded(
-              child: Text(dicStaking['commission'],
+              child: Text(dicStaking['commission']!,
                   style: TextStyle(fontSize: 12)),
             ),
           ],

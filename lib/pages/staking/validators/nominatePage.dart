@@ -30,11 +30,11 @@ class _NominatePageState extends State<NominatePage> {
 
   @override
   Widget build(BuildContext context) {
-    var dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    var dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dicStaking['action.nominate']),
+        title: Text(dicStaking['action.nominate']!),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {

@@ -18,15 +18,15 @@ class RedeemPage extends StatefulWidget {
 }
 
 class _RedeemPageState extends State<RedeemPage> {
-  int _slashingSpans;
+  int? _slashingSpans;
 
-  Future<int> _getSlashingSpans() async {
+  Future<int?> _getSlashingSpans() async {
     if (_slashingSpans != null) return _slashingSpans;
 
-    final String stashId = widget.plugin.store.staking.ownStashInfo.stashId ??
-        widget.plugin.store.staking.ownStashInfo.account.accountId;
-    final int spans =
-        await widget.plugin.sdk.api.staking.getSlashingSpans(stashId);
+    final String stashId = widget.plugin.store!.staking.ownStashInfo!.stashId ??
+        widget.plugin.store!.staking.ownStashInfo!.account!.accountId!;
+    final int? spans =
+        await widget.plugin.sdk.api!.staking!.getSlashingSpans(stashId);
     setState(() {
       _slashingSpans = spans;
     });
@@ -35,18 +35,18 @@ class _RedeemPageState extends State<RedeemPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
+    final dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
 
     final redeemable = Fmt.balance(
-        widget.plugin.store.staking.ownStashInfo.account.redeemable.toString(),
+        widget.plugin.store!.staking.ownStashInfo!.account!.redeemable.toString(),
         decimals,
         length: decimals);
     return Scaffold(
       appBar: AppBar(
-        title: Text(dicStaking['action.redeem']),
+        title: Text(dicStaking['action.redeem']!),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {
@@ -63,7 +63,7 @@ class _RedeemPageState extends State<RedeemPage> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: dic['amount'],
+                        hintText: dic!['amount'],
                         labelText: '${dic['amount']}($symbol)',
                       ),
                       initialValue: redeemable,
@@ -91,7 +91,7 @@ class _RedeemPageState extends State<RedeemPage> {
                                 params: [_slashingSpans],
                               );
                             },
-                            onFinish: (Map res) {
+                            onFinish: (Map? res) {
                               if (res != null) {
                                 Navigator.of(context).pop(res);
                               }

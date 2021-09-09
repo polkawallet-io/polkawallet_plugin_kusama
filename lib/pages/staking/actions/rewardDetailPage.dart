@@ -17,11 +17,11 @@ class RewardDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final decimals = plugin.networkState.tokenDecimals[0];
-    final symbol = plugin.networkState.tokenSymbol[0];
-    final TxRewardData detail = ModalRoute.of(context).settings.arguments;
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
+    final dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final decimals = plugin.networkState.tokenDecimals![0];
+    final symbol = plugin.networkState.tokenSymbol![0];
+    final TxRewardData detail = ModalRoute.of(context)!.settings.arguments as TxRewardData;
 
     return TxDetail(
       networkName: plugin.basic.name,
@@ -32,14 +32,14 @@ class RewardDetailPage extends StatelessWidget {
       eventId: detail.eventIndex,
       infoItems: <TxDetailInfoItem>[
         TxDetailInfoItem(
-            label: dicStaking['txs.event'], content: Text(detail.eventId)),
+            label: dicStaking['txs.event'], content: Text(detail.eventId!)),
         TxDetailInfoItem(
           label: dic['amount'],
-          content: Text('${Fmt.balance(detail.amount, decimals)} $symbol'),
+          content: Text('${Fmt.balance(detail.amount!, decimals)} $symbol'),
         ),
       ],
       blockTime: Fmt.dateTime(
-          DateTime.fromMillisecondsSinceEpoch(detail.blockTimestamp * 1000)),
+          DateTime.fromMillisecondsSinceEpoch(detail.blockTimestamp! * 1000)),
       blockNum: detail.blockNum,
     );
   }

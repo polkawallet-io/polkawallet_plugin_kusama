@@ -25,26 +25,26 @@ class _RebondPageState extends State<RebondPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
+    final dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
 
     BigInt redeemable = BigInt.zero;
-    if (widget.plugin.store.staking.ownStashInfo != null &&
-        widget.plugin.store.staking.ownStashInfo.stakingLedger != null) {
+    if (widget.plugin.store!.staking.ownStashInfo != null &&
+        widget.plugin.store!.staking.ownStashInfo!.stakingLedger != null) {
       redeemable = BigInt.parse(widget
-          .plugin.store.staking.ownStashInfo.account.redeemable
+          .plugin.store!.staking.ownStashInfo!.account!.redeemable
           .toString());
     }
-    BigInt unlocking = widget.plugin.store.staking.accountUnlockingTotal;
+    BigInt unlocking = widget.plugin.store!.staking.accountUnlockingTotal;
     unlocking -= redeemable;
 
     final available = Fmt.bigIntToDouble(unlocking, decimals);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dicStaking['action.rebond']),
+        title: Text(dicStaking['action.rebond']!),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {
@@ -63,19 +63,19 @@ class _RebondPageState extends State<RebondPage> {
                       ),
                       TextFormField(
                         decoration: InputDecoration(
-                          hintText: dic['amount'],
+                          hintText: dic!['amount'],
                           labelText:
                               '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
                             available,
                             lengthMax: 4,
                           )} $symbol)',
                         ),
-                        inputFormatters: [UI.decimalInputFormatter(decimals)],
+                        inputFormatters: [UI.decimalInputFormatter(decimals)!],
                         controller: _amountCtrl,
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
                         validator: (v) {
-                          if (v.isEmpty) {
+                          if (v!.isEmpty) {
                             return dic['amount.error'];
                           }
                           if (double.parse(v.trim()) > available) {
@@ -92,7 +92,7 @@ class _RebondPageState extends State<RebondPage> {
                 padding: EdgeInsets.all(16),
                 child: TxButton(
                   getTxParams: () async {
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       final inputAmount = _amountCtrl.text.trim();
                       return TxConfirmParams(
                         txTitle: dicStaking['action.rebond'],
@@ -106,8 +106,8 @@ class _RebondPageState extends State<RebondPage> {
                       );
                     }
                     return null;
-                  },
-                  onFinish: (Map res) {
+                  } as Future<TxConfirmParams> Function()?,
+                  onFinish: (Map? res) {
                     if (res != null) {
                       Navigator.of(context).pop(res);
                     }

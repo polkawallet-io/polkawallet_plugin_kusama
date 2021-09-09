@@ -23,22 +23,22 @@ class SetPayeePage extends StatefulWidget {
 }
 
 class _SetPayeePageState extends State<SetPayeePage> {
-  int _rewardTo;
-  String _rewardAccount;
+  int? _rewardTo;
+  String? _rewardAccount;
 
-  Future<TxConfirmParams> _getTxParams() async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+  Future<TxConfirmParams?> _getTxParams() async {
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
     final rewardToOptions =
-        PayeeSelector.options.map((i) => dic['reward.$i']).toList();
-    final OwnStashInfoData currentPayee =
-        widget.plugin.store.staking.ownStashInfo;
+        PayeeSelector.options.map((i) => dic!['reward.$i']).toList();
+    final OwnStashInfoData? currentPayee =
+        widget.plugin.store!.staking.ownStashInfo;
 
     if (_rewardTo == null) {
       bool noChange = false;
-      if (currentPayee.destinationId != 3 || _rewardAccount == null) {
+      if (currentPayee!.destinationId != 3 || _rewardAccount == null) {
         noChange = true;
       } else if (currentPayee.destinationId == 3 &&
-          currentPayee.destination.contains(_rewardAccount.toLowerCase())) {
+          currentPayee.destination!.contains(_rewardAccount!.toLowerCase())) {
         noChange = true;
       }
       if (noChange) {
@@ -47,11 +47,11 @@ class _SetPayeePageState extends State<SetPayeePage> {
           builder: (BuildContext context) {
             return CupertinoAlertDialog(
               title: Container(),
-              content: Text('${dic['reward.warn']}'),
+              content: Text('${dic!['reward.warn']}'),
               actions: <Widget>[
                 CupertinoButton(
-                  child: Text(I18n.of(context)
-                      .getDic(i18n_full_dic_kusama, 'common')['ok']),
+                  child: Text(I18n.of(context)!
+                      .getDic(i18n_full_dic_kusama, 'common')!['ok']!),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -62,14 +62,14 @@ class _SetPayeePageState extends State<SetPayeePage> {
       }
     }
 
-    final to = _rewardTo ?? currentPayee.destinationId;
+    final to = _rewardTo ?? currentPayee!.destinationId;
     return TxConfirmParams(
-      txTitle: dic['action.setting'],
+      txTitle: dic!['action.setting'],
       module: 'staking',
       call: 'setPayee',
       txDisplay: {
         "reward_destination":
-            to == 3 ? {'Account': _rewardAccount} : rewardToOptions[to],
+            to == 3 ? {'Account': _rewardAccount} : rewardToOptions[to!],
       },
       params: [
         // "to"
@@ -78,7 +78,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
     );
   }
 
-  void _onPayeeChanged(int to, String address) {
+  void _onPayeeChanged(int? to, String? address) {
     setState(() {
       _rewardTo = to;
       _rewardAccount = address;
@@ -87,11 +87,11 @@ class _SetPayeePageState extends State<SetPayeePage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dic['action.setting']),
+        title: Text(dic['action.setting']!),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {
@@ -111,7 +111,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
                     PayeeSelector(
                       widget.plugin,
                       widget.keyring,
-                      initialValue: widget.plugin.store.staking.ownStashInfo,
+                      initialValue: widget.plugin.store!.staking.ownStashInfo,
                       onChange: _onPayeeChanged,
                     )
                   ],
@@ -120,8 +120,9 @@ class _SetPayeePageState extends State<SetPayeePage> {
               Padding(
                 padding: EdgeInsets.all(16),
                 child: TxButton(
-                  getTxParams: _getTxParams,
-                  onFinish: (Map res) {
+                  getTxParams:
+                      _getTxParams as Future<TxConfirmParams> Function()?,
+                  onFinish: (Map? res) {
                     if (res != null) {
                       Navigator.of(context).pop(res);
                     }
@@ -143,29 +144,29 @@ class PayeeSelector extends StatefulWidget {
 
   final PluginKusama plugin;
   final Keyring keyring;
-  final OwnStashInfoData initialValue;
-  final Function(int, String) onChange;
+  final OwnStashInfoData? initialValue;
+  final Function(int?, String?)? onChange;
 
   @override
   _PayeeSelectorState createState() => _PayeeSelectorState();
 }
 
 class _PayeeSelectorState extends State<PayeeSelector> {
-  int _rewardTo;
-  KeyPairData _rewardAccount;
+  int? _rewardTo;
+  KeyPairData? _rewardAccount;
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
     final rewardToOptions =
         PayeeSelector.options.map((i) => dic['reward.$i']).toList();
 
     KeyPairData defaultAcc = widget.keyring.current;
-    if ((_rewardTo ?? widget.initialValue.destinationId) == 3) {
-      if (widget.initialValue.destinationId == 3) {
+    if ((_rewardTo ?? widget.initialValue!.destinationId) == 3) {
+      if (widget.initialValue!.destinationId == 3) {
         final acc = KeyPairData();
-        acc.address = jsonDecode(widget.initialValue.destination)['account'];
+        acc.address = jsonDecode(widget.initialValue!.destination!)['account'];
         defaultAcc = acc;
       }
     }
@@ -173,9 +174,9 @@ class _PayeeSelectorState extends State<PayeeSelector> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: Text(dic['bond.reward']),
+          title: Text(dic['bond.reward']!),
           subtitle: Text(rewardToOptions[
-              _rewardTo ?? widget.initialValue.destinationId ?? 0]),
+              _rewardTo ?? widget.initialValue!.destinationId ?? 0]!),
           trailing: Icon(Icons.arrow_forward_ios, size: 18),
           onTap: () {
             showCupertinoModalPopup(
@@ -186,12 +187,12 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                   backgroundColor: Colors.white,
                   itemExtent: 56,
                   scrollController: FixedExtentScrollController(
-                      initialItem: widget.initialValue.destinationId ?? 0),
+                      initialItem: widget.initialValue!.destinationId ?? 0),
                   children: rewardToOptions
                       .map((i) => Padding(
                             padding: EdgeInsets.all(12),
                             child: Text(
-                              i,
+                              i!,
                               style: TextStyle(fontSize: 14),
                             ),
                           ))
@@ -201,27 +202,27 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                       _rewardTo = v;
                       _rewardAccount = widget.keyring.current;
                     });
-                    widget.onChange(v, widget.keyring.current.address);
+                    widget.onChange!(v, widget.keyring.current.address);
                   },
                 ),
               ),
             );
           },
         ),
-        (_rewardTo ?? widget.initialValue.destinationId) == 3
+        (_rewardTo ?? widget.initialValue!.destinationId) == 3
             ? Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
                 child: AddressInputField(
-                  widget.plugin.sdk.api,
+                  widget.plugin.sdk.api!,
                   widget.keyring.allWithContacts,
                   initialValue: _rewardAccount ?? defaultAcc,
                   onChanged: (acc) {
                     setState(() {
                       _rewardAccount = acc;
                     });
-                    widget.onChange(_rewardTo, acc.address);
+                    widget.onChange!(_rewardTo, acc!.address);
                   },
-                  key: ValueKey<KeyPairData>(_rewardAccount),
+                  key: ValueKey<KeyPairData?>(_rewardAccount),
                 ),
               )
             : Container(),

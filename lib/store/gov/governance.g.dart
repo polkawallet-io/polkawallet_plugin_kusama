@@ -13,13 +13,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
       Atom(name: '_GovernanceStore.cacheCouncilTimestamp');
 
   @override
-  int get cacheCouncilTimestamp {
+  int? get cacheCouncilTimestamp {
     _$cacheCouncilTimestampAtom.reportRead();
     return super.cacheCouncilTimestamp;
   }
 
   @override
-  set cacheCouncilTimestamp(int value) {
+  set cacheCouncilTimestamp(int? value) {
     _$cacheCouncilTimestampAtom.reportWrite(value, super.cacheCouncilTimestamp,
         () {
       super.cacheCouncilTimestamp = value;
@@ -74,13 +74,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   final _$councilVotesAtom = Atom(name: '_GovernanceStore.councilVotes');
 
   @override
-  Map<String, Map<String, dynamic>> get councilVotes {
+  Map<String, Map<String, dynamic>>? get councilVotes {
     _$councilVotesAtom.reportRead();
     return super.councilVotes;
   }
 
   @override
-  set councilVotes(Map<String, Map<String, dynamic>> value) {
+  set councilVotes(Map<String, Map<String, dynamic>>? value) {
     _$councilVotesAtom.reportWrite(value, super.councilVotes, () {
       super.councilVotes = value;
     });
@@ -90,13 +90,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
       Atom(name: '_GovernanceStore.userCouncilVotes');
 
   @override
-  Map<String, dynamic> get userCouncilVotes {
+  Map<String, dynamic>? get userCouncilVotes {
     _$userCouncilVotesAtom.reportRead();
     return super.userCouncilVotes;
   }
 
   @override
-  set userCouncilVotes(Map<String, dynamic> value) {
+  set userCouncilVotes(Map<String, dynamic>? value) {
     _$userCouncilVotesAtom.reportWrite(value, super.userCouncilVotes, () {
       super.userCouncilVotes = value;
     });
@@ -105,13 +105,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   final _$referendumsAtom = Atom(name: '_GovernanceStore.referendums');
 
   @override
-  List<ReferendumInfo> get referendums {
+  List<ReferendumInfo>? get referendums {
     _$referendumsAtom.reportRead();
     return super.referendums;
   }
 
   @override
-  set referendums(List<ReferendumInfo> value) {
+  set referendums(List<ReferendumInfo>? value) {
     _$referendumsAtom.reportWrite(value, super.referendums, () {
       super.referendums = value;
     });
@@ -120,13 +120,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   final _$voteConvictionsAtom = Atom(name: '_GovernanceStore.voteConvictions');
 
   @override
-  List<dynamic> get voteConvictions {
+  List<dynamic>? get voteConvictions {
     _$voteConvictionsAtom.reportRead();
     return super.voteConvictions;
   }
 
   @override
-  set voteConvictions(List<dynamic> value) {
+  set voteConvictions(List<dynamic>? value) {
     _$voteConvictionsAtom.reportWrite(value, super.voteConvictions, () {
       super.voteConvictions = value;
     });
@@ -166,13 +166,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   final _$treasuryTipsAtom = Atom(name: '_GovernanceStore.treasuryTips');
 
   @override
-  List<TreasuryTipData> get treasuryTips {
+  List<TreasuryTipData>? get treasuryTips {
     _$treasuryTipsAtom.reportRead();
     return super.treasuryTips;
   }
 
   @override
-  set treasuryTips(List<TreasuryTipData> value) {
+  set treasuryTips(List<TreasuryTipData>? value) {
     _$treasuryTipsAtom.reportWrite(value, super.treasuryTips, () {
       super.treasuryTips = value;
     });
@@ -244,7 +244,7 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setReferendumVoteConvictions(List<dynamic> ls) {
+  void setReferendumVoteConvictions(List<dynamic>? ls) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setReferendumVoteConvictions');
     try {

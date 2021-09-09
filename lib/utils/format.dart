@@ -53,7 +53,7 @@ class PluginFmt {
       }
 
       // filters[1], only with an ID
-      final Map accInfo = accIndexMap[i.accountId];
+      final Map? accInfo = accIndexMap[i.accountId];
       if (filters[1]) {
         if (accInfo == null || accInfo['identity']['display'] == null) {
           return false;
@@ -63,10 +63,10 @@ class PluginFmt {
       // filter by search input
       final value = search.trim().toLowerCase();
       return UI
-              .accountDisplayNameString(i.accountId, accInfo)
+              .accountDisplayNameString(i.accountId, accInfo)!
               .toLowerCase()
               .contains(value) ||
-          i.accountId.toLowerCase().contains(value);
+          i.accountId!.toLowerCase().contains(value);
     });
     return ls;
   }
@@ -76,7 +76,7 @@ class PluginFmt {
     ls.retainWhere((i) {
       String value = filter.trim().toLowerCase();
       String accName = '';
-      Map accInfo = accIndexMap[i[0]];
+      Map? accInfo = accIndexMap[i[0]];
       if (accInfo != null) {
         accName = accInfo['identity']['display'] ?? '';
       }

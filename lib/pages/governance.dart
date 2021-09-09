@@ -17,8 +17,8 @@ class Gov extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final dicCommon = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
+    final dicCommon = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -31,8 +31,8 @@ class Gov extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    I18n.of(context)
-                        .getDic(i18n_full_dic_kusama, 'common')['governance'],
+                    I18n.of(context)!
+                        .getDic(i18n_full_dic_kusama, 'common')!['governance']!,
                     style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).cardColor,
@@ -43,14 +43,14 @@ class Gov extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: plugin.sdk.api.connectedNode == null
+              child: plugin.sdk.api!.connectedNode == null
                   ? Container(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.width / 2),
                       child: Column(
                         children: [
                           CupertinoActivityIndicator(),
-                          Text(dicCommon['node.connecting']),
+                          Text(dicCommon!['node.connecting']!),
                         ],
                       ),
                     )
@@ -61,8 +61,8 @@ class Gov extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 16),
                           child: GestureDetector(
                             child: EntryPageCard(
-                              dic['democracy'],
-                              dic['democracy.brief'],
+                              dic!['democracy']!,
+                              dic['democracy.brief']!,
                               SvgPicture.asset(
                                 'packages/polkawallet_plugin_kusama/assets/images/gov/democracy.svg',
                                 width: 96,
@@ -78,8 +78,8 @@ class Gov extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 16),
                           child: GestureDetector(
                             child: EntryPageCard(
-                              dic['council'],
-                              dic['council.brief'],
+                              dic['council']!,
+                              dic['council.brief']!,
                               SvgPicture.asset(
                                 'packages/polkawallet_plugin_kusama/assets/images/gov/council.svg',
                                 width: 96,
@@ -95,8 +95,8 @@ class Gov extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 16),
                           child: GestureDetector(
                             child: EntryPageCard(
-                              dic['treasury'],
-                              dic['treasury.brief'],
+                              dic['treasury']!,
+                              dic['treasury.brief']!,
                               SvgPicture.asset(
                                 'packages/polkawallet_plugin_kusama/assets/images/gov/treasury.svg',
                                 width: 96,
@@ -113,7 +113,7 @@ class Gov extends StatelessWidget {
                           child: GestureDetector(
                             child: EntryPageCard(
                               'Polkassembly',
-                              dic['polkassembly'],
+                              dic['polkassembly']!,
                               Image.asset(
                                 'packages/polkawallet_plugin_kusama/assets/images/public/polkassembly.png',
                                 width: 48,
