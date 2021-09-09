@@ -16,23 +16,23 @@ class ValidatorChartsPage extends StatelessWidget {
   final PluginKusama plugin;
   final Keyring keyring;
 
-  Future<Map> _getValidatorRewardsData(String accountId) async {
+  Future<Map?> _getValidatorRewardsData(String? accountId) async {
     final rewardsChartData =
-        plugin.store.staking.rewardsChartDataCache[accountId];
+        plugin.store!.staking.rewardsChartDataCache[accountId!];
     if (rewardsChartData != null) return rewardsChartData;
-    return plugin.service.staking.queryValidatorRewards(accountId);
+    return plugin.service!.staking.queryValidatorRewards(accountId);
   }
 
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+          final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
           final ValidatorData detail =
-              ModalRoute.of(context).settings.arguments;
+              ModalRoute.of(context)!.settings.arguments as ValidatorData;
 
           return Scaffold(
             appBar: AppBar(
-              title: Text(dic['validator.chart']),
+              title: Text(dic['validator.chart']!),
               centerTitle: true,
             ),
             body: SafeArea(
@@ -43,7 +43,7 @@ class ValidatorChartsPage extends StatelessWidget {
                     return Center(child: CupertinoActivityIndicator());
                   }
                   final rewardsChartData = plugin
-                      .store.staking.rewardsChartDataCache[detail.accountId];
+                      .store!.staking.rewardsChartDataCache[detail.accountId!];
 
                   List<ChartLineInfo> pointsChartLines = [
                     ChartLineInfo('Era Points',

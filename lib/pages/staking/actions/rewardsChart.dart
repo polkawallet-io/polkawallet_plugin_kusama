@@ -1,9 +1,10 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 
 class RewardsChart extends StatelessWidget {
   final List<charts.Series> seriesList;
-  final bool animate;
+  final bool? animate;
 
   RewardsChart(this.seriesList, {this.animate});
 
@@ -18,7 +19,7 @@ class RewardsChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new charts.TimeSeriesChart(
-      seriesList,
+      seriesList as List<Series<dynamic, DateTime>>,
       animate: animate,
       dateTimeFactory: const charts.LocalDateTimeFactory(),
     );

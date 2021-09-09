@@ -10,11 +10,11 @@ abstract class _AccountsStore with Store {
       ObservableMap<int, Map<String, String>>();
 
   @observable
-  ObservableMap<String, Map> addressIndexMap = ObservableMap<String, Map>();
+  ObservableMap<String?, Map?> addressIndexMap = ObservableMap<String?, Map?>();
 
   @observable
-  ObservableMap<String, String> addressIconsMap =
-      ObservableMap<String, String>();
+  ObservableMap<String?, String?> addressIconsMap =
+      ObservableMap<String?, String?>();
 
   @action
   void setPubKeyAddressMap(Map<String, Map> data) {
@@ -23,7 +23,7 @@ abstract class _AccountsStore with Store {
       Map<String, String> addresses =
           Map.of(pubKeyAddressMap[int.parse(ss58)] ?? {});
       // set new data
-      Map.of(data[ss58]).forEach((k, v) {
+      Map.of(data[ss58]!).forEach((k, v) {
         addresses[k] = v;
       });
       // update state

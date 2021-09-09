@@ -18,10 +18,10 @@ class ControllerSelectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+          final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
           return Scaffold(
             appBar: AppBar(
-              title: Text(dic['controller']),
+              title: Text(dic['controller']!),
               centerTitle: true,
             ),
             body: SafeArea(
@@ -30,11 +30,11 @@ class ControllerSelectPage extends StatelessWidget {
                 child: ListView(
                   padding: EdgeInsets.all(16),
                   children: keyring.allAccounts.map((i) {
-                    String unavailable;
+                    String? unavailable;
                     final stashOf = plugin
-                        .store.staking.accountBondedMap[i.pubKey].controllerId;
-                    String controllerOf =
-                        plugin.store.staking.accountBondedMap[i.pubKey].stashId;
+                        .store!.staking.accountBondedMap[i.pubKey]!.controllerId;
+                    String? controllerOf =
+                        plugin.store!.staking.accountBondedMap[i.pubKey]!.stashId;
                     if (stashOf != null && i.pubKey != keyring.current.pubKey) {
                       unavailable =
                           '${dic['controller.stashOf']} ${Fmt.address(stashOf)}';
@@ -62,11 +62,11 @@ class ControllerSelectPage extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
-                                          i.name,
+                                          i.name!,
                                           style: TextStyle(color: grey),
                                         ),
                                         Text(
-                                          Fmt.address(i.address),
+                                          Fmt.address(i.address)!,
                                           style: TextStyle(color: grey),
                                         ),
                                         Text(
@@ -82,8 +82,8 @@ class ControllerSelectPage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Text(i.name),
-                                        Text(Fmt.address(i.address)),
+                                        Text(i.name!),
+                                        Text(Fmt.address(i.address)!),
                                       ],
                                     ),
                             ),

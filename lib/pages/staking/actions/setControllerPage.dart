@@ -19,13 +19,13 @@ class SetControllerPage extends StatefulWidget {
 }
 
 class _SetControllerPageState extends State<SetControllerPage> {
-  KeyPairData _controller;
+  KeyPairData? _controller;
 
   Future<void> _changeControllerId(BuildContext context) async {
     var acc = await Navigator.of(context).pushNamed(ControllerSelectPage.route);
     if (acc != null) {
       setState(() {
-        _controller = acc;
+        _controller = acc as KeyPairData?;
       });
     }
   }
@@ -34,8 +34,8 @@ class _SetControllerPageState extends State<SetControllerPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final KeyPairData acc = ModalRoute.of(context).settings.arguments;
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      final KeyPairData? acc = ModalRoute.of(context)!.settings.arguments as KeyPairData?;
       setState(() {
         _controller = acc;
       });
@@ -44,11 +44,11 @@ class _SetControllerPageState extends State<SetControllerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dic['action.control']),
+        title: Text(dic['action.control']!),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {
@@ -68,7 +68,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       controller,
                       label: dic['controller'],
                       svg: controller.icon ??
-                          widget.plugin.store.accounts
+                          widget.plugin.store!.accounts
                               .addressIconsMap[controller.address],
                       onTap: () => _changeControllerId(context),
                     ),
@@ -80,20 +80,20 @@ class _SetControllerPageState extends State<SetControllerPage> {
                 child: TxButton(
                   getTxParams: () async {
                     var currentController =
-                        ModalRoute.of(context).settings.arguments;
+                        ModalRoute.of(context)!.settings.arguments;
                     if (currentController != null &&
-                        _controller.pubKey ==
+                        _controller!.pubKey ==
                             (currentController as KeyPairData).pubKey) {
                       showCupertinoDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return CupertinoAlertDialog(
                             title: Container(),
-                            content: Text(dic['controller.warn']),
+                            content: Text(dic['controller.warn']!),
                             actions: <Widget>[
                               CupertinoButton(
-                                child: Text(I18n.of(context).getDic(
-                                    i18n_full_dic_kusama, 'common')['ok']),
+                                child: Text(I18n.of(context)!.getDic(
+                                    i18n_full_dic_kusama, 'common')!['ok']!),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
                             ],
@@ -113,8 +113,8 @@ class _SetControllerPageState extends State<SetControllerPage> {
                         controller.address,
                       ],
                     );
-                  },
-                  onFinish: (Map res) {
+                  } as Future<TxConfirmParams> Function()?,
+                  onFinish: (Map? res) {
                     if (res != null) {
                       Navigator.of(context).pop(res);
                     }

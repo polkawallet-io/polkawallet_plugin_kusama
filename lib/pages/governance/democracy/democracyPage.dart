@@ -24,7 +24,7 @@ class _DemocracyPageState extends State<DemocracyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final tabs = [dic['democracy.referendum'], dic['democracy.proposal']];
 
     return Scaffold(
@@ -46,7 +46,7 @@ class _DemocracyPageState extends State<DemocracyPage> {
                   ],
                 ),
                 TopTabs(
-                  names: tabs,
+                  names: tabs as List<String>?,
                   activeTab: _tab,
                   onTab: (v) {
                     setState(() {

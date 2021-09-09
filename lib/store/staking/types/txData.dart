@@ -10,36 +10,36 @@ class TxRewardData extends _TxRewardData {
 
 abstract class _TxRewardData {
   @JsonKey(name: 'block_num')
-  int blockNum = 0;
+  int? blockNum = 0;
 
   @JsonKey(name: 'block_timestamp')
-  int blockTimestamp = 0;
+  int? blockTimestamp = 0;
 
-  String amount = "";
+  String? amount = "";
 
   @JsonKey(name: 'event_id')
-  String eventId = "";
+  String? eventId = "";
 
   @JsonKey(name: 'event_idx')
-  int eventIdx;
+  int? eventIdx;
 
   @JsonKey(name: 'event_index')
-  String eventIndex;
+  String? eventIndex;
 
   @JsonKey(name: 'extrinsic_hash')
-  String extrinsicHash = "";
+  String? extrinsicHash = "";
 
   @JsonKey(name: 'extrinsic_idx')
-  int extrinsicIdx;
+  int? extrinsicIdx;
 
   @JsonKey(name: 'module_id')
-  String moduleId = "";
+  String? moduleId = "";
 
   @JsonKey(name: 'extrinsic_index')
-  String txNumber = "";
+  String? txNumber = "";
 
   @JsonKey(name: 'slash_kton')
-  String slashKton = "";
+  String? slashKton = "";
 
-  String params = "";
+  String? params = "";
 }

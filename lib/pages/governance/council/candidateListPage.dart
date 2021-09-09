@@ -23,9 +23,9 @@ class CandidateListPage extends StatefulWidget {
 }
 
 class _CandidateList extends State<CandidateListPage> {
-  final List<List> _selected = List<List>();
-  final List<List> _notSelected = List<List>();
-  Map<String, bool> _selectedMap = Map<String, bool>();
+  final List<List> _selected = <List>[];
+  final List<List> _notSelected = <List>[];
+  Map<String?, bool> _selectedMap = Map<String?, bool>();
 
   String _filter = '';
 
@@ -34,15 +34,15 @@ class _CandidateList extends State<CandidateListPage> {
     super.initState();
 
     setState(() {
-      widget.plugin.store.gov.council.members.forEach((i) {
+      widget.plugin.store!.gov.council.members!.forEach((i) {
         _notSelected.add(i);
         _selectedMap[i[0]] = false;
       });
-      widget.plugin.store.gov.council.runnersUp.forEach((i) {
+      widget.plugin.store!.gov.council.runnersUp!.forEach((i) {
         _notSelected.add(i);
         _selectedMap[i[0]] = false;
       });
-      widget.plugin.store.gov.council.candidates.forEach((i) {
+      widget.plugin.store!.gov.council.candidates!.forEach((i) {
         _notSelected.add([i, '0']);
         _selectedMap[i] = false;
       });
@@ -52,7 +52,7 @@ class _CandidateList extends State<CandidateListPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    List args = ModalRoute.of(context).settings.arguments;
+    List args = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     if (args.length > 0) {
       List<List> ls = List<List>.from(args);
       setState(() {
@@ -68,21 +68,21 @@ class _CandidateList extends State<CandidateListPage> {
 
   @override
   Widget build(BuildContext context) {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
 
     List<List> list = [];
     list.addAll(_selected);
     // filter the _notSelected list
     List<List> retained = List.of(_notSelected);
     retained = PluginFmt.filterCandidateList(
-        retained, _filter, widget.plugin.store.accounts.addressIndexMap);
+        retained, _filter, widget.plugin.store!.accounts.addressIndexMap);
     list.addAll(retained);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dic['candidate']),
+        title: Text(dic['candidate']!),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -96,8 +96,8 @@ class _CandidateList extends State<CandidateListPage> {
                   Expanded(
                     child: CupertinoTextField(
                       padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
-                      placeholder: I18n.of(context)
-                          .getDic(i18n_full_dic_kusama, 'staking')['filter'],
+                      placeholder: I18n.of(context)!
+                          .getDic(i18n_full_dic_kusama, 'staking')!['filter'],
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(24)),
                         border: Border.all(
@@ -119,13 +119,13 @@ class _CandidateList extends State<CandidateListPage> {
                   (i) {
                     return CandidateItem(
                       accInfo:
-                          widget.plugin.store.accounts.addressIndexMap[i[0]],
-                      icon: widget.plugin.store.accounts.addressIconsMap[i[0]],
+                          widget.plugin.store!.accounts.addressIndexMap[i[0]],
+                      icon: widget.plugin.store!.accounts.addressIconsMap[i[0]],
                       balance: i,
                       tokenSymbol: symbol,
                       decimals: decimals,
                       trailing: CupertinoSwitch(
-                        value: _selectedMap[i[0]],
+                        value: _selectedMap[i[0]]!,
                         onChanged: (value) {
                           setState(() {
                             _selectedMap[i[0]] = value;
@@ -153,7 +153,8 @@ class _CandidateList extends State<CandidateListPage> {
             Container(
               padding: EdgeInsets.all(16),
               child: RoundedButton(
-                text: I18n.of(context).getDic(i18n_full_dic_ui, 'common')['ok'],
+                text:
+                    I18n.of(context)!.getDic(i18n_full_dic_ui, 'common')!['ok'],
                 onPressed: () => Navigator.of(context).pop(_selected),
               ),
             ),

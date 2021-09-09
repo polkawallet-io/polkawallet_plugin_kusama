@@ -20,7 +20,7 @@ class NominateForm extends StatefulWidget {
   NominateForm(this.plugin, this.keyring, {this.onNext});
   final PluginKusama plugin;
   final Keyring keyring;
-  final Function(TxConfirmParams) onNext;
+  final Function(TxConfirmParams)? onNext;
   @override
   _NominateFormState createState() => _NominateFormState();
 }
@@ -28,17 +28,18 @@ class NominateForm extends StatefulWidget {
 const MAX_NOMINATION = 16;
 
 class _NominateFormState extends State<NominateForm> {
-  final List<ValidatorData> _selected = List<ValidatorData>();
-  final List<ValidatorData> _notSelected = List<ValidatorData>();
-  Map<String, bool> _selectedMap = Map<String, bool>();
+  final List<ValidatorData> _selected = <ValidatorData>[];
+  final List<ValidatorData> _notSelected = <ValidatorData>[];
+  Map<String?, bool> _selectedMap = Map<String?, bool>();
 
   String _search = '';
   List<bool> _filters = [true, false];
 
   void _setNominee() {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final targets = _selected.map((i) => i.accountId).toList();
-    widget.onNext(TxConfirmParams(
+    widget.onNext!(TxConfirmParams(
       txTitle: dicStaking['action.nominate'],
       module: 'staking',
       call: 'nominate',
@@ -48,15 +49,17 @@ class _NominateFormState extends State<NominateForm> {
   }
 
   Widget _buildListItem(BuildContext context, ValidatorData validator) {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final Map accInfo =
-        widget.plugin.store.accounts.addressIndexMap[validator.accountId];
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final Map? accInfo =
+        widget.plugin.store!.accounts.addressIndexMap[validator.accountId];
     final accIcon =
-        widget.plugin.store.accounts.addressIconsMap[validator.accountId];
+        widget.plugin.store!.accounts.addressIconsMap[validator.accountId];
     final bool isWaiting = validator.total == BigInt.zero;
     final nominations = !isWaiting
         ? validator.nominators
-        : widget.plugin.store.staking.nominationsMap[validator.accountId] ?? [];
+        : widget.plugin.store!.staking.nominationsMap![validator.accountId] ??
+            [];
 
     final textStyle = TextStyle(
       color: Theme.of(context).unselectedWidgetColor,
@@ -95,7 +98,7 @@ class _NominateFormState extends State<NominateForm> {
                   ),
                   Text(
                     isWaiting
-                        ? dicStaking['waiting']
+                        ? dicStaking['waiting']!
                         : '${dicStaking['reward']}: ${validator.stakedReturnCmp.toStringAsFixed(2)}%',
                     style: textStyle,
                   ),
@@ -103,7 +106,7 @@ class _NominateFormState extends State<NominateForm> {
               ),
             ),
             CupertinoSwitch(
-              value: _selectedMap[validator.accountId],
+              value: _selectedMap[validator.accountId]!,
               onChanged: (bool value) {
                 if (value && _selected.length >= MAX_NOMINATION) {
                   showCupertinoDialog(
@@ -111,11 +114,11 @@ class _NominateFormState extends State<NominateForm> {
                       builder: (_) {
                         return CupertinoAlertDialog(
                           title: Container(),
-                          content: Text(dicStaking['nominate.max']),
+                          content: Text(dicStaking['nominate.max']!),
                           actions: [
                             CupertinoButton(
-                              child: Text(I18n.of(context).getDic(
-                                  i18n_full_dic_kusama, 'common')['ok']),
+                              child: Text(I18n.of(context)!.getDic(
+                                  i18n_full_dic_kusama, 'common')!['ok']!),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
@@ -155,21 +158,21 @@ class _NominateFormState extends State<NominateForm> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       setState(() {
-        widget.plugin.store.staking.validatorsInfo.forEach((i) {
+        widget.plugin.store!.staking.validatorsInfo.forEach((i) {
           _notSelected.add(i);
           _selectedMap[i.accountId] = false;
         });
-        widget.plugin.store.staking.nominatingList.forEach((i) {
+        widget.plugin.store!.staking.nominatingList.forEach((i) {
           _selected.add(i);
           _notSelected.removeWhere((item) => item.accountId == i.accountId);
           _selectedMap[i.accountId] = true;
         });
 
         // set recommended selected
-        final List recommendList = widget.plugin.store.staking
-            .recommendedValidators[widget.plugin.basic.name];
+        final List? recommendList = widget.plugin.store!.staking
+            .recommendedValidators![widget.plugin.basic.name];
         if (recommendList != null && recommendList.length > 0) {
           List<ValidatorData> recommended = _notSelected.toList();
           recommended
@@ -186,13 +189,13 @@ class _NominateFormState extends State<NominateForm> {
 
   @override
   Widget build(BuildContext context) {
-    var dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    var dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
     List<ValidatorData> list = [];
     list.addAll(_selected);
     // add recommended
-    final List recommendList = widget
-        .plugin.store.staking.recommendedValidators[widget.plugin.basic.name];
+    final List? recommendList = widget
+        .plugin.store!.staking.recommendedValidators![widget.plugin.basic.name];
     if (recommendList != null && recommendList.length > 0) {
       List<ValidatorData> recommended = _notSelected.toList();
       recommended.retainWhere((i) => recommendList.indexOf(i.accountId) > -1);
@@ -203,11 +206,11 @@ class _NominateFormState extends State<NominateForm> {
     // filter the _notSelected list
     List<ValidatorData> retained = List.of(_notSelected);
     // filter the blocking validators
-    retained.removeWhere((e) => e.isBlocking);
+    retained.removeWhere((e) => e.isBlocking!);
     retained = PluginFmt.filterValidatorList(retained, _filters, _search,
-        widget.plugin.store.accounts.addressIndexMap);
+        widget.plugin.store!.accounts.addressIndexMap);
     // and sort it
-    retained.sort((a, b) => a.rankReward < b.rankReward ? 1 : -1);
+    retained.sort((a, b) => a.rankReward! < b.rankReward! ? 1 : -1);
     list.addAll(retained);
 
     return Column(

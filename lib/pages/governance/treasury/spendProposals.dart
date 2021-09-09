@@ -33,7 +33,7 @@ class _ProposalsState extends State<SpendProposals> {
       new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
-    await widget.plugin.service.gov.queryTreasuryOverview();
+    await widget.plugin.service!.gov.queryTreasuryOverview();
   }
 
   int _getSpendPeriod() {
@@ -49,30 +49,30 @@ class _ProposalsState extends State<SpendProposals> {
   }
 
   void _refreshPage() {
-    _refreshKey.currentState.show();
+    _refreshKey.currentState!.show();
   }
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _refreshKey.currentState?.show();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     return Observer(
       builder: (BuildContext context) {
-        final decimals = widget.plugin.networkState.tokenDecimals[0] ?? 10;
-        final symbol = widget.plugin.networkState.tokenSymbol[0] ?? '';
+        final decimals = widget.plugin.networkState.tokenDecimals![0];
+        final symbol = widget.plugin.networkState.tokenSymbol![0];
         final balance = Fmt.balance(
-          widget.plugin.store.gov.treasuryOverview.balance,
+          widget.plugin.store!.gov.treasuryOverview.balance!,
           decimals,
         );
         bool isCouncil = false;
-        widget.plugin.store.gov.council.members.forEach((e) {
+        widget.plugin.store!.gov.council.members!.forEach((e) {
           if (widget.keyring.current.address == e[0]) {
             isCouncil = true;
           }
@@ -86,14 +86,14 @@ class _ProposalsState extends State<SpendProposals> {
                 symbol: symbol,
                 balance: balance,
                 spendPeriod: _getSpendPeriod(),
-                overview: widget.plugin.store.gov.treasuryOverview,
+                overview: widget.plugin.store!.gov.treasuryOverview,
                 isCouncil: isCouncil,
                 refreshPage: _refreshPage,
               ),
               Container(
                 color: Theme.of(context).cardColor,
                 margin: EdgeInsets.only(top: 8),
-                child: widget.plugin.store.gov.treasuryOverview.proposals ==
+                child: widget.plugin.store!.gov.treasuryOverview.proposals ==
                         null
                     ? Center(child: CupertinoActivityIndicator())
                     : Column(
@@ -102,35 +102,37 @@ class _ProposalsState extends State<SpendProposals> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
                             child: BorderedTitle(
-                              title: dic['treasury.proposal'],
+                              title: dic!['treasury.proposal'],
                             ),
                           ),
-                          widget.plugin.store.gov.treasuryOverview.proposals !=
+                          widget.plugin.store!.gov.treasuryOverview.proposals !=
                                       null &&
-                                  widget.plugin.store.gov.treasuryOverview
-                                          .proposals.length >
+                                  widget.plugin.store!.gov.treasuryOverview
+                                          .proposals!.length >
                                       0
                               ? Column(
-                                  children: widget.plugin.store.gov
-                                      .treasuryOverview.proposals
+                                  children: widget.plugin.store!.gov
+                                      .treasuryOverview.proposals!
                                       .map((e) {
                                     return _ProposalItem(
                                       symbol: symbol,
                                       decimals: decimals,
-                                      icon: widget.plugin.store.accounts
-                                          .addressIconsMap[e.proposal.proposer],
-                                      accInfo: widget.plugin.store.accounts
-                                          .addressIndexMap[e.proposal.proposer],
+                                      icon: widget.plugin.store!.accounts
+                                              .addressIconsMap[
+                                          e.proposal!.proposer],
+                                      accInfo: widget.plugin.store!.accounts
+                                              .addressIndexMap[
+                                          e.proposal!.proposer],
                                       proposal: e,
                                       onRefresh: _refreshPage,
                                     );
                                   }).toList(),
                                 )
                               : ListTail(
-                                  isEmpty: widget.plugin.store.gov
-                                          .treasuryOverview.proposals.length ==
+                                  isEmpty: widget.plugin.store!.gov
+                                          .treasuryOverview.proposals!.length ==
                                       0,
-                                  isLoading: widget.plugin.store.gov
+                                  isLoading: widget.plugin.store!.gov
                                           .treasuryOverview.proposals ==
                                       null,
                                 ),
@@ -140,27 +142,27 @@ class _ProposalsState extends State<SpendProposals> {
                               title: dic['treasury.approval'],
                             ),
                           ),
-                          widget.plugin.store.gov.treasuryOverview.approvals !=
+                          widget.plugin.store!.gov.treasuryOverview.approvals !=
                                       null &&
-                                  widget.plugin.store.gov.treasuryOverview
-                                          .approvals.length >
+                                  widget.plugin.store!.gov.treasuryOverview
+                                          .approvals!.length >
                                       0
                               ? Padding(
                                   padding: EdgeInsets.only(bottom: 24),
                                   child: Column(
-                                    children: widget.plugin.store.gov
-                                        .treasuryOverview.approvals
+                                    children: widget.plugin.store!.gov
+                                        .treasuryOverview.approvals!
                                         .map((e) {
                                       e.isApproval = true;
                                       return _ProposalItem(
                                         symbol: symbol,
                                         decimals: decimals,
-                                        icon: widget.plugin.store.accounts
+                                        icon: widget.plugin.store!.accounts
                                                 .addressIconsMap[
-                                            e.proposal.proposer],
-                                        accInfo: widget.plugin.store.accounts
+                                            e.proposal!.proposer],
+                                        accInfo: widget.plugin.store!.accounts
                                                 .addressIndexMap[
-                                            e.proposal.proposer],
+                                            e.proposal!.proposer],
                                         proposal: e,
                                         onRefresh: _refreshPage,
                                       );
@@ -168,10 +170,10 @@ class _ProposalsState extends State<SpendProposals> {
                                   ),
                                 )
                               : ListTail(
-                                  isEmpty: widget.plugin.store.gov
-                                          .treasuryOverview.approvals.length ==
+                                  isEmpty: widget.plugin.store!.gov
+                                          .treasuryOverview.approvals!.length ==
                                       0,
-                                  isLoading: widget.plugin.store.gov
+                                  isLoading: widget.plugin.store!.gov
                                           .treasuryOverview.approvals ==
                                       null,
                                 ),
@@ -196,16 +198,16 @@ class _OverviewCard extends StatelessWidget {
     this.refreshPage,
   });
 
-  final String symbol;
-  final String balance;
-  final int spendPeriod;
-  final TreasuryOverviewData overview;
-  final bool isCouncil;
-  final Function refreshPage;
+  final String? symbol;
+  final String? balance;
+  final int? spendPeriod;
+  final TreasuryOverviewData? overview;
+  final bool? isCouncil;
+  final Function? refreshPage;
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final Map dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     return RoundedCard(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.all(16),
@@ -216,17 +218,17 @@ class _OverviewCard extends StatelessWidget {
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['treasury.proposal'],
-                content: overview.proposals?.length.toString(),
+                content: overview!.proposals?.length.toString(),
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['treasury.total'],
-                content: int.parse(overview.proposalCount ?? '0').toString(),
+                content: int.parse(overview!.proposalCount ?? '0').toString(),
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['treasury.approval'],
-                content: overview.approvals?.length.toString(),
+                content: overview!.approvals?.length.toString(),
               ),
             ],
           ),
@@ -260,7 +262,7 @@ class _OverviewCard extends StatelessWidget {
                     final res = await Navigator.of(context)
                         .pushNamed(SubmitProposalPage.route);
                     if (res != null) {
-                      refreshPage();
+                      refreshPage!();
                     }
                   },
                 ),
@@ -279,7 +281,7 @@ class _OverviewCard extends StatelessWidget {
                     arguments: isCouncil,
                   );
                   if (res != null) {
-                    refreshPage();
+                    refreshPage!();
                   }
                 },
               ),
@@ -301,29 +303,29 @@ class _ProposalItem extends StatelessWidget {
     this.onRefresh,
   });
 
-  final String symbol;
-  final int decimals;
-  final String icon;
-  final Map accInfo;
-  final SpendProposalData proposal;
-  final Function onRefresh;
+  final String? symbol;
+  final int? decimals;
+  final String? icon;
+  final Map? accInfo;
+  final SpendProposalData? proposal;
+  final Function? onRefresh;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: AddressIcon(proposal.proposal.proposer, svg: icon),
-      title: UI.accountDisplayName(proposal.proposal.proposer, accInfo),
+      leading: AddressIcon(proposal!.proposal!.proposer, svg: icon),
+      title: UI.accountDisplayName(proposal!.proposal!.proposer, accInfo),
       subtitle: Text(
-          '${Fmt.balance(proposal.proposal.value.toString(), decimals)} $symbol'),
+          '${Fmt.balance(proposal!.proposal!.value.toString(), decimals!)} $symbol'),
       trailing: Text(
-        '# ${int.parse(proposal.id)}',
+        '# ${int.parse(proposal!.id!)}',
         style: Theme.of(context).textTheme.headline4,
       ),
       onTap: () async {
         final res = await Navigator.of(context)
             .pushNamed(SpendProposalPage.route, arguments: proposal);
         if (res != null) {
-          onRefresh();
+          onRefresh!();
         }
       },
     );

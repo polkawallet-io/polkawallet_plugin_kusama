@@ -27,14 +27,14 @@ class _TreasuryPageState extends State<TreasuryPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.plugin.service.gov.queryCouncilInfo();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      widget.plugin.service!.gov.queryCouncilInfo();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     var tabs = [dic['treasury'], dic['treasury.tip']];
     return Scaffold(
       body: PageWrapperWithBackground(SafeArea(
@@ -54,7 +54,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
                 ],
               ),
               TopTabs(
-                names: tabs,
+                names: tabs as List<String>?,
                 activeTab: _tab,
                 onTab: (v) {
                   setState(() {
@@ -67,7 +67,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
               Observer(
                 builder: (_) {
                   return Expanded(
-                    child: widget.plugin.store.gov.council.members == null
+                    child: widget.plugin.store!.gov.council.members == null
                         ? CupertinoActivityIndicator()
                         : _tab == 0
                             ? SpendProposals(widget.plugin, widget.keyring)

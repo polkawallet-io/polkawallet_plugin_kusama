@@ -27,13 +27,13 @@ mixin _$AccountsStore on _AccountsStore, Store {
   final _$addressIndexMapAtom = Atom(name: '_AccountsStore.addressIndexMap');
 
   @override
-  ObservableMap<String, Map<dynamic, dynamic>> get addressIndexMap {
+  ObservableMap<String?, Map<dynamic, dynamic>?> get addressIndexMap {
     _$addressIndexMapAtom.reportRead();
     return super.addressIndexMap;
   }
 
   @override
-  set addressIndexMap(ObservableMap<String, Map<dynamic, dynamic>> value) {
+  set addressIndexMap(ObservableMap<String?, Map<dynamic, dynamic>?> value) {
     _$addressIndexMapAtom.reportWrite(value, super.addressIndexMap, () {
       super.addressIndexMap = value;
     });
@@ -42,13 +42,13 @@ mixin _$AccountsStore on _AccountsStore, Store {
   final _$addressIconsMapAtom = Atom(name: '_AccountsStore.addressIconsMap');
 
   @override
-  ObservableMap<String, String> get addressIconsMap {
+  ObservableMap<String?, String?> get addressIconsMap {
     _$addressIconsMapAtom.reportRead();
     return super.addressIconsMap;
   }
 
   @override
-  set addressIconsMap(ObservableMap<String, String> value) {
+  set addressIconsMap(ObservableMap<String?, String?> value) {
     _$addressIconsMapAtom.reportWrite(value, super.addressIconsMap, () {
       super.addressIconsMap = value;
     });

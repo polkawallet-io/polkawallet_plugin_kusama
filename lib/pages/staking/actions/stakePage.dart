@@ -25,10 +25,10 @@ class _StakePageState extends State<StakePage> {
   /// 0. staking.bond()
   /// 1. staking.nominate()
   int _step = 0;
-  TxConfirmParams _bondParams;
+  late TxConfirmParams _bondParams;
 
   Future<void> _onStake(TxConfirmParams nominateParams) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
     final txBond = 'api.tx.staking.bond(...${jsonEncode(_bondParams.params)})';
     final txNominate =
         'api.tx.staking.nominate(...${jsonEncode(nominateParams.params)})';
@@ -41,11 +41,11 @@ class _StakePageState extends State<StakePage> {
             "actions": [
               {
                 'call': '${_bondParams.module}.${_bondParams.call}',
-                ..._bondParams.txDisplay
+                ..._bondParams.txDisplay!
               },
               {
                 'call': '${nominateParams.module}.${nominateParams.call}',
-                ...nominateParams.txDisplay
+                ...nominateParams.txDisplay!
               }
             ],
           },
@@ -59,7 +59,7 @@ class _StakePageState extends State<StakePage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
 
     return Scaffold(
       appBar: AppBar(

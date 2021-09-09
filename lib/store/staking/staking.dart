@@ -30,20 +30,20 @@ abstract class _StakingStore with Store {
   Map overview = Map();
 
   @observable
-  Map nominationsMap = Map();
+  Map? nominationsMap = Map();
 
   @observable
-  OwnStashInfoData ownStashInfo;
+  OwnStashInfoData? ownStashInfo;
 
   @observable
-  Map<String, AccountBondedInfo> accountBondedMap =
+  Map<String?, AccountBondedInfo> accountBondedMap =
       Map<String, AccountBondedInfo>();
 
   @observable
   bool txsLoading = false;
 
   @observable
-  int txsCount = 0;
+  int? txsCount = 0;
 
   @observable
   ObservableList<TxData> txs = ObservableList<TxData>();
@@ -60,27 +60,27 @@ abstract class _StakingStore with Store {
       ObservableMap<String, dynamic>();
 
   @observable
-  Map recommendedValidators = {};
+  Map? recommendedValidators = {};
 
   @computed
   List<ValidatorData> get nominatingList {
     if (ownStashInfo == null ||
-        ownStashInfo.nominating == null ||
-        ownStashInfo.nominating.length == 0) {
+        ownStashInfo!.nominating == null ||
+        ownStashInfo!.nominating!.length == 0) {
       return [];
     }
     return List.of(validatorsInfo
-        .where((i) => ownStashInfo.nominating.indexOf(i.accountId) >= 0));
+        .where((i) => ownStashInfo!.nominating!.indexOf(i.accountId!) >= 0));
   }
 
   @computed
   BigInt get accountUnlockingTotal {
     BigInt res = BigInt.zero;
-    if (ownStashInfo == null || ownStashInfo.stakingLedger == null) {
+    if (ownStashInfo == null || ownStashInfo!.stakingLedger == null) {
       return res;
     }
 
-    List.of(ownStashInfo.stakingLedger['unlocking']).forEach((i) {
+    List.of(ownStashInfo!.stakingLedger!['unlocking']).forEach((i) {
       res += BigInt.parse(i['value'].toString());
     });
     return res;
@@ -108,7 +108,7 @@ abstract class _StakingStore with Store {
     List<ValidatorData> elected = [];
     List<ValidatorData> waiting = [];
     validatorsAll.forEach((e) {
-      if (e.isActive) {
+      if (e.isActive!) {
         elected.add(e);
       } else {
         waiting.add(e);
@@ -135,13 +135,13 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  void setNominations(Map data) {
+  void setNominations(Map? data) {
     nominationsMap = data;
   }
 
   @action
-  void setOwnStashInfo(String pubKey, Map data, {bool shouldCache = true}) {
-    ownStashInfo = OwnStashInfoData.fromJson(data);
+  void setOwnStashInfo(String? pubKey, Map data, {bool shouldCache = true}) {
+    ownStashInfo = OwnStashInfoData.fromJson(data as Map<String, dynamic>);
 
     if (shouldCache) {
       final cached = cache.stakingOwnStash.val;
@@ -154,7 +154,7 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  void setAccountBondedMap(Map<String, AccountBondedInfo> data) {
+  void setAccountBondedMap(Map<String?, AccountBondedInfo> data) {
     accountBondedMap = data;
   }
 
@@ -164,7 +164,7 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> addTxs(Map data, String pubKey,
+  Future<void> addTxs(Map? data, String? pubKey,
       {bool shouldCache = false, reset = false}) async {
     if (data == null || data['extrinsics'] == null) return;
     txsCount = data['count'];
@@ -185,7 +185,7 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> addTxsRewards(Map data, String pubKey,
+  Future<void> addTxsRewards(Map data, String? pubKey,
       {bool shouldCache = false}) async {
     if (data['list'] == null) return;
     List<TxRewardData> ls =
@@ -211,7 +211,7 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> loadAccountCache(String pubKey) async {
+  Future<void> loadAccountCache(String? pubKey) async {
     // return if currentAccount not exist
     if (pubKey == null || pubKey.isEmpty) {
       return;
@@ -239,7 +239,7 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> loadCache(String pubKey) async {
+  Future<void> loadCache(String? pubKey) async {
     if (cache.validatorsInfo.val.keys.length > 0) {
       setValidatorsInfo(cache.validatorsInfo.val, shouldCache: false);
     } else {
@@ -253,7 +253,7 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> setRecommendedValidatorList(Map data) async {
+  Future<void> setRecommendedValidatorList(Map? data) async {
     recommendedValidators = data;
   }
 }

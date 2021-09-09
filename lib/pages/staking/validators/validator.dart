@@ -19,15 +19,15 @@ class Validator extends StatelessWidget {
   ) : isWaiting = validator.total == BigInt.zero;
 
   final ValidatorData validator;
-  final Map accInfo;
-  final String icon;
+  final Map? accInfo;
+  final String? icon;
   final int decimals;
   final bool isWaiting;
   final List nominations;
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     return GestureDetector(
       child: Container(
         color: Colors.white,
@@ -69,8 +69,8 @@ class Validator extends StatelessWidget {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(dic['reward']),
-                      Text(validator.isActive
+                      Text(dic['reward']!),
+                      Text(validator.isActive!
                           ? '${validator.stakedReturnCmp.toStringAsFixed(2)}%'
                           : '~'),
                     ],
@@ -79,7 +79,7 @@ class Validator extends StatelessWidget {
           ],
         ),
       ),
-      onTap: validator.isActive
+      onTap: validator.isActive!
           ? () {
               // webApi.staking.queryValidatorRewards(validator.accountId);
               Navigator.of(context)

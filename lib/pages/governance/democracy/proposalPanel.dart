@@ -21,15 +21,15 @@ class ProposalPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-          final decimals = plugin.networkState.tokenDecimals[0];
-          final symbol = plugin.networkState.tokenSymbol[0] ?? '';
-          final CouncilProposalData proposalMeta = proposal.image?.proposal;
-          final Map accInfo =
-              plugin.store.accounts.addressIndexMap[proposal.proposer];
+          final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+          final decimals = plugin.networkState.tokenDecimals![0];
+          final symbol = plugin.networkState.tokenSymbol![0];
+          final CouncilProposalData? proposalMeta = proposal.image?.proposal;
+          final Map? accInfo =
+              plugin.store!.accounts.addressIndexMap[proposal.proposer];
           final proposerIcon =
-              plugin.store.accounts.addressIconsMap[proposal.proposer];
-          final List seconding = proposal.seconds.toList();
+              plugin.store!.accounts.addressIconsMap[proposal.proposer];
+          final List seconding = proposal.seconds!.toList();
           seconding.removeAt(0);
           return GestureDetector(
             child: RoundedCard(
@@ -83,7 +83,7 @@ class ProposalPanel extends StatelessWidget {
                             seconding.length.toString(),
                             style: Theme.of(context).textTheme.headline4,
                           ),
-                          Text(dic['proposal.seconds'])
+                          Text(dic['proposal.seconds']!)
                         ],
                       )
                     ],

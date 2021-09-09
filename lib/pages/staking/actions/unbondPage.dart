@@ -26,7 +26,7 @@ class _UnBondPageState extends State<UnBondPage> {
   BigInt _minNominate = BigInt.zero;
 
   Future<void> _queryMinNominate() async {
-    final min = await widget.plugin.sdk.webView
+    final min = await widget.plugin.sdk.webView!
         .evalJavascript('api.query.staking.minNominatorBond()');
     setState(() {
       _minNominate = Fmt.balanceInt(min);
@@ -37,30 +37,30 @@ class _UnBondPageState extends State<UnBondPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _queryMinNominate();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
+    final dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
 
-    final stashInfo = widget.plugin.store.staking.ownStashInfo;
+    final stashInfo = widget.plugin.store!.staking.ownStashInfo;
     double bonded = 0;
     bool hasNomination = false;
     if (stashInfo != null) {
       bonded = Fmt.bigIntToDouble(
-          BigInt.parse(stashInfo.stakingLedger['active'].toString()), decimals);
-      hasNomination = stashInfo.nominating.length > 0;
+          BigInt.parse(stashInfo.stakingLedger!['active'].toString()), decimals);
+      hasNomination = stashInfo.nominating!.length > 0;
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dicStaking['action.unbond']),
+        title: Text(dicStaking['action.unbond']!),
         centerTitle: true,
       ),
       body: Builder(builder: (BuildContext context) {
@@ -79,7 +79,7 @@ class _UnBondPageState extends State<UnBondPage> {
                       ),
                       TextFormField(
                         decoration: InputDecoration(
-                          hintText: dic['amount'],
+                          hintText: dic!['amount'],
                           labelText:
                               '${dic['amount']} (${dicStaking['bonded']}: ${Fmt.priceFloor(
                             bonded,
@@ -87,12 +87,12 @@ class _UnBondPageState extends State<UnBondPage> {
                           )} $symbol)',
                           errorMaxLines: 3,
                         ),
-                        inputFormatters: [UI.decimalInputFormatter(decimals)],
+                        inputFormatters: [UI.decimalInputFormatter(decimals)!],
                         controller: _amountCtrl,
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
                         validator: (v) {
-                          if (v.isEmpty) {
+                          if (v!.isEmpty) {
                             return dic['amount.error'];
                           }
                           final amount = double.parse(v.trim());
@@ -115,7 +115,7 @@ class _UnBondPageState extends State<UnBondPage> {
                 padding: EdgeInsets.all(16),
                 child: TxButton(
                   getTxParams: () async {
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       final inputAmount = _amountCtrl.text.trim();
                       return TxConfirmParams(
                         txTitle: dicStaking['action.unbond'],
@@ -129,8 +129,8 @@ class _UnBondPageState extends State<UnBondPage> {
                       );
                     }
                     return null;
-                  },
-                  onFinish: (Map res) {
+                  } as Future<TxConfirmParams> Function()?,
+                  onFinish: (Map? res) {
                     if (res != null) {
                       Navigator.of(context).pop(res);
                     }

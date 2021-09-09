@@ -28,17 +28,17 @@ class _GovernanceState extends State<CouncilPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.plugin.sdk.api.connectedNode == null) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.plugin.sdk.api!.connectedNode == null) {
         return;
       }
-      widget.plugin.service.gov.queryCouncilInfo();
+      widget.plugin.service!.gov.queryCouncilInfo();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final tabs = [dic['council'], dic['council.motions']];
     return Scaffold(
       body: PageWrapperWithBackground(SafeArea(
@@ -58,7 +58,7 @@ class _GovernanceState extends State<CouncilPage> {
                 ],
               ),
               TopTabs(
-                names: tabs,
+                names: tabs as List<String>?,
                 activeTab: _tab,
                 onTab: (v) {
                   setState(() {
@@ -71,7 +71,7 @@ class _GovernanceState extends State<CouncilPage> {
               Observer(
                 builder: (_) {
                   return Expanded(
-                    child: widget.plugin.store.gov.council.members == null
+                    child: widget.plugin.store!.gov.council.members == null
                         ? CupertinoActivityIndicator()
                         : _tab == 0
                             ? Council(widget.plugin)

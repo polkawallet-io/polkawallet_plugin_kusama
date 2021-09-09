@@ -30,21 +30,21 @@ class MotionDetailPage extends StatefulWidget {
 }
 
 class _MotionDetailPageState extends State<MotionDetailPage> {
-  final List<String> methodExternal = [
+  final List<String?> methodExternal = [
     'externalPropose',
     'externalProposeDefault',
     'externalProposeMajority'
   ];
-  final List<String> methodTreasury = ['approveProposal', 'rejectProposal'];
+  final List<String?> methodTreasury = ['approveProposal', 'rejectProposal'];
 
-  Map _treasuryProposal;
+  Map? _treasuryProposal;
 
-  List _links;
+  List? _links;
 
-  Future<List> _getExternalLinks(int id) async {
+  Future<List?> _getExternalLinks(int? id) async {
     if (_links != null) return _links;
 
-    final List res = await widget.plugin.sdk.api.gov.getExternalLinks(
+    final List? res = await widget.plugin.sdk.api!.gov!.getExternalLinks(
       GenExternalLinksParams.fromJson(
           {'data': id.toString(), 'type': 'council'}),
     );
@@ -56,10 +56,11 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
     return res;
   }
 
-  Future<Map> _fetchTreasuryProposal(String id) async {
+  Future<Map?> _fetchTreasuryProposal(String? id) async {
     if (_treasuryProposal != null) return _treasuryProposal;
 
-    final Map data = await widget.plugin.sdk.api.gov.queryTreasuryProposal(id);
+    final Map? data =
+        await widget.plugin.sdk.api!.gov!.queryTreasuryProposal(id!);
     if (data != null) {
       setState(() {
         _treasuryProposal = data;
@@ -69,20 +70,21 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
   }
 
   void _onVote(bool approve) async {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final CouncilMotionData motion = ModalRoute.of(context).settings.arguments;
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final CouncilMotionData motion =
+        ModalRoute.of(context)!.settings.arguments as CouncilMotionData;
     final args = TxConfirmParams(
       module: 'council',
       call: 'vote',
       txTitle: dic['treasury.vote'],
       txDisplay: {
         "proposalHash": motion.hash,
-        "proposalId": motion.votes.index,
+        "proposalId": motion.votes!.index,
         "voteValue": approve,
       },
       params: [
         motion.hash,
-        motion.votes.index,
+        motion.votes!.index,
         approve,
       ],
     );
@@ -90,15 +92,16 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
         .pushNamed(TxConfirmPage.route, arguments: args);
     if (res != null) {
       final CouncilMotionData motion =
-          ModalRoute.of(context).settings.arguments;
-      _fetchTreasuryProposal(motion.proposal.args[0]);
+          ModalRoute.of(context)!.settings.arguments as CouncilMotionData;
+      _fetchTreasuryProposal(motion.proposal!.args![0]);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final CouncilMotionData motion = ModalRoute.of(context).settings.arguments;
+    final Map? dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
+    final CouncilMotionData? motion =
+        ModalRoute.of(context)!.settings.arguments as CouncilMotionData?;
     return Observer(
       builder: (BuildContext context) {
         int blockTime = 6000;
@@ -107,37 +110,37 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
               widget.plugin.networkConst['babe']['expectedBlockTime']);
         }
         List<List<String>> params = [];
-        motion.proposal.meta.args.asMap().forEach((k, v) {
+        motion!.proposal!.meta!.args!.asMap().forEach((k, v) {
           params.add(
-              ['${v.name}: ${v.type}', motion.proposal.args[k].toString()]);
+              ['${v.name}: ${v.type}', motion.proposal!.args![k].toString()]);
         });
         bool isCouncil = false;
-        widget.plugin.store.gov.council.members.forEach((e) {
+        widget.plugin.store!.gov.council.members!.forEach((e) {
           if (widget.keyring.current.address == e[0]) {
             isCouncil = true;
           }
         });
         bool isVotedYes = false;
         bool isVotedNo = false;
-        motion.votes.ayes.forEach((e) {
+        motion.votes!.ayes!.forEach((e) {
           if (e == widget.keyring.current.address) {
             isVotedYes = true;
           }
         });
-        motion.votes.nays.forEach((e) {
+        motion.votes!.nays!.forEach((e) {
           if (e == widget.keyring.current.address) {
             isVotedNo = true;
           }
         });
-        bool isTreasury = motion.proposal.section == 'treasury' &&
-            methodTreasury.indexOf(motion.proposal.method) > -1;
-        bool isExternal = motion.proposal.section == 'democracy' &&
-            methodExternal.indexOf(motion.proposal.method) > -1;
+        bool isTreasury = motion.proposal!.section == 'treasury' &&
+            methodTreasury.indexOf(motion.proposal!.method) > -1;
+        bool isExternal = motion.proposal!.section == 'democracy' &&
+            methodExternal.indexOf(motion.proposal!.method) > -1;
 
-        final votesEnd = BigInt.parse(motion.votes.end.toString());
+        final votesEnd = BigInt.parse(motion.votes!.end.toString());
         return Scaffold(
           appBar: AppBar(
-            title: Text('${dic['council.motion']} #${motion.votes.index}'),
+            title: Text('${dic!['council.motion']} #${motion.votes!.index}'),
             centerTitle: true,
           ),
           body: SafeArea(
@@ -150,17 +153,17 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        '${motion.proposal.section}.${motion.proposal.method}',
+                        '${motion.proposal!.section}.${motion.proposal!.method}',
                         style: Theme.of(context).textTheme.headline4,
                       ),
-                      Text(motion.proposal.meta.documentation.trim()),
+                      Text(motion.proposal!.meta!.documentation!.trim()),
                       Divider(),
                       Padding(
                         padding: EdgeInsets.only(bottom: 8),
                         child: ProposalArgsItem(
                           label: Text('Hash'),
                           content: Text(
-                            Fmt.address(motion.hash, pad: 10),
+                            Fmt.address(motion.hash, pad: 10)!,
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           margin: EdgeInsets.all(0),
@@ -180,8 +183,8 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                       isTreasury
                           ? FutureBuilder(
                               future: _fetchTreasuryProposal(
-                                  motion.proposal.args[0]),
-                              builder: (_, AsyncSnapshot<Map> snapshot) {
+                                  motion.proposal!.args![0]),
+                              builder: (_, AsyncSnapshot<Map?> snapshot) {
                                 if (snapshot.hasData) {
                                   return ProposalArgsItem(
                                     label: Text('proposal: TreasuryProposal'),
@@ -217,7 +220,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                                 Text(
                                   Fmt.blockToTime(
                                     (votesEnd -
-                                            widget.plugin.store.gov.bestNumber)
+                                            widget.plugin.store!.gov.bestNumber)
                                         .toInt(),
                                     blockTime,
                                   ),
@@ -233,7 +236,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                         ],
                       ),
                       FutureBuilder(
-                        future: _getExternalLinks(motion.votes.index),
+                        future: _getExternalLinks(motion.votes!.index),
                         builder: (_, AsyncSnapshot snapshot) {
                           if (snapshot.hasData) {
                             return GovExternalLinks(snapshot.data);
@@ -286,7 +289,8 @@ class _ProposalArgsListState extends State<ProposalArgsList> {
                   ? Icons.keyboard_arrow_down
                   : Icons.keyboard_arrow_right,
             ),
-            Text(I18n.of(context).getDic(i18n_full_dic_kusama, 'gov')['detail'])
+            Text(I18n.of(context)!
+                .getDic(i18n_full_dic_kusama, 'gov')!['detail']!)
           ],
         ),
         onTap: () {
@@ -329,14 +333,14 @@ class ProposalVoteButtonsRow extends StatelessWidget {
     this.onVote,
   });
 
-  final bool isCouncil;
-  final bool isVotedYes;
-  final bool isVotedNo;
-  final Function(bool) onVote;
+  final bool? isCouncil;
+  final bool? isVotedYes;
+  final bool? isVotedNo;
+  final Function(bool)? onVote;
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
+    final Map? dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     return Row(
       children: <Widget>[
         Expanded(
@@ -346,8 +350,8 @@ class ProposalVoteButtonsRow extends StatelessWidget {
               color: Theme.of(context).cardColor,
             ),
             color: Colors.orange,
-            text: isVotedNo ? '${dic['no']}(${dic['voted']})' : dic['no'],
-            onPressed: isCouncil && !isVotedNo ? () => onVote(false) : null,
+            text: isVotedNo! ? '${dic!['no']}(${dic['voted']})' : dic!['no'],
+            onPressed: isCouncil! && !isVotedNo! ? () => onVote!(false) : null,
           ),
         ),
         Container(width: 16),
@@ -357,8 +361,8 @@ class ProposalVoteButtonsRow extends StatelessWidget {
               Icons.check,
               color: Theme.of(context).cardColor,
             ),
-            text: isVotedYes ? '${dic['yes']}(${dic['voted']})' : dic['yes'],
-            onPressed: isCouncil && !isVotedYes ? () => onVote(true) : null,
+            text: isVotedYes! ? '${dic['yes']}(${dic['voted']})' : dic['yes'],
+            onPressed: isCouncil! && !isVotedYes! ? () => onVote!(true) : null,
           ),
         ),
       ],
@@ -369,9 +373,9 @@ class ProposalVoteButtonsRow extends StatelessWidget {
 class ProposalArgsItem extends StatelessWidget {
   ProposalArgsItem({this.label, this.content, this.margin});
 
-  final Widget label;
-  final Widget content;
-  final EdgeInsets margin;
+  final Widget? label;
+  final Widget? content;
+  final EdgeInsets? margin;
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +390,7 @@ class ProposalArgsItem extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[label, content],
+              children: <Widget>[label!, content!],
             ),
           )
         ],
@@ -398,8 +402,8 @@ class ProposalArgsItem extends StatelessWidget {
 class ProposalVotingList extends StatefulWidget {
   ProposalVotingList({this.plugin, this.council});
 
-  final PluginKusama plugin;
-  final CouncilMotionData council;
+  final PluginKusama? plugin;
+  final CouncilMotionData? council;
 
   @override
   _ProposalVotingListState createState() => _ProposalVotingListState();
@@ -418,16 +422,16 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
+    final symbol = widget.plugin!.networkState.tokenSymbol![0];
+    final decimals = widget.plugin!.networkState.tokenDecimals![0];
     final String voteCountAye =
-        '${widget.council.votes.ayes.length}/${widget.council.votes.threshold}';
-    final int thresholdNay = widget.plugin.store.gov.council.members.length -
-        widget.council.votes.threshold +
+        '${widget.council!.votes!.ayes!.length}/${widget.council!.votes!.threshold}';
+    final int thresholdNay = widget.plugin!.store!.gov.council.members!.length -
+        widget.council!.votes!.threshold! +
         1;
     final String voteCountNay =
-        '${widget.council.votes.nays.length}/$thresholdNay';
+        '${widget.council!.votes!.nays!.length}/$thresholdNay';
     return Container(
       padding: EdgeInsets.only(bottom: 24),
       margin: EdgeInsets.only(top: 8),
@@ -448,8 +452,8 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
                     padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
                     child: Text(
                       e == 0
-                          ? '${dic['yes']}($voteCountAye)'
-                          : '${dic['no']}($voteCountNay)',
+                          ? '${dic!['yes']}($voteCountAye)'
+                          : '${dic!['no']}($voteCountNay)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -472,21 +476,23 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
           ),
           Column(
             children: _tab == 0
-                ? widget.council.votes.ayes.map((e) {
+                ? widget.council!.votes!.ayes!.map((e) {
                     return CandidateItem(
-                      accInfo: widget.plugin.store.accounts.addressIndexMap[e],
-                      icon: widget.plugin.store.accounts.addressIconsMap[e],
-                      balance: widget.plugin.store.gov.council.members
+                      accInfo:
+                          widget.plugin!.store!.accounts.addressIndexMap[e],
+                      icon: widget.plugin!.store!.accounts.addressIconsMap[e],
+                      balance: widget.plugin!.store!.gov.council.members!
                           .firstWhere((i) => i[0] == e),
                       tokenSymbol: symbol,
                       decimals: decimals,
                     );
                   }).toList()
-                : widget.council.votes.nays.map((e) {
+                : widget.council!.votes!.nays!.map((e) {
                     return CandidateItem(
-                      accInfo: widget.plugin.store.accounts.addressIndexMap[e],
-                      icon: widget.plugin.store.accounts.addressIconsMap[e],
-                      balance: widget.plugin.store.gov.council.members
+                      accInfo:
+                          widget.plugin!.store!.accounts.addressIndexMap[e],
+                      icon: widget.plugin!.store!.accounts.addressIconsMap[e],
+                      balance: widget.plugin!.store!.gov.council.members!
                           .firstWhere((i) => i[0] == e),
                       tokenSymbol: symbol,
                       decimals: decimals,

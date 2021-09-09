@@ -22,15 +22,15 @@ class _PayoutPageState extends State<PayoutPage> {
   int _eraSelected = 0;
   int _eraSelectNew = 0;
   bool _loading = true;
-  Map _rewards;
+  Map? _rewards;
 
   Future<void> _queryLatestRewards() async {
-    final options =
-        await widget.plugin.service.staking.fetchAccountRewardsEraOptions();
+    final dynamic options =
+        await widget.plugin.service!.staking.fetchAccountRewardsEraOptions();
     setState(() {
       _eraOptions = options;
     });
-    final res = await widget.plugin.service.staking
+    final res = await widget.plugin.service!.staking
         .fetchAccountRewards(options[0]['value']);
     if (mounted) {
       setState(() {
@@ -44,7 +44,7 @@ class _PayoutPageState extends State<PayoutPage> {
     setState(() {
       _loading = true;
     });
-    final res = await widget.plugin.service.staking
+    final res = await widget.plugin.service!.staking
         .fetchAccountRewards(_eraOptions[selectedEra]['value']);
     if (mounted) {
       setState(() {
@@ -95,7 +95,7 @@ class _PayoutPageState extends State<PayoutPage> {
 
   String _getEraText(Map selected) {
     if (selected['unit'] == 'eras') {
-      final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
+      final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
       return '${dic['reward.max']} ${selected['text']} ${selected['unit']}';
     } else {
       return '${selected['text']} ${selected['unit']}';
@@ -106,19 +106,20 @@ class _PayoutPageState extends State<PayoutPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _queryLatestRewards();
     });
   }
 
   Future<TxConfirmParams> _getParams() async {
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
 
-    List rewards = _rewards['validators'];
+    List rewards = _rewards!['validators'];
     if (rewards.length == 1 && List.of(rewards[0]['eras']).length == 1) {
       return TxConfirmParams(
-        txTitle: dicStaking['action.payout'],
+        txTitle: dicStaking!['action.payout'],
         module: 'staking',
         call: 'payoutStakers',
         txDisplay: {
@@ -141,15 +142,15 @@ class _PayoutPageState extends State<PayoutPage> {
 
     List params = [];
     rewards.forEach((i) {
-      String validatorId = i['validatorId'];
+      String? validatorId = i['validatorId'];
       List.of(i['eras']).forEach((era) {
         params
             .add('api.tx.staking.payoutStakers("$validatorId", ${era['era']})');
       });
     });
-    final total = Fmt.balanceInt('0x${_rewards['available']}');
+    final total = Fmt.balanceInt('0x${_rewards!['available']}');
     return TxConfirmParams(
-      txTitle: dicStaking['action.payout'],
+      txTitle: dicStaking!['action.payout'],
       module: 'utility',
       call: 'batch',
       txDisplay: {
@@ -167,21 +168,22 @@ class _PayoutPageState extends State<PayoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context).getDic(i18n_full_dic_kusama, 'staking');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
 
-    BigInt rewardTotal;
+    late BigInt rewardTotal;
     if (_rewards != null) {
-      if (_rewards['available'] == null) {
+      if (_rewards!['available'] == null) {
         rewardTotal = BigInt.zero;
       } else {
-        rewardTotal = Fmt.balanceInt('0x${_rewards['available']}');
+        rewardTotal = Fmt.balanceInt('0x${_rewards!['available']}');
       }
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(dicStaking['action.payout']),
+        title: Text(dicStaking['action.payout']!),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -200,7 +202,7 @@ class _PayoutPageState extends State<PayoutPage> {
                   ),
                   _eraOptions.length > 0
                       ? ListTile(
-                          title: Text(dicStaking['reward.time']),
+                          title: Text(dicStaking['reward.time']!),
                           subtitle:
                               Text(_getEraText(_eraOptions[_eraSelected])),
                           trailing: Icon(Icons.arrow_forward_ios, size: 18),
@@ -216,7 +218,7 @@ class _PayoutPageState extends State<PayoutPage> {
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width / 2,
-                              child: Text(dicStaking['reward.tip']),
+                              child: Text(dicStaking['reward.tip']!),
                             ),
                           ],
                         )
@@ -224,7 +226,7 @@ class _PayoutPageState extends State<PayoutPage> {
                           padding: EdgeInsets.only(left: 16, right: 16),
                           child: TextFormField(
                             decoration: InputDecoration(
-                              labelText: dic['amount'],
+                              labelText: dic!['amount'],
                             ),
                             initialValue: Fmt.token(
                               rewardTotal,
@@ -239,10 +241,10 @@ class _PayoutPageState extends State<PayoutPage> {
             ),
             Padding(
               padding: EdgeInsets.all(16),
-              child: _rewards != null && _rewards['available'] != null
+              child: _rewards != null && _rewards!['available'] != null
                   ? TxButton(
                       getTxParams: _getParams,
-                      onFinish: (Map res) {
+                      onFinish: (Map? res) {
                         if (res != null) {
                           Navigator.of(context).pop(res);
                         }

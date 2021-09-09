@@ -26,12 +26,12 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountCtrl = new TextEditingController();
 
-  KeyPairData _beneficiary;
+  KeyPairData? _beneficiary;
 
-  Future<TxConfirmParams> _getTxParams() async {
-    if (_formKey.currentState.validate()) {
-      final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-      final decimals = widget.plugin.networkState.tokenDecimals[0];
+  Future<TxConfirmParams?> _getTxParams() async {
+    if (_formKey.currentState!.validate()) {
+      final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+      final decimals = widget.plugin.networkState.tokenDecimals![0];
       final amt = _amountCtrl.text.trim();
       return TxConfirmParams(
         module: 'treasury',
@@ -39,13 +39,13 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
         txTitle: dic['treasury.submit'],
         txDisplay: {
           "value": amt,
-          "beneficiary": _beneficiary.address,
+          "beneficiary": _beneficiary!.address,
         },
         params: [
           // "value"
           Fmt.tokenInt(amt, decimals).toString(),
           // "beneficiary"
-          _beneficiary.address,
+          _beneficiary!.address,
         ],
       );
     }
@@ -55,7 +55,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       setState(() {
         _beneficiary = widget.keyring.current;
       });
@@ -70,10 +70,10 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
 
   @override
   Widget build(BuildContext context) {
-    final dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final dicCommon = I18n.of(context).getDic(i18n_full_dic_kusama, 'common');
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final dicCommon = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
     final bondPercentage = Fmt.balanceInt(
             widget.plugin.networkConst['treasury']['proposalBond'].toString()) *
         BigInt.from(100) ~/
@@ -82,9 +82,9 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
         .plugin.networkConst['treasury']['proposalBondMinimum']
         .toString());
     final balance = Fmt.balanceInt(
-        widget.plugin.balances.native.availableBalance.toString());
+        widget.plugin.balances.native!.availableBalance.toString());
     return Scaffold(
-      appBar: AppBar(title: Text(dic['treasury.submit']), centerTitle: true),
+      appBar: AppBar(title: Text(dic['treasury.submit']!), centerTitle: true),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -105,7 +105,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
                             );
                             if (acc != null) {
                               setState(() {
-                                _beneficiary = acc;
+                                _beneficiary = acc as KeyPairData?;
                               });
                             }
                           },
@@ -116,17 +116,17 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
                             children: [
                               TextFormField(
                                 decoration: InputDecoration(
-                                  hintText: dicCommon['amount'],
+                                  hintText: dicCommon!['amount'],
                                   labelText: '${dicCommon['amount']} ($symbol)',
                                 ),
                                 inputFormatters: [
-                                  UI.decimalInputFormatter(decimals)
+                                  UI.decimalInputFormatter(decimals)!
                                 ],
                                 controller: _amountCtrl,
                                 keyboardType: TextInputType.numberWithOptions(
                                     decimal: true),
                                 validator: (v) {
-                                  if (v.isEmpty) {
+                                  if (v!.isEmpty) {
                                     return dicCommon['amount.error'];
                                   }
                                   return null;
@@ -182,7 +182,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
               padding: EdgeInsets.all(16),
               child: TxButton(
                 text: dic['treasury.submit'],
-                getTxParams: _getTxParams,
+                getTxParams: _getTxParams as Future<TxConfirmParams> Function()?,
                 onFinish: (res) {
                   if (res != null) {
                     Navigator.of(context).pop(res);

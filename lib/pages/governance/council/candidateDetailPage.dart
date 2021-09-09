@@ -29,39 +29,39 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.plugin.store.gov.councilVotes != null) {
-        final List info = ModalRoute.of(context).settings.arguments;
-        final voters = widget.plugin.store.gov.councilVotes[info[0]];
-        widget.plugin.service.gov.updateIconsAndIndices(voters.keys.toList());
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.plugin.store!.gov.councilVotes != null) {
+        final List info = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+        final voters = widget.plugin.store!.gov.councilVotes![info[0]]!;
+        widget.plugin.service!.gov.updateIconsAndIndices(voters.keys.toList());
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map dic = I18n.of(context).getDic(i18n_full_dic_kusama, 'gov');
-    final List info = ModalRoute.of(context).settings.arguments;
-    final decimals = widget.plugin.networkState.tokenDecimals[0];
-    final symbol = widget.plugin.networkState.tokenSymbol[0];
+    final Map? dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
+    final List? info = ModalRoute.of(context)!.settings.arguments as List<dynamic>?;
+    final decimals = widget.plugin.networkState.tokenDecimals![0];
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
     return Scaffold(
       appBar: AppBar(
           title: Text(
-              I18n.of(context).getDic(i18n_full_dic_ui, 'common')['detail']),
+              I18n.of(context)!.getDic(i18n_full_dic_ui, 'common')!['detail']!),
           centerTitle: true),
       body: SafeArea(
         child: Observer(
           builder: (_) {
-            final iconsMap = widget.plugin.store.accounts.addressIconsMap;
+            final iconsMap = widget.plugin.store!.accounts.addressIconsMap;
             final accInfo =
-                widget.plugin.store.accounts.addressIndexMap[info[0]];
-            TextStyle style = Theme.of(context).textTheme.headline4;
+                widget.plugin.store!.accounts.addressIndexMap[info![0]];
+            TextStyle? style = Theme.of(context).textTheme.headline4;
 
-            Map voters;
+            Map? voters;
             List voterList = [];
-            if (widget.plugin.store.gov.councilVotes != null) {
-              voters = widget.plugin.store.gov.councilVotes[info[0]];
-              voterList = voters.keys.toList();
+            if (widget.plugin.store!.gov.councilVotes != null) {
+              voters = widget.plugin.store!.gov.councilVotes![info[0]];
+              voterList = voters!.keys.toList();
             }
             return ListView(
               children: <Widget>[
@@ -84,7 +84,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                             '${Fmt.token(BigInt.parse(info[1].toString()), decimals)} $symbol',
                             style: style),
                       ),
-                      Text(dic['backing'])
+                      Text(dic!['backing'])
                     ],
                   ),
                 ),
@@ -103,9 +103,9 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                     children: voterList.map((i) {
                       return CandidateItem(
                         accInfo:
-                            widget.plugin.store.accounts.addressIndexMap[i],
+                            widget.plugin.store!.accounts.addressIndexMap[i],
                         icon: iconsMap[i],
-                        balance: [i, voters[i]],
+                        balance: [i, voters![i]],
                         tokenSymbol: symbol,
                         decimals: decimals,
                         noTap: true,
