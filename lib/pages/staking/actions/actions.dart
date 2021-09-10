@@ -681,7 +681,8 @@ class StakingInfoPanel extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(dic['bond.unlocking']!, style: TextStyle(fontSize: 12)),
+                    Text(dic['bond.unlocking']!,
+                        style: TextStyle(fontSize: 12)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -853,8 +854,8 @@ class StakingActionsPanel extends StatelessWidget {
     } else {
       if (bonded! > BigInt.zero) {
         setPayeeDisabled = false;
-        onSetPayeeTap = () =>
-            onAction!(() => Navigator.of(context).pushNamed(SetPayeePage.route));
+        onSetPayeeTap = () => onAction!(
+            () => Navigator.of(context).pushNamed(SetPayeePage.route));
       }
     }
 
@@ -898,7 +899,8 @@ class StakingActionsPanel extends StatelessWidget {
                         child: Text(
                           dic['action.bondExtra']!,
                           style: TextStyle(
-                            color: !isStash! ? disabledColor : actionButtonColor,
+                            color:
+                                !isStash! ? disabledColor : actionButtonColor,
                           ),
                         ),
                         onPressed: !isStash!
