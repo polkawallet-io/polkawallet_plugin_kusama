@@ -68,7 +68,7 @@ class _ProposalsState extends State<SpendProposals> {
         final decimals = widget.plugin.networkState.tokenDecimals![0];
         final symbol = widget.plugin.networkState.tokenSymbol![0];
         final balance = Fmt.balance(
-          widget.plugin.store!.gov.treasuryOverview.balance!,
+          widget.plugin.store!.gov.treasuryOverview.balance,
           decimals,
         );
         bool isCouncil = false;

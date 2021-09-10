@@ -187,7 +187,8 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                   backgroundColor: Colors.white,
                   itemExtent: 56,
                   scrollController: FixedExtentScrollController(
-                      initialItem: widget.initialValue!.destinationId ?? 0),
+                      initialItem:
+                          _rewardTo ?? widget.initialValue!.destinationId ?? 0),
                   children: rewardToOptions
                       .map((i) => Padding(
                             padding: EdgeInsets.all(12),
