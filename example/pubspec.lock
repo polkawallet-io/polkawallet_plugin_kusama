@@ -35,14 +35,14 @@ packages:
       name: charts_common
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.10.0"
+    version: "0.11.0"
   charts_flutter:
     dependency: transitive
     description:
       name: charts_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.10.0"
+    version: "0.11.0"
   clock:
     dependency: transitive
     description:
@@ -114,9 +114,9 @@ packages:
   flutter_aes_ecb_pkcs5:
     dependency: transitive
     description:
-      name: flutter_aes_ecb_pkcs5
-      url: "https://pub.flutter-io.cn"
-    source: hosted
+      path: "../../flutter_aes_ecb_pkcs5"
+      relative: true
+    source: path
     version: "0.1.1"
   flutter_inappwebview:
     dependency: transitive
@@ -148,8 +148,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: a125851ca20038767ac4efa2e20d12116a390414
-      resolved-ref: a125851ca20038767ac4efa2e20d12116a390414
+      ref: master
+      resolved-ref: "2774649132665ad00250c8db601db5d10a18bdb1"
       url: "https://github.com/polkawallet-io/flutter_qr_reader.git"
     source: git
     version: "1.0.6"
@@ -406,19 +406,17 @@ packages:
   polkawallet_sdk:
     dependency: transitive
     description:
-      name: polkawallet_sdk
-      url: "https://pub.flutter-io.cn"
-    source: hosted
+      path: "../../sdk"
+      relative: true
+    source: path
     version: "0.3.1"
   polkawallet_ui:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "485a9cde97f2446d74a1aeb6d8d63e33683461a5"
-      resolved-ref: "485a9cde97f2446d74a1aeb6d8d63e33683461a5"
-      url: "https://github.com/polkawallet-io/ui.git"
-    source: git
-    version: "0.3.0"
+      path: "../../ui"
+      relative: true
+    source: path
+    version: "0.3.1"
   process:
     dependency: transitive
     description:
