@@ -31,7 +31,8 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.plugin.store!.gov.councilVotes != null) {
-        final List info = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+        final List info =
+            ModalRoute.of(context)!.settings.arguments as List<dynamic>;
         final voters = widget.plugin.store!.gov.councilVotes![info[0]]!;
         widget.plugin.service!.gov.updateIconsAndIndices(voters.keys.toList());
       }
@@ -40,8 +41,9 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Map? dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
-    final List? info = ModalRoute.of(context)!.settings.arguments as List<dynamic>?;
+    final Map dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final List? info =
+        ModalRoute.of(context)!.settings.arguments as List<dynamic>?;
     final decimals = widget.plugin.networkState.tokenDecimals![0];
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     return Scaffold(
@@ -84,7 +86,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                             '${Fmt.token(BigInt.parse(info[1].toString()), decimals)} $symbol',
                             style: style),
                       ),
-                      Text(dic!['backing'])
+                      Text(dic['backing'])
                     ],
                   ),
                 ),
