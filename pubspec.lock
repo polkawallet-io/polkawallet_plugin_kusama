@@ -8,6 +8,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "22.0.0"
+  aes_ecb_pkcs5_flutter:
+    dependency: transitive
+    description:
+      name: aes_ecb_pkcs5_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.1"
   analyzer:
     dependency: transitive
     description:
@@ -237,13 +244,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_aes_ecb_pkcs5_fork:
-    dependency: transitive
-    description:
-      name: flutter_aes_ecb_pkcs5_fork
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.1"
   flutter_inappwebview:
     dependency: transitive
     description:
@@ -268,9 +268,9 @@ packages:
   flutter_qr_scan:
     dependency: transitive
     description:
-      path: "../flutter_qr_reader"
-      relative: true
-    source: path
+      name: flutter_qr_scan
+      url: "https://pub.flutter-io.cn"
+    source: hosted
     version: "1.0.6"
   flutter_svg:
     dependency: "direct main"
@@ -586,17 +586,17 @@ packages:
   polkawallet_sdk:
     dependency: "direct main"
     description:
-      path: "../sdk"
-      relative: true
-    source: path
-    version: "0.3.1"
+      name: polkawallet_sdk
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.2"
   polkawallet_ui:
     dependency: "direct main"
     description:
-      path: "../ui"
-      relative: true
-    source: path
-    version: "0.3.1"
+      name: polkawallet_ui
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.2"
   pool:
     dependency: transitive
     description:
@@ -632,12 +632,12 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
-  qr_flutter:
+  qr_flutter_fork:
     dependency: transitive
     description:
-      path: "../qr_flutter"
-      relative: true
-    source: path
+      name: qr_flutter_fork
+      url: "https://pub.flutter-io.cn"
+    source: hosted
     version: "4.0.0"
   shared_preferences:
     dependency: transitive
