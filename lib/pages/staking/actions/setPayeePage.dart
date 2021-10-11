@@ -214,7 +214,7 @@ class _PayeeSelectorState extends State<PayeeSelector> {
             ? Padding(
                 padding: EdgeInsets.only(left: 16, right: 16),
                 child: AddressInputField(
-                  widget.plugin.sdk.api!,
+                  widget.plugin.sdk.api,
                   widget.keyring.allWithContacts,
                   initialValue: _rewardAccount ?? defaultAcc,
                   onChanged: (acc) {

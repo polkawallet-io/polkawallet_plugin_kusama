@@ -29,7 +29,7 @@ class _GovernanceState extends State<CouncilPage> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.plugin.sdk.api!.connectedNode == null) {
+      if (widget.plugin.sdk.api.connectedNode == null) {
         return;
       }
       widget.plugin.service!.gov.queryCouncilInfo();

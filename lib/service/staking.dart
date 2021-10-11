@@ -11,11 +11,11 @@ class ApiStaking {
 
   final PluginKusama plugin;
   final Keyring keyring;
-  final PolkawalletApi? api;
+  final PolkawalletApi api;
   final PluginStore? store;
 
   Future<List?> fetchAccountRewardsEraOptions() async {
-    final List? res = await api!.staking!.getAccountRewardsEraOptions();
+    final List? res = await api.staking.getAccountRewardsEraOptions();
     return res;
   }
 
@@ -29,7 +29,7 @@ class ApiStaking {
       if (bonded > 0 || unlocking!.length > 0) {
         String address = store!.staking.ownStashInfo!.stashId!;
         print('fetching staking rewards...');
-        Map? res = await api!.staking!.queryAccountRewards(address, eras!);
+        Map? res = await api.staking.queryAccountRewards(address, eras!);
         return res;
       }
     }
@@ -40,13 +40,13 @@ class ApiStaking {
     store!.staking.setTxsLoading(true);
 
     final res = await Future.wait([
-      api!.subScan.fetchTxsAsync(
+      api.subScan.fetchTxsAsync(
         'staking',
         page: page,
         sender: keyring.current.address,
         network: plugin.basic.name!,
       ),
-      api!.subScan.fetchTxsAsync(
+      api.subScan.fetchTxsAsync(
         'utility',
         call: 'batchAll',
         page: page,
@@ -75,7 +75,7 @@ class ApiStaking {
   }
 
   Future<Map> updateStakingRewards() async {
-    final res = await api!.subScan.fetchRewardTxsAsync(
+    final res = await api.subScan.fetchRewardTxsAsync(
       page: 0,
       size: 20,
       sender: keyring.current.address,
@@ -90,7 +90,7 @@ class ApiStaking {
   // this query takes a long time
   Future<void> queryElectedInfo() async {
     // fetch all validators details
-    final dynamic res = await api!.staking!.queryElectedInfo();
+    final dynamic res = await api.staking.queryElectedInfo();
     store!.staking.setValidatorsInfo(res);
 
     queryNominations();
@@ -102,13 +102,13 @@ class ApiStaking {
 
   Future<void> queryNominations() async {
     // fetch nominators for all validators
-    final res = await api!.staking!.queryNominations();
+    final res = await api.staking.queryNominations();
     store!.staking.setNominations(res);
   }
 
   Future<Map?> queryValidatorRewards(String accountId) async {
     print('fetching rewards chart data');
-    Map? data = await api!.staking!.loadValidatorRewardsData(accountId);
+    Map? data = await api.staking.loadValidatorRewardsData(accountId);
     if (data != null) {
       // format rewards data & set cache
       Map chartData = PluginFmt.formatRewardsChartData(data);
@@ -118,8 +118,8 @@ class ApiStaking {
   }
 
   Future<Map> queryOwnStashInfo() async {
-    final dynamic data = await api!.service!.staking!
-        .queryOwnStashInfo(keyring.current.address!);
+    final dynamic data =
+        await api.service.staking.queryOwnStashInfo(keyring.current.address!);
     store!.staking.setOwnStashInfo(keyring.current.pubKey, data);
 
     final List<String?> addressesNeedIcons =
@@ -136,21 +136,20 @@ class ApiStaking {
       addressesNeedDecode.add(store!.staking.ownStashInfo!.controllerId);
     }
 
-    final dynamic icons =
-        await api!.account.getAddressIcons(addressesNeedIcons);
+    final dynamic icons = await api.account.getAddressIcons(addressesNeedIcons);
     store!.accounts.setAddressIconsMap(icons);
 
     // get stash&controller's pubKey
     final pubKeys =
-        await api!.account.decodeAddress(addressesNeedDecode as List<String>);
+        await api.account.decodeAddress(addressesNeedDecode as List<String>);
     store!.accounts.setPubKeyAddressMap(
-        Map<String, Map>.from({api!.connectedNode!.ss58.toString(): pubKeys}));
+        Map<String, Map>.from({api.connectedNode!.ss58.toString(): pubKeys}));
 
     return data;
   }
 
   Future<void> queryAccountBondedInfo() async {
-    final data = await api!.staking!.queryBonded(
+    final data = await api.staking.queryBonded(
         keyring.allAccounts.map((e) => e.pubKey).toList() as List<String>);
     store!.staking.setAccountBondedMap(data);
   }

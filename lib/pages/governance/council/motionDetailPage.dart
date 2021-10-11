@@ -44,7 +44,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
   Future<List?> _getExternalLinks(int? id) async {
     if (_links != null) return _links;
 
-    final List? res = await widget.plugin.sdk.api!.gov!.getExternalLinks(
+    final List? res = await widget.plugin.sdk.api.gov.getExternalLinks(
       GenExternalLinksParams.fromJson(
           {'data': id.toString(), 'type': 'council'}),
     );
@@ -60,7 +60,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
     if (_treasuryProposal != null) return _treasuryProposal;
 
     final Map? data =
-        await widget.plugin.sdk.api!.gov!.queryTreasuryProposal(id!);
+        await widget.plugin.sdk.api.gov.queryTreasuryProposal(id!);
     if (data != null) {
       setState(() {
         _treasuryProposal = data;

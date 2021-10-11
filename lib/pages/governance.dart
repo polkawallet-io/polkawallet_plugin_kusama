@@ -43,7 +43,7 @@ class Gov extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: plugin.sdk.api!.connectedNode == null
+              child: plugin.sdk.api.connectedNode == null
                   ? Container(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.width / 2),

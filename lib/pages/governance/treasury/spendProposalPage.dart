@@ -37,7 +37,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
   Future<List?> _getExternalLinks(int id) async {
     if (_links != null) return _links;
 
-    final List? res = await widget.plugin.sdk.api!.gov!.getExternalLinks(
+    final List? res = await widget.plugin.sdk.api.gov.getExternalLinks(
       GenExternalLinksParams.fromJson(
           {'data': id.toString(), 'type': 'treasury'}),
     );
