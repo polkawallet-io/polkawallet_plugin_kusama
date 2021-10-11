@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/common/components/infoItem.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -34,7 +33,7 @@ class _CouncilState extends State<Council> {
   bool _votesExpanded = false;
 
   Future<void> _fetchCouncilInfo() async {
-    if (widget.plugin.sdk.api!.connectedNode == null) {
+    if (widget.plugin.sdk.api.connectedNode == null) {
       return;
     }
     await widget.plugin.service!.gov.queryCouncilVotes();

@@ -40,7 +40,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
   Future<List?> _getExternalLinks(BigInt id) async {
     if (_links != null) return _links;
 
-    final List? res = await widget.plugin.sdk.api!.gov!.getExternalLinks(
+    final List? res = await widget.plugin.sdk.api.gov.getExternalLinks(
       GenExternalLinksParams.fromJson(
           {'data': id.toString(), 'type': 'proposal'}),
     );

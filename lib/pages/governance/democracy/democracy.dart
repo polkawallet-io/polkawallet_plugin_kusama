@@ -35,7 +35,7 @@ class _DemocracyState extends State<Democracy> {
   List _unlocks = [];
 
   Future<void> _queryDemocracyUnlocks() async {
-    final List? unlocks = await widget.plugin.sdk.api!.gov!
+    final List? unlocks = await widget.plugin.sdk.api.gov
         .getDemocracyUnlocks(widget.keyring.current.address!);
     if (mounted && unlocks != null) {
       setState(() {
@@ -47,7 +47,7 @@ class _DemocracyState extends State<Democracy> {
   Future<List?> _getExternalLinks(BigInt? id) async {
     if (_links[id] != null) return _links[id];
 
-    final List? res = await widget.plugin.sdk.api!.gov!.getExternalLinks(
+    final List? res = await widget.plugin.sdk.api.gov.getExternalLinks(
       GenExternalLinksParams.fromJson(
           {'data': id.toString(), 'type': 'referendum'}),
     );
@@ -60,7 +60,7 @@ class _DemocracyState extends State<Democracy> {
   }
 
   Future<void> _fetchReferendums() async {
-    if (widget.plugin.sdk.api!.connectedNode == null) {
+    if (widget.plugin.sdk.api.connectedNode == null) {
       return;
     }
     widget.plugin.service!.gov.getReferendumVoteConvictions();
@@ -111,7 +111,7 @@ class _DemocracyState extends State<Democracy> {
   @override
   void initState() {
     super.initState();
-    if (widget.plugin.sdk.api!.connectedNode != null) {
+    if (widget.plugin.sdk.api.connectedNode != null) {
       widget.plugin.service!.gov.subscribeBestNumber();
     }
 

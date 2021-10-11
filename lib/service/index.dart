@@ -23,7 +23,7 @@ class PluginApi {
       context: context,
       builder: (_) {
         return PasswordInputDialog(
-          plugin.sdk.api!,
+          plugin.sdk.api,
           title: Text(
               I18n.of(context)!.getDic(i18n_full_dic_ui, 'common')!['unlock']!),
           account: acc,
@@ -34,8 +34,9 @@ class PluginApi {
   }
 
   Future<String> getRuntimeModuleName(List<String> modules) async {
-    final res = await Future.wait(modules.map((e) =>
-        plugin.sdk.webView!.evalJavascript('(api.tx.$e != undefined ? {} : null)', wrapPromise: false)));
+    final res = await Future.wait(modules.map((e) => plugin.sdk.webView!
+        .evalJavascript('(api.tx.$e != undefined ? {} : null)',
+            wrapPromise: false)));
     print(res);
     return modules[res.indexWhere((e) => e != null)];
   }

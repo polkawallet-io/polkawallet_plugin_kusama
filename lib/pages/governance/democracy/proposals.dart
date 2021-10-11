@@ -18,7 +18,7 @@ class _ProposalsState extends State<Proposals> {
       new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
-    if (widget.plugin.sdk.api!.connectedNode == null) {
+    if (widget.plugin.sdk.api.connectedNode == null) {
       return;
     }
     await widget.plugin.service!.gov.queryProposals();
