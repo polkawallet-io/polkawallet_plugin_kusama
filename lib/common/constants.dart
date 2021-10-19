@@ -19,6 +19,16 @@ const node_list_kusama = [
     'ss58': 2,
     'endpoint': 'wss://kusama.api.onfinality.io/public-ws',
   },
+  // {
+  //   'name': 'Kusama (cross chain 9110 dev)',
+  //   'ss58': 42,
+  //   'endpoint': 'wss://kusama-1.polkawallet.io:9944',
+  // },
+  // {
+  //   'name': 'Kusama (cross chain 9100 dev)',
+  //   'ss58': 42,
+  //   'endpoint': 'wss://crosschain-dev.polkawallet.io:9906',
+  // },
 ];
 const node_list_polkadot = [
   {
@@ -36,6 +46,11 @@ const node_list_polkadot = [
     'ss58': 0,
     'endpoint': 'wss://polkadot.api.onfinality.io/public-ws',
   },
+  // {
+  //   'name': 'Polkadot (aca crowdloan dev)',
+  //   'ss58': 0,
+  //   'endpoint': 'wss://karura-test-node.laminar.codes/polkadot',
+  // },
 ];
 
 const home_nav_items = ['staking', 'governance'];
