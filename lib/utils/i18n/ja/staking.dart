@@ -56,7 +56,7 @@ const Map<String, String> enStaking = {
       'You need to bond Tokens before nominating. Go to bonding now?',
   'action.nominee': 'Set Nominees',
   'action.chill': 'Stop Nominating',
-  'action.reward': 'Reward Type',
+  'action.reward': 'Reward Destination',
   'action.setting': 'Bonding Preference',
   'action.control': 'Change Controller',
   'action.import': 'Import ',
