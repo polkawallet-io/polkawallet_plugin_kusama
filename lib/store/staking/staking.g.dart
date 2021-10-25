@@ -144,21 +144,6 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
-  final _$txsCountAtom = Atom(name: '_StakingStore.txsCount');
-
-  @override
-  int? get txsCount {
-    _$txsCountAtom.reportRead();
-    return super.txsCount;
-  }
-
-  @override
-  set txsCount(int? value) {
-    _$txsCountAtom.reportWrite(value, super.txsCount, () {
-      super.txsCount = value;
-    });
-  }
-
   final _$txsAtom = Atom(name: '_StakingStore.txs');
 
   @override
@@ -203,23 +188,6 @@ mixin _$StakingStore on _StakingStore, Store {
     _$rewardsChartDataCacheAtom.reportWrite(value, super.rewardsChartDataCache,
         () {
       super.rewardsChartDataCache = value;
-    });
-  }
-
-  final _$stakesChartDataCacheAtom =
-      Atom(name: '_StakingStore.stakesChartDataCache');
-
-  @override
-  ObservableMap<String, dynamic> get stakesChartDataCache {
-    _$stakesChartDataCacheAtom.reportRead();
-    return super.stakesChartDataCache;
-  }
-
-  @override
-  set stakesChartDataCache(ObservableMap<String, dynamic> value) {
-    _$stakesChartDataCacheAtom.reportWrite(value, super.stakesChartDataCache,
-        () {
-      super.stakesChartDataCache = value;
     });
   }
 
@@ -351,17 +319,6 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
-  void setStakesChartData(String validatorId, Map<dynamic, dynamic> data) {
-    final _$actionInfo = _$_StakingStoreActionController.startAction(
-        name: '_StakingStore.setStakesChartData');
-    try {
-      return super.setStakesChartData(validatorId, data);
-    } finally {
-      _$_StakingStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 validatorsInfo: ${validatorsInfo},
@@ -372,11 +329,9 @@ nominationsMap: ${nominationsMap},
 ownStashInfo: ${ownStashInfo},
 accountBondedMap: ${accountBondedMap},
 txsLoading: ${txsLoading},
-txsCount: ${txsCount},
 txs: ${txs},
 txsRewards: ${txsRewards},
 rewardsChartDataCache: ${rewardsChartDataCache},
-stakesChartDataCache: ${stakesChartDataCache},
 recommendedValidators: ${recommendedValidators},
 nominatingList: ${nominatingList},
 accountUnlockingTotal: ${accountUnlockingTotal}

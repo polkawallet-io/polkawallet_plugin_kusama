@@ -43,9 +43,6 @@ abstract class _StakingStore with Store {
   bool txsLoading = false;
 
   @observable
-  int? txsCount = 0;
-
-  @observable
   ObservableList<TxData> txs = ObservableList<TxData>();
 
   @observable
@@ -53,10 +50,6 @@ abstract class _StakingStore with Store {
 
   @observable
   ObservableMap<String, dynamic> rewardsChartDataCache =
-      ObservableMap<String, dynamic>();
-
-  @observable
-  ObservableMap<String, dynamic> stakesChartDataCache =
       ObservableMap<String, dynamic>();
 
   @observable
@@ -167,7 +160,6 @@ abstract class _StakingStore with Store {
   Future<void> addTxs(Map? data, String? pubKey,
       {bool shouldCache = false, reset = false}) async {
     if (data == null || data['extrinsics'] == null) return;
-    txsCount = data['count'];
 
     List<TxData> ls =
         List.of(data['extrinsics']).map((i) => TxData.fromJson(i)).toList();
@@ -203,11 +195,6 @@ abstract class _StakingStore with Store {
   @action
   void setRewardsChartData(String validatorId, Map data) {
     rewardsChartDataCache[validatorId] = data;
-  }
-
-  @action
-  void setStakesChartData(String validatorId, Map data) {
-    stakesChartDataCache[validatorId] = data;
   }
 
   @action
