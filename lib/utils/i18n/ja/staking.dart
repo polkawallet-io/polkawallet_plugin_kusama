@@ -92,7 +92,7 @@ const Map<String, String> enStaking = {
   'nominate.over': 'Oversubscribed',
   'nominate.inactive': 'Inactive',
   'nominate.waiting': 'Waiting',
-  'nominate.max': 'Max nomination number is 16.',
+  'nominate.max': 'Max nomination number is',
   'phala': 'Phala Airdrop',
   'recommend': 'Recommended',
 };
