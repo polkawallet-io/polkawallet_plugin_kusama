@@ -25,8 +25,6 @@ class NominateForm extends StatefulWidget {
   _NominateFormState createState() => _NominateFormState();
 }
 
-const MAX_NOMINATION = 16;
-
 class _NominateFormState extends State<NominateForm> {
   final List<ValidatorData> _selected = <ValidatorData>[];
   final List<ValidatorData> _notSelected = <ValidatorData>[];
@@ -51,6 +49,8 @@ class _NominateFormState extends State<NominateForm> {
   Widget _buildListItem(BuildContext context, ValidatorData validator) {
     final dicStaking =
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final maxNomination = int.parse(
+        widget.plugin.networkConst['staking']['maxNominations'].toString());
     final Map? accInfo =
         widget.plugin.store!.accounts.addressIndexMap[validator.accountId];
     final accIcon =
@@ -108,13 +108,14 @@ class _NominateFormState extends State<NominateForm> {
             CupertinoSwitch(
               value: _selectedMap[validator.accountId]!,
               onChanged: (bool value) {
-                if (value && _selected.length >= MAX_NOMINATION) {
+                if (value && _selected.length >= maxNomination) {
                   showCupertinoDialog(
                       context: context,
                       builder: (_) {
                         return CupertinoAlertDialog(
                           title: Container(),
-                          content: Text(dicStaking['nominate.max']!),
+                          content: Text(
+                              '${dicStaking['nominate.max']} $maxNomination'),
                           actions: [
                             CupertinoButton(
                               child: Text(I18n.of(context)!.getDic(
