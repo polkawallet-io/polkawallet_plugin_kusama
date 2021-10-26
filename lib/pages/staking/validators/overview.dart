@@ -444,21 +444,11 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   @override
   Widget build(BuildContext context) {
     final dicStaking =
-        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking') ?? {};
     return Observer(
       builder: (_) {
         final int decimals = widget.plugin.networkState.tokenDecimals![0];
-        final List<Tab> _listTabs = <Tab>[
-          Tab(
-            text:
-                '${dicStaking!['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
-          ),
-          Tab(
-            text:
-                '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})',
-          ),
-        ];
-        List list = [
+        final List list = [
           // index_0: the overview card
           _buildTopCard(context),
           // index_1: the 'Validators' label

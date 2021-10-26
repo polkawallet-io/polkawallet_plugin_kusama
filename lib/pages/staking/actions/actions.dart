@@ -405,7 +405,7 @@ class _StakingActions extends State<StakingActions> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.plugin.store!.staking.ownStashInfo == null) {
         if (_refreshKey.currentState != null) {
-          _refreshKey.currentState!.show();
+          _updateStakingInfo();
         }
       } else {
         _updateStakingInfo();
