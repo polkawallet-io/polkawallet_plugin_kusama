@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -226,76 +226,79 @@ class _CouncilState extends State<Council> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
-    return Observer(builder: (_) {
-      final decimals = widget.plugin.networkState.tokenDecimals![0];
-      final symbol = widget.plugin.networkState.tokenSymbol![0];
-      return RefreshIndicator(
-        key: _refreshKey,
-        onRefresh: _fetchCouncilInfo,
-        child: widget.plugin.store!.gov.council == null
-            ? Container()
-            : ListView(
-                children: <Widget>[
-                  _buildTopCard(symbol),
-                  Container(
-                    padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
-                    color: Theme.of(context).cardColor,
-                    child: BorderedTitle(
-                      title: dic!['member'],
-                    ),
-                  ),
-                  Container(
-                    color: Theme.of(context).cardColor,
-                    child: Column(
-                      children:
-                          widget.plugin.store!.gov.council.members!.map((i) {
-                        return CandidateItem(
-                          accInfo: widget
-                              .plugin.store!.accounts.addressIndexMap[i[0]],
-                          icon: widget
-                              .plugin.store!.accounts.addressIconsMap[i[0]],
-                          balance: i,
-                          tokenSymbol: symbol,
-                          decimals: decimals,
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
-                    color: Theme.of(context).cardColor,
-                    child: BorderedTitle(
-                      title: dic['up'],
-                    ),
-                  ),
-                  Container(
-                    color: Theme.of(context).cardColor,
-                    child: Column(
-                      children:
-                          widget.plugin.store!.gov.council.runnersUp!.map((i) {
-                        return CandidateItem(
-                          accInfo: widget
-                              .plugin.store!.accounts.addressIndexMap[i[0]],
-                          icon: widget
-                              .plugin.store!.accounts.addressIconsMap[i[0]],
-                          balance: i,
-                          tokenSymbol: symbol,
-                          decimals: decimals,
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
-                    color: Theme.of(context).cardColor,
-                    child: BorderedTitle(
-                      title: dic['candidate'],
-                    ),
-                  ),
-                  Container(
-                    color: Theme.of(context).cardColor,
-                    child:
-                        widget.plugin.store!.gov.council.candidates!.length > 0
+    return GetBuilder(
+        init: widget.plugin.store,
+        builder: (_) {
+          final decimals = widget.plugin.networkState.tokenDecimals![0];
+          final symbol = widget.plugin.networkState.tokenSymbol![0];
+          return RefreshIndicator(
+            key: _refreshKey,
+            onRefresh: _fetchCouncilInfo,
+            child: widget.plugin.store!.gov.council == null
+                ? Container()
+                : ListView(
+                    children: <Widget>[
+                      _buildTopCard(symbol),
+                      Container(
+                        padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
+                        color: Theme.of(context).cardColor,
+                        child: BorderedTitle(
+                          title: dic!['member'],
+                        ),
+                      ),
+                      Container(
+                        color: Theme.of(context).cardColor,
+                        child: Column(
+                          children: widget.plugin.store!.gov.council.members!
+                              .map((i) {
+                            return CandidateItem(
+                              accInfo: widget
+                                  .plugin.store!.accounts.addressIndexMap[i[0]],
+                              icon: widget
+                                  .plugin.store!.accounts.addressIconsMap[i[0]],
+                              balance: i,
+                              tokenSymbol: symbol,
+                              decimals: decimals,
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
+                        color: Theme.of(context).cardColor,
+                        child: BorderedTitle(
+                          title: dic['up'],
+                        ),
+                      ),
+                      Container(
+                        color: Theme.of(context).cardColor,
+                        child: Column(
+                          children: widget.plugin.store!.gov.council.runnersUp!
+                              .map((i) {
+                            return CandidateItem(
+                              accInfo: widget
+                                  .plugin.store!.accounts.addressIndexMap[i[0]],
+                              icon: widget
+                                  .plugin.store!.accounts.addressIconsMap[i[0]],
+                              balance: i,
+                              tokenSymbol: symbol,
+                              decimals: decimals,
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
+                        color: Theme.of(context).cardColor,
+                        child: BorderedTitle(
+                          title: dic['candidate'],
+                        ),
+                      ),
+                      Container(
+                        color: Theme.of(context).cardColor,
+                        child: widget.plugin.store!.gov.council.candidates!
+                                    .length >
+                                0
                             ? Column(
                                 children: widget
                                     .plugin.store!.gov.council.candidates!
@@ -315,11 +318,11 @@ class _CouncilState extends State<Council> {
                                 padding: EdgeInsets.all(16),
                                 child: Text(dic['candidate.empty']!),
                               ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-      );
-    });
+          );
+        });
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/democracy/proposalPanel.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
@@ -35,8 +35,9 @@ class _ProposalsState extends State<Proposals> {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      builder: (BuildContext context) {
+    return GetBuilder(
+      init: widget.plugin.store,
+      builder: (_) {
         return RefreshIndicator(
           key: _refreshKey,
           onRefresh: _fetchData,

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorChartsPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -24,7 +24,8 @@ class ValidatorDetailPage extends StatelessWidget {
   final Keyring keyring;
 
   @override
-  Widget build(BuildContext context) => Observer(
+  Widget build(BuildContext context) => GetBuilder(
+        init: plugin.store,
         builder: (_) {
           final dicStaking =
               I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
@@ -49,8 +50,8 @@ class ValidatorDetailPage extends StatelessWidget {
                 itemCount: 2 +
                     (detail.isElected!
                         ? detail.nominators.length
-                        : plugin.store!.staking.nominationsMap![detail.accountId]
-                                ?.length ??
+                        : plugin.store!.staking
+                                .nominationsMap![detail.accountId]?.length ??
                             0) as int?,
                 itemBuilder: (_, i) {
                   if (i == 0) {
@@ -148,7 +149,8 @@ class ValidatorDetailPage extends StatelessWidget {
                   if (i == 1) {
                     final addresses = detail.isElected!
                         ? detail.nominators.map((e) => e['who']).toList()
-                        : plugin.store!.staking.nominationsMap![detail.accountId];
+                        : plugin
+                            .store!.staking.nominationsMap![detail.accountId];
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -178,8 +180,8 @@ class ValidatorDetailPage extends StatelessWidget {
                           '${Fmt.balance(item['value'].toString(), plugin.networkState.tokenDecimals![0])} ${plugin.networkState.tokenSymbol![0]}'),
                     );
                   } else {
-                    final address = plugin
-                        .store!.staking.nominationsMap![detail.accountId][i - 2];
+                    final address = plugin.store!.staking
+                        .nominationsMap![detail.accountId][i - 2];
                     return ListTile(
                       leading: AddressIcon(address,
                           svg: plugin.store!.accounts.addressIconsMap[address]),

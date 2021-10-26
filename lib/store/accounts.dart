@@ -1,22 +1,13 @@
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
 
-part 'accounts.g.dart';
+class AccountsStore extends GetxController {
+  Map<int, Map<String, String>> pubKeyAddressMap =
+      Map<int, Map<String, String>>();
 
-class AccountsStore extends _AccountsStore with _$AccountsStore {}
+  Map<String?, Map?> addressIndexMap = Map<String?, Map?>();
 
-abstract class _AccountsStore with Store {
-  @observable
-  ObservableMap<int, Map<String, String>> pubKeyAddressMap =
-      ObservableMap<int, Map<String, String>>();
+  Map<String?, String?> addressIconsMap = Map<String?, String?>();
 
-  @observable
-  ObservableMap<String?, Map?> addressIndexMap = ObservableMap<String?, Map?>();
-
-  @observable
-  ObservableMap<String?, String?> addressIconsMap =
-      ObservableMap<String?, String?>();
-
-  @action
   void setPubKeyAddressMap(Map<String, Map> data) {
     data.keys.forEach((ss58) {
       // get old data map
@@ -29,19 +20,20 @@ abstract class _AccountsStore with Store {
       // update state
       pubKeyAddressMap[int.parse(ss58)] = addresses;
     });
+    update();
   }
 
-  @action
   void setAddressIconsMap(List list) {
     list.forEach((i) {
       addressIconsMap[i[0]] = i[1];
     });
+    update();
   }
 
-  @action
   void setAddressIndex(List list) {
     list.forEach((i) {
       addressIndexMap[i['accountId']] = i;
     });
+    update();
   }
 }

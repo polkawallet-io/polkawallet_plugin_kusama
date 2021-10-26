@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/govExternalLinks.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -95,7 +95,8 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
         child: RefreshIndicator(
           key: _refreshKey,
           onRefresh: _fetchData,
-          child: Observer(
+          child: GetBuilder(
+            init: widget.plugin.store,
             builder: (_) {
               final ProposalInfoData proposal = widget
                   .plugin.store!.gov.proposals

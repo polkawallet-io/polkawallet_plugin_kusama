@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
@@ -434,6 +434,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
 
   @override
   void initState() {
+    print("overview===================initState");
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -445,7 +446,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   Widget build(BuildContext context) {
     final dicStaking =
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
-    return Observer(
+    return GetBuilder(
+      init: widget.plugin.store,
       builder: (_) {
         final int decimals = widget.plugin.networkState.tokenDecimals![0];
         final List<Tab> _listTabs = <Tab>[

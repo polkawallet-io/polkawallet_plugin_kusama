@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -113,7 +113,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
   Future<void> _onEndorseSubmit() async {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final decimals = widget.plugin.networkState.tokenDecimals![0];
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     String amt = _tipInputCtrl.text.trim();
     final args = TxConfirmParams(
       module: 'tips',
@@ -143,7 +144,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
 
   Future<void> _onCancel() async {
     var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'retractTip',
@@ -160,7 +162,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
 
   Future<void> _onCloseTip() async {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'closeTip',
@@ -178,7 +181,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
   Future<void> _onTip(BigInt median) async {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final decimals = widget.plugin.networkState.tokenDecimals![0];
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'tip',
@@ -201,7 +205,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     final decimals = widget.plugin.networkState.tokenDecimals![0];
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final who = KeyPairData();
     final finder = KeyPairData();
     who.address = tipData.who;
@@ -243,8 +248,9 @@ class _TipDetailPageState extends State<TipDetailPage> {
     return Scaffold(
       appBar: AppBar(title: Text(dic['treasury.tip']!), centerTitle: true),
       body: SafeArea(
-        child: Observer(
-          builder: (BuildContext context) {
+        child: GetBuilder(
+          init: widget.plugin.store,
+          builder: (_) {
             final closeBlock = tipData.closes != null
                 ? BigInt.parse(tipData.closes.toString())
                 : null;

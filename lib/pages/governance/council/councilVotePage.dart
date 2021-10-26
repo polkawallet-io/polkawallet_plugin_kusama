@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -75,7 +75,8 @@ class _CouncilVote extends State<CouncilVotePage> {
         title: Text(govDic['vote.candidate']!),
         centerTitle: true,
       ),
-      body: Observer(
+      body: GetBuilder(
+        init: widget.plugin.store,
         builder: (_) {
           final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
           final decimals = widget.plugin.networkState.tokenDecimals![0];

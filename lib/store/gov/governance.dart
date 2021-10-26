@@ -1,4 +1,4 @@
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
 
 import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
@@ -7,51 +7,33 @@ import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryOverviewData.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryTipData.dart';
 
-part 'governance.g.dart';
-
-class GovernanceStore extends _GovernanceStore with _$GovernanceStore {
-  GovernanceStore(StoreCache cache) : super(cache);
-}
-
-abstract class _GovernanceStore with Store {
-  _GovernanceStore(this.cache);
+class GovernanceStore extends GetxController {
+  GovernanceStore(this.cache);
 
   final StoreCache cache;
 
-  @observable
   int? cacheCouncilTimestamp = 0;
 
-  @observable
   BigInt bestNumber = BigInt.zero;
 
-  @observable
   CouncilInfoData council = CouncilInfoData();
 
-  @observable
   List<CouncilMotionData> councilMotions = [];
 
-  @observable
   Map<String, Map<String, dynamic>>? councilVotes;
 
-  @observable
   Map<String, dynamic>? userCouncilVotes;
 
-  @observable
   List<ReferendumInfo>? referendums;
 
-  @observable
   List? voteConvictions;
 
-  @observable
   List<ProposalInfoData> proposals = [];
 
-  @observable
   TreasuryOverviewData treasuryOverview = TreasuryOverviewData();
 
-  @observable
   List<TreasuryTipData>? treasuryTips;
 
-  @action
   void setCouncilInfo(Map info, {bool shouldCache = true}) {
     council = CouncilInfoData.fromJson(info as Map<String, dynamic>);
 
@@ -62,39 +44,39 @@ abstract class _GovernanceStore with Store {
         'cacheTime': cacheCouncilTimestamp
       };
     }
+    update();
   }
 
-  @action
   void setCouncilVotes(Map votes) {
     councilVotes = Map<String, Map<String, dynamic>>.from(votes);
+    update();
   }
 
-  @action
   void setUserCouncilVotes(Map votes) {
     userCouncilVotes = Map<String, dynamic>.from(votes);
+    update();
   }
 
-  @action
   void setBestNumber(BigInt number) {
     bestNumber = number;
+    update();
   }
 
-  @action
   void setReferendums(List<ReferendumInfo> ls) {
     referendums = ls;
+    update();
   }
 
-  @action
   void setReferendumVoteConvictions(List? ls) {
     voteConvictions = ls;
+    update();
   }
 
-  @action
   void setProposals(List<ProposalInfoData> ls) {
     proposals = ls;
+    update();
   }
 
-  @action
   Future<void> loadCache() async {
     if (cache.councilInfo.val['data'] != null) {
       setCouncilInfo(cache.councilInfo.val['data'], shouldCache: false);
@@ -102,29 +84,30 @@ abstract class _GovernanceStore with Store {
     } else {
       setCouncilInfo(Map<String, dynamic>(), shouldCache: false);
     }
+    update();
   }
 
-  @action
   void setTreasuryOverview(TreasuryOverviewData data) {
     treasuryOverview = data;
+    update();
   }
 
-  @action
   void setTreasuryTips(List<TreasuryTipData> data) {
     treasuryTips = data;
+    update();
   }
 
-  @action
   void setCouncilMotions(List<CouncilMotionData> data) {
     councilMotions = data;
+    update();
   }
 
-  @action
   void clearState() {
     referendums = [];
     proposals = [];
     councilMotions = [];
     treasuryOverview = TreasuryOverviewData();
     treasuryTips = [];
+    update();
   }
 }

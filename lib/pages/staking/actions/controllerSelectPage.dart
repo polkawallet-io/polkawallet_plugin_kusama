@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -16,9 +16,11 @@ class ControllerSelectPage extends StatelessWidget {
   static final String route = '/staking/account/list';
 
   @override
-  Widget build(BuildContext context) => Observer(
+  Widget build(BuildContext context) => GetBuilder(
+        init: plugin.store,
         builder: (_) {
-          final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+          final dic =
+              I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
           return Scaffold(
             appBar: AppBar(
               title: Text(dic['controller']!),
@@ -31,10 +33,10 @@ class ControllerSelectPage extends StatelessWidget {
                   padding: EdgeInsets.all(16),
                   children: keyring.allAccounts.map((i) {
                     String? unavailable;
-                    final stashOf = plugin
-                        .store!.staking.accountBondedMap[i.pubKey]!.controllerId;
-                    String? controllerOf =
-                        plugin.store!.staking.accountBondedMap[i.pubKey]!.stashId;
+                    final stashOf = plugin.store!.staking
+                        .accountBondedMap[i.pubKey]!.controllerId;
+                    String? controllerOf = plugin
+                        .store!.staking.accountBondedMap[i.pubKey]!.stashId;
                     if (stashOf != null && i.pubKey != keyring.current.pubKey) {
                       unavailable =
                           '${dic['controller.stashOf']} ${Fmt.address(stashOf)}';

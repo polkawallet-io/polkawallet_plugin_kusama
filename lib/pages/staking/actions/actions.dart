@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
@@ -419,7 +419,8 @@ class _StakingActions extends State<StakingActions> {
     final Map<String, String>? dic =
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
 
-    return Observer(
+    return GetBuilder(
+      init: widget.plugin.store,
       builder: (_) {
         List<Widget> list = <Widget>[
           _buildActionCard(),

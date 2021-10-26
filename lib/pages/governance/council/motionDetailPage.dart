@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/council.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/govExternalLinks.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -102,8 +102,9 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
     final Map? dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     final CouncilMotionData? motion =
         ModalRoute.of(context)!.settings.arguments as CouncilMotionData?;
-    return Observer(
-      builder: (BuildContext context) {
+    return GetBuilder(
+      init: widget.plugin.store,
+      builder: (_) {
         int blockTime = 6000;
         if (widget.plugin.networkConst['treasury'] != null) {
           blockTime = int.parse(

@@ -1,7 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/common/components/chartLabel.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorRewardsChart.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -24,9 +24,11 @@ class ValidatorChartsPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => Observer(
+  Widget build(BuildContext context) => GetBuilder(
+        init: plugin.store,
         builder: (_) {
-          final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+          final dic =
+              I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
           final ValidatorData detail =
               ModalRoute.of(context)!.settings.arguments as ValidatorData;
 

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/council.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -52,7 +52,8 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
               I18n.of(context)!.getDic(i18n_full_dic_ui, 'common')!['detail']!),
           centerTitle: true),
       body: SafeArea(
-        child: Observer(
+        child: GetBuilder(
+          init: widget.plugin.store,
           builder: (_) {
             final iconsMap = widget.plugin.store!.accounts.addressIconsMap;
             final accInfo =

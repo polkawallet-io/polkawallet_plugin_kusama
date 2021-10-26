@@ -23,10 +23,13 @@ class Staking extends StatefulWidget {
 class _StakingState extends State<Staking> {
   _StakingState();
 
+  final PageController _pageController = PageController();
+
   int _tab = 0;
 
   @override
   Widget build(BuildContext context) {
+    print("Staking===================build");
     var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     var tabs = [dic['actions'], dic['validators']];
     return SafeArea(
@@ -43,6 +46,7 @@ class _StakingState extends State<Staking> {
                   setState(() {
                     _tab = v;
                   });
+                  _pageController.jumpToPage(_tab);
                 }
               },
             ),

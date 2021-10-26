@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
@@ -37,7 +37,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
     if (_formKey.currentState!.validate()) {
       final govDic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
       final decimals = widget.plugin.networkState.tokenDecimals![0];
-      final Map args = ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
+      final Map args =
+          ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
       final ReferendumInfo info = args['referenda'];
       final bool? voteYes = args['voteYes'];
       final amt = _amountCtrl.text.trim();
@@ -109,7 +110,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
         title: Text(dicGov['vote.proposal']!),
         centerTitle: true,
       ),
-      body: Observer(
+      body: GetBuilder(
+        init: widget.plugin.store,
         builder: (_) {
           final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
           final decimals = widget.plugin.networkState.tokenDecimals![0];
@@ -122,7 +124,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
             }
           });
 
-          Map args = ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
+          Map args = ModalRoute.of(context)!.settings.arguments
+              as Map<dynamic, dynamic>;
           ReferendumInfo? info = args['referenda'];
           bool voteYes = args['voteYes'];
           return SafeArea(
@@ -182,7 +185,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                   child: TxButton(
                     text: I18n.of(context)!
                         .getDic(i18n_full_dic_ui, 'common')!['tx.submit'],
-                    getTxParams: _getTxParams as Future<TxConfirmParams> Function()?,
+                    getTxParams:
+                        _getTxParams as Future<TxConfirmParams> Function()?,
                     onFinish: (res) {
                       if (res != null) {
                         Navigator.of(context).pop(res);

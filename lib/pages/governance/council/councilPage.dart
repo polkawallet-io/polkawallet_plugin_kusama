@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/council.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/motions.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -68,7 +68,8 @@ class _GovernanceState extends State<CouncilPage> {
                   });
                 },
               ),
-              Observer(
+              GetBuilder(
+                init: widget.plugin.store,
                 builder: (_) {
                   return Expanded(
                     child: widget.plugin.store!.gov.council.members == null

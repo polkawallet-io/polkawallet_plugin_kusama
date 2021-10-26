@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -36,8 +36,9 @@ class _MotionsState extends State<Motions> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
-    return Observer(
-      builder: (BuildContext context) {
+    return GetBuilder(
+      init: widget.plugin.store,
+      builder: (_) {
         return RefreshIndicator(
           onRefresh: _fetchData,
           key: _refreshKey,

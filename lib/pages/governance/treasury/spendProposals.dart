@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/spendProposalPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitProposalPage.dart';
@@ -63,8 +63,9 @@ class _ProposalsState extends State<SpendProposals> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
-    return Observer(
-      builder: (BuildContext context) {
+    return GetBuilder(
+      init: widget.plugin.store,
+      builder: (_) {
         final decimals = widget.plugin.networkState.tokenDecimals![0];
         final symbol = widget.plugin.networkState.tokenSymbol![0];
         final balance = Fmt.balance(

@@ -1,4 +1,4 @@
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/txData.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
@@ -6,56 +6,36 @@ import 'package:polkawallet_sdk/api/types/staking/accountBondedInfo.dart';
 import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/api/types/txData.dart';
 
-part 'staking.g.dart';
-
-class StakingStore extends _StakingStore with _$StakingStore {
-  StakingStore(StoreCache cache) : super(cache);
-}
-
-abstract class _StakingStore with Store {
-  _StakingStore(this.cache);
+class StakingStore extends GetxController {
+  StakingStore(this.cache);
 
   final StoreCache cache;
 
-  @observable
   List<ValidatorData> validatorsInfo = [];
 
-  @observable
   List<ValidatorData> electedInfo = [];
 
-  @observable
   List<ValidatorData> nextUpsInfo = [];
 
-  @observable
   Map overview = Map();
 
-  @observable
   Map? nominationsMap = Map();
 
-  @observable
   OwnStashInfoData? ownStashInfo;
 
-  @observable
   Map<String?, AccountBondedInfo> accountBondedMap =
       Map<String, AccountBondedInfo>();
 
-  @observable
   bool txsLoading = false;
 
-  @observable
-  ObservableList<TxData> txs = ObservableList<TxData>();
+  List<TxData> txs = <TxData>[];
 
-  @observable
-  ObservableList<TxRewardData> txsRewards = ObservableList<TxRewardData>();
+  List<TxRewardData> txsRewards = <TxRewardData>[];
 
-  @observable
-  ObservableMap<String, dynamic> rewardsChartDataCache =
-      ObservableMap<String, dynamic>();
+  Map<String, dynamic> rewardsChartDataCache = Map<String, dynamic>();
 
-  @observable
   Map? recommendedValidators = {};
 
-  @computed
   List<ValidatorData> get nominatingList {
     if (ownStashInfo == null ||
         ownStashInfo!.nominating == null ||
@@ -66,7 +46,6 @@ abstract class _StakingStore with Store {
         .where((i) => ownStashInfo!.nominating!.indexOf(i.accountId!) >= 0));
   }
 
-  @computed
   BigInt get accountUnlockingTotal {
     BigInt res = BigInt.zero;
     if (ownStashInfo == null || ownStashInfo!.stakingLedger == null) {
@@ -79,7 +58,6 @@ abstract class _StakingStore with Store {
     return res;
   }
 
-  @action
   void setValidatorsInfo(Map data, {bool shouldCache = true}) {
     if (data['validators'] == null) return;
 
@@ -125,14 +103,14 @@ abstract class _StakingStore with Store {
     if (shouldCache) {
       cache.validatorsInfo.val = data;
     }
+    update();
   }
 
-  @action
   void setNominations(Map? data) {
     nominationsMap = data;
+    update();
   }
 
-  @action
   void setOwnStashInfo(String? pubKey, Map data, {bool shouldCache = true}) {
     ownStashInfo = OwnStashInfoData.fromJson(data as Map<String, dynamic>);
 
@@ -144,19 +122,19 @@ abstract class _StakingStore with Store {
       };
       cache.stakingOwnStash.val = cached;
     }
+    update();
   }
 
-  @action
   void setAccountBondedMap(Map<String?, AccountBondedInfo> data) {
     accountBondedMap = data;
+    update();
   }
 
-  @action
   Future<void> setTxsLoading(bool loading) async {
     txsLoading = loading;
+    update();
   }
 
-  @action
   Future<void> addTxs(Map? data, String? pubKey,
       {bool shouldCache = false, reset = false}) async {
     if (data == null || data['extrinsics'] == null) return;
@@ -174,30 +152,30 @@ abstract class _StakingStore with Store {
       cached[pubKey] = data;
       cache.stakingTxs.val = cached;
     }
+    update();
   }
 
-  @action
   Future<void> addTxsRewards(Map data, String? pubKey,
       {bool shouldCache = false}) async {
     if (data['list'] == null) return;
     List<TxRewardData> ls =
         List.of(data['list']).map((i) => TxRewardData.fromJson(i)).toList();
 
-    txsRewards = ObservableList.of(ls);
+    txsRewards = ls;
 
     if (shouldCache) {
       final cached = cache.stakingRewardTxs.val;
       cached[pubKey] = data;
       cache.stakingRewardTxs.val = cached;
     }
+    update();
   }
 
-  @action
   void setRewardsChartData(String validatorId, Map data) {
     rewardsChartDataCache[validatorId] = data;
+    update();
   }
 
-  @action
   Future<void> loadAccountCache(String? pubKey) async {
     // return if currentAccount not exist
     if (pubKey == null || pubKey.isEmpty) {
@@ -223,9 +201,9 @@ abstract class _StakingStore with Store {
     } else {
       txsRewards.clear();
     }
+    update();
   }
 
-  @action
   Future<void> loadCache(String? pubKey) async {
     if (cache.validatorsInfo.val.keys.length > 0) {
       setValidatorsInfo(cache.validatorsInfo.val, shouldCache: false);
@@ -239,8 +217,8 @@ abstract class _StakingStore with Store {
     loadAccountCache(pubKey);
   }
 
-  @action
   Future<void> setRecommendedValidatorList(Map? data) async {
     recommendedValidators = data;
+    update();
   }
 }
