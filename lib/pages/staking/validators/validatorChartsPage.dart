@@ -25,7 +25,7 @@ class ValidatorChartsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GetBuilder(
-        init: plugin.store,
+        init: plugin.store?.staking,
         builder: (_) {
           final dic =
               I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;

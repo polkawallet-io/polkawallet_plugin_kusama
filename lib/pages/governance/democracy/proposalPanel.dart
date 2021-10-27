@@ -20,7 +20,7 @@ class ProposalPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GetBuilder(
-        init: plugin.store,
+        init: plugin.store?.accounts,
         builder: (_) {
           final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
           final decimals = plugin.networkState.tokenDecimals![0];

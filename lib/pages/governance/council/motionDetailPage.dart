@@ -103,7 +103,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
     final CouncilMotionData? motion =
         ModalRoute.of(context)!.settings.arguments as CouncilMotionData?;
     return GetBuilder(
-      init: widget.plugin.store,
+      init: widget.plugin.store?.gov,
       builder: (_) {
         int blockTime = 6000;
         if (widget.plugin.networkConst['treasury'] != null) {

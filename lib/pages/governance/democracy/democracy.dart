@@ -131,7 +131,7 @@ class _DemocracyState extends State<Democracy> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     return GetBuilder(
-      init: widget.plugin.store,
+      init: widget.plugin.store?.gov,
       builder: (_) {
         final decimals = widget.plugin.networkState.tokenDecimals![0];
         final symbol = widget.plugin.networkState.tokenSymbol![0];

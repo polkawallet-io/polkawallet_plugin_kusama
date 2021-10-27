@@ -420,40 +420,44 @@ class _StakingActions extends State<StakingActions> {
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
 
     return GetBuilder(
-      init: widget.plugin.store,
-      builder: (_) {
-        List<Widget> list = <Widget>[
-          _buildActionCard(),
-          Container(
-            color: Theme.of(context).cardColor,
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: MainTabBar(
-              tabs: [dic!['txs']!, dic['txs.reward']!],
-              activeTab: _tab,
-              fontSize: 18,
-              lineWidth: 6,
-              onTap: (i) {
-                i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
-                setState(() {
-                  _tab = i;
-                });
-              },
-            ),
-          ),
-        ];
-        list.addAll(_tab == 0 ? _buildTxList() : _buildRewardsList());
-        return RefreshIndicator(
-          key: _refreshKey,
-          onRefresh: _updateStakingInfo,
-          child: ListView.builder(
-              controller: _scrollController,
-              itemCount: list.length,
-              itemBuilder: (_, int i) {
-                return list[i];
-              }),
-        );
-      },
-    );
+        init: widget.plugin.store?.accounts,
+        builder: (_) {
+          return GetBuilder(
+            init: widget.plugin.store?.staking,
+            builder: (_) {
+              List<Widget> list = <Widget>[
+                _buildActionCard(),
+                Container(
+                  color: Theme.of(context).cardColor,
+                  padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: MainTabBar(
+                    tabs: [dic!['txs']!, dic['txs.reward']!],
+                    activeTab: _tab,
+                    fontSize: 18,
+                    lineWidth: 6,
+                    onTap: (i) {
+                      i == 0 ? _updateStakingTxs() : _updateStakingRewardTxs();
+                      setState(() {
+                        _tab = i;
+                      });
+                    },
+                  ),
+                ),
+              ];
+              list.addAll(_tab == 0 ? _buildTxList() : _buildRewardsList());
+              return RefreshIndicator(
+                key: _refreshKey,
+                onRefresh: _updateStakingInfo,
+                child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: list.length,
+                    itemBuilder: (_, int i) {
+                      return list[i];
+                    }),
+              );
+            },
+          );
+        });
   }
 }
 

@@ -96,143 +96,155 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
           key: _refreshKey,
           onRefresh: _fetchData,
           child: GetBuilder(
-            init: widget.plugin.store,
+            init: widget.plugin.store?.gov,
             builder: (_) {
-              final ProposalInfoData proposal = widget
-                  .plugin.store!.gov.proposals
-                  .firstWhere((e) => e.index == proposalPara.index);
-              final decimals = widget.plugin.networkState.tokenDecimals![0];
-              final symbol = widget.plugin.networkState.tokenSymbol![0];
-              final List<List<String>> params = [];
-              bool hasProposal = false;
-              if (proposal.image?.proposal != null) {
-                proposal.image!.proposal!.meta!.args!.asMap().forEach((k, v) {
-                  params.add([
-                    '${v.name}: ${v.type}',
-                    proposal.image!.proposal!.args![k].toString()
-                  ]);
-                });
-                hasProposal = true;
-              }
-              final bool isSecondOn =
-                  proposal.seconds!.indexOf(widget.keyring.current.address!) >=
-                      0;
-              return ListView(
-                children: <Widget>[
-                  RoundedCard(
-                    padding: EdgeInsets.all(16),
-                    margin: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              return GetBuilder(
+                  init: widget.plugin.store?.accounts,
+                  builder: (_) {
+                    final ProposalInfoData proposal = widget
+                        .plugin.store!.gov.proposals
+                        .firstWhere((e) => e.index == proposalPara.index);
+                    final decimals =
+                        widget.plugin.networkState.tokenDecimals![0];
+                    final symbol = widget.plugin.networkState.tokenSymbol![0];
+                    final List<List<String>> params = [];
+                    bool hasProposal = false;
+                    if (proposal.image?.proposal != null) {
+                      proposal.image!.proposal!.meta!.args!
+                          .asMap()
+                          .forEach((k, v) {
+                        params.add([
+                          '${v.name}: ${v.type}',
+                          proposal.image!.proposal!.args![k].toString()
+                        ]);
+                      });
+                      hasProposal = true;
+                    }
+                    final bool isSecondOn = proposal.seconds!
+                            .indexOf(widget.keyring.current.address!) >=
+                        0;
+                    return ListView(
                       children: <Widget>[
-                        hasProposal
-                            ? Text(
-                                '${proposal.image!.proposal!.section}.${proposal.image!.proposal!.method}',
-                                style: Theme.of(context).textTheme.headline4,
-                              )
-                            : Container(),
-                        hasProposal
-                            ? Text(proposal
-                                .image!.proposal!.meta!.documentation!
-                                .trim())
-                            : Container(),
-                        hasProposal ? Divider(height: 24) : Container(),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 8),
-                          child: ProposalArgsItem(
-                            label: Text('Hash'),
-                            content: Text(
-                              Fmt.address(proposal.imageHash, pad: 10)!,
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            margin: EdgeInsets.all(0),
-                          ),
-                        ),
-                        params.length > 0
-                            ? Text(
-                                dic['proposal.params']!,
+                        RoundedCard(
+                          padding: EdgeInsets.all(16),
+                          margin: EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              hasProposal
+                                  ? Text(
+                                      '${proposal.image!.proposal!.section}.${proposal.image!.proposal!.method}',
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
+                                    )
+                                  : Container(),
+                              hasProposal
+                                  ? Text(proposal
+                                      .image!.proposal!.meta!.documentation!
+                                      .trim())
+                                  : Container(),
+                              hasProposal ? Divider(height: 24) : Container(),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 8),
+                                child: ProposalArgsItem(
+                                  label: Text('Hash'),
+                                  content: Text(
+                                    Fmt.address(proposal.imageHash, pad: 10)!,
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                  ),
+                                  margin: EdgeInsets.all(0),
+                                ),
+                              ),
+                              params.length > 0
+                                  ? Text(
+                                      dic['proposal.params']!,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .unselectedWidgetColor),
+                                    )
+                                  : Container(),
+                              params.length > 0
+                                  ? ProposalArgsList(params)
+                                  : Container(),
+                              Text(
+                                dic['treasury.proposer']!,
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .unselectedWidgetColor),
-                              )
-                            : Container(),
-                        params.length > 0
-                            ? ProposalArgsList(params)
-                            : Container(),
-                        Text(
-                          dic['treasury.proposer']!,
-                          style: TextStyle(
-                              color: Theme.of(context).unselectedWidgetColor),
-                        ),
-                        ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: AddressIcon(
-                            proposal.proposer,
-                            svg: widget.plugin.store!.accounts
-                                .addressIconsMap[proposal.proposer],
-                          ),
-                          title: UI.accountDisplayName(
-                              proposal.proposer,
-                              widget.plugin.store!.accounts
-                                  .addressIndexMap[proposal.proposer]),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8, bottom: 8),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(
-                                  dic['treasury.bond']!,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .unselectedWidgetColor),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.all(0),
+                                leading: AddressIcon(
+                                  proposal.proposer,
+                                  svg: widget.plugin.store!.accounts
+                                      .addressIconsMap[proposal.proposer],
+                                ),
+                                title: UI.accountDisplayName(
+                                    proposal.proposer,
+                                    widget.plugin.store!.accounts
+                                        .addressIndexMap[proposal.proposer]),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 8, bottom: 8),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Text(
+                                        dic['treasury.bond']!,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .unselectedWidgetColor),
+                                      ),
+                                    ),
+                                    Text(
+                                      '${Fmt.balance(proposal.balance.toString(), decimals)} $symbol',
+                                      style:
+                                          Theme.of(context).textTheme.headline4,
+                                    )
+                                  ],
                                 ),
                               ),
-                              Text(
-                                '${Fmt.balance(proposal.balance.toString(), decimals)} $symbol',
-                                style: Theme.of(context).textTheme.headline4,
-                              )
+                              FutureBuilder(
+                                future: _getExternalLinks(BigInt.parse(
+                                    proposalPara.index.toString())),
+                                builder: (_, AsyncSnapshot snapshot) {
+                                  if (snapshot.hasData) {
+                                    return GovExternalLinks(snapshot.data);
+                                  }
+                                  return Container();
+                                },
+                              ),
+                              Divider(height: 24),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Text(
+                                      dic['proposal.second']!,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .unselectedWidgetColor),
+                                    ),
+                                  ),
+                                  CupertinoSwitch(
+                                    value: isSecondOn,
+                                    onChanged: (res) {
+                                      if (res) {
+                                        _onSwitch();
+                                      }
+                                    },
+                                  )
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                        FutureBuilder(
-                          future: _getExternalLinks(
-                              BigInt.parse(proposalPara.index.toString())),
-                          builder: (_, AsyncSnapshot snapshot) {
-                            if (snapshot.hasData) {
-                              return GovExternalLinks(snapshot.data);
-                            }
-                            return Container();
-                          },
-                        ),
-                        Divider(height: 24),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                dic['proposal.second']!,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .unselectedWidgetColor),
-                              ),
-                            ),
-                            CupertinoSwitch(
-                              value: isSecondOn,
-                              onChanged: (res) {
-                                if (res) {
-                                  _onSwitch();
-                                }
-                              },
-                            )
-                          ],
-                        ),
+                        ProposalSecondsList(
+                            store: widget.plugin.store!.accounts,
+                            proposal: proposal),
                       ],
-                    ),
-                  ),
-                  ProposalSecondsList(
-                      store: widget.plugin.store!.accounts, proposal: proposal),
-                ],
-              );
+                    );
+                  });
             },
           ),
         ),

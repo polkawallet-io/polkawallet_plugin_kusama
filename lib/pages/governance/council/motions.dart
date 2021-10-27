@@ -37,7 +37,7 @@ class _MotionsState extends State<Motions> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     return GetBuilder(
-      init: widget.plugin.store,
+      init: widget.plugin.store?.gov,
       builder: (_) {
         return RefreshIndicator(
           onRefresh: _fetchData,

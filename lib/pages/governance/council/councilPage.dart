@@ -69,7 +69,7 @@ class _GovernanceState extends State<CouncilPage> {
                 },
               ),
               GetBuilder(
-                init: widget.plugin.store,
+                init: widget.plugin.store?.gov,
                 builder: (_) {
                   return Expanded(
                     child: widget.plugin.store!.gov.council.members == null

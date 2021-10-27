@@ -249,230 +249,246 @@ class _TipDetailPageState extends State<TipDetailPage> {
       appBar: AppBar(title: Text(dic['treasury.tip']!), centerTitle: true),
       body: SafeArea(
         child: GetBuilder(
-          init: widget.plugin.store,
+          init: widget.plugin.store?.gov,
           builder: (_) {
-            final closeBlock = tipData.closes != null
-                ? BigInt.parse(tipData.closes.toString())
-                : null;
-            final bool canClose = closeBlock != null &&
-                closeBlock <= widget.plugin.store!.gov.bestNumber;
-            return ListView(
-              children: <Widget>[
-                RoundedCard(
-                  margin: EdgeInsets.all(16),
-                  child: Column(
+            return GetBuilder(
+                init: widget.plugin.store?.accounts,
+                builder: (_) {
+                  final closeBlock = tipData.closes != null
+                      ? BigInt.parse(tipData.closes.toString())
+                      : null;
+                  final bool canClose = closeBlock != null &&
+                      closeBlock <= widget.plugin.store!.gov.bestNumber;
+                  return ListView(
                     children: <Widget>[
-                      ListTile(
-                        leading: AddressIcon(
-                          who.address,
-                          svg: widget.plugin.store!.accounts
-                              .addressIconsMap[who.address],
-                        ),
-                        title: UI.accountDisplayName(who.address, accInfo),
-                        subtitle: Text(dic['treasury.who']!),
-                      ),
-                      tipData.finder != null
-                          ? ListTile(
+                      RoundedCard(
+                        margin: EdgeInsets.all(16),
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
                               leading: AddressIcon(
-                                finder.address,
+                                who.address,
                                 svg: widget.plugin.store!.accounts
-                                    .addressIconsMap[finder.address],
+                                    .addressIconsMap[who.address],
                               ),
-                              title: UI.accountDisplayName(
-                                finder.address,
-                                accInfoFinder,
-                              ),
-                              subtitle: Text(dic['treasury.finder']!),
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    '${Fmt.balance(
-                                      tipData.deposit.toString(),
-                                      decimals,
-                                    )} $symbol',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  Text(dic['treasury.bond']!),
-                                ],
-                              ),
-                            )
-                          : Container(),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
-                        child: Row(
-                          children: <Widget>[
-                            Text(dic['treasury.reason']!),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 16),
-                                child: TextFormField(
-                                  decoration: InputDecoration.collapsed(
-                                      hintText: '',
-                                      focusColor: Theme.of(context).cardColor),
-                                  style: TextStyle(fontSize: 14),
-                                  initialValue: tipData.reason,
-                                  readOnly: true,
-                                  maxLines: 6,
-                                  minLines: 1,
-                                  textAlign: TextAlign.right,
-                                ),
-                              ),
+                              title:
+                                  UI.accountDisplayName(who.address, accInfo),
+                              subtitle: Text(dic['treasury.who']!),
                             ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                        child: Row(
-                          children: <Widget>[
-                            Text('Hash'),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 16),
-                                child: Text(
-                                  Fmt.address(tipData.hash, pad: 10)!,
-                                  textAlign: TextAlign.right,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      closeBlock != null &&
-                              closeBlock > widget.plugin.store!.gov.bestNumber
-                          ? Padding(
-                              padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            tipData.finder != null
+                                ? ListTile(
+                                    leading: AddressIcon(
+                                      finder.address,
+                                      svg: widget.plugin.store!.accounts
+                                          .addressIconsMap[finder.address],
+                                    ),
+                                    title: UI.accountDisplayName(
+                                      finder.address,
+                                      accInfoFinder,
+                                    ),
+                                    subtitle: Text(dic['treasury.finder']!),
+                                    trailing: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          '${Fmt.balance(
+                                            tipData.deposit.toString(),
+                                            decimals,
+                                          )} $symbol',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline4,
+                                        ),
+                                        Text(dic['treasury.bond']!),
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                               child: Row(
                                 children: <Widget>[
-                                  Text(dic['treasury.closeTip']!),
+                                  Text(dic['treasury.reason']!),
                                   Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.only(left: 16),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          Text(
-                                            Fmt.blockToTime(
-                                              (closeBlock -
-                                                      widget.plugin.store!.gov
-                                                          .bestNumber)
-                                                  .toInt(),
-                                              blockTime,
-                                            ),
-                                          ),
-                                          Text('#$closeBlock')
-                                        ],
+                                      child: TextFormField(
+                                        decoration: InputDecoration.collapsed(
+                                            hintText: '',
+                                            focusColor:
+                                                Theme.of(context).cardColor),
+                                        style: TextStyle(fontSize: 14),
+                                        initialValue: tipData.reason,
+                                        readOnly: true,
+                                        maxLines: 6,
+                                        minLines: 1,
+                                        textAlign: TextAlign.right,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                            )
-                          : Container(),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
-                        child: Column(
-                          children: <Widget>[
-                            Divider(height: 24),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: RoundedButton(
-                                    color: Colors.orange,
-                                    text: I18n.of(context)!.getDic(
-                                        i18n_full_dic_kusama,
-                                        'common')!['cancel'],
-                                    onPressed: isFinder ? _onCancel : null,
-                                  ),
-                                ),
-                                Container(width: 8),
-                                Expanded(
-                                  child: canClose
-                                      ? RoundedButton(
-                                          text: dic['treasury.closeTip'],
-                                          onPressed:
-                                              !isCouncil ? _onCloseTip : null,
-                                        )
-                                      : RoundedButton(
-                                          text: dic['treasury.endorse'],
-                                          onPressed:
-                                              isCouncil ? _onEndorse : null,
-                                        ),
-                                ),
-                                canClose ? Container() : Container(width: 8),
-                                canClose
-                                    ? Container()
-                                    : RoundedButton(
-                                        icon: Icon(
-                                          Icons.airplanemode_active,
-                                          color: Theme.of(context).cardColor,
-                                        ),
-                                        onPressed: isCouncil && isTipped
-                                            ? () => _onTip(median)
-                                            : null,
-                                      )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                tipData.tips!.length > 0
-                    ? Container(
-                        color: Theme.of(context).cardColor,
-                        margin: EdgeInsets.only(top: 8),
-                        padding: EdgeInsets.only(top: 8, bottom: 24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-                              child: BorderedTitle(
-                                  title:
-                                      '${tipData.tips!.length} ${dic['treasury.tipper']} (${Fmt.token(median, decimals)} $symbol)'),
                             ),
-                            Column(
-                              children: tipData.tips!.map((e) {
-                                return ListTile(
-                                  leading: AddressIcon(e.address,
-                                      svg: widget.plugin.store!.accounts
-                                          .addressIconsMap[e.address]),
-                                  title: UI.accountDisplayName(
-                                      e.address,
-                                      widget.plugin.store!.accounts
-                                          .addressIndexMap[e.address]),
-                                  trailing: Text(
-                                    '${Fmt.balance(
-                                      e.value.toString(),
-                                      decimals,
-                                    )} $symbol',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Hash'),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 16),
+                                      child: Text(
+                                        Fmt.address(tipData.hash, pad: 10)!,
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
                                   ),
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                      CandidateDetailPage.route,
-                                      arguments: widget
-                                          .plugin.store!.gov.council.members!
-                                          .firstWhere((i) {
-                                        return i[0] == e.address;
-                                      }),
-                                    );
-                                  },
-                                );
-                              }).toList(),
+                                ],
+                              ),
+                            ),
+                            closeBlock != null &&
+                                    closeBlock >
+                                        widget.plugin.store!.gov.bestNumber
+                                ? Padding(
+                                    padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(dic['treasury.closeTip']!),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(left: 16),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: <Widget>[
+                                                Text(
+                                                  Fmt.blockToTime(
+                                                    (closeBlock -
+                                                            widget.plugin.store!
+                                                                .gov.bestNumber)
+                                                        .toInt(),
+                                                    blockTime,
+                                                  ),
+                                                ),
+                                                Text('#$closeBlock')
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                              child: Column(
+                                children: <Widget>[
+                                  Divider(height: 24),
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: RoundedButton(
+                                          color: Colors.orange,
+                                          text: I18n.of(context)!.getDic(
+                                              i18n_full_dic_kusama,
+                                              'common')!['cancel'],
+                                          onPressed:
+                                              isFinder ? _onCancel : null,
+                                        ),
+                                      ),
+                                      Container(width: 8),
+                                      Expanded(
+                                        child: canClose
+                                            ? RoundedButton(
+                                                text: dic['treasury.closeTip'],
+                                                onPressed: !isCouncil
+                                                    ? _onCloseTip
+                                                    : null,
+                                              )
+                                            : RoundedButton(
+                                                text: dic['treasury.endorse'],
+                                                onPressed: isCouncil
+                                                    ? _onEndorse
+                                                    : null,
+                                              ),
+                                      ),
+                                      canClose
+                                          ? Container()
+                                          : Container(width: 8),
+                                      canClose
+                                          ? Container()
+                                          : RoundedButton(
+                                              icon: Icon(
+                                                Icons.airplanemode_active,
+                                                color:
+                                                    Theme.of(context).cardColor,
+                                              ),
+                                              onPressed: isCouncil && isTipped
+                                                  ? () => _onTip(median)
+                                                  : null,
+                                            )
+                                    ],
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),
-                      )
-                    : Container()
-              ],
-            );
+                      ),
+                      tipData.tips!.length > 0
+                          ? Container(
+                              color: Theme.of(context).cardColor,
+                              margin: EdgeInsets.only(top: 8),
+                              padding: EdgeInsets.only(top: 8, bottom: 24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+                                    child: BorderedTitle(
+                                        title:
+                                            '${tipData.tips!.length} ${dic['treasury.tipper']} (${Fmt.token(median, decimals)} $symbol)'),
+                                  ),
+                                  Column(
+                                    children: tipData.tips!.map((e) {
+                                      return ListTile(
+                                        leading: AddressIcon(e.address,
+                                            svg: widget.plugin.store!.accounts
+                                                .addressIconsMap[e.address]),
+                                        title: UI.accountDisplayName(
+                                            e.address,
+                                            widget.plugin.store!.accounts
+                                                .addressIndexMap[e.address]),
+                                        trailing: Text(
+                                          '${Fmt.balance(
+                                            e.value.toString(),
+                                            decimals,
+                                          )} $symbol',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline4,
+                                        ),
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                            CandidateDetailPage.route,
+                                            arguments: widget.plugin.store!.gov
+                                                .council.members!
+                                                .firstWhere((i) {
+                                              return i[0] == e.address;
+                                            }),
+                                          );
+                                        },
+                                      );
+                                    }).toList(),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Container()
+                    ],
+                  );
+                });
           },
         ),
       ),

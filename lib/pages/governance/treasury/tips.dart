@@ -41,7 +41,7 @@ class _ProposalsState extends State<MoneyTips> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: widget.plugin.store,
+      init: widget.plugin.store?.gov,
       builder: (_) {
         final tips = <TreasuryTipData>[];
         if (widget.plugin.store!.gov.treasuryTips != null) {
@@ -67,7 +67,7 @@ class _ProposalsState extends State<MoneyTips> {
                       );
                     }
                     return GetBuilder(
-                        init: widget.plugin.store,
+                        init: widget.plugin.store?.accounts,
                         builder: (_) {
                           final TreasuryTipData tip = tips[i];
                           final icon = widget

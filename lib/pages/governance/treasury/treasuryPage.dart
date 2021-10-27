@@ -65,7 +65,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
                 },
               ),
               GetBuilder(
-                init: widget.plugin.store,
+                init: widget.plugin.store?.gov,
                 builder: (_) {
                   return Expanded(
                     child: widget.plugin.store!.gov.council.members == null

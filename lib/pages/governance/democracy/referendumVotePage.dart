@@ -111,7 +111,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
         centerTitle: true,
       ),
       body: GetBuilder(
-        init: widget.plugin.store,
+        init: widget.plugin.store?.gov,
         builder: (_) {
           final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
           final decimals = widget.plugin.networkState.tokenDecimals![0];

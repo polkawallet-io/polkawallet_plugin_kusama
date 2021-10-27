@@ -29,7 +29,6 @@ class _StakingState extends State<Staking> {
 
   @override
   Widget build(BuildContext context) {
-    print("Staking===================build");
     var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     var tabs = [dic['actions'], dic['validators']];
     return SafeArea(

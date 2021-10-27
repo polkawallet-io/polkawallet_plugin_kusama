@@ -434,7 +434,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
 
   @override
   void initState() {
-    print("overview===================initState");
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -447,169 +446,174 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
     final dicStaking =
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
     return GetBuilder(
-      init: widget.plugin.store,
-      builder: (_) {
-        final int decimals = widget.plugin.networkState.tokenDecimals![0];
-        final List<Tab> _listTabs = <Tab>[
-          Tab(
-            text:
-                '${dicStaking!['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
-          ),
-          Tab(
-            text:
-                '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})',
-          ),
-        ];
-        List list = [
-          // index_0: the overview card
-          _buildTopCard(context),
-          // index_1: the 'Validators' label
-          Container(
-            color: Theme.of(context).cardColor,
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: MainTabBar(
-              tabs: [
-                '${dicStaking['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
-                '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})'
-              ],
-              activeTab: _tab,
-              fontSize: 18,
-              lineWidth: 6,
-              onTap: (i) {
-                setState(() {
-                  _tab = i;
-                });
-              },
-            ),
-          ),
-        ];
-        if (widget.plugin.store!.staking.validatorsInfo.length > 0) {
-          // index_2: the filter Widget
-          list.add(Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(top: 8),
-            child: ValidatorListFilter(
-              filters: _filters,
-              onFilterChange: (value) {
-                if (value != _filters) {
-                  setState(() {
-                    _filters = value;
-                  });
-                }
-              },
-              onSearchChange: (value) {
-                if (value != _search) {
-                  setState(() {
-                    _search = value;
-                  });
-                }
-              },
-            ),
-          ));
-          // index_3: the recommended validators
-          // add recommended
-          List<ValidatorData> recommended = [];
-          final recommendList = widget.plugin.store!.staking
-              .recommendedValidators![widget.plugin.basic.name];
-          if (recommendList != null) {
-            recommended = _tab == 0
-                ? widget.plugin.store!.staking.electedInfo.toList()
-                : widget.plugin.store!.staking.nextUpsInfo.toList();
-            recommended.retainWhere((i) =>
-                widget.plugin.store!.staking
-                    .recommendedValidators![widget.plugin.basic.name]
-                    .indexOf(i.accountId) >
-                -1);
-          }
-          list.add(Container(
-            color: Theme.of(context).cardColor,
-            child: recommended.length > 0
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextTag(
-                        dicStaking['recommend'],
-                        color: Colors.green,
-                        fontSize: 12,
-                        margin: EdgeInsets.only(left: 16, top: 8),
-                      ),
-                      Column(
-                        children: recommended.map((acc) {
-                          Map? accInfo = widget.plugin.store!.accounts
-                              .addressIndexMap[acc.accountId];
-                          final icon = widget.plugin.store!.accounts
-                              .addressIconsMap[acc.accountId];
-                          return Validator(
-                            acc,
-                            accInfo,
-                            icon,
-                            decimals,
-                            widget.plugin.store!.staking
-                                    .nominationsMap![acc.accountId] ??
-                                [],
-                          );
-                        }).toList(),
-                      ),
-                      Divider()
+        init: widget.plugin.store?.accounts,
+        builder: (_) {
+          return GetBuilder(
+            init: widget.plugin.store?.staking,
+            builder: (_) {
+              final int decimals = widget.plugin.networkState.tokenDecimals![0];
+              final List<Tab> _listTabs = <Tab>[
+                Tab(
+                  text:
+                      '${dicStaking!['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
+                ),
+                Tab(
+                  text:
+                      '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})',
+                ),
+              ];
+              List list = [
+                // index_0: the overview card
+                _buildTopCard(context),
+                // index_1: the 'Validators' label
+                Container(
+                  color: Theme.of(context).cardColor,
+                  padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: MainTabBar(
+                    tabs: [
+                      '${dicStaking['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
+                      '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})'
                     ],
-                  )
-                : Container(),
-          ));
-          // add validators
-          List<ValidatorData> ls = _tab == 0
-              ? widget.plugin.store!.staking.electedInfo.toList()
-              : widget.plugin.store!.staking.nextUpsInfo.toList();
-          // filter list
-          ls = PluginFmt.filterValidatorList(ls, _filters, _search,
-              widget.plugin.store!.accounts.addressIndexMap);
-          // sort list
-          ls.sort((a, b) => a.rankReward! < b.rankReward! ? 1 : -1);
-          if (_tab == 1) {
-            ls.sort((a, b) {
-              final aLength = widget.plugin.store!.staking
-                      .nominationsMap![a.accountId]?.length ??
-                  0;
-              final bLength = widget.plugin.store!.staking
-                      .nominationsMap![b.accountId]?.length ??
-                  0;
-              return 0 - aLength.compareTo(bLength) as int;
-            });
-          }
-          list.addAll(ls);
-        } else {
-          list.add(Container(
-            height: 160,
-            child: CupertinoActivityIndicator(),
-          ));
-        }
-        return RefreshIndicator(
-          key: _refreshKey,
-          onRefresh: _refreshData,
-          child: ListView.builder(
-            itemCount: list.length,
-            itemBuilder: (BuildContext context, int i) {
-              // we already have the index_0 - index_3 Widget
-              if (i < 4) {
-                return list[i];
+                    activeTab: _tab,
+                    fontSize: 18,
+                    lineWidth: 6,
+                    onTap: (i) {
+                      setState(() {
+                        _tab = i;
+                      });
+                    },
+                  ),
+                ),
+              ];
+              if (widget.plugin.store!.staking.validatorsInfo.length > 0) {
+                // index_2: the filter Widget
+                list.add(Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.only(top: 8),
+                  child: ValidatorListFilter(
+                    filters: _filters,
+                    onFilterChange: (value) {
+                      if (value != _filters) {
+                        setState(() {
+                          _filters = value;
+                        });
+                      }
+                    },
+                    onSearchChange: (value) {
+                      if (value != _search) {
+                        setState(() {
+                          _search = value;
+                        });
+                      }
+                    },
+                  ),
+                ));
+                // index_3: the recommended validators
+                // add recommended
+                List<ValidatorData> recommended = [];
+                final recommendList = widget.plugin.store!.staking
+                    .recommendedValidators![widget.plugin.basic.name];
+                if (recommendList != null) {
+                  recommended = _tab == 0
+                      ? widget.plugin.store!.staking.electedInfo.toList()
+                      : widget.plugin.store!.staking.nextUpsInfo.toList();
+                  recommended.retainWhere((i) =>
+                      widget.plugin.store!.staking
+                          .recommendedValidators![widget.plugin.basic.name]
+                          .indexOf(i.accountId) >
+                      -1);
+                }
+                list.add(Container(
+                  color: Theme.of(context).cardColor,
+                  child: recommended.length > 0
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextTag(
+                              dicStaking['recommend'],
+                              color: Colors.green,
+                              fontSize: 12,
+                              margin: EdgeInsets.only(left: 16, top: 8),
+                            ),
+                            Column(
+                              children: recommended.map((acc) {
+                                Map? accInfo = widget.plugin.store!.accounts
+                                    .addressIndexMap[acc.accountId];
+                                final icon = widget.plugin.store!.accounts
+                                    .addressIconsMap[acc.accountId];
+                                return Validator(
+                                  acc,
+                                  accInfo,
+                                  icon,
+                                  decimals,
+                                  widget.plugin.store!.staking
+                                          .nominationsMap![acc.accountId] ??
+                                      [],
+                                );
+                              }).toList(),
+                            ),
+                            Divider()
+                          ],
+                        )
+                      : Container(),
+                ));
+                // add validators
+                List<ValidatorData> ls = _tab == 0
+                    ? widget.plugin.store!.staking.electedInfo.toList()
+                    : widget.plugin.store!.staking.nextUpsInfo.toList();
+                // filter list
+                ls = PluginFmt.filterValidatorList(ls, _filters, _search,
+                    widget.plugin.store!.accounts.addressIndexMap);
+                // sort list
+                ls.sort((a, b) => a.rankReward! < b.rankReward! ? 1 : -1);
+                if (_tab == 1) {
+                  ls.sort((a, b) {
+                    final aLength = widget.plugin.store!.staking
+                            .nominationsMap![a.accountId]?.length ??
+                        0;
+                    final bLength = widget.plugin.store!.staking
+                            .nominationsMap![b.accountId]?.length ??
+                        0;
+                    return 0 - aLength.compareTo(bLength) as int;
+                  });
+                }
+                list.addAll(ls);
+              } else {
+                list.add(Container(
+                  height: 160,
+                  child: CupertinoActivityIndicator(),
+                ));
               }
-              ValidatorData acc = list[i];
-              Map? accInfo =
-                  widget.plugin.store!.accounts.addressIndexMap[acc.accountId];
-              final icon =
-                  widget.plugin.store!.accounts.addressIconsMap[acc.accountId];
-              return Validator(
-                acc,
-                accInfo,
-                icon,
-                decimals,
-                widget.plugin.store!.staking.nominationsMap![acc.accountId] ??
-                    [],
+              return RefreshIndicator(
+                key: _refreshKey,
+                onRefresh: _refreshData,
+                child: ListView.builder(
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    // we already have the index_0 - index_3 Widget
+                    if (i < 4) {
+                      return list[i];
+                    }
+                    ValidatorData acc = list[i];
+                    Map? accInfo = widget
+                        .plugin.store!.accounts.addressIndexMap[acc.accountId];
+                    final icon = widget
+                        .plugin.store!.accounts.addressIconsMap[acc.accountId];
+                    return Validator(
+                      acc,
+                      accInfo,
+                      icon,
+                      decimals,
+                      widget.plugin.store!.staking
+                              .nominationsMap![acc.accountId] ??
+                          [],
+                    );
+                  },
+                ),
               );
             },
-          ),
-        );
-      },
-    );
+          );
+        });
   }
 }
 

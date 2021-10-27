@@ -124,7 +124,7 @@ class Gov extends StatelessWidget {
                               DAppWrapperPage.route,
                               arguments:
                                   'https://${plugin.basic.name}.polkassembly.io/',
-                              // "https://polkadot.js.org/apps/",
+                              // "https://acala-official-website-jrrqn43v3-acalanetwork.vercel.app/acala/quests",
                             ),
                           ),
                         ),
