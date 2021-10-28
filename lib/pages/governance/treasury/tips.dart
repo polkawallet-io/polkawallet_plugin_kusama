@@ -26,8 +26,8 @@ class _ProposalsState extends State<MoneyTips> {
       new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
-    widget.plugin.service!.gov.updateBestNumber();
-    await widget.plugin.service!.gov.queryTreasuryTips();
+    widget.plugin.service.gov.updateBestNumber();
+    await widget.plugin.service.gov.queryTreasuryTips();
   }
 
   @override
@@ -41,11 +41,11 @@ class _ProposalsState extends State<MoneyTips> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: widget.plugin.store?.gov,
+      init: widget.plugin.store.gov,
       builder: (_) {
         final tips = <TreasuryTipData>[];
-        if (widget.plugin.store!.gov.treasuryTips != null) {
-          tips.addAll(widget.plugin.store!.gov.treasuryTips!.reversed);
+        if (widget.plugin.store.gov.treasuryTips != null) {
+          tips.addAll(widget.plugin.store.gov.treasuryTips!.reversed);
         }
         return RefreshIndicator(
           key: _refreshKey,
@@ -67,13 +67,13 @@ class _ProposalsState extends State<MoneyTips> {
                       );
                     }
                     return GetBuilder(
-                        init: widget.plugin.store?.accounts,
+                        init: widget.plugin.store.accounts,
                         builder: (_) {
                           final TreasuryTipData tip = tips[i];
                           final icon = widget
-                              .plugin.store!.accounts.addressIconsMap[tip.who];
+                              .plugin.store.accounts.addressIconsMap[tip.who];
                           final indices = widget
-                              .plugin.store!.accounts.addressIndexMap[tip.who];
+                              .plugin.store.accounts.addressIndexMap[tip.who];
                           return RoundedCard(
                             margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
                             padding: EdgeInsets.only(top: 16, bottom: 16),

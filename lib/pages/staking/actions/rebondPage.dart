@@ -26,18 +26,19 @@ class _RebondPageState extends State<RebondPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     final decimals = widget.plugin.networkState.tokenDecimals![0];
 
     BigInt redeemable = BigInt.zero;
-    if (widget.plugin.store!.staking.ownStashInfo != null &&
-        widget.plugin.store!.staking.ownStashInfo!.stakingLedger != null) {
+    if (widget.plugin.store.staking.ownStashInfo != null &&
+        widget.plugin.store.staking.ownStashInfo!.stakingLedger != null) {
       redeemable = BigInt.parse(widget
-          .plugin.store!.staking.ownStashInfo!.account!.redeemable
+          .plugin.store.staking.ownStashInfo!.account!.redeemable
           .toString());
     }
-    BigInt unlocking = widget.plugin.store!.staking.accountUnlockingTotal;
+    BigInt unlocking = widget.plugin.store.staking.accountUnlockingTotal;
     unlocking -= redeemable;
 
     final available = Fmt.bigIntToDouble(unlocking, decimals);

@@ -31,7 +31,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
     final rewardToOptions =
         PayeeSelector.options.map((i) => dic!['reward.$i']).toList();
     final OwnStashInfoData? currentPayee =
-        widget.plugin.store!.staking.ownStashInfo;
+        widget.plugin.store.staking.ownStashInfo;
 
     if (_rewardTo == null) {
       bool noChange = false;
@@ -111,7 +111,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
                     PayeeSelector(
                       widget.plugin,
                       widget.keyring,
-                      initialValue: widget.plugin.store!.staking.ownStashInfo,
+                      initialValue: widget.plugin.store.staking.ownStashInfo,
                       onChange: _onPayeeChanged,
                     )
                   ],

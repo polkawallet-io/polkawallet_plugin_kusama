@@ -68,7 +68,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
   String? _getConvictionLabel(int value) {
     final dicGov = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     final Map? conviction =
-        value > 0 ? widget.plugin.store!.gov.voteConvictions![value - 1] : {};
+        value > 0 ? widget.plugin.store.gov.voteConvictions![value - 1] : {};
     return value == 0
         ? dicGov!['locked.no']
         : '${dicGov!['locked']} ${conviction!['period']} ${dicGov['day']} (${conviction['value']}x)';
@@ -111,7 +111,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
         centerTitle: true,
       ),
       body: GetBuilder(
-        init: widget.plugin.store?.gov,
+        init: widget.plugin.store.gov,
         builder: (_) {
           final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
           final decimals = widget.plugin.networkState.tokenDecimals![0];
@@ -126,7 +126,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
 
           Map args = ModalRoute.of(context)!.settings.arguments
               as Map<dynamic, dynamic>;
-          ReferendumInfo? info = args['referenda'];
+          // ReferendumInfo? info = args['referenda'];
           bool voteYes = args['voteYes'];
           return SafeArea(
             child: Column(

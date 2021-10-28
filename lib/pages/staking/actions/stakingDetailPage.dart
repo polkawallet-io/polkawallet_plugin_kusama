@@ -41,8 +41,9 @@ class StakingDetailPage extends StatelessWidget {
           case "AccountId":
             value = value.contains('0x') ? value : '0x$value';
             final ss58 = plugin.sdk.api.connectedNode?.ss58;
-            final pubKeyAddressMap = plugin.store!.accounts.pubKeyAddressMap;
+            final pubKeyAddressMap = plugin.store.accounts.pubKeyAddressMap;
             final address = ss58 != null &&
+                    // ignore: unnecessary_null_comparison
                     pubKeyAddressMap != null &&
                     pubKeyAddressMap[ss58] != null
                 ? pubKeyAddressMap[ss58]![value]

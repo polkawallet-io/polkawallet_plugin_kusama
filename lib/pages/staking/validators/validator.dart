@@ -48,6 +48,7 @@ class Validator extends StatelessWidget {
                   ),
                   Text(
                     !isWaiting
+                        // ignore: unnecessary_null_comparison
                         ? '${dic['total']}: ${validator.total != null ? Fmt.token(validator.total, decimals) : '~'}'
                         : '${dic['nominators']}: ${nominations.length}',
                     style: TextStyle(

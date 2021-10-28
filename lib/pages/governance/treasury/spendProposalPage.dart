@@ -159,11 +159,11 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
     proposer.address = proposal.proposal!.proposer;
     beneficiary.address = proposal.proposal!.beneficiary;
     final Map? accInfoProposer =
-        widget.plugin.store!.accounts.addressIndexMap[proposer.address];
+        widget.plugin.store.accounts.addressIndexMap[proposer.address];
     final Map? accInfoBeneficiary =
-        widget.plugin.store!.accounts.addressIndexMap[beneficiary.address];
+        widget.plugin.store.accounts.addressIndexMap[beneficiary.address];
     bool isCouncil = false;
-    widget.plugin.store!.gov.council.members!.forEach((e) {
+    widget.plugin.store.gov.council.members!.forEach((e) {
       if (widget.keyring.current.address == e[0]) {
         isCouncil = true;
       }
@@ -223,7 +223,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
                   ListTile(
                     leading: AddressIcon(
                       proposer.address,
-                      svg: widget.plugin.store!.accounts
+                      svg: widget.plugin.store.accounts
                           .addressIconsMap[proposer.address],
                     ),
                     title: UI.accountDisplayName(
@@ -233,7 +233,7 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
                   ListTile(
                     leading: AddressIcon(
                       beneficiary.address,
-                      svg: widget.plugin.store!.accounts
+                      svg: widget.plugin.store.accounts
                           .addressIconsMap[beneficiary.address],
                     ),
                     title: UI.accountDisplayName(

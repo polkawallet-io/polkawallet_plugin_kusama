@@ -45,16 +45,18 @@ class _UnBondPageState extends State<UnBondPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     final decimals = widget.plugin.networkState.tokenDecimals![0];
 
-    final stashInfo = widget.plugin.store!.staking.ownStashInfo;
+    final stashInfo = widget.plugin.store.staking.ownStashInfo;
     double bonded = 0;
     bool hasNomination = false;
     if (stashInfo != null) {
       bonded = Fmt.bigIntToDouble(
-          BigInt.parse(stashInfo.stakingLedger!['active'].toString()), decimals);
+          BigInt.parse(stashInfo.stakingLedger!['active'].toString()),
+          decimals);
       hasNomination = stashInfo.nominating!.length > 0;
     }
 

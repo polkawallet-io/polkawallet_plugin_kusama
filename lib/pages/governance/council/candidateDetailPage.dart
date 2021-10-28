@@ -30,11 +30,11 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.plugin.store!.gov.councilVotes != null) {
+      if (widget.plugin.store.gov.councilVotes != null) {
         final List info =
             ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-        final voters = widget.plugin.store!.gov.councilVotes![info[0]]!;
-        widget.plugin.service!.gov.updateIconsAndIndices(voters.keys.toList());
+        final voters = widget.plugin.store.gov.councilVotes![info[0]]!;
+        widget.plugin.service.gov.updateIconsAndIndices(voters.keys.toList());
       }
     });
   }
@@ -53,78 +53,78 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
             centerTitle: true),
         body: SafeArea(
             child: GetBuilder(
-          init: widget.plugin.store?.accounts,
-          builder: (_) {
-            return GetBuilder(
-              init: widget.plugin.store?.gov,
-              builder: (_) {
-                final iconsMap = widget.plugin.store!.accounts.addressIconsMap;
-                final accInfo =
-                    widget.plugin.store!.accounts.addressIndexMap[info![0]];
-                TextStyle? style = Theme.of(context).textTheme.headline4;
+                init: widget.plugin.store.accounts,
+                builder: (_) {
+                  return GetBuilder(
+                    init: widget.plugin.store.gov,
+                    builder: (_) {
+                      final iconsMap =
+                          widget.plugin.store.accounts.addressIconsMap;
+                      final accInfo = widget
+                          .plugin.store.accounts.addressIndexMap[info![0]];
+                      TextStyle? style = Theme.of(context).textTheme.headline4;
 
-                Map? voters;
-                List voterList = [];
-                if (widget.plugin.store!.gov.councilVotes != null) {
-                  voters = widget.plugin.store!.gov.councilVotes![info[0]];
-                  voterList = voters!.keys.toList();
-                }
-                return ListView(
-                  children: <Widget>[
-                    RoundedCard(
-                      margin: EdgeInsets.all(16),
-                      padding: EdgeInsets.only(bottom: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      Map? voters;
+                      List voterList = [];
+                      if (widget.plugin.store.gov.councilVotes != null) {
+                        voters = widget.plugin.store.gov.councilVotes![info[0]];
+                        voterList = voters!.keys.toList();
+                      }
+                      return ListView(
                         children: <Widget>[
-                          AccountInfo(
-                            network: widget.plugin.basic.name,
-                            accInfo: accInfo,
-                            address: info[0],
-                            icon: iconsMap[info[0]],
+                          RoundedCard(
+                            margin: EdgeInsets.all(16),
+                            padding: EdgeInsets.only(bottom: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                AccountInfo(
+                                  network: widget.plugin.basic.name,
+                                  accInfo: accInfo,
+                                  address: info[0],
+                                  icon: iconsMap[info[0]],
+                                ),
+                                Divider(),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 8, bottom: 8),
+                                  child: Text(
+                                      '${Fmt.token(BigInt.parse(info[1].toString()), decimals)} $symbol',
+                                      style: style),
+                                ),
+                                Text(dic['backing'])
+                              ],
+                            ),
                           ),
-                          Divider(),
-                          Padding(
-                            padding: EdgeInsets.only(top: 8, bottom: 8),
-                            child: Text(
-                                '${Fmt.token(BigInt.parse(info[1].toString()), decimals)} $symbol',
-                                style: style),
+                          Visibility(
+                              visible: voterList.length > 0,
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 16, left: 16, bottom: 8),
+                                color: Theme.of(context).cardColor,
+                                child: BorderedTitle(
+                                  title: dic['vote.voter'],
+                                ),
+                              )),
+                          Container(
+                            color: Theme.of(context).cardColor,
+                            child: Column(
+                              children: voterList.map((i) {
+                                return CandidateItem(
+                                  accInfo: widget
+                                      .plugin.store.accounts.addressIndexMap[i],
+                                  icon: iconsMap[i],
+                                  balance: [i, voters![i]],
+                                  tokenSymbol: symbol,
+                                  decimals: decimals,
+                                  noTap: true,
+                                );
+                              }).toList(),
+                            ),
                           ),
-                          Text(dic['backing'])
                         ],
-                      ),
-                    ),
-                    Visibility(
-                        visible: voterList.length > 0,
-                        child: Container(
-                          padding:
-                              EdgeInsets.only(top: 16, left: 16, bottom: 8),
-                          color: Theme.of(context).cardColor,
-                          child: BorderedTitle(
-                            title: dic['vote.voter'],
-                          ),
-                        )),
-                    Container(
-                      color: Theme.of(context).cardColor,
-                      child: Column(
-                        children: voterList.map((i) {
-                          return CandidateItem(
-                            accInfo: widget
-                                .plugin.store!.accounts.addressIndexMap[i],
-                            icon: iconsMap[i],
-                            balance: [i, voters![i]],
-                            tokenSymbol: symbol,
-                            decimals: decimals,
-                            noTap: true,
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        )));
+                      );
+                    },
+                  );
+                })));
   }
 }

@@ -23,8 +23,8 @@ class _RedeemPageState extends State<RedeemPage> {
   Future<int?> _getSlashingSpans() async {
     if (_slashingSpans != null) return _slashingSpans;
 
-    final String stashId = widget.plugin.store!.staking.ownStashInfo!.stashId ??
-        widget.plugin.store!.staking.ownStashInfo!.account!.accountId!;
+    final String stashId = widget.plugin.store.staking.ownStashInfo!.stashId ??
+        widget.plugin.store.staking.ownStashInfo!.account!.accountId!;
     final int? spans =
         await widget.plugin.sdk.api.staking.getSlashingSpans(stashId);
     setState(() {
@@ -42,7 +42,7 @@ class _RedeemPageState extends State<RedeemPage> {
     final decimals = widget.plugin.networkState.tokenDecimals![0];
 
     final redeemable = Fmt.balance(
-        widget.plugin.store!.staking.ownStashInfo!.account!.redeemable
+        widget.plugin.store.staking.ownStashInfo!.account!.redeemable
             .toString(),
         decimals,
         length: decimals);

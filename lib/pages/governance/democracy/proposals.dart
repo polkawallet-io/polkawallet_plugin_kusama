@@ -21,7 +21,7 @@ class _ProposalsState extends State<Proposals> {
     if (widget.plugin.sdk.api.connectedNode == null) {
       return;
     }
-    await widget.plugin.service!.gov.queryProposals();
+    await widget.plugin.service.gov.queryProposals();
   }
 
   @override
@@ -36,23 +36,24 @@ class _ProposalsState extends State<Proposals> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: widget.plugin.store?.gov,
+      init: widget.plugin.store.gov,
       builder: (_) {
         return RefreshIndicator(
           key: _refreshKey,
           onRefresh: _fetchData,
-          child: widget.plugin.store!.gov.proposals == null ||
-                  widget.plugin.store!.gov.proposals.length == 0
+          // ignore: unnecessary_null_comparison
+          child: widget.plugin.store.gov.proposals == null ||
+                  widget.plugin.store.gov.proposals.length == 0
               ? Center(child: ListTail(isEmpty: true, isLoading: false))
               : ListView.builder(
-                  itemCount: widget.plugin.store!.gov.proposals.length + 1,
+                  itemCount: widget.plugin.store.gov.proposals.length + 1,
                   itemBuilder: (_, int i) {
-                    if (widget.plugin.store!.gov.proposals.length == i) {
+                    if (widget.plugin.store.gov.proposals.length == i) {
                       return Center(
                           child: ListTail(isEmpty: false, isLoading: false));
                     }
                     return ProposalPanel(
-                        widget.plugin, widget.plugin.store!.gov.proposals[i]);
+                        widget.plugin, widget.plugin.store.gov.proposals[i]);
                   }),
         );
       },

@@ -20,16 +20,16 @@ class ProposalPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GetBuilder(
-        init: plugin.store?.accounts,
+        init: plugin.store.accounts,
         builder: (_) {
           final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
           final decimals = plugin.networkState.tokenDecimals![0];
           final symbol = plugin.networkState.tokenSymbol![0];
           final CouncilProposalData? proposalMeta = proposal.image?.proposal;
           final Map? accInfo =
-              plugin.store!.accounts.addressIndexMap[proposal.proposer];
+              plugin.store.accounts.addressIndexMap[proposal.proposer];
           final proposerIcon =
-              plugin.store!.accounts.addressIconsMap[proposal.proposer];
+              plugin.store.accounts.addressIconsMap[proposal.proposer];
           final List seconding = proposal.seconds!.toList();
           seconding.removeAt(0);
           return GestureDetector(

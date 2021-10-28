@@ -18,14 +18,14 @@ class ValidatorChartsPage extends StatelessWidget {
 
   Future<Map?> _getValidatorRewardsData(String? accountId) async {
     final rewardsChartData =
-        plugin.store!.staking.rewardsChartDataCache[accountId!];
+        plugin.store.staking.rewardsChartDataCache[accountId!];
     if (rewardsChartData != null) return rewardsChartData;
-    return plugin.service!.staking.queryValidatorRewards(accountId);
+    return plugin.service.staking.queryValidatorRewards(accountId);
   }
 
   @override
   Widget build(BuildContext context) => GetBuilder(
-        init: plugin.store?.staking,
+        init: plugin.store.staking,
         builder: (_) {
           final dic =
               I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
@@ -45,7 +45,7 @@ class ValidatorChartsPage extends StatelessWidget {
                     return Center(child: CupertinoActivityIndicator());
                   }
                   final rewardsChartData = plugin
-                      .store!.staking.rewardsChartDataCache[detail.accountId!];
+                      .store.staking.rewardsChartDataCache[detail.accountId!];
 
                   List<ChartLineInfo> pointsChartLines = [
                     ChartLineInfo('Era Points',

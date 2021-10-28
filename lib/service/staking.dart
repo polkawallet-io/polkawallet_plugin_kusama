@@ -55,6 +55,7 @@ class ApiStaking {
       ),
     ]);
     final list = res[0];
+    // ignore: unnecessary_null_comparison
     if (res[1] != null && res[1]['extrinsics'] != null) {
       final batchTxs = List.of(res[1]['extrinsics']);
       batchTxs.retainWhere((e) => (e['params'] as String).contains('Staking'));
@@ -97,7 +98,7 @@ class ApiStaking {
 
     List validatorAddressList = res['validatorIds'];
     validatorAddressList.addAll(res['waitingIds']);
-    plugin.service!.gov.updateIconsAndIndices(validatorAddressList);
+    plugin.service.gov.updateIconsAndIndices(validatorAddressList);
   }
 
   Future<void> queryNominations() async {

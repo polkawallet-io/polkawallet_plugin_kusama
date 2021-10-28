@@ -35,7 +35,8 @@ class _SetControllerPageState extends State<SetControllerPage> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      final KeyPairData? acc = ModalRoute.of(context)!.settings.arguments as KeyPairData?;
+      final KeyPairData? acc =
+          ModalRoute.of(context)!.settings.arguments as KeyPairData?;
       setState(() {
         _controller = acc;
       });
@@ -68,7 +69,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       controller,
                       label: dic['controller'],
                       svg: controller.icon ??
-                          widget.plugin.store!.accounts
+                          widget.plugin.store.accounts
                               .addressIconsMap[controller.address],
                       onTap: () => _changeControllerId(context),
                     ),

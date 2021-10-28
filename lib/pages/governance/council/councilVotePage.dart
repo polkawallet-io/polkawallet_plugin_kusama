@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -46,7 +45,7 @@ class _CouncilVote extends State<CouncilVotePage> {
       final decimals = widget.plugin.networkState.tokenDecimals![0];
       final amt = _amountCtrl.text.trim();
       List selected = _selected.map((i) => i[0]).toList();
-      final moduleName = await widget.plugin.service!.getRuntimeModuleName(
+      final moduleName = await widget.plugin.service.getRuntimeModuleName(
           ['electionsPhragmen', 'elections', 'phragmenElection']);
       return TxConfirmParams(
         module: moduleName,
@@ -76,7 +75,7 @@ class _CouncilVote extends State<CouncilVotePage> {
         centerTitle: true,
       ),
       body: GetBuilder(
-        init: widget.plugin.store?.accounts,
+        init: widget.plugin.store.accounts,
         builder: (_) {
           final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
           final decimals = widget.plugin.networkState.tokenDecimals![0];
@@ -130,7 +129,7 @@ class _CouncilVote extends State<CouncilVotePage> {
                         Column(
                           children: _selected.map((i) {
                             final accInfo = widget
-                                .plugin.store!.accounts.addressIndexMap[i[0]];
+                                .plugin.store.accounts.addressIndexMap[i[0]];
                             return Container(
                               margin: EdgeInsets.fromLTRB(16, 0, 16, 8),
                               child: Row(
@@ -140,7 +139,7 @@ class _CouncilVote extends State<CouncilVotePage> {
                                     margin: EdgeInsets.only(right: 8),
                                     child: AddressIcon(
                                       i[0],
-                                      svg: widget.plugin.store!.accounts
+                                      svg: widget.plugin.store.accounts
                                           .addressIconsMap[i[0]],
                                       size: 32,
                                       tapToCopy: false,

@@ -52,13 +52,13 @@ class _NominateFormState extends State<NominateForm> {
     final maxNomination = int.parse(
         widget.plugin.networkConst['staking']['maxNominations'].toString());
     final Map? accInfo =
-        widget.plugin.store!.accounts.addressIndexMap[validator.accountId];
+        widget.plugin.store.accounts.addressIndexMap[validator.accountId];
     final accIcon =
-        widget.plugin.store!.accounts.addressIconsMap[validator.accountId];
+        widget.plugin.store.accounts.addressIconsMap[validator.accountId];
     final bool isWaiting = validator.total == BigInt.zero;
     final nominations = !isWaiting
         ? validator.nominators
-        : widget.plugin.store!.staking.nominationsMap![validator.accountId] ??
+        : widget.plugin.store.staking.nominationsMap![validator.accountId] ??
             [];
 
     final textStyle = TextStyle(
@@ -161,18 +161,18 @@ class _NominateFormState extends State<NominateForm> {
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       setState(() {
-        widget.plugin.store!.staking.validatorsInfo.forEach((i) {
+        widget.plugin.store.staking.validatorsInfo.forEach((i) {
           _notSelected.add(i);
           _selectedMap[i.accountId] = false;
         });
-        widget.plugin.store!.staking.nominatingList.forEach((i) {
+        widget.plugin.store.staking.nominatingList.forEach((i) {
           _selected.add(i);
           _notSelected.removeWhere((item) => item.accountId == i.accountId);
           _selectedMap[i.accountId] = true;
         });
 
         // set recommended selected
-        final List? recommendList = widget.plugin.store!.staking
+        final List? recommendList = widget.plugin.store.staking
             .recommendedValidators![widget.plugin.basic.name];
         if (recommendList != null && recommendList.length > 0) {
           List<ValidatorData> recommended = _notSelected.toList();
@@ -196,7 +196,7 @@ class _NominateFormState extends State<NominateForm> {
     list.addAll(_selected);
     // add recommended
     final List? recommendList = widget
-        .plugin.store!.staking.recommendedValidators![widget.plugin.basic.name];
+        .plugin.store.staking.recommendedValidators![widget.plugin.basic.name];
     if (recommendList != null && recommendList.length > 0) {
       List<ValidatorData> recommended = _notSelected.toList();
       recommended.retainWhere((i) => recommendList.indexOf(i.accountId) > -1);
@@ -209,7 +209,7 @@ class _NominateFormState extends State<NominateForm> {
     // filter the blocking validators
     retained.removeWhere((e) => e.isBlocking!);
     retained = PluginFmt.filterValidatorList(retained, _filters, _search,
-        widget.plugin.store!.accounts.addressIndexMap);
+        widget.plugin.store.accounts.addressIndexMap);
     // and sort it
     retained.sort((a, b) => a.rankReward! < b.rankReward! ? 1 : -1);
     list.addAll(retained);

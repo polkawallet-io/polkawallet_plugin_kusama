@@ -26,11 +26,11 @@ class _PayoutPageState extends State<PayoutPage> {
 
   Future<void> _queryLatestRewards() async {
     final dynamic options =
-        await widget.plugin.service!.staking.fetchAccountRewardsEraOptions();
+        await widget.plugin.service.staking.fetchAccountRewardsEraOptions();
     setState(() {
       _eraOptions = options;
     });
-    final res = await widget.plugin.service!.staking
+    final res = await widget.plugin.service.staking
         .fetchAccountRewards(options[0]['value']);
     if (mounted) {
       setState(() {
@@ -44,7 +44,7 @@ class _PayoutPageState extends State<PayoutPage> {
     setState(() {
       _loading = true;
     });
-    final res = await widget.plugin.service!.staking
+    final res = await widget.plugin.service.staking
         .fetchAccountRewards(_eraOptions[selectedEra]['value']);
     if (mounted) {
       setState(() {

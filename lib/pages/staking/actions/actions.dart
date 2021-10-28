@@ -63,13 +63,14 @@ class _StakingActions extends State<StakingActions> {
       _txsPage = page ?? _txsPage;
     });
     Map res =
-        await widget.plugin.service!.staking.updateStakingTxs(page ?? _txsPage);
+        await widget.plugin.service.staking.updateStakingTxs(page ?? _txsPage);
     if (mounted) {
       setState(() {
         _loading = false;
         _txsPage += 1;
       });
 
+      // ignore: unnecessary_null_comparison
       if (res == null ||
           res['extrinsics'] == null ||
           res['extrinsics'].length < tx_list_page_size) {
@@ -86,7 +87,7 @@ class _StakingActions extends State<StakingActions> {
     setState(() {
       _rewardLoading = true;
     });
-    await widget.plugin.service!.staking.updateStakingRewards();
+    await widget.plugin.service.staking.updateStakingRewards();
     if (mounted) {
       setState(() {
         _rewardLoading = false;
@@ -97,7 +98,7 @@ class _StakingActions extends State<StakingActions> {
   Future<void> _updateStakingInfo() async {
     _tab == 0 ? _updateStakingTxs(page: 0) : _updateStakingRewardTxs();
 
-    await widget.plugin.service!.staking.queryOwnStashInfo();
+    await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
   Future<void> _onChangeAccount(KeyPairData acc) async {
@@ -117,7 +118,7 @@ class _StakingActions extends State<StakingActions> {
   List<Widget> _buildTxList() {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
     List<Widget> res = [];
-    res.addAll(widget.plugin.store!.staking.txs.map((i) {
+    res.addAll(widget.plugin.store.staking.txs.map((i) {
       return Container(
         color: Theme.of(context).cardColor,
         child: ListTile(
@@ -152,8 +153,8 @@ class _StakingActions extends State<StakingActions> {
     }));
 
     res.add(ListTail(
-      isLoading: widget.plugin.store!.staking.txsLoading,
-      isEmpty: widget.plugin.store!.staking.txs.length == 0,
+      isLoading: widget.plugin.store.staking.txsLoading,
+      isEmpty: widget.plugin.store.staking.txs.length == 0,
     ));
 
     return res;
@@ -164,7 +165,7 @@ class _StakingActions extends State<StakingActions> {
     final String symbol = widget.plugin.networkState.tokenSymbol![0];
 
     List<Widget> res = [];
-    if (widget.plugin.store!.staking.txsRewards.length > 1) {
+    if (widget.plugin.store.staking.txsRewards.length > 1) {
       res.add(Container(
         padding: EdgeInsets.all(16),
         color: Theme.of(context).canvasColor,
@@ -181,7 +182,7 @@ class _StakingActions extends State<StakingActions> {
               Container(
                 height: MediaQuery.of(context).size.width / 2.4,
                 child: RewardsChart.withData(widget
-                    .plugin.store!.staking.txsRewards
+                    .plugin.store.staking.txsRewards
                     .map((e) => TimeSeriesAmount(
                         DateTime.fromMillisecondsSinceEpoch(
                             e.blockTimestamp! * 1000),
@@ -193,7 +194,7 @@ class _StakingActions extends State<StakingActions> {
         ),
       ));
     }
-    res.addAll(widget.plugin.store!.staking.txsRewards.map((i) {
+    res.addAll(widget.plugin.store.staking.txsRewards.map((i) {
       final isReward = i.eventId == 'Reward';
       return Container(
         color: Theme.of(context).cardColor,
@@ -222,7 +223,7 @@ class _StakingActions extends State<StakingActions> {
 
     res.add(ListTail(
       isLoading: _rewardLoading,
-      isEmpty: widget.plugin.store!.staking.txsRewards.length == 0,
+      isEmpty: widget.plugin.store.staking.txsRewards.length == 0,
     ));
 
     return res;
@@ -230,7 +231,7 @@ class _StakingActions extends State<StakingActions> {
 
   Widget _buildActionCard() {
     var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
-    final bool hasData = widget.plugin.store!.staking.ownStashInfo != null;
+    final bool hasData = widget.plugin.store.staking.ownStashInfo != null;
 
     bool isStash = true;
     bool? isController = true;
@@ -241,22 +242,22 @@ class _StakingActions extends State<StakingActions> {
     if (hasData) {
       // we assume an address is stash if it's stakingData
       // is empty (!isOwnStash && !isOwnController).
-      isStash = widget.plugin.store!.staking.ownStashInfo!.isOwnStash! ||
-          (!widget.plugin.store!.staking.ownStashInfo!.isOwnStash! &&
-              !widget.plugin.store!.staking.ownStashInfo!.isOwnController!);
-      isController = widget.plugin.store!.staking.ownStashInfo!.isOwnController;
+      isStash = widget.plugin.store.staking.ownStashInfo!.isOwnStash! ||
+          (!widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
+              !widget.plugin.store.staking.ownStashInfo!.isOwnController!);
+      isController = widget.plugin.store.staking.ownStashInfo!.isOwnController;
       isSelfControl = isStash && isController!;
 
-      widget.plugin.store!.accounts.pubKeyAddressMap[widget.plugin.basic.ss58!]
+      widget.plugin.store.accounts.pubKeyAddressMap[widget.plugin.basic.ss58!]
           ?.forEach((k, v) {
-        if (widget.plugin.store!.staking.ownStashInfo!.isOwnStash! &&
-            v == widget.plugin.store!.staking.ownStashInfo!.controllerId) {
+        if (widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
+            v == widget.plugin.store.staking.ownStashInfo!.controllerId) {
           acc02.address = v;
           acc02.pubKey = k;
           return;
         }
-        if (widget.plugin.store!.staking.ownStashInfo!.isOwnController! &&
-            v == widget.plugin.store!.staking.ownStashInfo!.stashId) {
+        if (widget.plugin.store.staking.ownStashInfo!.isOwnController! &&
+            v == widget.plugin.store.staking.ownStashInfo!.stashId) {
           acc02.address = v;
           acc02.pubKey = k;
           return;
@@ -266,7 +267,7 @@ class _StakingActions extends State<StakingActions> {
       // update account icon
       if (acc02.icon == null) {
         acc02.icon =
-            widget.plugin.store!.accounts.addressIconsMap[acc02.address];
+            widget.plugin.store.accounts.addressIconsMap[acc02.address];
       }
     }
 
@@ -286,15 +287,15 @@ class _StakingActions extends State<StakingActions> {
     BigInt bonded = BigInt.zero;
     BigInt redeemable = BigInt.zero;
     if (hasData &&
-        widget.plugin.store!.staking.ownStashInfo!.stakingLedger != null) {
+        widget.plugin.store.staking.ownStashInfo!.stakingLedger != null) {
       bonded = BigInt.parse(widget
-          .plugin.store!.staking.ownStashInfo!.stakingLedger!['active']
+          .plugin.store.staking.ownStashInfo!.stakingLedger!['active']
           .toString());
       redeemable = BigInt.parse(widget
-          .plugin.store!.staking.ownStashInfo!.account!.redeemable
+          .plugin.store.staking.ownStashInfo!.account!.redeemable
           .toString());
     }
-    BigInt unlocking = widget.plugin.store!.staking.accountUnlockingTotal;
+    BigInt unlocking = widget.plugin.store.staking.accountUnlockingTotal;
     unlocking -= redeemable;
 
     return RoundedCard(
@@ -348,12 +349,12 @@ class _StakingActions extends State<StakingActions> {
                 ),
                 RowAccount02(
                   acc02: acc02,
-                  accountId: widget.plugin.store!.staking.ownStashInfo!.account!
+                  accountId: widget.plugin.store.staking.ownStashInfo!.account!
                           .accountId ??
                       widget.keyring.current.address,
                   isController: isController,
                   isSelfControl: isSelfControl,
-                  stashInfo: widget.plugin.store!.staking.ownStashInfo,
+                  stashInfo: widget.plugin.store.staking.ownStashInfo,
                   keyring: widget.keyring,
                   onChangeAccount: _onChangeAccount,
                 ),
@@ -362,7 +363,7 @@ class _StakingActions extends State<StakingActions> {
                   hasData: hasData,
                   isController: isController,
                   accountId: widget.keyring.current.address,
-                  stashInfo: widget.plugin.store!.staking.ownStashInfo,
+                  stashInfo: widget.plugin.store.staking.ownStashInfo,
                   decimals: decimals,
                   blockDuration: int.parse(
                       widget.plugin.networkConst['babe']['expectedBlockTime']),
@@ -377,7 +378,7 @@ class _StakingActions extends State<StakingActions> {
                 StakingActionsPanel(
                   isStash: isStash,
                   isController: isController,
-                  stashInfo: widget.plugin.store!.staking.ownStashInfo,
+                  stashInfo: widget.plugin.store.staking.ownStashInfo,
                   bonded: bonded,
                   redeemable: redeemable,
                   controller: acc02,
@@ -403,14 +404,14 @@ class _StakingActions extends State<StakingActions> {
     });
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.plugin.store!.staking.ownStashInfo == null) {
+      if (widget.plugin.store.staking.ownStashInfo == null) {
         if (_refreshKey.currentState != null) {
           _updateStakingInfo();
         }
       } else {
         _updateStakingInfo();
       }
-      widget.plugin.service!.staking.queryAccountBondedInfo();
+      widget.plugin.service.staking.queryAccountBondedInfo();
     });
   }
 
@@ -420,10 +421,10 @@ class _StakingActions extends State<StakingActions> {
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
 
     return GetBuilder(
-        init: widget.plugin.store?.accounts,
+        init: widget.plugin.store.accounts,
         builder: (_) {
           return GetBuilder(
-            init: widget.plugin.store?.staking,
+            init: widget.plugin.store.staking,
             builder: (_) {
               List<Widget> list = <Widget>[
                 _buildActionCard(),

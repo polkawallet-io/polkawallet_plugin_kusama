@@ -33,7 +33,7 @@ class _ProposalsState extends State<SpendProposals> {
       new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
-    await widget.plugin.service!.gov.queryTreasuryOverview();
+    await widget.plugin.service.gov.queryTreasuryOverview();
   }
 
   int _getSpendPeriod() {
@@ -64,42 +64,38 @@ class _ProposalsState extends State<SpendProposals> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     return GetBuilder(
-        init: widget.plugin.store?.accounts,
+        init: widget.plugin.store.accounts,
         builder: (_) {
-          return GetBuilder(
-            init: widget.plugin.store?.gov,
-            builder: (_) {
-              final decimals = widget.plugin.networkState.tokenDecimals![0];
-              final symbol = widget.plugin.networkState.tokenSymbol![0];
-              final balance = Fmt.balance(
-                widget.plugin.store!.gov.treasuryOverview.balance,
-                decimals,
-              );
-              bool isCouncil = false;
-              widget.plugin.store!.gov.council.members!.forEach((e) {
-                if (widget.keyring.current.address == e[0]) {
-                  isCouncil = true;
-                }
-              });
-              return RefreshIndicator(
-                onRefresh: _fetchData,
-                key: _refreshKey,
-                child: ListView(
-                  children: <Widget>[
-                    _OverviewCard(
-                      symbol: symbol,
-                      balance: balance,
-                      spendPeriod: _getSpendPeriod(),
-                      overview: widget.plugin.store!.gov.treasuryOverview,
-                      isCouncil: isCouncil,
-                      refreshPage: _refreshPage,
-                    ),
-                    Container(
-                      color: Theme.of(context).cardColor,
-                      margin: EdgeInsets.only(top: 8),
-                      child: widget.plugin.store!.gov.treasuryOverview
-                                  .proposals ==
-                              null
+          final decimals = widget.plugin.networkState.tokenDecimals![0];
+          final symbol = widget.plugin.networkState.tokenSymbol![0];
+          final balance = Fmt.balance(
+            widget.plugin.store.gov.treasuryOverview.balance,
+            decimals,
+          );
+          bool isCouncil = false;
+          widget.plugin.store.gov.council.members!.forEach((e) {
+            if (widget.keyring.current.address == e[0]) {
+              isCouncil = true;
+            }
+          });
+          return RefreshIndicator(
+            onRefresh: _fetchData,
+            key: _refreshKey,
+            child: ListView(
+              children: <Widget>[
+                _OverviewCard(
+                  symbol: symbol,
+                  balance: balance,
+                  spendPeriod: _getSpendPeriod(),
+                  overview: widget.plugin.store.gov.treasuryOverview,
+                  isCouncil: isCouncil,
+                  refreshPage: _refreshPage,
+                ),
+                Container(
+                  color: Theme.of(context).cardColor,
+                  margin: EdgeInsets.only(top: 8),
+                  child:
+                      widget.plugin.store.gov.treasuryOverview.proposals == null
                           ? Center(child: CupertinoActivityIndicator())
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,28 +106,23 @@ class _ProposalsState extends State<SpendProposals> {
                                     title: dic!['treasury.proposal'],
                                   ),
                                 ),
-                                widget.plugin.store!.gov.treasuryOverview
+                                widget.plugin.store.gov.treasuryOverview
                                                 .proposals !=
                                             null &&
-                                        widget
-                                                .plugin
-                                                .store!
-                                                .gov
-                                                .treasuryOverview
-                                                .proposals!
-                                                .length >
+                                        widget.plugin.store.gov.treasuryOverview
+                                                .proposals!.length >
                                             0
                                     ? Column(
-                                        children: widget.plugin.store!.gov
+                                        children: widget.plugin.store.gov
                                             .treasuryOverview.proposals!
                                             .map((e) {
                                           return _ProposalItem(
                                             symbol: symbol,
                                             decimals: decimals,
-                                            icon: widget.plugin.store!.accounts
+                                            icon: widget.plugin.store.accounts
                                                     .addressIconsMap[
                                                 e.proposal!.proposer],
-                                            accInfo: widget.plugin.store!
+                                            accInfo: widget.plugin.store
                                                     .accounts.addressIndexMap[
                                                 e.proposal!.proposer],
                                             proposal: e,
@@ -142,13 +133,13 @@ class _ProposalsState extends State<SpendProposals> {
                                     : ListTail(
                                         isEmpty: widget
                                                 .plugin
-                                                .store!
+                                                .store
                                                 .gov
                                                 .treasuryOverview
                                                 .proposals!
                                                 .length ==
                                             0,
-                                        isLoading: widget.plugin.store!.gov
+                                        isLoading: widget.plugin.store.gov
                                                 .treasuryOverview.proposals ==
                                             null,
                                       ),
@@ -158,31 +149,26 @@ class _ProposalsState extends State<SpendProposals> {
                                     title: dic['treasury.approval'],
                                   ),
                                 ),
-                                widget.plugin.store!.gov.treasuryOverview
+                                widget.plugin.store.gov.treasuryOverview
                                                 .approvals !=
                                             null &&
-                                        widget
-                                                .plugin
-                                                .store!
-                                                .gov
-                                                .treasuryOverview
-                                                .approvals!
-                                                .length >
+                                        widget.plugin.store.gov.treasuryOverview
+                                                .approvals!.length >
                                             0
                                     ? Padding(
                                         padding: EdgeInsets.only(bottom: 24),
                                         child: Column(
-                                          children: widget.plugin.store!.gov
+                                          children: widget.plugin.store.gov
                                               .treasuryOverview.approvals!
                                               .map((e) {
                                             e.isApproval = true;
                                             return _ProposalItem(
                                               symbol: symbol,
                                               decimals: decimals,
-                                              icon: widget.plugin.store!
-                                                      .accounts.addressIconsMap[
+                                              icon: widget.plugin.store.accounts
+                                                      .addressIconsMap[
                                                   e.proposal!.proposer],
-                                              accInfo: widget.plugin.store!
+                                              accInfo: widget.plugin.store
                                                       .accounts.addressIndexMap[
                                                   e.proposal!.proposer],
                                               proposal: e,
@@ -194,23 +180,21 @@ class _ProposalsState extends State<SpendProposals> {
                                     : ListTail(
                                         isEmpty: widget
                                                 .plugin
-                                                .store!
+                                                .store
                                                 .gov
                                                 .treasuryOverview
                                                 .approvals!
                                                 .length ==
                                             0,
-                                        isLoading: widget.plugin.store!.gov
+                                        isLoading: widget.plugin.store.gov
                                                 .treasuryOverview.approvals ==
                                             null,
                                       ),
                               ],
                             ),
-                    ),
-                  ],
                 ),
-              );
-            },
+              ],
+            ),
           );
         });
   }
