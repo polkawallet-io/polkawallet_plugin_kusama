@@ -59,14 +59,14 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
     });
 
     _fetchRecommendedValidators();
-    widget.plugin.service!.staking.queryElectedInfo();
-    await widget.plugin.service!.staking.queryOwnStashInfo();
+    widget.plugin.service.staking.queryElectedInfo();
+    await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
   Future<void> _fetchRecommendedValidators() async {
     Map? res = await WalletApi.getRecommended();
     if (res != null && res['validators'] != null) {
-      widget.plugin.store!.staking
+      widget.plugin.store.staking
           .setRecommendedValidatorList(res['validators']);
     }
   }
@@ -80,7 +80,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   }
 
   void _goToBond({bondExtra = false}) {
-    if (widget.plugin.store!.staking.ownStashInfo == null) return;
+    if (widget.plugin.store.staking.ownStashInfo == null) return;
 
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
     final dicStaking =
@@ -111,12 +111,12 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   }
 
   void _onSetNomination() {
-    if (widget.plugin.store!.staking.ownStashInfo == null) return;
+    if (widget.plugin.store.staking.ownStashInfo == null) return;
 
     final dicStaking =
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
     final hasNomination =
-        widget.plugin.store!.staking.ownStashInfo!.nominating!.length > 0;
+        widget.plugin.store.staking.ownStashInfo!.nominating!.length > 0;
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -177,8 +177,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final symbol = (widget.plugin.networkState.tokenSymbol ?? ['DOT'])[0];
     final decimals = (widget.plugin.networkState.tokenDecimals ?? [12])[0];
-    final stashInfo = widget.plugin.store!.staking.ownStashInfo;
-    final overview = widget.plugin.store!.staking.overview;
+    final stashInfo = widget.plugin.store.staking.ownStashInfo;
+    final overview = widget.plugin.store.staking.overview;
     final hashData = stashInfo != null && stashInfo.stakingLedger != null;
 
     int bonded = 0;
@@ -353,26 +353,26 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   }
 
   Widget _buildNominatingList() {
-    if (widget.plugin.store!.staking.ownStashInfo == null ||
-        widget.plugin.store!.staking.validatorsInfo.length == 0) {
+    if (widget.plugin.store.staking.ownStashInfo == null ||
+        widget.plugin.store.staking.validatorsInfo.length == 0) {
       return Container();
     }
 
-    final stashId = widget.plugin.store!.staking.ownStashInfo!.stashId;
+    final stashId = widget.plugin.store.staking.ownStashInfo!.stashId;
     final NomineesInfoData? nomineesInfo =
-        widget.plugin.store!.staking.ownStashInfo!.inactives;
+        widget.plugin.store.staking.ownStashInfo!.inactives;
     List<Widget> list = [];
     if (nomineesInfo != null) {
       list.addAll(nomineesInfo.nomsActive!.map((id) {
         return Expanded(
           child: _NomineeItem(
             id,
-            widget.plugin.store!.staking.validatorsInfo,
+            widget.plugin.store.staking.validatorsInfo,
             stashId,
             NomStatus.active,
             widget.plugin.networkState.tokenDecimals![0],
-            widget.plugin.store!.accounts.addressIndexMap,
-            widget.plugin.store!.accounts.addressIconsMap,
+            widget.plugin.store.accounts.addressIndexMap,
+            widget.plugin.store.accounts.addressIconsMap,
           ),
         );
       }));
@@ -381,12 +381,12 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
         return Expanded(
           child: _NomineeItem(
             id,
-            widget.plugin.store!.staking.validatorsInfo,
+            widget.plugin.store.staking.validatorsInfo,
             stashId,
             NomStatus.over,
             widget.plugin.networkState.tokenDecimals![0],
-            widget.plugin.store!.accounts.addressIndexMap,
-            widget.plugin.store!.accounts.addressIconsMap,
+            widget.plugin.store.accounts.addressIndexMap,
+            widget.plugin.store.accounts.addressIconsMap,
           ),
         );
       }).toList());
@@ -395,12 +395,12 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
         return Expanded(
           child: _NomineeItem(
             id,
-            widget.plugin.store!.staking.validatorsInfo,
+            widget.plugin.store.staking.validatorsInfo,
             stashId,
             NomStatus.inactive,
             widget.plugin.networkState.tokenDecimals![0],
-            widget.plugin.store!.accounts.addressIndexMap,
-            widget.plugin.store!.accounts.addressIconsMap,
+            widget.plugin.store.accounts.addressIndexMap,
+            widget.plugin.store.accounts.addressIconsMap,
           ),
         );
       }).toList());
@@ -409,12 +409,12 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
         return Expanded(
           child: _NomineeItem(
             id,
-            widget.plugin.store!.staking.validatorsInfo,
+            widget.plugin.store.staking.validatorsInfo,
             stashId,
             NomStatus.waiting,
             widget.plugin.networkState.tokenDecimals![0],
-            widget.plugin.store!.accounts.addressIndexMap,
-            widget.plugin.store!.accounts.addressIconsMap,
+            widget.plugin.store.accounts.addressIndexMap,
+            widget.plugin.store.accounts.addressIconsMap,
           ),
         );
       }).toList());
@@ -457,8 +457,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
             padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: MainTabBar(
               tabs: [
-                '${dicStaking['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
-                '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})'
+                '${dicStaking['elected']} (${widget.plugin.store.staking.electedInfo.length})',
+                '${dicStaking['waiting']} (${widget.plugin.store.staking.nextUpsInfo.length})'
               ],
               activeTab: _tab,
               fontSize: 18,
@@ -471,7 +471,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
             ),
           ),
         ];
-        if (widget.plugin.store!.staking.validatorsInfo.length > 0) {
+        if (widget.plugin.store.staking.validatorsInfo.length > 0) {
           // index_2: the filter Widget
           list.add(Container(
             color: Colors.white,
@@ -497,14 +497,14 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
           // index_3: the recommended validators
           // add recommended
           List<ValidatorData> recommended = [];
-          final recommendList = widget.plugin.store!.staking
+          final recommendList = widget.plugin.store.staking
               .recommendedValidators![widget.plugin.basic.name];
           if (recommendList != null) {
             recommended = _tab == 0
-                ? widget.plugin.store!.staking.electedInfo.toList()
-                : widget.plugin.store!.staking.nextUpsInfo.toList();
+                ? widget.plugin.store.staking.electedInfo.toList()
+                : widget.plugin.store.staking.nextUpsInfo.toList();
             recommended.retainWhere((i) =>
-                widget.plugin.store!.staking
+                widget.plugin.store.staking
                     .recommendedValidators![widget.plugin.basic.name]
                     .indexOf(i.accountId) >
                 -1);
@@ -524,16 +524,16 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                     ),
                     Column(
                       children: recommended.map((acc) {
-                        Map? accInfo = widget.plugin.store!.accounts
+                        Map? accInfo = widget.plugin.store.accounts
                             .addressIndexMap[acc.accountId];
-                        final icon = widget.plugin.store!.accounts
+                        final icon = widget.plugin.store.accounts
                             .addressIconsMap[acc.accountId];
                         return Validator(
                           acc,
                           accInfo,
                           icon,
                           decimals,
-                          widget.plugin.store!.staking
+                          widget.plugin.store.staking
                                   .nominationsMap![acc.accountId] ??
                               [],
                         );
@@ -545,19 +545,19 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
           ));
           // add validators
           List<ValidatorData> ls = _tab == 0
-              ? widget.plugin.store!.staking.electedInfo.toList()
-              : widget.plugin.store!.staking.nextUpsInfo.toList();
+              ? widget.plugin.store.staking.electedInfo.toList()
+              : widget.plugin.store.staking.nextUpsInfo.toList();
           // filter list
           ls = PluginFmt.filterValidatorList(ls, _filters, _search,
-              widget.plugin.store!.accounts.addressIndexMap);
+              widget.plugin.store.accounts.addressIndexMap);
           // sort list
           ls.sort((a, b) => a.rankReward! < b.rankReward! ? 1 : -1);
           if (_tab == 1) {
             ls.sort((a, b) {
-              final aLength = widget.plugin.store!.staking
+              final aLength = widget.plugin.store.staking
                       .nominationsMap![a.accountId]?.length ??
                   0;
-              final bLength = widget.plugin.store!.staking
+              final bLength = widget.plugin.store.staking
                       .nominationsMap![b.accountId]?.length ??
                   0;
               return 0 - aLength.compareTo(bLength) as int;
@@ -582,15 +582,15 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
               }
               ValidatorData acc = list[i];
               Map? accInfo =
-                  widget.plugin.store!.accounts.addressIndexMap[acc.accountId];
+                  widget.plugin.store.accounts.addressIndexMap[acc.accountId];
               final icon =
-                  widget.plugin.store!.accounts.addressIconsMap[acc.accountId];
+                  widget.plugin.store.accounts.addressIconsMap[acc.accountId];
               return Validator(
                 acc,
                 accInfo,
                 icon,
                 decimals,
-                widget.plugin.store!.staking.nominationsMap![acc.accountId] ??
+                widget.plugin.store.staking.nominationsMap![acc.accountId] ??
                     [],
               );
             },

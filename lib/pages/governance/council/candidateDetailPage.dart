@@ -30,11 +30,11 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.plugin.store!.gov.councilVotes != null) {
+      if (widget.plugin.store.gov.councilVotes != null) {
         final List info =
             ModalRoute.of(context)!.settings.arguments as List<dynamic>;
-        final voters = widget.plugin.store!.gov.councilVotes![info[0]]!;
-        widget.plugin.service!.gov.updateIconsAndIndices(voters.keys.toList());
+        final voters = widget.plugin.store.gov.councilVotes![info[0]]!;
+        widget.plugin.service.gov.updateIconsAndIndices(voters.keys.toList());
       }
     });
   }
@@ -54,15 +54,15 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
       body: SafeArea(
         child: Observer(
           builder: (_) {
-            final iconsMap = widget.plugin.store!.accounts.addressIconsMap;
+            final iconsMap = widget.plugin.store.accounts.addressIconsMap;
             final accInfo =
-                widget.plugin.store!.accounts.addressIndexMap[info![0]];
+                widget.plugin.store.accounts.addressIndexMap[info![0]];
             TextStyle? style = Theme.of(context).textTheme.headline4;
 
             Map? voters;
             List voterList = [];
-            if (widget.plugin.store!.gov.councilVotes != null) {
-              voters = widget.plugin.store!.gov.councilVotes![info[0]];
+            if (widget.plugin.store.gov.councilVotes != null) {
+              voters = widget.plugin.store.gov.councilVotes![info[0]];
               voterList = voters!.keys.toList();
             }
             return ListView(
@@ -105,7 +105,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                     children: voterList.map((i) {
                       return CandidateItem(
                         accInfo:
-                            widget.plugin.store!.accounts.addressIndexMap[i],
+                            widget.plugin.store.accounts.addressIndexMap[i],
                         icon: iconsMap[i],
                         balance: [i, voters![i]],
                         tokenSymbol: symbol,

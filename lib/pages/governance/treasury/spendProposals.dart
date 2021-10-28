@@ -33,7 +33,7 @@ class _ProposalsState extends State<SpendProposals> {
       new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
-    await widget.plugin.service!.gov.queryTreasuryOverview();
+    await widget.plugin.service.gov.queryTreasuryOverview();
   }
 
   int _getSpendPeriod() {
@@ -68,11 +68,11 @@ class _ProposalsState extends State<SpendProposals> {
         final decimals = widget.plugin.networkState.tokenDecimals![0];
         final symbol = widget.plugin.networkState.tokenSymbol![0];
         final balance = Fmt.balance(
-          widget.plugin.store!.gov.treasuryOverview.balance,
+          widget.plugin.store.gov.treasuryOverview.balance,
           decimals,
         );
         bool isCouncil = false;
-        widget.plugin.store!.gov.council.members!.forEach((e) {
+        widget.plugin.store.gov.council.members!.forEach((e) {
           if (widget.keyring.current.address == e[0]) {
             isCouncil = true;
           }
@@ -86,14 +86,14 @@ class _ProposalsState extends State<SpendProposals> {
                 symbol: symbol,
                 balance: balance,
                 spendPeriod: _getSpendPeriod(),
-                overview: widget.plugin.store!.gov.treasuryOverview,
+                overview: widget.plugin.store.gov.treasuryOverview,
                 isCouncil: isCouncil,
                 refreshPage: _refreshPage,
               ),
               Container(
                 color: Theme.of(context).cardColor,
                 margin: EdgeInsets.only(top: 8),
-                child: widget.plugin.store!.gov.treasuryOverview.proposals ==
+                child: widget.plugin.store.gov.treasuryOverview.proposals ==
                         null
                     ? Center(child: CupertinoActivityIndicator())
                     : Column(
@@ -105,22 +105,22 @@ class _ProposalsState extends State<SpendProposals> {
                               title: dic!['treasury.proposal'],
                             ),
                           ),
-                          widget.plugin.store!.gov.treasuryOverview.proposals !=
+                          widget.plugin.store.gov.treasuryOverview.proposals !=
                                       null &&
-                                  widget.plugin.store!.gov.treasuryOverview
+                                  widget.plugin.store.gov.treasuryOverview
                                           .proposals!.length >
                                       0
                               ? Column(
-                                  children: widget.plugin.store!.gov
+                                  children: widget.plugin.store.gov
                                       .treasuryOverview.proposals!
                                       .map((e) {
                                     return _ProposalItem(
                                       symbol: symbol,
                                       decimals: decimals,
-                                      icon: widget.plugin.store!.accounts
+                                      icon: widget.plugin.store.accounts
                                               .addressIconsMap[
                                           e.proposal!.proposer],
-                                      accInfo: widget.plugin.store!.accounts
+                                      accInfo: widget.plugin.store.accounts
                                               .addressIndexMap[
                                           e.proposal!.proposer],
                                       proposal: e,
@@ -129,10 +129,10 @@ class _ProposalsState extends State<SpendProposals> {
                                   }).toList(),
                                 )
                               : ListTail(
-                                  isEmpty: widget.plugin.store!.gov
+                                  isEmpty: widget.plugin.store.gov
                                           .treasuryOverview.proposals!.length ==
                                       0,
-                                  isLoading: widget.plugin.store!.gov
+                                  isLoading: widget.plugin.store.gov
                                           .treasuryOverview.proposals ==
                                       null,
                                 ),
@@ -142,25 +142,25 @@ class _ProposalsState extends State<SpendProposals> {
                               title: dic['treasury.approval'],
                             ),
                           ),
-                          widget.plugin.store!.gov.treasuryOverview.approvals !=
+                          widget.plugin.store.gov.treasuryOverview.approvals !=
                                       null &&
-                                  widget.plugin.store!.gov.treasuryOverview
+                                  widget.plugin.store.gov.treasuryOverview
                                           .approvals!.length >
                                       0
                               ? Padding(
                                   padding: EdgeInsets.only(bottom: 24),
                                   child: Column(
-                                    children: widget.plugin.store!.gov
+                                    children: widget.plugin.store.gov
                                         .treasuryOverview.approvals!
                                         .map((e) {
                                       e.isApproval = true;
                                       return _ProposalItem(
                                         symbol: symbol,
                                         decimals: decimals,
-                                        icon: widget.plugin.store!.accounts
+                                        icon: widget.plugin.store.accounts
                                                 .addressIconsMap[
                                             e.proposal!.proposer],
-                                        accInfo: widget.plugin.store!.accounts
+                                        accInfo: widget.plugin.store.accounts
                                                 .addressIndexMap[
                                             e.proposal!.proposer],
                                         proposal: e,
@@ -170,10 +170,10 @@ class _ProposalsState extends State<SpendProposals> {
                                   ),
                                 )
                               : ListTail(
-                                  isEmpty: widget.plugin.store!.gov
+                                  isEmpty: widget.plugin.store.gov
                                           .treasuryOverview.approvals!.length ==
                                       0,
-                                  isLoading: widget.plugin.store!.gov
+                                  isLoading: widget.plugin.store.gov
                                           .treasuryOverview.approvals ==
                                       null,
                                 ),

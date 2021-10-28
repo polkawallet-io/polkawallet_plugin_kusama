@@ -34,15 +34,15 @@ class _CandidateList extends State<CandidateListPage> {
     super.initState();
 
     setState(() {
-      widget.plugin.store!.gov.council.members!.forEach((i) {
+      widget.plugin.store.gov.council.members!.forEach((i) {
         _notSelected.add(i);
         _selectedMap[i[0]] = false;
       });
-      widget.plugin.store!.gov.council.runnersUp!.forEach((i) {
+      widget.plugin.store.gov.council.runnersUp!.forEach((i) {
         _notSelected.add(i);
         _selectedMap[i[0]] = false;
       });
-      widget.plugin.store!.gov.council.candidates!.forEach((i) {
+      widget.plugin.store.gov.council.candidates!.forEach((i) {
         _notSelected.add([i, '0']);
         _selectedMap[i] = false;
       });
@@ -77,7 +77,7 @@ class _CandidateList extends State<CandidateListPage> {
     // filter the _notSelected list
     List<List> retained = List.of(_notSelected);
     retained = PluginFmt.filterCandidateList(
-        retained, _filter, widget.plugin.store!.accounts.addressIndexMap);
+        retained, _filter, widget.plugin.store.accounts.addressIndexMap);
     list.addAll(retained);
 
     return Scaffold(
@@ -119,8 +119,8 @@ class _CandidateList extends State<CandidateListPage> {
                   (i) {
                     return CandidateItem(
                       accInfo:
-                          widget.plugin.store!.accounts.addressIndexMap[i[0]],
-                      icon: widget.plugin.store!.accounts.addressIconsMap[i[0]],
+                          widget.plugin.store.accounts.addressIndexMap[i[0]],
+                      icon: widget.plugin.store.accounts.addressIconsMap[i[0]],
                       balance: i,
                       tokenSymbol: symbol,
                       decimals: decimals,

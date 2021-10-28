@@ -211,19 +211,19 @@ class _TipDetailPageState extends State<TipDetailPage> {
     final finder = KeyPairData();
     who.address = tipData.who;
     final Map? accInfo =
-        widget.plugin.store!.accounts.addressIndexMap[who.address];
+        widget.plugin.store.accounts.addressIndexMap[who.address];
     Map? accInfoFinder;
     if (tipData.finder != null) {
       finder.address = tipData.finder;
       accInfoFinder =
-          widget.plugin.store!.accounts.addressIndexMap[finder.address];
+          widget.plugin.store.accounts.addressIndexMap[finder.address];
     }
     bool isFinder = false;
     if (widget.keyring.current.address == finder.address) {
       isFinder = true;
     }
     bool isCouncil = false;
-    widget.plugin.store!.gov.council.members!.forEach((e) {
+    widget.plugin.store.gov.council.members!.forEach((e) {
       if (widget.keyring.current.address == e[0]) {
         isCouncil = true;
       }
@@ -254,7 +254,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                 ? BigInt.parse(tipData.closes.toString())
                 : null;
             final bool canClose = closeBlock != null &&
-                closeBlock <= widget.plugin.store!.gov.bestNumber;
+                closeBlock <= widget.plugin.store.gov.bestNumber;
             return ListView(
               children: <Widget>[
                 RoundedCard(
@@ -264,7 +264,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                       ListTile(
                         leading: AddressIcon(
                           who.address,
-                          svg: widget.plugin.store!.accounts
+                          svg: widget.plugin.store.accounts
                               .addressIconsMap[who.address],
                         ),
                         title: UI.accountDisplayName(who.address, accInfo),
@@ -275,7 +275,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                           child: ListTile(
                             leading: AddressIcon(
                               finder.address,
-                              svg: widget.plugin.store!.accounts
+                              svg: widget.plugin.store.accounts
                                   .addressIconsMap[finder.address],
                             ),
                             title: UI.accountDisplayName(
@@ -340,7 +340,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                       ),
                       Visibility(
                           visible: closeBlock != null &&
-                              closeBlock > widget.plugin.store!.gov.bestNumber,
+                              closeBlock > widget.plugin.store.gov.bestNumber,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
                             child: Row(
@@ -356,7 +356,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                         Text(
                                           Fmt.blockToTime(
                                             (closeBlock! -
-                                                    widget.plugin.store!.gov
+                                                    widget.plugin.store.gov
                                                         .bestNumber)
                                                 .toInt(),
                                             blockTime,
@@ -441,11 +441,11 @@ class _TipDetailPageState extends State<TipDetailPage> {
                             children: tipData.tips!.map((e) {
                               return ListTile(
                                 leading: AddressIcon(e.address,
-                                    svg: widget.plugin.store!.accounts
+                                    svg: widget.plugin.store.accounts
                                         .addressIconsMap[e.address]),
                                 title: UI.accountDisplayName(
                                     e.address,
-                                    widget.plugin.store!.accounts
+                                    widget.plugin.store.accounts
                                         .addressIndexMap[e.address]),
                                 trailing: Text(
                                   '${Fmt.balance(
@@ -458,7 +458,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                   Navigator.of(context).pushNamed(
                                     CandidateDetailPage.route,
                                     arguments: widget
-                                        .plugin.store!.gov.council.members!
+                                        .plugin.store.gov.council.members!
                                         .firstWhere((i) {
                                       return i[0] == e.address;
                                     }),

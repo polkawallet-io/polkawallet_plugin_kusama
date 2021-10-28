@@ -26,9 +26,9 @@ class ProposalPanel extends StatelessWidget {
           final symbol = plugin.networkState.tokenSymbol![0];
           final CouncilProposalData? proposalMeta = proposal.image?.proposal;
           final Map? accInfo =
-              plugin.store!.accounts.addressIndexMap[proposal.proposer];
+              plugin.store.accounts.addressIndexMap[proposal.proposer];
           final proposerIcon =
-              plugin.store!.accounts.addressIconsMap[proposal.proposer];
+              plugin.store.accounts.addressIconsMap[proposal.proposer];
           final List seconding = proposal.seconds!.toList();
           seconding.removeAt(0);
           return GestureDetector(

@@ -8,6 +8,7 @@ class WalletApi {
   static Future<Map?> getRecommended() async {
     try {
       Response res = await get(Uri.parse('$_endpoint/recommended.json'));
+      // ignore: unnecessary_null_comparison
       if (res == null) {
         return null;
       } else {

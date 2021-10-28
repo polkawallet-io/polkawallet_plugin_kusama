@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -63,8 +61,8 @@ class _DemocracyState extends State<Democracy> {
     if (widget.plugin.sdk.api.connectedNode == null) {
       return;
     }
-    widget.plugin.service!.gov.getReferendumVoteConvictions();
-    await widget.plugin.service!.gov.queryReferendums();
+    widget.plugin.service.gov.getReferendumVoteConvictions();
+    await widget.plugin.service.gov.queryReferendums();
 
     _queryDemocracyUnlocks();
   }
@@ -112,7 +110,7 @@ class _DemocracyState extends State<Democracy> {
   void initState() {
     super.initState();
     if (widget.plugin.sdk.api.connectedNode != null) {
-      widget.plugin.service!.gov.subscribeBestNumber();
+      widget.plugin.service.gov.subscribeBestNumber();
     }
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -122,7 +120,7 @@ class _DemocracyState extends State<Democracy> {
 
   @override
   void dispose() {
-    widget.plugin.service!.gov.unsubscribeBestNumber();
+    widget.plugin.service.gov.unsubscribeBestNumber();
 
     super.dispose();
   }
@@ -134,8 +132,8 @@ class _DemocracyState extends State<Democracy> {
       builder: (_) {
         final decimals = widget.plugin.networkState.tokenDecimals![0];
         final symbol = widget.plugin.networkState.tokenSymbol![0];
-        final list = widget.plugin.store!.gov.referendums!;
-        final bestNumber = widget.plugin.store!.gov.bestNumber;
+        final list = widget.plugin.store.gov.referendums!;
+        final bestNumber = widget.plugin.store.gov.bestNumber;
 
         final count = list.length;
         return RefreshIndicator(

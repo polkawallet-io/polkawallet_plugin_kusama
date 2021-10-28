@@ -10,7 +10,7 @@ import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/pages/accountListPage.dart';
+// import 'package:polkawallet_ui/pages/accountListPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -34,19 +34,19 @@ class _BondPageState extends State<BondPage> {
   int _rewardTo = 0;
   String? _rewardAccount;
 
-  Future<void> _changeControllerId(BuildContext context) async {
-    final accounts = widget.keyring.keyPairs.toList();
-    accounts.addAll(widget.keyring.externals);
-    final acc = await Navigator.of(context).pushNamed(
-      AccountListPage.route,
-      arguments: AccountListPageParams(list: accounts),
-    );
-    if (acc != null) {
-      setState(() {
-        _controller = acc as KeyPairData?;
-      });
-    }
-  }
+  // Future<void> _changeControllerId(BuildContext context) async {
+  //   final accounts = widget.keyring.keyPairs.toList();
+  //   accounts.addAll(widget.keyring.externals);
+  //   final acc = await Navigator.of(context).pushNamed(
+  //     AccountListPage.route,
+  //     arguments: AccountListPageParams(list: accounts),
+  //   );
+  //   if (acc != null) {
+  //     setState(() {
+  //       _controller = acc as KeyPairData?;
+  //     });
+  //   }
+  // }
 
   void _onPayeeChanged(int? to, String? address) {
     setState(() {
@@ -141,7 +141,7 @@ class _BondPageState extends State<BondPage> {
                       //   return dic['amount.low'];
                       // }
                       final minBond = Fmt.balanceInt(widget
-                          .plugin.store!.staking.overview['minNominatorBond']);
+                          .plugin.store.staking.overview['minNominatorBond']);
                       if (amount < Fmt.bigIntToDouble(minBond, decimals)) {
                         return '${dicStaking['stake.bond.min']} ${Fmt.priceCeilBigInt(minBond, decimals)}';
                       }
@@ -152,7 +152,7 @@ class _BondPageState extends State<BondPage> {
                 PayeeSelector(
                   widget.plugin,
                   widget.keyring,
-                  initialValue: widget.plugin.store!.staking.ownStashInfo,
+                  initialValue: widget.plugin.store.staking.ownStashInfo,
                   onChange: _onPayeeChanged,
                 ),
               ],

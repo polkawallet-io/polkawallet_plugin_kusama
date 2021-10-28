@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -53,7 +51,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
   }
 
   Future<void> _fetchData() async {
-    await widget.plugin.service!.gov.queryProposals();
+    await widget.plugin.service.gov.queryProposals();
   }
 
   Future<void> _onSwitch() async {
@@ -98,7 +96,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
           child: Observer(
             builder: (_) {
               final ProposalInfoData proposal = widget
-                  .plugin.store!.gov.proposals
+                  .plugin.store.gov.proposals
                   .firstWhere((e) => e.index == proposalPara.index);
               final decimals = widget.plugin.networkState.tokenDecimals![0];
               final symbol = widget.plugin.networkState.tokenSymbol![0];
@@ -168,12 +166,12 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                           contentPadding: EdgeInsets.all(0),
                           leading: AddressIcon(
                             proposal.proposer,
-                            svg: widget.plugin.store!.accounts
+                            svg: widget.plugin.store.accounts
                                 .addressIconsMap[proposal.proposer],
                           ),
                           title: UI.accountDisplayName(
                               proposal.proposer,
-                              widget.plugin.store!.accounts
+                              widget.plugin.store.accounts
                                   .addressIndexMap[proposal.proposer]),
                         ),
                         Padding(
@@ -230,7 +228,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                     ),
                   ),
                   ProposalSecondsList(
-                      store: widget.plugin.store!.accounts, proposal: proposal),
+                      store: widget.plugin.store.accounts, proposal: proposal),
                 ],
               );
             },

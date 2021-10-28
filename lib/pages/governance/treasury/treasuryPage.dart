@@ -28,7 +28,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      widget.plugin.service!.gov.queryCouncilInfo();
+      widget.plugin.service.gov.queryCouncilInfo();
     });
   }
 
@@ -67,7 +67,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
               Observer(
                 builder: (_) {
                   return Expanded(
-                    child: widget.plugin.store!.gov.council.members == null
+                    child: widget.plugin.store.gov.council.members == null
                         ? CupertinoActivityIndicator()
                         : _tab == 0
                             ? SpendProposals(widget.plugin, widget.keyring)

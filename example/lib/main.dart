@@ -104,25 +104,25 @@ class _MyAppState extends State<MyApp> {
     _setConnectedNode(connected);
   }
 
-  void _showResult(BuildContext context, String title, res) {
-    showCupertinoDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: Text(title),
-          content: SelectableText(res, textAlign: TextAlign.left),
-          actions: [
-            CupertinoButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
+  // void _showResult(BuildContext context, String title, res) {
+  //   showCupertinoDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return CupertinoAlertDialog(
+  //         title: Text(title),
+  //         content: SelectableText(res, textAlign: TextAlign.left),
+  //         actions: [
+  //           CupertinoButton(
+  //             child: Text('OK'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           )
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Future<String> getPassword(BuildContext context, KeyPairData acc) async {
     final password = await showCupertinoDialog(

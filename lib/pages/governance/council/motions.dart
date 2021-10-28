@@ -21,8 +21,8 @@ class _MotionsState extends State<Motions> {
       new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
-    widget.plugin.service!.gov.updateBestNumber();
-    await widget.plugin.service!.gov.queryCouncilMotions();
+    widget.plugin.service.gov.updateBestNumber();
+    await widget.plugin.service.gov.queryCouncilMotions();
   }
 
   @override
@@ -41,19 +41,19 @@ class _MotionsState extends State<Motions> {
         return RefreshIndicator(
           onRefresh: _fetchData,
           key: _refreshKey,
-          child: widget.plugin.store!.gov.councilMotions.length == 0
+          child: widget.plugin.store.gov.councilMotions.length == 0
               ? Center(
                   child: ListTail(isEmpty: true, isLoading: false),
                 )
               : ListView.builder(
-                  itemCount: widget.plugin.store!.gov.councilMotions.length + 1,
+                  itemCount: widget.plugin.store.gov.councilMotions.length + 1,
                   itemBuilder: (_, int i) {
-                    if (i == widget.plugin.store!.gov.councilMotions.length) {
+                    if (i == widget.plugin.store.gov.councilMotions.length) {
                       return Center(
                         child: ListTail(isEmpty: false, isLoading: false),
                       );
                     }
-                    final e = widget.plugin.store!.gov.councilMotions[i];
+                    final e = widget.plugin.store.gov.councilMotions[i];
                     return RoundedCard(
                       margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
                       padding: EdgeInsets.only(top: 16, bottom: 16),

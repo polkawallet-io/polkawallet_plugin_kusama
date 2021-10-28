@@ -22,7 +22,7 @@ class AssetsContent extends StatefulWidget {
 }
 
 class _AssetsContentState extends State<AssetsContent> {
-  bool _loading = false;
+  // bool _loading = false;
 
   @override
   Widget build(BuildContext context) {

@@ -33,9 +33,9 @@ class ValidatorDetailPage extends StatelessWidget {
               ModalRoute.of(context)!.settings.arguments as ValidatorData;
 
           final accInfo =
-              plugin.store!.accounts.addressIndexMap[detail.accountId];
+              plugin.store.accounts.addressIndexMap[detail.accountId];
           final accIcon =
-              plugin.store!.accounts.addressIconsMap[detail.accountId];
+              plugin.store.accounts.addressIconsMap[detail.accountId];
 
           final primaryColor = Theme.of(context).primaryColor;
 
@@ -49,8 +49,8 @@ class ValidatorDetailPage extends StatelessWidget {
                 itemCount: 2 +
                     (detail.isElected!
                         ? detail.nominators.length
-                        : plugin.store!.staking
-                                .nominationsMap![detail.accountId]?.length ??
+                        : plugin.store.staking.nominationsMap![detail.accountId]
+                                ?.length ??
                             0) as int?,
                 itemBuilder: (_, i) {
                   if (i == 0) {
@@ -149,7 +149,7 @@ class ValidatorDetailPage extends StatelessWidget {
                     final addresses = detail.isElected!
                         ? detail.nominators.map((e) => e['who']).toList()
                         : plugin
-                            .store!.staking.nominationsMap![detail.accountId];
+                            .store.staking.nominationsMap![detail.accountId];
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -160,7 +160,7 @@ class ValidatorDetailPage extends StatelessWidget {
                           ),
                         ),
                         FutureBuilder(
-                            future: plugin.service!.gov
+                            future: plugin.service.gov
                                 .updateIconsAndIndices(addresses),
                             builder: (_, __) => Container()),
                       ],
@@ -172,20 +172,20 @@ class ValidatorDetailPage extends StatelessWidget {
                       leading: AddressIcon(item['who'],
                           size: 32,
                           svg: plugin
-                              .store!.accounts.addressIconsMap[item['who']]),
+                              .store.accounts.addressIconsMap[item['who']]),
                       title: UI.accountDisplayName(item['who'],
-                          plugin.store!.accounts.addressIndexMap[item['who']]),
+                          plugin.store.accounts.addressIndexMap[item['who']]),
                       trailing: Text(
                           '${Fmt.balance(item['value'].toString(), plugin.networkState.tokenDecimals![0])} ${plugin.networkState.tokenSymbol![0]}'),
                     );
                   } else {
-                    final address = plugin.store!.staking
-                        .nominationsMap![detail.accountId][i - 2];
+                    final address = plugin
+                        .store.staking.nominationsMap![detail.accountId][i - 2];
                     return ListTile(
                       leading: AddressIcon(address,
-                          svg: plugin.store!.accounts.addressIconsMap[address]),
+                          svg: plugin.store.accounts.addressIconsMap[address]),
                       title: UI.accountDisplayName(address,
-                          plugin.store!.accounts.addressIndexMap[address]),
+                          plugin.store.accounts.addressIndexMap[address]),
                     );
                   }
                 },

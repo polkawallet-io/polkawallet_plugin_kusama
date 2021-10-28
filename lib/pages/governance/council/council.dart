@@ -36,13 +36,13 @@ class _CouncilState extends State<Council> {
     if (widget.plugin.sdk.api.connectedNode == null) {
       return;
     }
-    await widget.plugin.service!.gov.queryCouncilVotes();
-    widget.plugin.service!.gov.queryUserCouncilVote();
+    await widget.plugin.service.gov.queryCouncilVotes();
+    widget.plugin.service.gov.queryUserCouncilVote();
   }
 
   Future<void> _submitCancelVotes() async {
     final govDic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final moduleName = await widget.plugin.service!.getRuntimeModuleName(
+    final moduleName = await widget.plugin.service.getRuntimeModuleName(
         ['electionsPhragmen', 'elections', 'phragmenElection']);
     final params = TxConfirmParams(
       module: moduleName,
@@ -100,7 +100,7 @@ class _CouncilState extends State<Council> {
     final decimals = widget.plugin.networkState.tokenDecimals![0];
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
 
-    final userVotes = widget.plugin.store!.gov.userCouncilVotes;
+    final userVotes = widget.plugin.store.gov.userCouncilVotes;
     BigInt voteAmount = BigInt.zero;
     double listHeight = 48;
     if (userVotes != null) {
@@ -121,18 +121,18 @@ class _CouncilState extends State<Council> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['seats'],
                 content:
-                    '${widget.plugin.store!.gov.council.members!.length}/${int.parse(widget.plugin.store!.gov.council.desiredSeats ?? '13')}',
+                    '${widget.plugin.store.gov.council.members!.length}/${int.parse(widget.plugin.store.gov.council.desiredSeats ?? '13')}',
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['up'],
-                content: widget.plugin.store!.gov.council.runnersUp?.length
+                content: widget.plugin.store.gov.council.runnersUp?.length
                     .toString(),
               ),
               InfoItem(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 title: dic['candidate'],
-                content: widget.plugin.store!.gov.council.candidates!.length
+                content: widget.plugin.store.gov.council.candidates!.length
                     .toString(),
               )
             ],
@@ -184,9 +184,9 @@ class _CouncilState extends State<Council> {
                           children: List.of(userVotes!['votes']).map((i) {
                             return CandidateItem(
                               accInfo: widget
-                                  .plugin.store!.accounts.addressIndexMap[i],
+                                  .plugin.store.accounts.addressIndexMap[i],
                               icon: widget
-                                  .plugin.store!.accounts.addressIconsMap[i],
+                                  .plugin.store.accounts.addressIconsMap[i],
                               iconSize: 32,
                               balance: [i],
                               tokenSymbol: tokenView,
@@ -233,7 +233,8 @@ class _CouncilState extends State<Council> {
         key: _refreshKey,
         onRefresh: _fetchCouncilInfo,
         child: Visibility(
-            visible: widget.plugin.store!.gov.council != null,
+            // ignore: unnecessary_null_comparison
+            visible: widget.plugin.store.gov.council != null,
             child: ListView(
               children: <Widget>[
                 _buildTopCard(symbol),
@@ -247,13 +248,12 @@ class _CouncilState extends State<Council> {
                 Container(
                   color: Theme.of(context).cardColor,
                   child: Column(
-                    children:
-                        widget.plugin.store!.gov.council.members!.map((i) {
+                    children: widget.plugin.store.gov.council.members!.map((i) {
                       return CandidateItem(
                         accInfo:
-                            widget.plugin.store!.accounts.addressIndexMap[i[0]],
+                            widget.plugin.store.accounts.addressIndexMap[i[0]],
                         icon:
-                            widget.plugin.store!.accounts.addressIconsMap[i[0]],
+                            widget.plugin.store.accounts.addressIconsMap[i[0]],
                         balance: i,
                         tokenSymbol: symbol,
                         decimals: decimals,
@@ -272,12 +272,12 @@ class _CouncilState extends State<Council> {
                   color: Theme.of(context).cardColor,
                   child: Column(
                     children:
-                        widget.plugin.store!.gov.council.runnersUp!.map((i) {
+                        widget.plugin.store.gov.council.runnersUp!.map((i) {
                       return CandidateItem(
                         accInfo:
-                            widget.plugin.store!.accounts.addressIndexMap[i[0]],
+                            widget.plugin.store.accounts.addressIndexMap[i[0]],
                         icon:
-                            widget.plugin.store!.accounts.addressIconsMap[i[0]],
+                            widget.plugin.store.accounts.addressIconsMap[i[0]],
                         balance: i,
                         tokenSymbol: symbol,
                         decimals: decimals,
@@ -294,15 +294,15 @@ class _CouncilState extends State<Council> {
                 ),
                 Container(
                   color: Theme.of(context).cardColor,
-                  child: widget.plugin.store!.gov.council.candidates!.length > 0
+                  child: widget.plugin.store.gov.council.candidates!.length > 0
                       ? Column(
-                          children: widget.plugin.store!.gov.council.candidates!
+                          children: widget.plugin.store.gov.council.candidates!
                               .map((i) {
                             return CandidateItem(
                               accInfo: widget
-                                  .plugin.store!.accounts.addressIndexMap[i],
+                                  .plugin.store.accounts.addressIndexMap[i],
                               icon: widget
-                                  .plugin.store!.accounts.addressIconsMap[i],
+                                  .plugin.store.accounts.addressIconsMap[i],
                               balance: [i],
                               tokenSymbol: symbol,
                               decimals: decimals,

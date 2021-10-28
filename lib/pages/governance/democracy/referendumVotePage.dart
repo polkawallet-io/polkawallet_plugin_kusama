@@ -37,7 +37,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
     if (_formKey.currentState!.validate()) {
       final govDic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
       final decimals = widget.plugin.networkState.tokenDecimals![0];
-      final Map args = ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
+      final Map args =
+          ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
       final ReferendumInfo info = args['referenda'];
       final bool? voteYes = args['voteYes'];
       final amt = _amountCtrl.text.trim();
@@ -67,7 +68,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
   String? _getConvictionLabel(int value) {
     final dicGov = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
     final Map? conviction =
-        value > 0 ? widget.plugin.store!.gov.voteConvictions![value - 1] : {};
+        value > 0 ? widget.plugin.store.gov.voteConvictions![value - 1] : {};
     return value == 0
         ? dicGov!['locked.no']
         : '${dicGov!['locked']} ${conviction!['period']} ${dicGov['day']} (${conviction['value']}x)';
@@ -122,8 +123,9 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
             }
           });
 
-          Map args = ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
-          ReferendumInfo? info = args['referenda'];
+          Map args = ModalRoute.of(context)!.settings.arguments
+              as Map<dynamic, dynamic>;
+          // ReferendumInfo? info = args['referenda'];
           bool voteYes = args['voteYes'];
           return SafeArea(
             child: Column(
@@ -182,7 +184,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                   child: TxButton(
                     text: I18n.of(context)!
                         .getDic(i18n_full_dic_ui, 'common')!['tx.submit'],
-                    getTxParams: _getTxParams as Future<TxConfirmParams> Function()?,
+                    getTxParams:
+                        _getTxParams as Future<TxConfirmParams> Function()?,
                     onFinish: (res) {
                       if (res != null) {
                         Navigator.of(context).pop(res);

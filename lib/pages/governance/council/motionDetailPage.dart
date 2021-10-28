@@ -115,7 +115,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
               ['${v.name}: ${v.type}', motion.proposal!.args![k].toString()]);
         });
         bool isCouncil = false;
-        widget.plugin.store!.gov.council.members!.forEach((e) {
+        widget.plugin.store.gov.council.members!.forEach((e) {
           if (widget.keyring.current.address == e[0]) {
             isCouncil = true;
           }
@@ -134,8 +134,8 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
         });
         bool isTreasury = motion.proposal!.section == 'treasury' &&
             methodTreasury.indexOf(motion.proposal!.method) > -1;
-        bool isExternal = motion.proposal!.section == 'democracy' &&
-            methodExternal.indexOf(motion.proposal!.method) > -1;
+        // bool isExternal = motion.proposal!.section == 'democracy' &&
+        //     methodExternal.indexOf(motion.proposal!.method) > -1;
 
         final votesEnd = BigInt.parse(motion.votes!.end.toString());
         return Scaffold(
@@ -219,7 +219,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                                 Text(
                                   Fmt.blockToTime(
                                     (votesEnd -
-                                            widget.plugin.store!.gov.bestNumber)
+                                            widget.plugin.store.gov.bestNumber)
                                         .toInt(),
                                     blockTime,
                                   ),
@@ -426,7 +426,7 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
     final decimals = widget.plugin!.networkState.tokenDecimals![0];
     final String voteCountAye =
         '${widget.council!.votes!.ayes!.length}/${widget.council!.votes!.threshold}';
-    final int thresholdNay = widget.plugin!.store!.gov.council.members!.length -
+    final int thresholdNay = widget.plugin!.store.gov.council.members!.length -
         widget.council!.votes!.threshold! +
         1;
     final String voteCountNay =
@@ -477,10 +477,9 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
             children: _tab == 0
                 ? widget.council!.votes!.ayes!.map((e) {
                     return CandidateItem(
-                      accInfo:
-                          widget.plugin!.store!.accounts.addressIndexMap[e],
-                      icon: widget.plugin!.store!.accounts.addressIconsMap[e],
-                      balance: widget.plugin!.store!.gov.council.members!
+                      accInfo: widget.plugin!.store.accounts.addressIndexMap[e],
+                      icon: widget.plugin!.store.accounts.addressIconsMap[e],
+                      balance: widget.plugin!.store.gov.council.members!
                           .firstWhere((i) => i[0] == e),
                       tokenSymbol: symbol,
                       decimals: decimals,
@@ -488,10 +487,9 @@ class _ProposalVotingListState extends State<ProposalVotingList> {
                   }).toList()
                 : widget.council!.votes!.nays!.map((e) {
                     return CandidateItem(
-                      accInfo:
-                          widget.plugin!.store!.accounts.addressIndexMap[e],
-                      icon: widget.plugin!.store!.accounts.addressIconsMap[e],
-                      balance: widget.plugin!.store!.gov.council.members!
+                      accInfo: widget.plugin!.store.accounts.addressIndexMap[e],
+                      icon: widget.plugin!.store.accounts.addressIconsMap[e],
+                      balance: widget.plugin!.store.gov.council.members!
                           .firstWhere((i) => i[0] == e),
                       tokenSymbol: symbol,
                       decimals: decimals,
