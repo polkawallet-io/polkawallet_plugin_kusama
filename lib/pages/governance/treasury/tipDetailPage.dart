@@ -113,7 +113,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
   Future<void> _onEndorseSubmit() async {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final decimals = widget.plugin.networkState.tokenDecimals![0];
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     String amt = _tipInputCtrl.text.trim();
     final args = TxConfirmParams(
       module: 'tips',
@@ -143,7 +144,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
 
   Future<void> _onCancel() async {
     var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'retractTip',
@@ -160,7 +162,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
 
   Future<void> _onCloseTip() async {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'closeTip',
@@ -178,7 +181,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
   Future<void> _onTip(BigInt median) async {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final decimals = widget.plugin.networkState.tokenDecimals![0];
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final args = TxConfirmParams(
       module: 'tips',
       call: 'tip',
@@ -201,7 +205,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     final decimals = widget.plugin.networkState.tokenDecimals![0];
-    final TreasuryTipData tipData = ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
+    final TreasuryTipData tipData =
+        ModalRoute.of(context)!.settings.arguments as TreasuryTipData;
     final who = KeyPairData();
     final finder = KeyPairData();
     who.address = tipData.who;
@@ -265,34 +270,33 @@ class _TipDetailPageState extends State<TipDetailPage> {
                         title: UI.accountDisplayName(who.address, accInfo),
                         subtitle: Text(dic['treasury.who']!),
                       ),
-                      tipData.finder != null
-                          ? ListTile(
-                              leading: AddressIcon(
-                                finder.address,
-                                svg: widget.plugin.store!.accounts
-                                    .addressIconsMap[finder.address],
-                              ),
-                              title: UI.accountDisplayName(
-                                finder.address,
-                                accInfoFinder,
-                              ),
-                              subtitle: Text(dic['treasury.finder']!),
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    '${Fmt.balance(
-                                      tipData.deposit.toString(),
-                                      decimals,
-                                    )} $symbol',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  Text(dic['treasury.bond']!),
-                                ],
-                              ),
-                            )
-                          : Container(),
+                      Visibility(
+                          visible: tipData.finder != null,
+                          child: ListTile(
+                            leading: AddressIcon(
+                              finder.address,
+                              svg: widget.plugin.store!.accounts
+                                  .addressIconsMap[finder.address],
+                            ),
+                            title: UI.accountDisplayName(
+                              finder.address,
+                              accInfoFinder,
+                            ),
+                            subtitle: Text(dic['treasury.finder']!),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '${Fmt.balance(
+                                    tipData.deposit.toString(),
+                                    decimals,
+                                  )} $symbol',
+                                  style: Theme.of(context).textTheme.headline4,
+                                ),
+                                Text(dic['treasury.bond']!),
+                              ],
+                            ),
+                          )),
                       Padding(
                         padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                         child: Row(
@@ -334,38 +338,38 @@ class _TipDetailPageState extends State<TipDetailPage> {
                           ],
                         ),
                       ),
-                      closeBlock != null &&
-                              closeBlock > widget.plugin.store!.gov.bestNumber
-                          ? Padding(
-                              padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(dic['treasury.closeTip']!),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 16),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          Text(
-                                            Fmt.blockToTime(
-                                              (closeBlock -
-                                                      widget.plugin.store!.gov
-                                                          .bestNumber)
-                                                  .toInt(),
-                                              blockTime,
-                                            ),
+                      Visibility(
+                          visible: closeBlock != null &&
+                              closeBlock > widget.plugin.store!.gov.bestNumber,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: Row(
+                              children: <Widget>[
+                                Text(dic['treasury.closeTip']!),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          Fmt.blockToTime(
+                                            (closeBlock! -
+                                                    widget.plugin.store!.gov
+                                                        .bestNumber)
+                                                .toInt(),
+                                            blockTime,
                                           ),
-                                          Text('#$closeBlock')
-                                        ],
-                                      ),
+                                        ),
+                                        Text('#$closeBlock')
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            )
-                          : Container(),
+                                ),
+                              ],
+                            ),
+                          )),
                       Container(
                         padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
                         child: Column(
@@ -396,18 +400,20 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                               isCouncil ? _onEndorse : null,
                                         ),
                                 ),
-                                canClose ? Container() : Container(width: 8),
-                                canClose
-                                    ? Container()
-                                    : RoundedButton(
-                                        icon: Icon(
-                                          Icons.airplanemode_active,
-                                          color: Theme.of(context).cardColor,
-                                        ),
-                                        onPressed: isCouncil && isTipped
-                                            ? () => _onTip(median)
-                                            : null,
-                                      )
+                                Visibility(
+                                    visible: !canClose,
+                                    child: Container(width: 8)),
+                                Visibility(
+                                    visible: !canClose,
+                                    child: RoundedButton(
+                                      icon: Icon(
+                                        Icons.airplanemode_active,
+                                        color: Theme.of(context).cardColor,
+                                      ),
+                                      onPressed: isCouncil && isTipped
+                                          ? () => _onTip(median)
+                                          : null,
+                                    ))
                               ],
                             )
                           ],
@@ -416,55 +422,54 @@ class _TipDetailPageState extends State<TipDetailPage> {
                     ],
                   ),
                 ),
-                tipData.tips!.length > 0
-                    ? Container(
-                        color: Theme.of(context).cardColor,
-                        margin: EdgeInsets.only(top: 8),
-                        padding: EdgeInsets.only(top: 8, bottom: 24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-                              child: BorderedTitle(
-                                  title:
-                                      '${tipData.tips!.length} ${dic['treasury.tipper']} (${Fmt.token(median, decimals)} $symbol)'),
-                            ),
-                            Column(
-                              children: tipData.tips!.map((e) {
-                                return ListTile(
-                                  leading: AddressIcon(e.address,
-                                      svg: widget.plugin.store!.accounts
-                                          .addressIconsMap[e.address]),
-                                  title: UI.accountDisplayName(
-                                      e.address,
-                                      widget.plugin.store!.accounts
-                                          .addressIndexMap[e.address]),
-                                  trailing: Text(
-                                    '${Fmt.balance(
-                                      e.value.toString(),
-                                      decimals,
-                                    )} $symbol',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                      CandidateDetailPage.route,
-                                      arguments: widget
-                                          .plugin.store!.gov.council.members!
-                                          .firstWhere((i) {
-                                        return i[0] == e.address;
-                                      }),
-                                    );
-                                  },
-                                );
-                              }).toList(),
-                            )
-                          ],
-                        ),
-                      )
-                    : Container()
+                Visibility(
+                    visible: tipData.tips!.length > 0,
+                    child: Container(
+                      color: Theme.of(context).cardColor,
+                      margin: EdgeInsets.only(top: 8),
+                      padding: EdgeInsets.only(top: 8, bottom: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+                            child: BorderedTitle(
+                                title:
+                                    '${tipData.tips!.length} ${dic['treasury.tipper']} (${Fmt.token(median, decimals)} $symbol)'),
+                          ),
+                          Column(
+                            children: tipData.tips!.map((e) {
+                              return ListTile(
+                                leading: AddressIcon(e.address,
+                                    svg: widget.plugin.store!.accounts
+                                        .addressIconsMap[e.address]),
+                                title: UI.accountDisplayName(
+                                    e.address,
+                                    widget.plugin.store!.accounts
+                                        .addressIndexMap[e.address]),
+                                trailing: Text(
+                                  '${Fmt.balance(
+                                    e.value.toString(),
+                                    decimals,
+                                  )} $symbol',
+                                  style: Theme.of(context).textTheme.headline4,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    CandidateDetailPage.route,
+                                    arguments: widget
+                                        .plugin.store!.gov.council.members!
+                                        .firstWhere((i) {
+                                      return i[0] == e.address;
+                                    }),
+                                  );
+                                },
+                              );
+                            }).toList(),
+                          )
+                        ],
+                      ),
+                    ))
               ],
             );
           },

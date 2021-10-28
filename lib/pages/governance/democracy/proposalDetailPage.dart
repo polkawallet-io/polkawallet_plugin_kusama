@@ -124,18 +124,19 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        hasProposal
-                            ? Text(
-                                '${proposal.image!.proposal!.section}.${proposal.image!.proposal!.method}',
-                                style: Theme.of(context).textTheme.headline4,
-                              )
-                            : Container(),
-                        hasProposal
-                            ? Text(proposal
+                        Visibility(
+                            visible: hasProposal,
+                            child: Text(
+                              '${proposal.image!.proposal!.section}.${proposal.image!.proposal!.method}',
+                              style: Theme.of(context).textTheme.headline4,
+                            )),
+                        Visibility(
+                            visible: hasProposal,
+                            child: Text(proposal
                                 .image!.proposal!.meta!.documentation!
-                                .trim())
-                            : Container(),
-                        hasProposal ? Divider(height: 24) : Container(),
+                                .trim())),
+                        Visibility(
+                            visible: hasProposal, child: Divider(height: 24)),
                         Padding(
                           padding: EdgeInsets.only(bottom: 8),
                           child: ProposalArgsItem(
@@ -147,17 +148,17 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                             margin: EdgeInsets.all(0),
                           ),
                         ),
-                        params.length > 0
-                            ? Text(
-                                dic['proposal.params']!,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .unselectedWidgetColor),
-                              )
-                            : Container(),
-                        params.length > 0
-                            ? ProposalArgsList(params)
-                            : Container(),
+                        Visibility(
+                            visible: params.length > 0,
+                            child: Text(
+                              dic['proposal.params']!,
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).unselectedWidgetColor),
+                            )),
+                        Visibility(
+                            visible: params.length > 0,
+                            child: ProposalArgsList(params)),
                         Text(
                           dic['treasury.proposer']!,
                           style: TextStyle(

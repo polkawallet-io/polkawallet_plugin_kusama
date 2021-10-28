@@ -90,15 +90,15 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                     ],
                   ),
                 ),
-                voterList.length > 0
-                    ? Container(
-                        padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
-                        color: Theme.of(context).cardColor,
-                        child: BorderedTitle(
-                          title: dic['vote.voter'],
-                        ),
-                      )
-                    : Container(),
+                Visibility(
+                    visible: voterList.length > 0,
+                    child: Container(
+                      padding: EdgeInsets.only(top: 16, left: 16, bottom: 8),
+                      color: Theme.of(context).cardColor,
+                      child: BorderedTitle(
+                        title: dic['vote.voter'],
+                      ),
+                    )),
                 Container(
                   color: Theme.of(context).cardColor,
                   child: Column(

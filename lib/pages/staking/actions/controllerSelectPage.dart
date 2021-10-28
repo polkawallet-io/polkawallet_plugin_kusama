@@ -18,7 +18,8 @@ class ControllerSelectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Observer(
         builder: (_) {
-          final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+          final dic =
+              I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
           return Scaffold(
             appBar: AppBar(
               title: Text(dic['controller']!),
@@ -31,10 +32,10 @@ class ControllerSelectPage extends StatelessWidget {
                   padding: EdgeInsets.all(16),
                   children: keyring.allAccounts.map((i) {
                     String? unavailable;
-                    final stashOf = plugin
-                        .store!.staking.accountBondedMap[i.pubKey]!.controllerId;
-                    String? controllerOf =
-                        plugin.store!.staking.accountBondedMap[i.pubKey]!.stashId;
+                    final stashOf = plugin.store!.staking
+                        .accountBondedMap[i.pubKey]!.controllerId;
+                    String? controllerOf = plugin
+                        .store!.staking.accountBondedMap[i.pubKey]!.stashId;
                     if (stashOf != null && i.pubKey != keyring.current.pubKey) {
                       unavailable =
                           '${dic['controller.stashOf']} ${Fmt.address(stashOf)}';
@@ -87,12 +88,12 @@ class ControllerSelectPage extends StatelessWidget {
                                       ],
                                     ),
                             ),
-                            unavailable == null
-                                ? Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 18,
-                                  )
-                                : Container()
+                            Visibility(
+                                visible: unavailable == null,
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 18,
+                                ))
                           ],
                         ),
                       ),

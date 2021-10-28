@@ -89,100 +89,100 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: _beneficiary == null
-                  ? Container()
-                  : ListView(
-                      padding: EdgeInsets.all(16),
-                      children: <Widget>[
-                        AddressFormItem(
-                          _beneficiary,
-                          label: dic['treasury.beneficiary'],
-                          onTap: () async {
-                            final acc = await Navigator.of(context).pushNamed(
-                              AccountListPage.route,
-                              arguments: AccountListPageParams(
-                                  list: widget.keyring.allAccounts),
-                            );
-                            if (acc != null) {
-                              setState(() {
-                                _beneficiary = acc as KeyPairData?;
-                              });
-                            }
-                          },
+              child: Visibility(
+                  visible: _beneficiary != null,
+                  child: ListView(
+                    padding: EdgeInsets.all(16),
+                    children: <Widget>[
+                      AddressFormItem(
+                        _beneficiary,
+                        label: dic['treasury.beneficiary'],
+                        onTap: () async {
+                          final acc = await Navigator.of(context).pushNamed(
+                            AccountListPage.route,
+                            arguments: AccountListPageParams(
+                                list: widget.keyring.allAccounts),
+                          );
+                          if (acc != null) {
+                            setState(() {
+                              _beneficiary = acc as KeyPairData?;
+                            });
+                          }
+                        },
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: dicCommon!['amount'],
+                                labelText: '${dicCommon['amount']} ($symbol)',
+                              ),
+                              inputFormatters: [
+                                UI.decimalInputFormatter(decimals)!
+                              ],
+                              controller: _amountCtrl,
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              validator: (v) {
+                                if (v!.isEmpty) {
+                                  return dicCommon['amount.error'];
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                labelText: '${dic['treasury.bond']} ($symbol)',
+                              ),
+                              initialValue: '$bondPercentage%',
+                              readOnly: true,
+                              style: TextStyle(
+                                  color: Theme.of(context).disabledColor),
+                              validator: (v) {
+                                final BigInt bond = Fmt.tokenInt(
+                                        _amountCtrl.text.trim(), decimals) *
+                                    bondPercentage ~/
+                                    BigInt.from(100);
+                                if (balance <= bond) {
+                                  return dicCommon['amount.low'];
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                labelText:
+                                    '${dic['treasury.bond.min']} ($symbol)',
+                              ),
+                              initialValue: Fmt.priceCeilBigInt(
+                                minBond,
+                                decimals,
+                                lengthFixed: 3,
+                              ),
+                              readOnly: true,
+                              style: TextStyle(
+                                  color: Theme.of(context).disabledColor),
+                              validator: (v) {
+                                if (balance <= minBond) {
+                                  return dicCommon['amount.low'];
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
                         ),
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: dicCommon!['amount'],
-                                  labelText: '${dicCommon['amount']} ($symbol)',
-                                ),
-                                inputFormatters: [
-                                  UI.decimalInputFormatter(decimals)!
-                                ],
-                                controller: _amountCtrl,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                validator: (v) {
-                                  if (v!.isEmpty) {
-                                    return dicCommon['amount.error'];
-                                  }
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  labelText:
-                                      '${dic['treasury.bond']} ($symbol)',
-                                ),
-                                initialValue: '$bondPercentage%',
-                                readOnly: true,
-                                style: TextStyle(
-                                    color: Theme.of(context).disabledColor),
-                                validator: (v) {
-                                  final BigInt bond = Fmt.tokenInt(
-                                          _amountCtrl.text.trim(), decimals) *
-                                      bondPercentage ~/
-                                      BigInt.from(100);
-                                  if (balance <= bond) {
-                                    return dicCommon['amount.low'];
-                                  }
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  labelText:
-                                      '${dic['treasury.bond.min']} ($symbol)',
-                                ),
-                                initialValue: Fmt.priceCeilBigInt(
-                                  minBond,
-                                  decimals,
-                                  lengthFixed: 3,
-                                ),
-                                readOnly: true,
-                                style: TextStyle(
-                                    color: Theme.of(context).disabledColor),
-                                validator: (v) {
-                                  if (balance <= minBond) {
-                                    return dicCommon['amount.low'];
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
+                  )),
             ),
             Padding(
               padding: EdgeInsets.all(16),
               child: TxButton(
                 text: dic['treasury.submit'],
-                getTxParams: _getTxParams as Future<TxConfirmParams> Function()?,
+                getTxParams:
+                    _getTxParams as Future<TxConfirmParams> Function()?,
                 onFinish: (res) {
                   if (res != null) {
                     Navigator.of(context).pop(res);

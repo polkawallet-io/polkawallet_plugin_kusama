@@ -49,8 +49,8 @@ class ValidatorDetailPage extends StatelessWidget {
                 itemCount: 2 +
                     (detail.isElected!
                         ? detail.nominators.length
-                        : plugin.store!.staking.nominationsMap![detail.accountId]
-                                ?.length ??
+                        : plugin.store!.staking
+                                .nominationsMap![detail.accountId]?.length ??
                             0) as int?,
                 itemBuilder: (_, i) {
                   if (i == 0) {
@@ -58,22 +58,22 @@ class ValidatorDetailPage extends StatelessWidget {
                       margin: EdgeInsets.all(16),
                       child: Column(
                         children: <Widget>[
-                          detail.isBlocking!
-                              ? Padding(
-                                  padding: EdgeInsets.only(top: 16),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.remove_circle,
-                                        color: Theme.of(context).errorColor,
-                                        size: 16,
-                                      ),
-                                      Text(dicStaking['blocking']!)
-                                    ],
-                                  ),
-                                )
-                              : Container(),
+                          Visibility(
+                              visible: detail.isBlocking!,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.remove_circle,
+                                      color: Theme.of(context).errorColor,
+                                      size: 16,
+                                    ),
+                                    Text(dicStaking['blocking']!)
+                                  ],
+                                ),
+                              )),
                           Stack(
                             alignment: AlignmentDirectional.topEnd,
                             children: [
@@ -148,7 +148,8 @@ class ValidatorDetailPage extends StatelessWidget {
                   if (i == 1) {
                     final addresses = detail.isElected!
                         ? detail.nominators.map((e) => e['who']).toList()
-                        : plugin.store!.staking.nominationsMap![detail.accountId];
+                        : plugin
+                            .store!.staking.nominationsMap![detail.accountId];
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -178,8 +179,8 @@ class ValidatorDetailPage extends StatelessWidget {
                           '${Fmt.balance(item['value'].toString(), plugin.networkState.tokenDecimals![0])} ${plugin.networkState.tokenSymbol![0]}'),
                     );
                   } else {
-                    final address = plugin
-                        .store!.staking.nominationsMap![detail.accountId][i - 2];
+                    final address = plugin.store!.staking
+                        .nominationsMap![detail.accountId][i - 2];
                     return ListTile(
                       leading: AddressIcon(address,
                           svg: plugin.store!.accounts.addressIconsMap[address]),

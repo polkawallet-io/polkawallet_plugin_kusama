@@ -106,80 +106,80 @@ class _SubmitTipPageState extends State<SubmitTipPage> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: _beneficiary == null
-                  ? Container()
-                  : ListView(
-                      padding: EdgeInsets.all(16),
-                      children: <Widget>[
-                        AddressFormItem(
-                          _beneficiary,
-                          label: dic['treasury.beneficiary'],
-                          onTap: () async {
-                            final acc = await Navigator.of(context).pushNamed(
-                              AccountListPage.route,
-                              arguments: AccountListPageParams(
-                                  list: widget.keyring.allAccounts),
-                            );
-                            if (acc != null) {
-                              setState(() {
-                                _beneficiary = acc as KeyPairData?;
-                              });
-                            }
-                          },
-                        ),
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            children: <Widget>[
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: dic['treasury.reason'],
-                                  labelText: dic['treasury.reason'],
-                                ),
-                                controller: _reasonCtrl,
-                                maxLines: 3,
-                                validator: (v) {
-                                  final String reason = v!.trim();
-                                  if (reason.length < MIN_REASON_LEN ||
-                                      reason.length > MAX_REASON_LEN) {
-                                    return dicCommon!['input.invalid'];
-                                  }
-                                  return null;
-                                },
+              child: Visibility(
+                  visible: _beneficiary != null,
+                  child: ListView(
+                    padding: EdgeInsets.all(16),
+                    children: <Widget>[
+                      AddressFormItem(
+                        _beneficiary,
+                        label: dic['treasury.beneficiary'],
+                        onTap: () async {
+                          final acc = await Navigator.of(context).pushNamed(
+                            AccountListPage.route,
+                            arguments: AccountListPageParams(
+                                list: widget.keyring.allAccounts),
+                          );
+                          if (acc != null) {
+                            setState(() {
+                              _beneficiary = acc as KeyPairData?;
+                            });
+                          }
+                        },
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: dic['treasury.reason'],
+                                labelText: dic['treasury.reason'],
                               ),
-                              isCouncil
-                                  ? TextFormField(
-                                      decoration: InputDecoration(
-                                        hintText: dicCommon!['amount'],
-                                        labelText:
-                                            '${dicCommon['amount']} ($symbol)',
-                                      ),
-                                      inputFormatters: [
-                                        UI.decimalInputFormatter(decimals)!
-                                      ],
-                                      controller: _amountCtrl,
-                                      keyboardType:
-                                          TextInputType.numberWithOptions(
-                                              decimal: true),
-                                      validator: (v) {
-                                        if (v!.isEmpty) {
-                                          return dicCommon['amount.error'];
-                                        }
-                                        return null;
-                                      },
-                                    )
-                                  : Container(),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                              controller: _reasonCtrl,
+                              maxLines: 3,
+                              validator: (v) {
+                                final String reason = v!.trim();
+                                if (reason.length < MIN_REASON_LEN ||
+                                    reason.length > MAX_REASON_LEN) {
+                                  return dicCommon!['input.invalid'];
+                                }
+                                return null;
+                              },
+                            ),
+                            Visibility(
+                                visible: isCouncil,
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: dicCommon!['amount'],
+                                    labelText:
+                                        '${dicCommon['amount']} ($symbol)',
+                                  ),
+                                  inputFormatters: [
+                                    UI.decimalInputFormatter(decimals)!
+                                  ],
+                                  controller: _amountCtrl,
+                                  keyboardType: TextInputType.numberWithOptions(
+                                      decimal: true),
+                                  validator: (v) {
+                                    if (v!.isEmpty) {
+                                      return dicCommon['amount.error'];
+                                    }
+                                    return null;
+                                  },
+                                )),
+                          ],
+                        ),
+                      )
+                    ],
+                  )),
             ),
             Padding(
               padding: EdgeInsets.all(16),
               child: TxButton(
                 text: dic['treasury.report'],
-                getTxParams: _getTxParams as Future<TxConfirmParams> Function()?,
+                getTxParams:
+                    _getTxParams as Future<TxConfirmParams> Function()?,
                 onFinish: (res) {
                   if (res != null) {
                     Navigator.of(context).pop(res);

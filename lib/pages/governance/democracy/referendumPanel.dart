@@ -67,32 +67,32 @@ class ReferendumPanel extends StatelessWidget {
           )
         ],
       ),
-      data!.isPassing!
-          ? Row(
-              children: <Widget>[
-                Container(width: 21),
-                Expanded(
-                  child: Text(
-                      '${dic['activate']} ${Fmt.blockToTime(activateLeft.toInt(), blockDuration!)}',
-                      style: TextStyle(color: Colors.pink)),
-                ),
-                Text(
-                  '#${Fmt.priceFloorBigInt(bestNumber! + activateLeft, 0, lengthFixed: 0)}',
-                  style: TextStyle(color: Colors.pink),
-                )
-              ],
-            )
-          : Container(),
-      data!.detail!['content'].toString().isNotEmpty
-          ? Container(
-              padding: EdgeInsets.only(top: 16),
-              child: Text(data!.detail!['content'].toString().trim()),
-            )
-          : Container()
+      Visibility(
+          visible: data!.isPassing!,
+          child: Row(
+            children: <Widget>[
+              Container(width: 21),
+              Expanded(
+                child: Text(
+                    '${dic['activate']} ${Fmt.blockToTime(activateLeft.toInt(), blockDuration!)}',
+                    style: TextStyle(color: Colors.pink)),
+              ),
+              Text(
+                '#${Fmt.priceFloorBigInt(bestNumber! + activateLeft, 0, lengthFixed: 0)}',
+                style: TextStyle(color: Colors.pink),
+              )
+            ],
+          )),
+      Visibility(
+          visible: data!.detail!['content'].toString().isNotEmpty,
+          child: Container(
+            padding: EdgeInsets.only(top: 16),
+            child: Text(data!.detail!['content'].toString().trim()),
+          ))
     ];
     if (data!.detail!['params'] != null && data!.detail!['params'].length > 0) {
-      list.add(
-          ReferendumArgsList(data!.detail!['params'], data!.image!['proposal']));
+      list.add(ReferendumArgsList(
+          data!.detail!['params'], data!.image!['proposal']));
     }
     list.addAll([
       Padding(
@@ -204,7 +204,9 @@ class ReferendumPanel extends StatelessWidget {
             children: <Widget>[
               TapTooltip(
                 child: Icon(
-                  data!.isPassing! ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                  data!.isPassing!
+                      ? Icons.arrow_drop_up
+                      : Icons.arrow_drop_down,
                   color: Theme.of(context).unselectedWidgetColor,
                 ),
                 message: data!.isPassing!
@@ -224,7 +226,9 @@ class ReferendumPanel extends StatelessWidget {
             children: <Widget>[
               TapTooltip(
                 child: Icon(
-                  !data!.isPassing! ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                  !data!.isPassing!
+                      ? Icons.arrow_drop_up
+                      : Icons.arrow_drop_down,
                   color: Theme.of(context).unselectedWidgetColor,
                 ),
                 message: !data!.isPassing!
@@ -330,7 +334,8 @@ class _ReferendumArgsList extends State<ReferendumArgsList> {
                   ? Icons.keyboard_arrow_down
                   : Icons.keyboard_arrow_right,
             ),
-            Text(I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!['detail']!)
+            Text(I18n.of(context)!
+                .getDic(i18n_full_dic_kusama, 'gov')!['detail']!)
           ],
         ),
         onTap: () {

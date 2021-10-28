@@ -210,37 +210,37 @@ class _PayeeSelectorState extends State<PayeeSelector> {
             );
           },
         ),
-        (_rewardTo ?? widget.initialValue!.destinationId) == 3
-            ? Padding(
-                padding: EdgeInsets.only(left: 16, right: 16),
-                child: AddressInputField(
-                  widget.plugin.sdk.api,
-                  widget.keyring.allWithContacts,
-                  initialValue: _rewardAccount ?? defaultAcc,
-                  onChanged: (acc) {
-                    setState(() {
-                      _rewardAccount = acc;
-                    });
-                    widget.onChange!(_rewardTo, acc!.address);
-                  },
-                  key: ValueKey<KeyPairData?>(_rewardAccount),
-                ),
-              )
-            : Container(),
-        _rewardTo == 3
-            ? Row(
-                children: [
-                  Expanded(
-                      child: TextTag(
-                    dic['stake.payee.warn'],
-                    color: Colors.deepOrange,
-                    fontSize: 12,
-                    margin: EdgeInsets.all(16),
-                    padding: EdgeInsets.all(8),
-                  ))
-                ],
-              )
-            : Container(),
+        Visibility(
+            visible: (_rewardTo ?? widget.initialValue!.destinationId) == 3,
+            child: Padding(
+              padding: EdgeInsets.only(left: 16, right: 16),
+              child: AddressInputField(
+                widget.plugin.sdk.api,
+                widget.keyring.allWithContacts,
+                initialValue: _rewardAccount ?? defaultAcc,
+                onChanged: (acc) {
+                  setState(() {
+                    _rewardAccount = acc;
+                  });
+                  widget.onChange!(_rewardTo, acc!.address);
+                },
+                key: ValueKey<KeyPairData?>(_rewardAccount),
+              ),
+            )),
+        Visibility(
+            visible: _rewardTo == 3,
+            child: Row(
+              children: [
+                Expanded(
+                    child: TextTag(
+                  dic['stake.payee.warn'],
+                  color: Colors.deepOrange,
+                  fontSize: 12,
+                  margin: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(8),
+                ))
+              ],
+            )),
       ],
     );
   }
