@@ -240,19 +240,21 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
                         beneficiary.address, accInfoBeneficiary),
                     subtitle: Text(dic['treasury.beneficiary']!),
                   ),
-                  hasProposals
-                      ? Padding(
-                          padding: EdgeInsets.only(bottom: 8),
-                          child: ProposalArgsItem(
-                            label: Text(dic['proposal']!),
-                            content: Text(
-                              '${proposal.council![0].proposal!.section}.${proposal.council![0].proposal!.method}',
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            margin: EdgeInsets.only(left: 16, right: 16),
+                  Visibility(
+                      visible: hasProposals,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 8),
+                        child: ProposalArgsItem(
+                          label: Text(dic['proposal']!),
+                          content: Text(
+                            hasProposals
+                                ? '${proposal.council![0].proposal!.section}.${proposal.council![0].proposal!.method}'
+                                : "",
+                            style: Theme.of(context).textTheme.headline4,
                           ),
-                        )
-                      : Container(),
+                          margin: EdgeInsets.only(left: 16, right: 16),
+                        ),
+                      )),
                   FutureBuilder(
                     future: _getExternalLinks(int.parse(proposal.id!)),
                     builder: (_, AsyncSnapshot<List?> snapshot) {
@@ -262,44 +264,44 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
                       return Container();
                     },
                   ),
-                  isApproval
-                      ? Container()
-                      : Padding(
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: Divider(),
-                        ),
-                  isApproval
-                      ? Container()
-                      : Padding(
-                          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: !hasProposals
-                              ? RoundedButton(
-                                  text: dic['treasury.send'],
-                                  onPressed:
-                                      isCouncil ? () => _showActions() : null,
-                                )
-                              : ProposalVoteButtonsRow(
-                                  isCouncil: isCouncil,
-                                  isVotedNo: isVotedNo,
-                                  isVotedYes: isVotedYes,
-                                  onVote: _onVote,
-                                ),
-                        ),
+                  Visibility(
+                      visible: !isApproval,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16, right: 16),
+                        child: Divider(),
+                      )),
+                  Visibility(
+                      visible: !isApproval,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: !hasProposals
+                            ? RoundedButton(
+                                text: dic['treasury.send'],
+                                onPressed:
+                                    isCouncil ? () => _showActions() : null,
+                              )
+                            : ProposalVoteButtonsRow(
+                                isCouncil: isCouncil,
+                                isVotedNo: isVotedNo,
+                                isVotedYes: isVotedYes,
+                                onVote: _onVote,
+                              ),
+                      )),
                 ],
               ),
             ),
-            !hasProposals
-                ? Container()
-                : Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    child: BorderedTitle(title: dic['vote.voter']),
-                  ),
-            !hasProposals
-                ? Container()
-                : ProposalVotingList(
-                    plugin: widget.plugin,
-                    council: proposal.council![0],
-                  )
+            Visibility(
+                visible: hasProposals,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: BorderedTitle(title: dic['vote.voter']),
+                )),
+            Visibility(
+                visible: hasProposals,
+                child: ProposalVotingList(
+                  plugin: widget.plugin,
+                  council: hasProposals ? proposal.council![0] : null,
+                ))
           ],
         ),
       ),

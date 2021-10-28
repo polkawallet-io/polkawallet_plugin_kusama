@@ -170,32 +170,31 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                           margin: EdgeInsets.all(0),
                         ),
                       ),
-                      params.length > 0
-                          ? Text(
-                              dic['proposal.params'],
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).unselectedWidgetColor),
-                            )
-                          : Container(),
-                      params.length > 0
-                          ? ProposalArgsList(params)
-                          : Container(),
-                      isTreasury
-                          ? FutureBuilder(
-                              future: _fetchTreasuryProposal(
-                                  motion.proposal!.args![0]),
-                              builder: (_, AsyncSnapshot<Map?> snapshot) {
-                                if (snapshot.hasData) {
-                                  return ProposalArgsItem(
-                                    label: Text('proposal: TreasuryProposal'),
-                                    content: Text(jsonEncode(snapshot.data)),
-                                  );
-                                }
-                                return CupertinoActivityIndicator();
-                              },
-                            )
-                          : Container(),
+                      Visibility(
+                          visible: params.length > 0,
+                          child: Text(
+                            dic['proposal.params'],
+                            style: TextStyle(
+                                color: Theme.of(context).unselectedWidgetColor),
+                          )),
+                      Visibility(
+                          visible: params.length > 0,
+                          child: ProposalArgsList(params)),
+                      Visibility(
+                          visible: isTreasury,
+                          child: FutureBuilder(
+                            future: _fetchTreasuryProposal(
+                                motion.proposal!.args![0]),
+                            builder: (_, AsyncSnapshot<Map?> snapshot) {
+                              if (snapshot.hasData) {
+                                return ProposalArgsItem(
+                                  label: Text('proposal: TreasuryProposal'),
+                                  content: Text(jsonEncode(snapshot.data)),
+                                );
+                              }
+                              return CupertinoActivityIndicator();
+                            },
+                          )),
 //                      isExternal
 //                          ? FutureBuilder(
 //                              future: _fetchTreasuryProposal(

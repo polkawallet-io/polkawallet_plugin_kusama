@@ -405,7 +405,7 @@ class _StakingActions extends State<StakingActions> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.plugin.store!.staking.ownStashInfo == null) {
         if (_refreshKey.currentState != null) {
-          _refreshKey.currentState!.show();
+          _updateStakingInfo();
         }
       } else {
         _updateStakingInfo();
@@ -535,55 +535,55 @@ class RowAccount02 extends StatelessWidget {
         isController! && !isSelfControl! ? stashId : controllerId;
     return Container(
       padding: EdgeInsets.only(top: 8, bottom: 8),
-      child: stashInfo != null
-          ? Row(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(left: 4, right: 20),
-                  child: acc02 != null
-                      ? AddressIcon(address02, svg: acc02!.icon, size: 32)
-                      : AddressIcon(address02, size: 32),
+      child: Visibility(
+          visible: stashInfo != null,
+          child: Row(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(left: 4, right: 20),
+                child: acc02 != null
+                    ? AddressIcon(address02, svg: acc02!.icon, size: 32)
+                    : AddressIcon(address02, size: 32),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      isController! && !isSelfControl!
+                          ? dic!['stash']!
+                          : dic!['controller']!,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).unselectedWidgetColor),
+                    ),
+                    Text(
+                      Fmt.address(address02)!,
+                      style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).unselectedWidgetColor),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        isController! && !isSelfControl!
-                            ? dic!['stash']!
-                            : dic!['controller']!,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).unselectedWidgetColor),
-                      ),
-                      Text(
-                        Fmt.address(address02)!,
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: Theme.of(context).unselectedWidgetColor),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: controllerId == stashId
-                      ? Container()
-                      : GestureDetector(
-                          child: Container(
-                            width: 80,
-                            height: 18,
-                            child: Icon(
-                              Icons.settings,
-                              color: Theme.of(context).primaryColor,
-                              size: 24,
-                            ),
-                          ),
-                          onTap: () => _showActions(context),
+              ),
+              Expanded(
+                child: Visibility(
+                    visible: controllerId != stashId,
+                    child: GestureDetector(
+                      child: Container(
+                        width: 80,
+                        height: 18,
+                        child: Icon(
+                          Icons.settings,
+                          color: Theme.of(context).primaryColor,
+                          size: 24,
                         ),
-                )
-              ],
-            )
-          : Container(),
+                      ),
+                      onTap: () => _showActions(context),
+                    )),
+              )
+            ],
+          )),
     );
   }
 }
@@ -691,19 +691,19 @@ class StakingInfoPanel extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        unlocking! > BigInt.zero
-                            ? GestureDetector(
-                                child: Padding(
-                                  padding: EdgeInsets.only(right: 2),
-                                  child: Icon(
-                                    Icons.access_time,
-                                    size: 16,
-                                    color: actionButtonColor,
-                                  ),
+                        Visibility(
+                            visible: unlocking! > BigInt.zero,
+                            child: GestureDetector(
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 2),
+                                child: Icon(
+                                  Icons.access_time,
+                                  size: 16,
+                                  color: actionButtonColor,
                                 ),
-                                onTap: () => _showUnlocking(context),
-                              )
-                            : Container(),
+                              ),
+                              onTap: () => _showUnlocking(context),
+                            )),
                         Text(
                           Fmt.priceFloorBigInt(unlocking!, decimals!,
                               lengthMax: 4),
@@ -727,22 +727,22 @@ class StakingInfoPanel extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        isController! && redeemable! > BigInt.zero
-                            ? GestureDetector(
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 4),
-                                  child: Icon(
-                                    Icons.lock_open,
-                                    size: 16,
-                                    color: actionButtonColor,
-                                  ),
+                        Visibility(
+                            visible: isController! && redeemable! > BigInt.zero,
+                            child: GestureDetector(
+                              child: Container(
+                                padding: EdgeInsets.only(left: 4),
+                                child: Icon(
+                                  Icons.lock_open,
+                                  size: 16,
+                                  color: actionButtonColor,
                                 ),
-                                onTap: () {
-                                  onAction!(() => Navigator.of(context)
-                                      .pushNamed(RedeemPage.route));
-                                },
-                              )
-                            : Container(),
+                              ),
+                              onTap: () {
+                                onAction!(() => Navigator.of(context)
+                                    .pushNamed(RedeemPage.route));
+                              },
+                            )),
                         Text(
                           Fmt.priceFloorBigInt(
                             redeemable!,

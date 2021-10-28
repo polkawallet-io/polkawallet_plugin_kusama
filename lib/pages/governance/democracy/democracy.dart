@@ -146,24 +146,24 @@ class _DemocracyState extends State<Democracy> {
             itemCount: list.length + 2,
             itemBuilder: (BuildContext context, int i) {
               if (i == 0) {
-                return _unlocks.length > 0
-                    ? RoundedCard(
-                        margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
-                        padding: EdgeInsets.all(16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(dic!['democracy.expire']!),
-                            OutlinedButtonSmall(
-                              active: true,
-                              content: dic['democracy.unlock'],
-                              onPressed: _onUnlock,
-                              margin: EdgeInsets.all(0),
-                            )
-                          ],
-                        ),
-                      )
-                    : Container();
+                return Visibility(
+                    visible: _unlocks.length > 0,
+                    child: RoundedCard(
+                      margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                      padding: EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(dic!['democracy.expire']!),
+                          OutlinedButtonSmall(
+                            active: true,
+                            content: dic['democracy.unlock'],
+                            onPressed: _onUnlock,
+                            margin: EdgeInsets.all(0),
+                          )
+                        ],
+                      ),
+                    ));
               }
               return i == list.length + 1
                   ? Container(

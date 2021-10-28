@@ -85,7 +85,7 @@ const Map<String, String> zhStaking = {
   'nominate.over': '超额认购',
   'nominate.inactive': '不活跃',
   'nominate.waiting': '等待',
-  'nominate.max': '提名数量最多 16 个',
+  'nominate.max': '最大提名数量',
   'phala': 'Phala 空投',
   'recommend': '推荐节点',
 };

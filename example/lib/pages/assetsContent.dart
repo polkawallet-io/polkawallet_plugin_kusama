@@ -60,15 +60,15 @@ class _AssetsContentState extends State<AssetsContent> {
                     BorderedTitle(
                       title: 'Assets',
                     ),
-                    widget.network.basic.isTestNet
-                        ? TextTag(
-                            'TestToken',
-                            fontSize: 16,
-                            color: Colors.red,
-                            margin: EdgeInsets.only(left: 12),
-                            padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                          )
-                        : Container()
+                    Visibility(
+                        visible: widget.network.basic.isTestNet,
+                        child: TextTag(
+                          'TestToken',
+                          fontSize: 16,
+                          color: Colors.red,
+                          margin: EdgeInsets.only(left: 12),
+                          padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                        ))
                   ],
                 ),
               ),
@@ -99,10 +99,10 @@ class _AssetsContentState extends State<AssetsContent> {
                   // },
                 ),
               ),
-              Column(
-                children: tokens == null || tokens.length == 0
-                    ? [Container()]
-                    : tokens
+              Visibility(
+                  visible: tokens != null && tokens.length > 0,
+                  child: Column(
+                    children: (tokens ?? [])
                         .map((i) => TokenItem(
                               i,
                               decimals,
@@ -110,35 +110,34 @@ class _AssetsContentState extends State<AssetsContent> {
                               icon: widget.network.tokenIcons[i.symbol],
                             ))
                         .toList(),
-              ),
-              Column(
-                children: extraTokens == null || extraTokens.length == 0
-                    ? [Container()]
-                    : extraTokens.map((ExtraTokenData i) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 16),
-                              child: BorderedTitle(
-                                title: i.title,
-                              ),
+                  )),
+              Visibility(
+                  visible: extraTokens != null && extraTokens.length > 0,
+                  child: Column(
+                    children: (extraTokens ?? []).map((ExtraTokenData i) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: BorderedTitle(
+                              title: i.title,
                             ),
-                            Column(
-                              children: i.tokens
-                                  .map((e) => TokenItem(
-                                        e,
-                                        decimals,
-                                        detailPageRoute: e.detailPageRoute,
-                                        icon:
-                                            widget.network.tokenIcons[e.symbol],
-                                      ))
-                                  .toList(),
-                            )
-                          ],
-                        );
-                      }).toList(),
-              ),
+                          ),
+                          Column(
+                            children: i.tokens
+                                .map((e) => TokenItem(
+                                      e,
+                                      decimals,
+                                      detailPageRoute: e.detailPageRoute,
+                                      icon: widget.network.tokenIcons[e.symbol],
+                                    ))
+                                .toList(),
+                          )
+                        ],
+                      );
+                    }).toList(),
+                  )),
             ],
           ),
         );

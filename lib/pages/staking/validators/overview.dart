@@ -444,7 +444,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
   @override
   Widget build(BuildContext context) {
     final dicStaking =
-        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking') ?? {};
     return GetBuilder(
         init: widget.plugin.store?.accounts,
         builder: (_) {
@@ -452,17 +452,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
             init: widget.plugin.store?.staking,
             builder: (_) {
               final int decimals = widget.plugin.networkState.tokenDecimals![0];
-              final List<Tab> _listTabs = <Tab>[
-                Tab(
-                  text:
-                      '${dicStaking!['elected']} (${widget.plugin.store!.staking.electedInfo.length})',
-                ),
-                Tab(
-                  text:
-                      '${dicStaking['waiting']} (${widget.plugin.store!.staking.nextUpsInfo.length})',
-                ),
-              ];
-              List list = [
+              final List list = [
                 // index_0: the overview card
                 _buildTopCard(context),
                 // index_1: the 'Validators' label
@@ -525,37 +515,37 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                 }
                 list.add(Container(
                   color: Theme.of(context).cardColor,
-                  child: recommended.length > 0
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextTag(
-                              dicStaking['recommend'],
-                              color: Colors.green,
-                              fontSize: 12,
-                              margin: EdgeInsets.only(left: 16, top: 8),
-                            ),
-                            Column(
-                              children: recommended.map((acc) {
-                                Map? accInfo = widget.plugin.store!.accounts
-                                    .addressIndexMap[acc.accountId];
-                                final icon = widget.plugin.store!.accounts
-                                    .addressIconsMap[acc.accountId];
-                                return Validator(
-                                  acc,
-                                  accInfo,
-                                  icon,
-                                  decimals,
-                                  widget.plugin.store!.staking
-                                          .nominationsMap![acc.accountId] ??
-                                      [],
-                                );
-                              }).toList(),
-                            ),
-                            Divider()
-                          ],
-                        )
-                      : Container(),
+                  child: Visibility(
+                      visible: recommended.length > 0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextTag(
+                            dicStaking['recommend'],
+                            color: Colors.green,
+                            fontSize: 12,
+                            margin: EdgeInsets.only(left: 16, top: 8),
+                          ),
+                          Column(
+                            children: recommended.map((acc) {
+                              Map? accInfo = widget.plugin.store!.accounts
+                                  .addressIndexMap[acc.accountId];
+                              final icon = widget.plugin.store!.accounts
+                                  .addressIconsMap[acc.accountId];
+                              return Validator(
+                                acc,
+                                accInfo,
+                                icon,
+                                decimals,
+                                widget.plugin.store!.staking
+                                        .nominationsMap![acc.accountId] ??
+                                    [],
+                              );
+                            }).toList(),
+                          ),
+                          Divider()
+                        ],
+                      )),
                 ));
                 // add validators
                 List<ValidatorData> ls = _tab == 0

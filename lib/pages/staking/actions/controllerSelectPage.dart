@@ -89,12 +89,12 @@ class ControllerSelectPage extends StatelessWidget {
                                       ],
                                     ),
                             ),
-                            unavailable == null
-                                ? Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 18,
-                                  )
-                                : Container()
+                            Visibility(
+                                visible: unavailable == null,
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 18,
+                                ))
                           ],
                         ),
                       ),

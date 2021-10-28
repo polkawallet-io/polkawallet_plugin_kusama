@@ -200,15 +200,16 @@ class _PayoutPageState extends State<PayoutPage> {
                       label: dicStaking['reward.sender'],
                     ),
                   ),
-                  _eraOptions.length > 0
-                      ? ListTile(
-                          title: Text(dicStaking['reward.time']!),
-                          subtitle:
-                              Text(_getEraText(_eraOptions[_eraSelected])),
-                          trailing: Icon(Icons.arrow_forward_ios, size: 18),
-                          onTap: _loading ? null : () => _showEraSelect(),
-                        )
-                      : Container(),
+                  Visibility(
+                      visible: _eraOptions.length > 0,
+                      child: ListTile(
+                        title: Text(dicStaking['reward.time']!),
+                        subtitle: _eraOptions.length > 0
+                            ? Text(_getEraText(_eraOptions[_eraSelected]))
+                            : null,
+                        trailing: Icon(Icons.arrow_forward_ios, size: 18),
+                        onTap: _loading ? null : () => _showEraSelect(),
+                      )),
                   _loading
                       ? Column(
                           children: <Widget>[
@@ -241,16 +242,16 @@ class _PayoutPageState extends State<PayoutPage> {
             ),
             Padding(
               padding: EdgeInsets.all(16),
-              child: _rewards != null && _rewards!['available'] != null
-                  ? TxButton(
-                      getTxParams: _getParams,
-                      onFinish: (Map? res) {
-                        if (res != null) {
-                          Navigator.of(context).pop(res);
-                        }
-                      },
-                    )
-                  : Container(),
+              child: Visibility(
+                  visible: _rewards != null && _rewards!['available'] != null,
+                  child: TxButton(
+                    getTxParams: _getParams,
+                    onFinish: (Map? res) {
+                      if (res != null) {
+                        Navigator.of(context).pop(res);
+                      }
+                    },
+                  )),
             ),
           ],
         ),

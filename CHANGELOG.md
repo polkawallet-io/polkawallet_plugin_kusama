@@ -1,3 +1,8 @@
+## [0.3.5] - 20211026.
+
+* bump polkawallet_sdk: 0.3.6.
+* hide material loading indicator on entry staking page.
+
 ## [0.3.4] - 20211019.
 
 * bump polkawallet_sdk: 0.3.5.

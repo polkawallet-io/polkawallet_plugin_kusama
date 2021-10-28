@@ -65,17 +65,17 @@ class Validator extends StatelessWidget {
                 ],
               ),
             ),
-            !isWaiting
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(dic['reward']!),
-                      Text(validator.isActive!
-                          ? '${validator.stakedReturnCmp.toStringAsFixed(2)}%'
-                          : '~'),
-                    ],
-                  )
-                : Container()
+            Visibility(
+                visible: !isWaiting,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(dic['reward']!),
+                    Text(validator.isActive!
+                        ? '${validator.stakedReturnCmp.toStringAsFixed(2)}%'
+                        : '~'),
+                  ],
+                ))
           ],
         ),
       ),
