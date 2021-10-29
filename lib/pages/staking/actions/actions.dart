@@ -829,7 +829,7 @@ class StakingActionsPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
-    num actionButtonWidth = (MediaQuery.of(context).size.width - 64) / 3;
+    // num actionButtonWidth = (MediaQuery.of(context).size.width - 64) / 3;
     Color actionButtonColor = Theme.of(context).primaryColor;
     Color disabledColor = Theme.of(context).unselectedWidgetColor;
 
@@ -865,7 +865,7 @@ class StakingActionsPanel extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Container(
-            width: actionButtonWidth as double?,
+            width: double.infinity,
             child: GestureDetector(
               child: Column(
                 children: <Widget>[
@@ -875,6 +875,7 @@ class StakingActionsPanel extends StatelessWidget {
                   ),
                   Text(
                     bondButtonString!,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: actionButtonColor,
                       fontSize: 11,
@@ -966,7 +967,7 @@ class StakingActionsPanel extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            width: actionButtonWidth as double?,
+            width: double.infinity,
             child: GestureDetector(
               child: Column(
                 children: <Widget>[
@@ -976,6 +977,7 @@ class StakingActionsPanel extends StatelessWidget {
                   ),
                   Text(
                     dic['action.reward']!,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color: setPayeeDisabled
                             ? disabledColor
@@ -990,7 +992,7 @@ class StakingActionsPanel extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            width: actionButtonWidth as double?,
+            width: double.infinity,
             child: GestureDetector(
               child: Column(
                 children: <Widget>[
@@ -1002,6 +1004,7 @@ class StakingActionsPanel extends StatelessWidget {
                   ),
                   Text(
                     dic['action.control']!,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color: setControllerDisabled
                             ? disabledColor
