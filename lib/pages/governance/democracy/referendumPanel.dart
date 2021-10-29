@@ -87,7 +87,7 @@ class ReferendumPanel extends StatelessWidget {
           visible: data!.detail!['content'].toString().isNotEmpty,
           child: Container(
             padding: EdgeInsets.only(top: 16),
-            child: Text(data!.detail!['content'].toString().trim()),
+            child: Text((data!.detail!['content'] ?? "").toString().trim()),
           ))
     ];
     if (data!.detail!['params'] != null && data!.detail!['params'].length > 0) {
