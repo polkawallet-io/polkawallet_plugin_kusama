@@ -19,8 +19,8 @@ class GovExternalLinks extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   JumpToBrowserLink(
-                    links![0]['link'],
-                    text: links![0]['name'],
+                    links!.length > 0 ? links![0]['link'] : "",
+                    text: links!.length > 0 ? links![0]['name'] : "",
                   ),
                   links!.length > 1
                       ? JumpToBrowserLink(
@@ -39,8 +39,8 @@ class GovExternalLinks extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   JumpToBrowserLink(
-                    links![2]['link'],
-                    text: links![2]['name'],
+                    links!.length > 2 ? links![2]['link'] : "",
+                    text: links!.length > 3 ? links![2]['name'] : "",
                   ),
                   links!.length > 3
                       ? JumpToBrowserLink(
