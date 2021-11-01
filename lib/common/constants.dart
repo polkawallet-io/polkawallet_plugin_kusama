@@ -7,7 +7,7 @@ const node_list_kusama = [
   {
     'name': 'Kusama (Polkadot Canary, hosted by PatractLabs)',
     'ss58': 2,
-    'endpoint': 'wss://kusama.elara.patract.io',
+    'endpoint': 'wss://pub.elara.patract.io/kusama',
   },
   {
     'name': 'Kusama (Polkadot Canary, hosted by Parity)',
@@ -34,7 +34,7 @@ const node_list_polkadot = [
   {
     'name': 'Polkadot (Live, hosted by PatractLabs)',
     'ss58': 0,
-    'endpoint': 'wss://polkadot.elara.patract.io',
+    'endpoint': 'wss://pub.elara.patract.io/polkadot',
   },
   {
     'name': 'Polkadot (Live, hosted by Parity)',

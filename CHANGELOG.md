@@ -1,3 +1,8 @@
+## [0.3.6] - 20211101.
+
+* bump polkawallet_sdk: 0.3.7.
+* use Visibility widget.
+
 ## [0.3.5] - 20211026.
 
 * bump polkawallet_sdk: 0.3.6.

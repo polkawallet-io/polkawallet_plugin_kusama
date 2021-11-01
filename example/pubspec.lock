@@ -400,14 +400,14 @@ packages:
       name: polkawallet_sdk
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.6"
+    version: "0.3.7"
   polkawallet_ui:
     dependency: "direct main"
     description:
       name: polkawallet_ui
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.5"
+    version: "0.3.6"
   process:
     dependency: transitive
     description:
