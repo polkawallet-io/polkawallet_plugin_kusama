@@ -40,7 +40,7 @@ class GovExternalLinks extends StatelessWidget {
                 children: <Widget>[
                   JumpToBrowserLink(
                     links!.length > 2 ? links![2]['link'] : "",
-                    text: links!.length > 3 ? links![2]['name'] : "",
+                    text: links!.length > 2 ? links![2]['name'] : "",
                   ),
                   links!.length > 3
                       ? JumpToBrowserLink(

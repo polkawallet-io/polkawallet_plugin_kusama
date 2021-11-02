@@ -1,6 +1,7 @@
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
 import 'package:polkawallet_sdk/api/api.dart';
+import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryOverviewData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 
@@ -48,7 +49,7 @@ class ApiGov {
     return res;
   }
 
-  Future<List> queryReferendums() async {
+  Future<List<ReferendumInfo>> queryReferendums() async {
     final data = await api.gov.queryReferendums(keyring.current.address!);
     store!.gov.setReferendums(data);
     return data;

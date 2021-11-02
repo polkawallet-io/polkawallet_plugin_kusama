@@ -62,7 +62,10 @@ class _DemocracyState extends State<Democracy> {
       return;
     }
     widget.plugin.service.gov.getReferendumVoteConvictions();
-    await widget.plugin.service.gov.queryReferendums();
+    final ls = await widget.plugin.service.gov.queryReferendums();
+    ls.forEach((e) {
+      _getExternalLinks(e.index);
+    });
 
     _queryDemocracyUnlocks();
   }
@@ -184,14 +187,10 @@ class _DemocracyState extends State<Democracy> {
                               .toString())
                           .toInt(),
                       onCancelVote: _submitCancelVote,
-                      links: FutureBuilder(
-                        future: _getExternalLinks(list[i - 1].index),
-                        builder: (_, AsyncSnapshot snapshot) {
-                          if (snapshot.hasData) {
-                            return GovExternalLinks(snapshot.data);
-                          }
-                          return Container();
-                        },
+                      links: Visibility(
+                        visible: _links[list[i - 1].index] != null,
+                        child:
+                            GovExternalLinks(_links[list[i - 1].index] ?? []),
                       ),
                       onRefresh: () {
                         _refreshKey.currentState!.show();
