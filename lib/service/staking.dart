@@ -94,7 +94,7 @@ class ApiStaking {
     final dynamic res = await api.staking.queryElectedInfo();
     store!.staking.setValidatorsInfo(res);
 
-    queryNominations();
+    queryNominationsCount();
 
     List validatorAddressList = res['validatorIds'];
     validatorAddressList.addAll(res['waitingIds']);
@@ -105,6 +105,12 @@ class ApiStaking {
     // fetch nominators for all validators
     final res = await api.staking.queryNominations();
     store!.staking.setNominations(res);
+  }
+
+  Future<void> queryNominationsCount() async {
+    // fetch nominators for all validators
+    final res = await api.staking.queryNominationsCount();
+    store!.staking.setNominationsCount(res);
   }
 
   Future<Map?> queryValidatorRewards(String accountId) async {

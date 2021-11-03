@@ -15,7 +15,7 @@ class Validator extends StatelessWidget {
     this.accInfo,
     this.icon,
     this.decimals,
-    this.nominations,
+    this.nominationsCount,
   ) : isWaiting = validator.total == BigInt.zero;
 
   final ValidatorData validator;
@@ -23,7 +23,7 @@ class Validator extends StatelessWidget {
   final String? icon;
   final int decimals;
   final bool isWaiting;
-  final List nominations;
+  final int nominationsCount;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class Validator extends StatelessWidget {
                     !isWaiting
                         // ignore: unnecessary_null_comparison
                         ? '${dic['total']}: ${validator.total != null ? Fmt.token(validator.total, decimals) : '~'}'
-                        : '${dic['nominators']}: ${nominations.length}',
+                        : '${dic['nominators']}: $nominationsCount',
                     style: TextStyle(
                       color: Theme.of(context).unselectedWidgetColor,
                       fontSize: 12,
@@ -80,13 +80,11 @@ class Validator extends StatelessWidget {
           ],
         ),
       ),
-      onTap: validator.isActive!
-          ? () {
-              // webApi.staking.queryValidatorRewards(validator.accountId);
-              Navigator.of(context)
-                  .pushNamed(ValidatorDetailPage.route, arguments: validator);
-            }
-          : null,
+      onTap: () {
+        // webApi.staking.queryValidatorRewards(validator.accountId);
+        Navigator.of(context)
+            .pushNamed(ValidatorDetailPage.route, arguments: validator);
+      },
     );
   }
 }

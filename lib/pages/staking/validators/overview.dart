@@ -534,8 +534,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                           icon,
                           decimals,
                           widget.plugin.store.staking
-                                  .nominationsMap![acc.accountId] ??
-                              [],
+                                  .nominationsCount![acc.accountId] ??
+                              0,
                         );
                       }).toList(),
                     ),
@@ -554,12 +554,12 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
           ls.sort((a, b) => a.rankReward! < b.rankReward! ? 1 : -1);
           if (_tab == 1) {
             ls.sort((a, b) {
-              final aLength = widget.plugin.store.staking
-                      .nominationsMap![a.accountId]?.length ??
-                  0;
-              final bLength = widget.plugin.store.staking
-                      .nominationsMap![b.accountId]?.length ??
-                  0;
+              final aLength =
+                  widget.plugin.store.staking.nominationsCount![a.accountId] ??
+                      0;
+              final bLength =
+                  widget.plugin.store.staking.nominationsCount![b.accountId] ??
+                      0;
               return 0 - aLength.compareTo(bLength) as int;
             });
           }
@@ -590,8 +590,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                 accInfo,
                 icon,
                 decimals,
-                widget.plugin.store.staking.nominationsMap![acc.accountId] ??
-                    [],
+                widget.plugin.store.staking.nominationsCount![acc.accountId] ??
+                    0,
               );
             },
           ),

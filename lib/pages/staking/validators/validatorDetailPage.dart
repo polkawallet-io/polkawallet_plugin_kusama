@@ -37,6 +37,9 @@ class ValidatorDetailPage extends StatelessWidget {
           final accIcon =
               plugin.store.accounts.addressIconsMap[detail.accountId];
 
+          final int nominatorsCount =
+              detail.isElected! ? detail.nominators.length : 0;
+
           final primaryColor = Theme.of(context).primaryColor;
 
           return Scaffold(
@@ -46,12 +49,7 @@ class ValidatorDetailPage extends StatelessWidget {
             ),
             body: SafeArea(
               child: ListView.builder(
-                itemCount: 2 +
-                    (detail.isElected!
-                        ? detail.nominators.length
-                        : plugin.store.staking.nominationsMap![detail.accountId]
-                                ?.length ??
-                            0) as int?,
+                itemCount: 2 + nominatorsCount,
                 itemBuilder: (_, i) {
                   if (i == 0) {
                     return RoundedCard(
@@ -146,10 +144,11 @@ class ValidatorDetailPage extends StatelessWidget {
                     );
                   }
                   if (i == 1) {
+                    if (nominatorsCount == 0) return Container();
+
                     final addresses = detail.isElected!
                         ? detail.nominators.map((e) => e['who']).toList()
-                        : plugin
-                            .store.staking.nominationsMap![detail.accountId];
+                        : [];
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -178,16 +177,8 @@ class ValidatorDetailPage extends StatelessWidget {
                       trailing: Text(
                           '${Fmt.balance(item['value'].toString(), plugin.networkState.tokenDecimals![0])} ${plugin.networkState.tokenSymbol![0]}'),
                     );
-                  } else {
-                    final address = plugin
-                        .store.staking.nominationsMap![detail.accountId][i - 2];
-                    return ListTile(
-                      leading: AddressIcon(address,
-                          svg: plugin.store.accounts.addressIconsMap[address]),
-                      title: UI.accountDisplayName(address,
-                          plugin.store.accounts.addressIndexMap[address]),
-                    );
                   }
+                  return Container();
                 },
               ),
             ),

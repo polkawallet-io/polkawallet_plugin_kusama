@@ -56,10 +56,10 @@ class _NominateFormState extends State<NominateForm> {
     final accIcon =
         widget.plugin.store.accounts.addressIconsMap[validator.accountId];
     final bool isWaiting = validator.total == BigInt.zero;
-    final nominations = !isWaiting
-        ? validator.nominators
-        : widget.plugin.store.staking.nominationsMap![validator.accountId] ??
-            [];
+    final nominationsCount = !isWaiting
+        ? validator.nominators.length
+        : widget.plugin.store.staking.nominationsCount![validator.accountId] ??
+            0;
 
     final textStyle = TextStyle(
       color: Theme.of(context).unselectedWidgetColor,
@@ -91,7 +91,7 @@ class _NominateFormState extends State<NominateForm> {
                   Row(
                     children: [
                       Text(
-                        '${dicStaking['nominators']}: ${nominations.length}',
+                        '${dicStaking['nominators']}: $nominationsCount',
                         style: textStyle,
                       ),
                     ],

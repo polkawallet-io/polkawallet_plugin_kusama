@@ -99,6 +99,21 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
+  final _$nominationsCountAtom = Atom(name: '_StakingStore.nominationsCount');
+
+  @override
+  Map<dynamic, dynamic>? get nominationsCount {
+    _$nominationsCountAtom.reportRead();
+    return super.nominationsCount;
+  }
+
+  @override
+  set nominationsCount(Map<dynamic, dynamic>? value) {
+    _$nominationsCountAtom.reportWrite(value, super.nominationsCount, () {
+      super.nominationsCount = value;
+    });
+  }
+
   final _$ownStashInfoAtom = Atom(name: '_StakingStore.ownStashInfo');
 
   @override
@@ -285,6 +300,17 @@ mixin _$StakingStore on _StakingStore, Store {
   }
 
   @override
+  void setNominationsCount(Map<dynamic, dynamic>? data) {
+    final _$actionInfo = _$_StakingStoreActionController.startAction(
+        name: '_StakingStore.setNominationsCount');
+    try {
+      return super.setNominationsCount(data);
+    } finally {
+      _$_StakingStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setOwnStashInfo(String? pubKey, Map<dynamic, dynamic> data,
       {bool shouldCache = true}) {
     final _$actionInfo = _$_StakingStoreActionController.startAction(
@@ -326,6 +352,7 @@ electedInfo: ${electedInfo},
 nextUpsInfo: ${nextUpsInfo},
 overview: ${overview},
 nominationsMap: ${nominationsMap},
+setNominationsCount: ${setNominationsCount},
 ownStashInfo: ${ownStashInfo},
 accountBondedMap: ${accountBondedMap},
 txsLoading: ${txsLoading},

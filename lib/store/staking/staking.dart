@@ -33,6 +33,9 @@ abstract class _StakingStore with Store {
   Map? nominationsMap = Map();
 
   @observable
+  Map? nominationsCount = Map();
+
+  @observable
   OwnStashInfoData? ownStashInfo;
 
   @observable
@@ -130,6 +133,11 @@ abstract class _StakingStore with Store {
   @action
   void setNominations(Map? data) {
     nominationsMap = data;
+  }
+
+  @action
+  void setNominationsCount(Map? data) {
+    nominationsCount = data;
   }
 
   @action
