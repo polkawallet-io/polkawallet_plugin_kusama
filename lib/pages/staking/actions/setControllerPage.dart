@@ -40,6 +40,8 @@ class _SetControllerPageState extends State<SetControllerPage> {
       setState(() {
         _controller = acc;
       });
+
+      widget.plugin.service.staking.queryAccountBondedInfo();
     });
   }
 

@@ -411,7 +411,6 @@ class _StakingActions extends State<StakingActions> {
       } else {
         _updateStakingInfo();
       }
-      widget.plugin.service.staking.queryAccountBondedInfo();
     });
   }
 

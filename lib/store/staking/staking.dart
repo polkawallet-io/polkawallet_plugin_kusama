@@ -244,6 +244,9 @@ abstract class _StakingStore with Store {
       );
     }
 
+    // reset bondedMap
+    accountBondedMap = {};
+
     loadAccountCache(pubKey);
   }
 

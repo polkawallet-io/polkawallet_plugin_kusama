@@ -5,8 +5,10 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
+import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class PayoutPage extends StatefulWidget {
   PayoutPage(this.plugin, this.keyring);
@@ -181,6 +183,7 @@ class _PayoutPageState extends State<PayoutPage> {
         rewardTotal = Fmt.balanceInt('0x${_rewards!['available']}');
       }
     }
+    final List validators = _rewards?['validators'] ?? [];
     return Scaffold(
       appBar: AppBar(
         title: Text(dicStaking['action.payout']!),
@@ -237,6 +240,44 @@ class _PayoutPageState extends State<PayoutPage> {
                             readOnly: true,
                           ),
                         ),
+                  Visibility(
+                      visible: validators.length > 0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 16, top: 16),
+                            child: Text(
+                              dicStaking['validators']!,
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).unselectedWidgetColor),
+                            ),
+                          ),
+                          ...validators.map((e) {
+                            return ListTile(
+                              dense: true,
+                              leading: AddressIcon(
+                                e['validatorId'],
+                                svg: widget.plugin.store.accounts
+                                    .addressIconsMap[e['validatorId']],
+                                size: 32,
+                              ),
+                              title: UI.accountDisplayName(
+                                  e['validatorId'],
+                                  widget.plugin.store.accounts
+                                      .addressIndexMap[e['validatorId']]),
+                              subtitle: Text('eras: ' +
+                                  List.of(e['eras'])
+                                      .map((e) =>
+                                          int.tryParse(e['era'].toString()))
+                                      .join(', ')),
+                              trailing:
+                                  Text(Fmt.balance(e['available'], decimals)),
+                            );
+                          }).toList()
+                        ],
+                      ))
                 ],
               ),
             ),

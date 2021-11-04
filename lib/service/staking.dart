@@ -156,8 +156,11 @@ class ApiStaking {
   }
 
   Future<void> queryAccountBondedInfo() async {
-    final data = await api.staking.queryBonded(
-        keyring.allAccounts.map((e) => e.pubKey).toList() as List<String>);
-    store!.staking.setAccountBondedMap(data);
+    final List<String> accounts =
+        keyring.allAccounts.map((e) => e.pubKey!).toList();
+    if (accounts.length > store!.staking.accountBondedMap.keys.length) {
+      final data = await api.staking.queryBonded(accounts);
+      store!.staking.setAccountBondedMap(data);
+    }
   }
 }
