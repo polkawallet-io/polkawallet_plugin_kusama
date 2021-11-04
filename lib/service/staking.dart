@@ -143,14 +143,15 @@ class ApiStaking {
       addressesNeedDecode.add(store!.staking.ownStashInfo!.controllerId);
     }
 
-    final dynamic icons = await api.account.getAddressIcons(addressesNeedIcons);
-    store!.accounts.setAddressIconsMap(icons);
-
-    // get stash&controller's pubKey
-    final pubKeys =
-        await api.account.decodeAddress(addressesNeedDecode as List<String>);
-    store!.accounts.setPubKeyAddressMap(
-        Map<String, Map>.from({api.connectedNode!.ss58.toString(): pubKeys}));
+    final iconsAndPubKeys = await Future.wait([
+      api.account.getAddressIcons(addressesNeedIcons),
+      api.account.decodeAddress(addressesNeedDecode as List<String>)
+    ]);
+    if (iconsAndPubKeys[0] != null && iconsAndPubKeys[1] != null) {
+      store!.accounts.setAddressIconsMap(iconsAndPubKeys[0] as List);
+      store!.accounts.setPubKeyAddressMap(Map<String, Map>.from(
+          {api.connectedNode!.ss58.toString(): iconsAndPubKeys[1]}));
+    }
 
     return data;
   }

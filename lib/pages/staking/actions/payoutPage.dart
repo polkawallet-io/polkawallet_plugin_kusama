@@ -120,12 +120,13 @@ class _PayoutPageState extends State<PayoutPage> {
 
     List rewards = _rewards!['validators'];
     if (rewards.length == 1 && List.of(rewards[0]['eras']).length == 1) {
+      final era = int.tryParse(rewards[0]['eras'][0]['era']);
       return TxConfirmParams(
         txTitle: dicStaking!['action.payout'],
         module: 'staking',
         call: 'payoutStakers',
         txDisplay: {
-          'era': rewards[0]['eras'][0]['era'],
+          'era': era,
           'validator': rewards[0]['validatorId'],
           'amount': Fmt.token(
             BigInt.parse(rewards[0]['available'].toString()),
@@ -137,7 +138,7 @@ class _PayoutPageState extends State<PayoutPage> {
           // validatorId
           rewards[0]['validatorId'],
           // era
-          rewards[0]['eras'][0]['era'],
+          era.toString(),
         ],
       );
     }
@@ -146,8 +147,8 @@ class _PayoutPageState extends State<PayoutPage> {
     rewards.forEach((i) {
       String? validatorId = i['validatorId'];
       List.of(i['eras']).forEach((era) {
-        params
-            .add('api.tx.staking.payoutStakers("$validatorId", ${era['era']})');
+        params.add(
+            'api.tx.staking.payoutStakers("$validatorId", "${int.tryParse(era['era'])}")');
       });
     });
     final total = Fmt.balanceInt('0x${_rewards!['available']}');
