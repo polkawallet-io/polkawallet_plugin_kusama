@@ -678,17 +678,17 @@ class StakingInfoPanel extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
               ),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(dic['bond.unlocking']!,
-                        style: TextStyle(fontSize: 12)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Visibility(
-                            visible: unlocking! > BigInt.zero,
-                            child: GestureDetector(
+                child: GestureDetector(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(dic['bond.unlocking']!,
+                          style: TextStyle(fontSize: 12)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Visibility(
+                              visible: unlocking! > BigInt.zero,
                               child: Padding(
                                 padding: EdgeInsets.only(right: 2),
                                 child: Icon(
@@ -696,35 +696,38 @@ class StakingInfoPanel extends StatelessWidget {
                                   size: 16,
                                   color: actionButtonColor,
                                 ),
-                              ),
-                              onTap: () => _showUnlocking(context),
-                            )),
-                        Text(
-                          Fmt.priceFloorBigInt(unlocking!, decimals!,
-                              lengthMax: 4),
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).unselectedWidgetColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
+                              )),
+                          Text(
+                            Fmt.priceFloorBigInt(unlocking!, decimals!,
+                                lengthMax: 4),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).unselectedWidgetColor,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  onTap: unlocking! > BigInt.zero
+                      ? () => _showUnlocking(context)
+                      : null,
                 ),
               ),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(dic['bond.redeemable']!,
-                        style: TextStyle(fontSize: 12)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Visibility(
-                            visible: isController! && redeemable! > BigInt.zero,
-                            child: GestureDetector(
+                child: GestureDetector(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(dic['bond.redeemable']!,
+                          style: TextStyle(fontSize: 12)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Visibility(
+                              visible:
+                                  isController! && redeemable! > BigInt.zero,
                               child: Container(
                                 padding: EdgeInsets.only(left: 4),
                                 child: Icon(
@@ -732,27 +735,29 @@ class StakingInfoPanel extends StatelessWidget {
                                   size: 16,
                                   color: actionButtonColor,
                                 ),
-                              ),
-                              onTap: () {
-                                onAction!(() => Navigator.of(context)
-                                    .pushNamed(RedeemPage.route));
-                              },
-                            )),
-                        Text(
-                          Fmt.priceFloorBigInt(
-                            redeemable!,
-                            decimals!,
-                            lengthMax: 4,
+                              )),
+                          Text(
+                            Fmt.priceFloorBigInt(
+                              redeemable!,
+                              decimals!,
+                              lengthMax: 4,
+                            ),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).unselectedWidgetColor,
+                            ),
                           ),
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).unselectedWidgetColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
+                  onTap: isController! && redeemable! > BigInt.zero
+                      ? () {
+                          onAction!(() => Navigator.of(context)
+                              .pushNamed(RedeemPage.route));
+                        }
+                      : null,
                 ),
               ),
             ],
@@ -774,12 +779,12 @@ class StakingInfoPanel extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
               ),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(dic['payout']!, style: TextStyle(fontSize: 12)),
-                    GestureDetector(
-                      child: Container(
+                child: GestureDetector(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(dic['payout']!, style: TextStyle(fontSize: 12)),
+                      Container(
                         padding: EdgeInsets.all(1),
                         child: Icon(
                           Icons.card_giftcard,
@@ -787,14 +792,14 @@ class StakingInfoPanel extends StatelessWidget {
                           color: actionButtonColor,
                         ),
                       ),
-                      onTap: () {
-                        if (!networkLoading!) {
-                          onAction!(() => Navigator.of(context)
-                              .pushNamed(PayoutPage.route));
-                        }
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
+                  onTap: () {
+                    if (!networkLoading!) {
+                      onAction!(() =>
+                          Navigator.of(context).pushNamed(PayoutPage.route));
+                    }
+                  },
                 ),
               ),
             ],
