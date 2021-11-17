@@ -7,7 +7,6 @@ const Map<String, String> enCommon = {
   'list.end': 'No More Data',
   'amount': 'Amount',
   'amount.available': 'Available',
-  'amount.error': 'Invalid amount',
   'amount.low': 'Insufficient balance',
   'input.invalid': 'Invalid input',
   'balance': 'Balance',
