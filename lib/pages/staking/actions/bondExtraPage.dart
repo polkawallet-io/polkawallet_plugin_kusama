@@ -26,7 +26,8 @@ class _BondExtraPageState extends State<BondExtraPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
-    final dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     final decimals = widget.plugin.networkState.tokenDecimals![0];
 
@@ -76,8 +77,9 @@ class _BondExtraPageState extends State<BondExtraPage> {
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
                         validator: (v) {
-                          if (v!.isEmpty) {
-                            return dic['amount.error'];
+                          final error = Fmt.validatePrice(v!, context);
+                          if (error != null) {
+                            return error;
                           }
                           if (double.parse(v.trim()) >=
                               Fmt.bigIntToDouble(available, decimals)) {

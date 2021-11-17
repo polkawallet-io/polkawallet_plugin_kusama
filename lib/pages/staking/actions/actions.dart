@@ -23,6 +23,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/MainTabBar.dart';
+import 'package:polkawallet_ui/components/TransferIcon.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
@@ -203,8 +204,8 @@ class _StakingActions extends State<StakingActions> {
           leading: Container(
             width: 32,
             padding: EdgeInsets.only(top: 4),
-            child: SvgPicture.asset(
-                'packages/polkawallet_plugin_kusama/assets/images/staking/${isReward ? 'reward' : 'slash'}.svg'),
+            child: TransferIcon(
+                type: isReward ? TransferIconType.earn : TransferIconType.fine),
           ),
           title: Text(i.eventId!),
           subtitle: Text(Fmt.dateTime(

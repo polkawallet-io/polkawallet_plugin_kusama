@@ -158,8 +158,9 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                             keyboardType:
                                 TextInputType.numberWithOptions(decimal: true),
                             validator: (v) {
-                              if (v!.isEmpty) {
-                                return dic['amount.error'];
+                              final error = Fmt.validatePrice(v!, context);
+                              if (error != null) {
+                                return error;
                               }
                               if (double.parse(v.trim()) >=
                                   available / BigInt.from(pow(10, decimals))) {

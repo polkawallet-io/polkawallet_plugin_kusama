@@ -7,7 +7,6 @@ const Map<String, String> zhCommon = {
   'list.end': '加载完成',
   'amount': '数量',
   'amount.available': '可用',
-  'amount.error': '数量无效',
   'amount.low': '余额不足',
   'input.invalid': '输入格式错误',
   'balance': '余额',

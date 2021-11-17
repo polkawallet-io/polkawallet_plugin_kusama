@@ -126,10 +126,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true),
                               validator: (v) {
-                                if (v!.isEmpty) {
-                                  return dicCommon['amount.error'];
-                                }
-                                return null;
+                                return Fmt.validatePrice(v!, context);
                               },
                             ),
                             TextFormField(
