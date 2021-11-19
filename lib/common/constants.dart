@@ -19,6 +19,11 @@ const node_list_kusama = [
     'ss58': 2,
     'endpoint': 'wss://kusama.api.onfinality.io/public-ws',
   },
+  {
+    'name': 'Kusama (Polkadot Canary, hosted by geometry)',
+    'ss58': 2,
+    'endpoint': 'wss://kusama.geometry.io/websockets',
+  },
   // {
   //   'name': 'Kusama (cross chain 9110 dev)',
   //   'ss58': 42,

@@ -17,12 +17,19 @@ class Motions extends StatefulWidget {
 }
 
 class _MotionsState extends State<Motions> {
+  bool isLoading = false;
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       new GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetchData() async {
+    setState(() {
+      isLoading = true;
+    });
     widget.plugin.service.gov.updateBestNumber();
     await widget.plugin.service.gov.queryCouncilMotions();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -43,7 +50,11 @@ class _MotionsState extends State<Motions> {
           key: _refreshKey,
           child: widget.plugin.store.gov.councilMotions.length == 0
               ? Center(
-                  child: ListTail(isEmpty: true, isLoading: false),
+                  child: ListTail(
+                    isEmpty: true,
+                    isLoading: isLoading,
+                    isShowLoadText: true,
+                  ),
                 )
               : ListView.builder(
                   itemCount: widget.plugin.store.gov.councilMotions.length + 1,

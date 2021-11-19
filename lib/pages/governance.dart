@@ -7,6 +7,7 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/SkaletonList.dart';
 import 'package:polkawallet_ui/components/entryPageCard.dart';
 import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
 
@@ -18,7 +19,6 @@ class Gov extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov');
-    final dicCommon = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -44,15 +44,8 @@ class Gov extends StatelessWidget {
             ),
             Expanded(
               child: plugin.sdk.api.connectedNode == null
-                  ? Container(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.width / 2),
-                      child: Column(
-                        children: [
-                          CupertinoActivityIndicator(),
-                          Text(dicCommon!['node.connecting']!),
-                        ],
-                      ),
+                  ? SkaletonList(
+                      items: 4,
                     )
                   : ListView(
                       padding: EdgeInsets.all(16),

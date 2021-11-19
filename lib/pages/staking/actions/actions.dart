@@ -130,8 +130,7 @@ class _StakingActions extends State<StakingActions> {
             child: i.success!
                 ? SvgPicture.asset(
                     'packages/polkawallet_plugin_kusama/assets/images/staking/ok.svg')
-                : SvgPicture.asset(
-                    'packages/polkawallet_plugin_kusama/assets/images/staking/error.svg'),
+                : TransferIcon(type: TransferIconType.failure),
           ),
           title: Text(i.call!),
           subtitle: Text(Fmt.dateTime(

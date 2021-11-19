@@ -354,13 +354,15 @@ class _TipDetailPageState extends State<TipDetailPage> {
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          Fmt.blockToTime(
-                                            (closeBlock! -
-                                                    widget.plugin.store.gov
-                                                        .bestNumber)
-                                                .toInt(),
-                                            blockTime,
-                                          ),
+                                          closeBlock != null
+                                              ? Fmt.blockToTime(
+                                                  (closeBlock -
+                                                          widget.plugin.store
+                                                              .gov.bestNumber)
+                                                      .toInt(),
+                                                  blockTime,
+                                                )
+                                              : "",
                                         ),
                                         Text('#$closeBlock')
                                       ],
