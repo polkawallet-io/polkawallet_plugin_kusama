@@ -77,4 +77,8 @@ const Map<String, String> enGov = {
   'day': 'days',
   'detail': 'Details',
   'polkassembly': 'Discussion platform for polkadot governance',
+  'democracy.referendum.number': 'Voted',
+  'democracy.referendum.balance': 'Voting balance',
+  'democracy.referendum.period': 'Lockup period',
+  'democracy.referendum.clear': 'clear',
 };
