@@ -1,4 +1,3 @@
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -47,26 +46,19 @@ class ValidatorChartsPage extends StatelessWidget {
                       .store.staking.rewardsChartDataCache[detail.accountId!];
 
                   List<ChartLineInfo> pointsChartLines = [
-                    ChartLineInfo('Era Points',
-                        charts.MaterialPalette.yellow.shadeDefault),
-                    ChartLineInfo(
-                        'Average', charts.MaterialPalette.gray.shadeDefault),
+                    ChartLineInfo('Era Points', Colors.yellow),
+                    ChartLineInfo('Average', Colors.grey),
                   ];
 
                   List<ChartLineInfo> rewardChartLines = [
-                    ChartLineInfo(
-                        'Slashes', charts.MaterialPalette.red.shadeDefault),
-                    ChartLineInfo(
-                        'Rewards', charts.MaterialPalette.blue.shadeDefault),
-                    ChartLineInfo(
-                        'Average', charts.MaterialPalette.gray.shadeDefault),
+                    ChartLineInfo('Slashes', Colors.red),
+                    ChartLineInfo('Rewards', Colors.blue),
+                    ChartLineInfo('Average', Colors.grey),
                   ];
 
                   List<ChartLineInfo> stakesChartLines = [
-                    ChartLineInfo('Elected Stake',
-                        charts.MaterialPalette.yellow.shadeDefault),
-                    ChartLineInfo(
-                        'Average', charts.MaterialPalette.gray.shadeDefault),
+                    ChartLineInfo('Elected Stake', Colors.yellow),
+                    ChartLineInfo('Average', Colors.grey),
                   ];
                   return ListView(
                     children: <Widget>[

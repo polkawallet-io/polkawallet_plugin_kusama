@@ -21,6 +21,7 @@ class ReferendumPanel extends StatelessWidget {
     this.blockDuration,
     this.links,
     this.onRefresh,
+    this.isLock,
   });
 
   final String? symbol;
@@ -31,6 +32,7 @@ class ReferendumPanel extends StatelessWidget {
   final int? blockDuration;
   final Widget? links;
   final Function? onRefresh;
+  final bool? isLock;
 
   @override
   Widget build(BuildContext context) {
@@ -69,20 +71,22 @@ class ReferendumPanel extends StatelessWidget {
       ),
       Visibility(
           visible: data!.isPassing!,
-          child: Row(
-            children: <Widget>[
-              Container(width: 21),
-              Expanded(
-                child: Text(
-                    '${dic['activate']} ${Fmt.blockToTime(activateLeft.toInt(), blockDuration!)}',
-                    style: TextStyle(color: Colors.pink)),
-              ),
-              Text(
-                '#${Fmt.priceFloorBigInt(bestNumber! + activateLeft, 0, lengthFixed: 0)}',
-                style: TextStyle(color: Colors.pink),
-              )
-            ],
-          )),
+          child: Container(
+              margin: EdgeInsets.only(top: 2),
+              child: Row(
+                children: <Widget>[
+                  Container(width: 21),
+                  Expanded(
+                    child: Text(
+                        '${dic['activate']} ${Fmt.blockToTime(activateLeft.toInt(), blockDuration!)}',
+                        style: TextStyle(color: Colors.pink)),
+                  ),
+                  Text(
+                    '#${Fmt.priceFloorBigInt(bestNumber! + activateLeft, 0, lengthFixed: 0)}',
+                    style: TextStyle(color: Colors.pink),
+                  )
+                ],
+              ))),
       Visibility(
           visible: data!.detail!['content'].toString().isNotEmpty,
           child: Container(
@@ -286,7 +290,7 @@ class ReferendumPanel extends StatelessWidget {
         onVote: (yes) async {
           final res = await Navigator.of(context).pushNamed(
               ReferendumVotePage.route,
-              arguments: {'referenda': data, 'voteYes': yes});
+              arguments: {'referenda': data, 'voteYes': yes, 'isLock': isLock});
           if (res != null) {
             onRefresh!();
           }

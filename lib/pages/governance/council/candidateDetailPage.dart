@@ -61,7 +61,8 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
 
             Map? voters;
             List voterList = [];
-            if (widget.plugin.store.gov.councilVotes != null) {
+            if (widget.plugin.store.gov.councilVotes != null &&
+                widget.plugin.store.gov.councilVotes!.length > 0) {
               voters = widget.plugin.store.gov.councilVotes![info[0]];
               voterList = voters!.keys.toList();
             }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -41,26 +42,46 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
           ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
       final ReferendumInfo info = args['referenda'];
       final bool? voteYes = args['voteYes'];
+      final bool? isLock = args['isLock'];
       final amt = _amountCtrl.text.trim();
       final vote = {
         'balance': (double.parse(amt) * pow(10, decimals)).toInt(),
         'vote': {'aye': voteYes, 'conviction': _voteConviction},
       };
-      return TxConfirmParams(
-          module: 'democracy',
-          call: 'vote',
+      if (isLock!) {
+        final txs = [
+          'api.tx.democracy.unlock("${widget.keyring.current.address}")'
+        ];
+        final standard = {"Standard": vote};
+        txs.add(
+            'api.tx.democracy.vote(${info.index!.toInt()},${jsonEncode(standard)})');
+        return TxConfirmParams(
           txTitle: govDic['vote.proposal'],
+          module: 'utility',
+          call: 'batch',
           txDisplay: {
-            "id": info.index!.toInt(),
-            "balance": amt,
-            "vote": vote['vote'],
+            "actions": ['democracy.unlock', 'democracy.vote'],
           },
-          params: [
-            // "id"
-            info.index!.toInt(),
-            // "options"
-            {"Standard": vote},
-          ]);
+          params: [],
+          rawParams: '[[${txs.join(',')}]]',
+        );
+      } else {
+        return TxConfirmParams(
+            module: 'democracy',
+            call: 'vote',
+            txTitle: govDic['vote.proposal'],
+            txDisplay: {
+              "id": info.index!.toInt(),
+              "balance": amt,
+              "vote": vote['vote'],
+            },
+            params: [
+              // "id"
+              info.index!.toInt(),
+              // "options"
+              {"Standard": vote},
+            ]);
+      }
     }
     return null;
   }

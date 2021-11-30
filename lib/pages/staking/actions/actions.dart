@@ -186,7 +186,8 @@ class _StakingActions extends State<StakingActions> {
                     .map((e) => TimeSeriesAmount(
                         DateTime.fromMillisecondsSinceEpoch(
                             e.blockTimestamp! * 1000),
-                        Fmt.balanceDouble(e.amount!, decimals)))
+                        Fmt.balanceDouble(e.amount!, decimals) *
+                            (e.eventId == 'Reward' ? 1.0 : -1.0)))
                     .toList()),
               )
             ],

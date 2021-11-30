@@ -74,4 +74,8 @@ const Map<String, String> zhGov = {
   'day': '天',
   'detail': '详情',
   'polkassembly': 'Polkadot 网络治理讨论平台',
+  'democracy.referendum.number': '公投编号',
+  'democracy.referendum.balance': '锁定数量',
+  'democracy.referendum.period': '锁定周期',
+  'democracy.referendum.clear': '取回',
 };

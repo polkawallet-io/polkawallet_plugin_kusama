@@ -125,14 +125,17 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
                         Visibility(
                             visible: hasProposal,
                             child: Text(
-                              '${proposal.image!.proposal!.section}.${proposal.image!.proposal!.method}',
+                              proposal.image?.proposal == null
+                                  ? ""
+                                  : '${proposal.image!.proposal!.section}.${proposal.image!.proposal!.method}',
                               style: Theme.of(context).textTheme.headline4,
                             )),
                         Visibility(
                             visible: hasProposal,
-                            child: Text(proposal
-                                .image!.proposal!.meta!.documentation!
-                                .trim())),
+                            child: Text(proposal.image?.proposal == null
+                                ? ""
+                                : proposal.image!.proposal!.meta!.documentation!
+                                    .trim())),
                         Visibility(
                             visible: hasProposal, child: Divider(height: 24)),
                         Padding(
