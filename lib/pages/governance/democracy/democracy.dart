@@ -168,7 +168,7 @@ class _DemocracyState extends State<Democracy> {
                 //     ));
               }
               bool isLock = false;
-              if (_locks.length > 0 && list.length > 0&&i < list.length + 1) {
+              if (_locks.length > 0 && list.length > 0 && i < list.length + 1) {
                 _locks.forEach((element) {
                   if (BigInt.parse(element['referendumId']) ==
                       list[i - 1].index) {
@@ -251,6 +251,7 @@ class _DemocracyState extends State<Democracy> {
         maxLockAmount = amount;
       }
     }
+    final redeemable = maxUnlockAmount - maxLockAmount;
     return RoundedCard(
       margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
       padding: EdgeInsets.all(16),
@@ -339,7 +340,7 @@ class _DemocracyState extends State<Democracy> {
             },
           ),
           Visibility(
-              visible: maxUnlockAmount - maxLockAmount > 0,
+              visible: redeemable > 0,
               child: Column(
                 children: [
                   Divider(),
@@ -347,7 +348,7 @@ class _DemocracyState extends State<Democracy> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                          '${dic['democracy.unlock']}:${maxUnlockAmount - maxLockAmount} $symbol'),
+                          '${dic['democracy.unlock']}:${Fmt.priceFloor(redeemable, lengthMax: 4)} $symbol'),
                       OutlinedButtonSmall(
                         content: dic['democracy.referendum.clear']!,
                         padding:
