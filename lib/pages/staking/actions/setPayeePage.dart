@@ -12,6 +12,7 @@ import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/addressInputField.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 
 class SetPayeePage extends StatefulWidget {
   SetPayeePage(this.plugin, this.keyring);
@@ -93,6 +94,9 @@ class _SetPayeePageState extends State<SetPayeePage> {
       appBar: AppBar(
         title: Text(dic['action.setting']!),
         centerTitle: true,
+        leading: BackBtn(
+          onBack: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(

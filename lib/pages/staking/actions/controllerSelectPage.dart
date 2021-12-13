@@ -6,6 +6,7 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
 class ControllerSelectPage extends StatelessWidget {
@@ -24,6 +25,9 @@ class ControllerSelectPage extends StatelessWidget {
             appBar: AppBar(
               title: Text(dic['controller']!),
               centerTitle: true,
+              leading: BackBtn(
+                onBack: () => Navigator.of(context).pop(),
+              ),
             ),
             body: SafeArea(
               child: Container(

@@ -8,6 +8,7 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 
 class SetControllerPage extends StatefulWidget {
   SetControllerPage(this.plugin, this.keyring);
@@ -53,6 +54,9 @@ class _SetControllerPageState extends State<SetControllerPage> {
       appBar: AppBar(
         title: Text(dic['action.control']!),
         centerTitle: true,
+        leading: BackBtn(
+          onBack: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Builder(builder: (BuildContext context) {
         final controller = _controller ?? widget.keyring.current;

@@ -15,6 +15,7 @@ import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
@@ -188,6 +189,9 @@ class _SpendProposalPageState extends State<SpendProposalPage> {
       appBar: AppBar(
         title: Text('${dic['treasury.proposal']} #${int.parse(proposal.id!)}'),
         centerTitle: true,
+        leading: BackBtn(
+          onBack: () => Navigator.of(context).pop(),
+        ),
       ),
       body: SafeArea(
         child: ListView(

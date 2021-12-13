@@ -9,6 +9,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/accountInfo.dart';
 import 'package:polkawallet_ui/components/borderedTitle.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 
@@ -48,9 +49,13 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-              I18n.of(context)!.getDic(i18n_full_dic_ui, 'common')!['detail']!),
-          centerTitle: true),
+        title: Text(
+            I18n.of(context)!.getDic(i18n_full_dic_ui, 'common')!['detail']!),
+        centerTitle: true,
+        leading: BackBtn(
+          onBack: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: SafeArea(
         child: Observer(
           builder: (_) {

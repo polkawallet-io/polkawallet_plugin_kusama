@@ -9,6 +9,7 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 
 class CandidateListPage extends StatefulWidget {
@@ -84,6 +85,9 @@ class _CandidateList extends State<CandidateListPage> {
       appBar: AppBar(
         title: Text(dic['candidate']!),
         centerTitle: true,
+        leading: BackBtn(
+          onBack: () => Navigator.of(context).pop(),
+        ),
       ),
       body: SafeArea(
         child: Column(

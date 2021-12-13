@@ -15,6 +15,7 @@ import 'package:polkawallet_ui/components/borderedTitle.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
@@ -142,6 +143,9 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
           appBar: AppBar(
             title: Text('${dic!['council.motion']} #${motion.votes!.index}'),
             centerTitle: true,
+            leading: BackBtn(
+              onBack: () => Navigator.of(context).pop(),
+            ),
           ),
           body: SafeArea(
             child: ListView(

@@ -9,6 +9,7 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
 class StakePage extends StatefulWidget {
@@ -41,11 +42,11 @@ class _StakePageState extends State<StakePage> {
             "actions": [
               {
                 'call': '${_bondParams.module}.${_bondParams.call}',
-                ..._bondParams.txDisplay!
+                ..._bondParams.txDisplay
               },
               {
                 'call': '${nominateParams.module}.${nominateParams.call}',
-                ...nominateParams.txDisplay!
+                ...nominateParams.txDisplay
               }
             ],
           },
@@ -65,9 +66,8 @@ class _StakePageState extends State<StakePage> {
       appBar: AppBar(
         title: Text('${dic['staking']} ${_step + 1}/2'),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
+        leading: BackBtn(
+          onBack: () {
             if (_step == 1) {
               setState(() {
                 _step = 0;

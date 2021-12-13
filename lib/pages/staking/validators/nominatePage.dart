@@ -8,6 +8,7 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
 class NominatePage extends StatefulWidget {
@@ -36,6 +37,9 @@ class _NominatePageState extends State<NominatePage> {
       appBar: AppBar(
         title: Text(dicStaking['action.nominate']!),
         centerTitle: true,
+        leading: BackBtn(
+          onBack: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(

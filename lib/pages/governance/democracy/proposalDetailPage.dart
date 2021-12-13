@@ -6,14 +6,15 @@ import 'package:polkawallet_plugin_kusama/pages/governance/govExternalLinks.dart
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/accounts.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
-import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
 import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
+import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/borderedTitle.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
@@ -86,9 +87,13 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
         ModalRoute.of(context)!.settings.arguments as ProposalInfoData;
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-              '${dic['proposal']} #${BigInt.parse(proposalPara.index.toString())}'),
-          centerTitle: true),
+        title: Text(
+            '${dic['proposal']} #${BigInt.parse(proposalPara.index.toString())}'),
+        centerTitle: true,
+        leading: BackBtn(
+          onBack: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: SafeArea(
         child: RefreshIndicator(
           key: _refreshKey,
