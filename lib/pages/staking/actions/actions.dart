@@ -24,11 +24,11 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/MainTabBar.dart';
 import 'package:polkawallet_ui/components/TransferIcon.dart';
-import 'package:polkawallet_ui/components/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
 import 'package:polkawallet_ui/components/outlinedCircle.dart';
-import 'package:polkawallet_ui/components/roundedCard.dart';
+import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
@@ -121,7 +121,7 @@ class _StakingActions extends State<StakingActions> {
     List<Widget> res = [];
     res.addAll(widget.plugin.store.staking.txs.map((i) {
       return Container(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: ListTile(
           dense: true,
           leading: Container(
@@ -168,7 +168,7 @@ class _StakingActions extends State<StakingActions> {
     if (widget.plugin.store.staking.txsRewards.length > 1) {
       res.add(Container(
         padding: EdgeInsets.all(16),
-        color: Theme.of(context).canvasColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: RoundedCard(
           padding: EdgeInsets.all(8),
           child: Column(
@@ -198,7 +198,7 @@ class _StakingActions extends State<StakingActions> {
     res.addAll(widget.plugin.store.staking.txsRewards.map((i) {
       final isReward = i.eventId == 'Reward';
       return Container(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: ListTile(
           dense: true,
           leading: Container(
@@ -425,7 +425,7 @@ class _StakingActions extends State<StakingActions> {
         List<Widget> list = <Widget>[
           _buildActionCard(),
           Container(
-            color: Theme.of(context).cardColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: MainTabBar(
               tabs: [dic!['txs']!, dic['txs.reward']!],

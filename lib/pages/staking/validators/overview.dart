@@ -17,13 +17,13 @@ import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/MainTabBar.dart';
-import 'package:polkawallet_ui/components/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/outlinedCircle.dart';
-import 'package:polkawallet_ui/components/roundedCard.dart';
+import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/pages/txConfirmPage.dart';
+import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
@@ -474,7 +474,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
         if (widget.plugin.store.staking.validatorsInfo.length > 0) {
           // index_2: the filter Widget
           list.add(Container(
-            color: Colors.white,
+            color: Theme.of(context).scaffoldBackgroundColor,
             padding: EdgeInsets.only(top: 8),
             child: ValidatorListFilter(
               filters: _filters,
@@ -510,7 +510,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                 -1);
           }
           list.add(Container(
-            color: Theme.of(context).cardColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             child: Visibility(
                 visible: recommended.length > 0,
                 child: Column(
@@ -539,7 +539,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                         );
                       }).toList(),
                     ),
-                    Divider()
                   ],
                 )),
           ));
@@ -573,7 +572,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
         return RefreshIndicator(
           key: _refreshKey,
           onRefresh: _refreshData,
-          child: ListView.builder(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: ListView.separated(
             itemCount: list.length,
             itemBuilder: (BuildContext context, int i) {
               // we already have the index_0 - index_3 Widget
@@ -593,6 +593,9 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
                 widget.plugin.store.staking.nominationsCount![acc.accountId] ??
                     0,
               );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Divider(height: 1);
             },
           ),
         );

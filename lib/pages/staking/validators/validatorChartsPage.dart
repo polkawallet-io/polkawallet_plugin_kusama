@@ -8,6 +8,7 @@ import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 
 class ValidatorChartsPage extends StatelessWidget {
   ValidatorChartsPage(this.plugin, this.keyring);
@@ -32,9 +33,9 @@ class ValidatorChartsPage extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text(dic['validator.chart']!),
-              centerTitle: true,
-            ),
+                title: Text(dic['validator.chart']!),
+                centerTitle: true,
+                leading: BackBtn()),
             body: SafeArea(
               child: FutureBuilder(
                 future: _getValidatorRewardsData(detail.accountId),

@@ -9,10 +9,11 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/accountInfo.dart';
-import 'package:polkawallet_ui/components/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/borderedTitle.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
-import 'package:polkawallet_ui/components/roundedCard.dart';
+import 'package:polkawallet_ui/components/v3/roundedCard.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -44,9 +45,9 @@ class ValidatorDetailPage extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text(dicStaking['validator']!),
-              centerTitle: true,
-            ),
+                title: Text(dicStaking['validator']!),
+                centerTitle: true,
+                leading: BackBtn()),
             body: SafeArea(
               child: ListView.builder(
                 itemCount: 2 + nominatorsCount,

@@ -5,7 +5,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDeta
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -30,7 +30,7 @@ class Validator extends StatelessWidget {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     return GestureDetector(
       child: Container(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: Row(
           children: <Widget>[
