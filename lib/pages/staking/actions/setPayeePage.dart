@@ -69,7 +69,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
       module: 'staking',
       call: 'setPayee',
       txDisplay: {
-        "reward_destination":
+        dic['bond.reward']:
             to == 3 ? {'Account': _rewardAccount} : rewardToOptions[to!],
       },
       params: [

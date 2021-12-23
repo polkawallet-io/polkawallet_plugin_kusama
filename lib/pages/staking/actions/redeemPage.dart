@@ -92,7 +92,13 @@ class _RedeemPageState extends State<RedeemPage> {
                                 call: 'withdrawUnbonded',
                                 txDisplay: {
                                   'spanCount': _slashingSpans,
-                                  'amount': '$redeemable $symbol'
+                                },
+                                txDisplayBold: {
+                                  dic["amount"]!: Text(
+                                    '$redeemable $symbol',
+                                    style:
+                                        Theme.of(context).textTheme.headline1,
+                                  ),
                                 },
                                 params: [_slashingSpans],
                               );

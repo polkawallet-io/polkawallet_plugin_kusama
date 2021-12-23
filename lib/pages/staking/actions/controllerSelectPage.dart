@@ -37,9 +37,9 @@ class ControllerSelectPage extends StatelessWidget {
                   children: keyring.allAccounts.map((i) {
                     String? unavailable;
                     final stashOf = plugin
-                        .store.staking.accountBondedMap[i.pubKey]!.controllerId;
+                        .store.staking.accountBondedMap[i.pubKey]?.controllerId;
                     String? controllerOf = plugin
-                        .store.staking.accountBondedMap[i.pubKey]!.stashId;
+                        .store.staking.accountBondedMap[i.pubKey]?.stashId;
                     if (stashOf != null && i.pubKey != keyring.current.pubKey) {
                       unavailable =
                           '${dic['controller.stashOf']} ${Fmt.address(stashOf)}';

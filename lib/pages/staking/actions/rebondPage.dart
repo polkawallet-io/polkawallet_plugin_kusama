@@ -104,7 +104,12 @@ class _RebondPageState extends State<RebondPage> {
                         txTitle: dicStaking['action.rebond'],
                         module: 'staking',
                         call: 'rebond',
-                        txDisplay: {"amount": '$inputAmount $symbol'},
+                        txDisplayBold: {
+                          dic["amount"]!: Text(
+                            '$inputAmount $symbol',
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                        },
                         params: [
                           // "amount"
                           Fmt.tokenInt(inputAmount, decimals).toString(),

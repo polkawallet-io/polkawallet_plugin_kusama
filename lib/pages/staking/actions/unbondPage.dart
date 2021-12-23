@@ -128,7 +128,12 @@ class _UnBondPageState extends State<UnBondPage> {
                         txTitle: dicStaking['action.unbond'],
                         module: 'staking',
                         call: 'unbond',
-                        txDisplay: {"amount": '$inputAmount $symbol'},
+                        txDisplayBold: {
+                          dic["amount"]!: Text(
+                            '$inputAmount $symbol',
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                        },
                         params: [
                           // "amount"
                           Fmt.tokenInt(inputAmount, decimals).toString(),

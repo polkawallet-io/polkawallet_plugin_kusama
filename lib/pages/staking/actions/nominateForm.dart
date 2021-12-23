@@ -11,9 +11,10 @@ import 'package:polkawallet_plugin_kusama/utils/format.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
+import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class NominateForm extends StatefulWidget {
@@ -41,7 +42,11 @@ class _NominateFormState extends State<NominateForm> {
       txTitle: dicStaking['action.nominate'],
       module: 'staking',
       call: 'nominate',
-      txDisplay: {'targets': targets.join(', ')},
+      txDisplay: {
+        dicStaking['action.nominate']:
+            targets.map((e) => Fmt.address(e, pad: 8)).join(',\n')
+      },
+      txDisplayBold: {},
       params: [targets],
     ));
   }

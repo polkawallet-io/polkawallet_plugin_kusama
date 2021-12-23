@@ -176,10 +176,15 @@ class _BondPageState extends State<BondPage> {
                   module: 'staking',
                   call: 'bond',
                   txDisplay: {
-                    "amount": '$inputAmount $symbol',
-                    "reward_destination": _rewardTo == 3
+                    dicStaking['bond.reward']: _rewardTo == 3
                         ? {'Account': _rewardAccount}
                         : rewardToOptions[_rewardTo],
+                  },
+                  txDisplayBold: {
+                    dic["amount"]!: Text(
+                      '$inputAmount $symbol',
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
                   },
                   params: [
                     // "controllerId":

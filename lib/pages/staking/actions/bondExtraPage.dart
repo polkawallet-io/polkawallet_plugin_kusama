@@ -37,7 +37,6 @@ class _BondExtraPageState extends State<BondExtraPage> {
       available =
           Fmt.balanceInt(widget.plugin.balances.native!.freeBalance.toString());
       widget.plugin.balances.native!.lockedBreakdown!.forEach((e) {
-        print(e.use);
         if (e.use!.contains('staking')) {
           available -= Fmt.balanceInt(e.amount.toString());
         }
@@ -106,7 +105,12 @@ class _BondExtraPageState extends State<BondExtraPage> {
                         txTitle: dicStaking['action.bondExtra'],
                         module: 'staking',
                         call: 'bondExtra',
-                        txDisplay: {"amount": '$inputAmount $symbol'},
+                        txDisplayBold: {
+                          dic["amount"]!: Text(
+                            '$inputAmount $symbol',
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                        },
                         params: [
                           // "amount"
                           Fmt.tokenInt(inputAmount, decimals).toString(),

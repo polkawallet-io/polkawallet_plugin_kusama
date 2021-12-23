@@ -114,7 +114,15 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       txTitle: dic['action.control'],
                       module: 'staking',
                       call: 'setController',
-                      txDisplay: {"controllerId": controller.address},
+                      txDisplayBold: {
+                        "controller": Container(
+                          margin: EdgeInsets.only(right: 16),
+                          child: AddressFormItem(
+                            controller,
+                            svg: controller.icon,
+                          ),
+                        )
+                      },
                       params: [
                         // "address"
                         controller.address,

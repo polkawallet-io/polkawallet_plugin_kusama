@@ -78,7 +78,8 @@ class StakingDetailPage extends StatelessWidget {
       networkName: plugin.basic.name,
       success: detail.success,
       action: detail.call,
-      fee: '${Fmt.balance(detail.fee!, decimals)} $symbol',
+      fee:
+          '${Fmt.priceFloorBigInt(Fmt.balanceInt(detail.fee!), decimals, lengthMax: 6)} $symbol',
       hash: detail.hash,
       eventId: detail.txNumber,
       infoItems: info,

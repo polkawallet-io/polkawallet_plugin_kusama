@@ -38,17 +38,10 @@ class _StakePageState extends State<StakePage> {
           txTitle: dic['staking'],
           module: 'utility',
           call: 'batchAll',
-          txDisplay: {
-            "actions": [
-              {
-                'call': '${_bondParams.module}.${_bondParams.call}',
-                ..._bondParams.txDisplay
-              },
-              {
-                'call': '${nominateParams.module}.${nominateParams.call}',
-                ...nominateParams.txDisplay
-              }
-            ],
+          txDisplay: {..._bondParams.txDisplay, ...nominateParams.txDisplay},
+          txDisplayBold: {
+            ..._bondParams.txDisplayBold,
+            ...nominateParams.txDisplayBold
           },
           params: [],
           rawParams: '[[$txBond,$txNominate]]',
