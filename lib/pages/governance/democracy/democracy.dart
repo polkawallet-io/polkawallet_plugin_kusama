@@ -228,10 +228,10 @@ class _DemocracyState extends State<Democracy> {
     final List<String> unLockIds = [];
     for (int index = 0; index < locks.length; index++) {
       var unlockAt = locks[index]['unlockAt'];
-      final amount = double.parse(Fmt.balance(
+      final amount = Fmt.balanceDouble(
         locks[index]!['balance'].toString(),
         decimals,
-      ));
+      );
       if (unlockAt != "0") {
         BigInt endLeft;
         try {
