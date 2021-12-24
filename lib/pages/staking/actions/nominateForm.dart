@@ -175,20 +175,6 @@ class _NominateFormState extends State<NominateForm> {
           _notSelected.removeWhere((item) => item.accountId == i.accountId);
           _selectedMap[i.accountId] = true;
         });
-
-        // set recommended selected
-        final List? recommendList = widget.plugin.store.staking
-            .recommendedValidators![widget.plugin.basic.name];
-        if (recommendList != null && recommendList.length > 0) {
-          List<ValidatorData> recommended = _notSelected.toList();
-          recommended
-              .retainWhere((i) => recommendList.indexOf(i.accountId) > -1);
-          recommended.forEach((i) {
-            _selected.add(i);
-            _notSelected.removeWhere((item) => item.accountId == i.accountId);
-            _selectedMap[i.accountId] = true;
-          });
-        }
       });
     });
   }
@@ -199,14 +185,6 @@ class _NominateFormState extends State<NominateForm> {
 
     List<ValidatorData> list = [];
     list.addAll(_selected);
-    // add recommended
-    final List? recommendList = widget
-        .plugin.store.staking.recommendedValidators![widget.plugin.basic.name];
-    if (recommendList != null && recommendList.length > 0) {
-      List<ValidatorData> recommended = _notSelected.toList();
-      recommended.retainWhere((i) => recommendList.indexOf(i.accountId) > -1);
-      list.addAll(recommended);
-    }
 
     // add validators
     // filter the _notSelected list

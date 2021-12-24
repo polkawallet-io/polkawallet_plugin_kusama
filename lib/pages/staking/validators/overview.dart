@@ -9,7 +9,6 @@ import 'package:polkawallet_plugin_kusama/pages/staking/validators/validator.dar
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorListFilter.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_kusama/service/walletApi.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/format.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -17,12 +16,11 @@ import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/MainTabBar.dart';
-import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/outlinedCircle.dart';
-import 'package:polkawallet_ui/components/v3/roundedCard.dart';
-import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
@@ -58,18 +56,18 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
       _loading = true;
     });
 
-    _fetchRecommendedValidators();
+    // _fetchRecommendedValidators();
     widget.plugin.service.staking.queryElectedInfo();
     await widget.plugin.service.staking.queryOwnStashInfo();
   }
 
-  Future<void> _fetchRecommendedValidators() async {
-    Map? res = await WalletApi.getRecommended();
-    if (res != null && res['validators'] != null) {
-      widget.plugin.store.staking
-          .setRecommendedValidatorList(res['validators']);
-    }
-  }
+  // Future<void> _fetchRecommendedValidators() async {
+  //   Map? res = await WalletApi.getRecommended();
+  //   if (res != null && res['validators'] != null) {
+  //     widget.plugin.store.staking
+  //         .setRecommendedValidatorList(res['validators']);
+  //   }
+  // }
 
   void _onAction(Future<dynamic> Function() doAction) {
     doAction().then((res) {
@@ -494,54 +492,6 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
               },
             ),
           ));
-          // index_3: the recommended validators
-          // add recommended
-          List<ValidatorData> recommended = [];
-          final recommendList = widget.plugin.store.staking
-              .recommendedValidators![widget.plugin.basic.name];
-          if (recommendList != null) {
-            recommended = _tab == 0
-                ? widget.plugin.store.staking.electedInfo.toList()
-                : widget.plugin.store.staking.nextUpsInfo.toList();
-            recommended.retainWhere((i) =>
-                widget.plugin.store.staking
-                    .recommendedValidators![widget.plugin.basic.name]
-                    .indexOf(i.accountId) >
-                -1);
-          }
-          list.add(Container(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            child: Visibility(
-                visible: recommended.length > 0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextTag(
-                      dicStaking['recommend'],
-                      color: Colors.green,
-                      fontSize: 12,
-                      margin: EdgeInsets.only(left: 16, top: 8),
-                    ),
-                    Column(
-                      children: recommended.map((acc) {
-                        Map? accInfo = widget.plugin.store.accounts
-                            .addressIndexMap[acc.accountId];
-                        final icon = widget.plugin.store.accounts
-                            .addressIconsMap[acc.accountId];
-                        return Validator(
-                          acc,
-                          accInfo,
-                          icon,
-                          decimals,
-                          widget.plugin.store.staking
-                                  .nominationsCount![acc.accountId] ??
-                              0,
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                )),
-          ));
           // add validators
           List<ValidatorData> ls = _tab == 0
               ? widget.plugin.store.staking.electedInfo.toList()
@@ -576,8 +526,8 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
           child: ListView.separated(
             itemCount: list.length,
             itemBuilder: (BuildContext context, int i) {
-              // we already have the index_0 - index_3 Widget
-              if (i < 4) {
+              // we already have the index_0 - index_2 Widget
+              if (i < 3) {
                 return list[i];
               }
               ValidatorData acc = list[i];

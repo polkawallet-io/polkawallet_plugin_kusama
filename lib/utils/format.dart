@@ -10,16 +10,7 @@ class PluginFmt {
         if (ls[0].toString().contains('0x')) {
           ls = List.of(ls).map((e) => int.parse(e.toString())).toList();
         }
-        if (index == chartValues.length - 1) {
-          List average = [];
-          List.of(ls).asMap().forEach((i, v) {
-            final avg = v - values[values.length - 1][i];
-            average.add(avg);
-          });
-          values.add(average);
-        } else {
-          values.add(ls);
-        }
+        values.add(ls);
       });
 
       return values;

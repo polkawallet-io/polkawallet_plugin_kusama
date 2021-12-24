@@ -206,23 +206,6 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
-  final _$recommendedValidatorsAtom =
-      Atom(name: '_StakingStore.recommendedValidators');
-
-  @override
-  Map<dynamic, dynamic>? get recommendedValidators {
-    _$recommendedValidatorsAtom.reportRead();
-    return super.recommendedValidators;
-  }
-
-  @override
-  set recommendedValidators(Map<dynamic, dynamic>? value) {
-    _$recommendedValidatorsAtom.reportWrite(value, super.recommendedValidators,
-        () {
-      super.recommendedValidators = value;
-    });
-  }
-
   final _$setTxsLoadingAsyncAction = AsyncAction('_StakingStore.setTxsLoading');
 
   @override
@@ -262,15 +245,6 @@ mixin _$StakingStore on _StakingStore, Store {
   @override
   Future<void> loadCache(String? pubKey) {
     return _$loadCacheAsyncAction.run(() => super.loadCache(pubKey));
-  }
-
-  final _$setRecommendedValidatorListAsyncAction =
-      AsyncAction('_StakingStore.setRecommendedValidatorList');
-
-  @override
-  Future<void> setRecommendedValidatorList(Map<dynamic, dynamic>? data) {
-    return _$setRecommendedValidatorListAsyncAction
-        .run(() => super.setRecommendedValidatorList(data));
   }
 
   final _$_StakingStoreActionController =
@@ -359,7 +333,6 @@ txsLoading: ${txsLoading},
 txs: ${txs},
 txsRewards: ${txsRewards},
 rewardsChartDataCache: ${rewardsChartDataCache},
-recommendedValidators: ${recommendedValidators},
 nominatingList: ${nominatingList},
 accountUnlockingTotal: ${accountUnlockingTotal}
     ''';

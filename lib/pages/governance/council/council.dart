@@ -6,13 +6,13 @@ import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePa
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/borderedTitle.dart';
 import 'package:polkawallet_ui/components/infoItem.dart';
 import 'package:polkawallet_ui/components/outlinedButtonSmall.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
-import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
@@ -48,7 +48,7 @@ class _CouncilState extends State<Council> {
       module: moduleName,
       call: 'removeVoter',
       txTitle: govDic['vote.remove'],
-      txDisplay: {},
+      txDisplay: {'action': 'removeVoter'},
       params: [],
     );
     final res = await Navigator.of(context)

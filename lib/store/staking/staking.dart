@@ -55,8 +55,8 @@ abstract class _StakingStore with Store {
   ObservableMap<String, dynamic> rewardsChartDataCache =
       ObservableMap<String, dynamic>();
 
-  @observable
-  Map? recommendedValidators = {};
+  // @observable
+  // Map? recommendedValidators = {};
 
   @computed
   List<ValidatorData> get nominatingList {
@@ -250,8 +250,8 @@ abstract class _StakingStore with Store {
     loadAccountCache(pubKey);
   }
 
-  @action
-  Future<void> setRecommendedValidatorList(Map? data) async {
-    recommendedValidators = data;
-  }
+  // @action
+  // Future<void> setRecommendedValidatorList(Map? data) async {
+  //   recommendedValidators = data;
+  // }
 }
