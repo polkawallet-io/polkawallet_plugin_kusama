@@ -10,11 +10,11 @@ import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
 import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/borderedTitle.dart';
-import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
@@ -64,7 +64,7 @@ class _ProposalDetailPageState extends State<ProposalDetailPage> {
       call: 'second',
       txTitle: dic['proposal.second'],
       txDisplay: {
-        "proposal": BigInt.parse(proposal.index.toString()).toInt(),
+        dic["proposal"]: '#${BigInt.parse(proposal.index.toString()).toInt()}',
         "seconds": proposal.seconds!.length,
       },
       params: [

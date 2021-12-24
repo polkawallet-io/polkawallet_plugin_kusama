@@ -39,7 +39,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
         call: 'proposeSpend',
         txTitle: dic['treasury.submit'],
         txDisplay: {
-          "value": amt,
+          "value": '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
           "beneficiary": _beneficiary!.address,
         },
         params: [

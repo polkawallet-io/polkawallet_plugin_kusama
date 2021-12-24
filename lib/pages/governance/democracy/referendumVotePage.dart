@@ -37,12 +37,13 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
 
   Future<TxConfirmParams?> _getTxParams() async {
     if (_formKey.currentState!.validate()) {
+      final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
       final govDic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
       final decimals = widget.plugin.networkState.tokenDecimals![0];
       final Map args =
           ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
       final ReferendumInfo info = args['referenda'];
-      final bool? voteYes = args['voteYes'];
+      final bool voteYes = args['voteYes'] ?? false;
       final bool? isLock = args['isLock'];
       final amt = _amountCtrl.text.trim();
       final vote = {
@@ -61,7 +62,10 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
           module: 'utility',
           call: 'batch',
           txDisplay: {
-            "actions": ['democracy.unlock', 'democracy.vote'],
+            govDic["referenda"]: '#${info.index!.toInt()}',
+            govDic["vote"]: voteYes ? govDic['yes'] : govDic['no'],
+            dic["amount"]: '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
+            '': _getConvictionLabel(_voteConviction),
           },
           params: [],
           rawParams: '[[${txs.join(',')}]]',
@@ -72,9 +76,11 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
             call: 'vote',
             txTitle: govDic['vote.proposal'],
             txDisplay: {
-              "id": info.index!.toInt(),
-              "balance": amt,
-              "vote": vote['vote'],
+              govDic["referenda"]: '#${info.index!.toInt()}',
+              govDic["vote"]: voteYes ? govDic['yes'] : govDic['no'],
+              dic["amount"]:
+                  '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
+              '': _getConvictionLabel(_voteConviction),
             },
             params: [
               // "id"

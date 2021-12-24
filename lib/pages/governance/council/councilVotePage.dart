@@ -7,8 +7,8 @@ import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateList
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
@@ -53,8 +53,9 @@ class _CouncilVote extends State<CouncilVotePage> {
         call: 'vote',
         txTitle: govDic['vote.candidate'],
         txDisplay: {
-          "votes": selected,
-          "voteValue": amt,
+          "votes": selected.map((e) => Fmt.address(e, pad: 8)).join(',\n'),
+          I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!['amount']:
+              '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
         },
         params: [
           // "votes"
