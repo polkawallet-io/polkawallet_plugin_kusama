@@ -130,7 +130,8 @@ class _StakingActions extends State<StakingActions> {
             child: i.success!
                 ? SvgPicture.asset(
                     'packages/polkawallet_plugin_kusama/assets/images/staking/ok.svg')
-                : TransferIcon(type: TransferIconType.failure),
+                : TransferIcon(
+                    type: TransferIconType.failure, bgColor: Color(0xFFD7D7D7)),
           ),
           title: Text(i.call!),
           subtitle: Text(Fmt.dateTime(
@@ -205,7 +206,8 @@ class _StakingActions extends State<StakingActions> {
             width: 32,
             padding: EdgeInsets.only(top: 4),
             child: TransferIcon(
-                type: isReward ? TransferIconType.earn : TransferIconType.fine),
+                type: isReward ? TransferIconType.earn : TransferIconType.fine,
+                bgColor: Theme.of(context).cardColor),
           ),
           title: Text(i.eventId!),
           subtitle: Text(Fmt.dateTime(
