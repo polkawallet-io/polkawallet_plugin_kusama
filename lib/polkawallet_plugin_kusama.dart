@@ -88,13 +88,9 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   List<NetworkParams> get nodeList {
     if (basic.name == network_name_polkadot) {
-      return _randomList(node_list_polkadot)
-          .map((e) => NetworkParams.fromJson(e))
-          .toList();
+      return node_list_polkadot.map((e) => NetworkParams.fromJson(e)).toList();
     }
-    return _randomList(node_list_kusama)
-        .map((e) => NetworkParams.fromJson(e))
-        .toList();
+    return node_list_kusama.map((e) => NetworkParams.fromJson(e)).toList();
   }
 
   @override
@@ -213,17 +209,5 @@ class PluginKusama extends PolkawalletPlugin {
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
     _store.staking.loadAccountCache(acc.pubKey);
-  }
-
-  List _randomList(List input) {
-    final data = input.toList();
-    final res = [];
-    final _random = Random();
-    for (var i = 0; i < input.length; i++) {
-      final item = data[_random.nextInt(data.length)];
-      res.add(item);
-      data.remove(item);
-    }
-    return res;
   }
 }
