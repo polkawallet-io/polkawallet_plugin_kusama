@@ -107,14 +107,9 @@ class PluginKusama extends PolkawalletPlugin {
       final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
       return HomeNavItem(
         text: dic[e]!,
-        icon: SvgPicture.asset(
-          'packages/polkawallet_plugin_kusama/assets/images/public/nav_$e.svg',
-          color: Theme.of(context).disabledColor,
-        ),
-        iconActive: SvgPicture.asset(
-          'packages/polkawallet_plugin_kusama/assets/images/public/nav_$e.svg',
-          color: basic.primaryColor,
-        ),
+        icon: Container(),
+        iconActive: Container(),
+        isAdapter: e == 'staking' ? false : true,
         content: e == 'staking' ? Staking(this, keyring) : Gov(this),
       );
     }).toList();

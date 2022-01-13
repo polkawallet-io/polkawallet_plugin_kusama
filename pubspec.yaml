@@ -40,30 +40,10 @@ dependency_overrides:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/images/public/bg_kusama.png
-    - assets/images/public/bg_polkadot.png
-    - assets/images/public/kusama.png
-    - assets/images/public/kusama_gray.png
-    - assets/images/public/polkadot.png
-    - assets/images/public/polkadot_gray.png
-    - assets/images/public/staking.png
-    - assets/images/public/staking_black.png
-    - assets/images/public/staking_pink.png
-    - assets/images/public/governance.png
-    - assets/images/public/governance_black.png
-    - assets/images/public/governance_pink.png
-    - assets/images/staking/ok.svg
-    - assets/images/staking/error.svg
-    - assets/images/staking/reward.svg
-    - assets/images/staking/slash.svg
-    - assets/images/gov/democracy.svg
-    - assets/images/gov/council.svg
-    - assets/images/gov/treasury.svg
-    - assets/images/tokens/KSM.png
-    - assets/images/tokens/DOT.png
-    - assets/images/public/polkassembly.png
-    - assets/images/public/nav_staking.svg
-    - assets/images/public/nav_governance.svg
+    - assets/images/public/
+    - assets/images/staking/
+    - assets/images/gov/
+    - assets/images/tokens/
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
