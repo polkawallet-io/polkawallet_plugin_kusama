@@ -73,7 +73,7 @@ const node_list_polkadot = [
   // },
 ];
 
-const home_nav_items = ['staking', 'governance'];
+const home_nav_items = ['staking', 'governance', 'parachain'];
 
 const MaterialColor kusama_black = const MaterialColor(
   0xFF222222,

@@ -124,8 +124,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
               Padding(
                 padding: EdgeInsets.all(16),
                 child: TxButton(
-                  getTxParams:
-                      _getTxParams as Future<TxConfirmParams> Function()?,
+                  getTxParams: _getTxParams,
                   onFinish: (Map? res) {
                     if (res != null) {
                       Navigator.of(context).pop(res);

@@ -1,10 +1,8 @@
 library polkawallet_plugin_kusama;
 
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance.dart';
@@ -21,6 +19,8 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitPropos
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitTipPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/parachains/contributePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/parachains/parachainsPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
@@ -109,8 +109,12 @@ class PluginKusama extends PolkawalletPlugin {
         text: dic[e]!,
         icon: Container(),
         iconActive: Container(),
-        isAdapter: e == 'staking' ? false : true,
-        content: e == 'staking' ? Staking(this, keyring) : Gov(this),
+        isAdapter: e == 'governance',
+        content: e == 'staking'
+            ? Staking(this, keyring)
+            : e == 'governance'
+                ? Gov(this)
+                : ParachainsPage(this, keyring),
       );
     }).toList();
   }
@@ -160,6 +164,9 @@ class PluginKusama extends PolkawalletPlugin {
           keyring,
           _service.getPassword as Future<String> Function(
               BuildContext, KeyPairData)),
+
+      // parachains
+      ContributePage.route: (_) => ContributePage(this, keyring),
     };
   }
 

@@ -176,8 +176,7 @@ class _CouncilVote extends State<CouncilVotePage> {
                 Container(
                   padding: EdgeInsets.all(16),
                   child: TxButton(
-                    getTxParams:
-                        _getTxParams as Future<TxConfirmParams> Function()?,
+                    getTxParams: _getTxParams,
                     text: I18n.of(context)!
                         .getDic(i18n_full_dic_ui, 'common')!['tx.submit'],
                     onFinish: (res) {

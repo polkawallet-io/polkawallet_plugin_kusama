@@ -185,8 +185,7 @@ class _SubmitProposalPageState extends State<SubmitProposalPage> {
               padding: EdgeInsets.all(16),
               child: TxButton(
                 text: dic['treasury.submit'],
-                getTxParams:
-                    _getTxParams as Future<TxConfirmParams> Function()?,
+                getTxParams: _getTxParams,
                 onFinish: (res) {
                   if (res != null) {
                     Navigator.of(context).pop(res);

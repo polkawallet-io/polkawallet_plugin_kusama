@@ -117,7 +117,7 @@ class _RebondPageState extends State<RebondPage> {
                       );
                     }
                     return null;
-                  } as Future<TxConfirmParams> Function()?,
+                  },
                   onFinish: (Map? res) {
                     if (res != null) {
                       Navigator.of(context).pop(res);

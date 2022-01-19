@@ -128,7 +128,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
                         controller.address,
                       ],
                     );
-                  } as Future<TxConfirmParams> Function()?,
+                  },
                   onFinish: (Map? res) {
                     if (res != null) {
                       Navigator.of(context).pop(res);

@@ -216,8 +216,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                   child: TxButton(
                     text: I18n.of(context)!
                         .getDic(i18n_full_dic_ui, 'common')!['tx.submit'],
-                    getTxParams:
-                        _getTxParams as Future<TxConfirmParams> Function()?,
+                    getTxParams: _getTxParams,
                     onFinish: (res) {
                       if (res != null) {
                         Navigator.of(context).pop(res);
