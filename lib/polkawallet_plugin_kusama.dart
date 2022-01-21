@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
@@ -19,6 +18,7 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitPropos
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitTipPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceOld.dart';
 import 'package:polkawallet_plugin_kusama/pages/parachains/contributePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/parachains/parachainsPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking.dart';
@@ -109,11 +109,12 @@ class PluginKusama extends PolkawalletPlugin {
         text: dic[e]!,
         icon: Container(),
         iconActive: Container(),
-        isAdapter: e == 'governance',
+        // isAdapter: e == 'governance',
         content: e == 'staking'
             ? Staking(this, keyring)
             : e == 'governance'
-                ? Gov(this)
+                // ? Gov(this)
+                ? GovOld(this)
                 : ParachainsPage(this, keyring),
       );
     }).toList();
