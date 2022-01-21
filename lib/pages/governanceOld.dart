@@ -25,23 +25,6 @@ class GovOld extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    I18n.of(context)!
-                        .getDic(i18n_full_dic_kusama, 'common')!['governance']!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).cardColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  )
-                ],
-              ),
-            ),
             Expanded(
               child: plugin.sdk.api.connectedNode == null
                   ? SkaletonList(
