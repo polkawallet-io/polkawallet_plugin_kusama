@@ -225,7 +225,7 @@ mixin _$StakingStore on _StakingStore, Store {
   final _$addTxsRewardsAsyncAction = AsyncAction('_StakingStore.addTxsRewards');
 
   @override
-  Future<void> addTxsRewards(Map<dynamic, dynamic> data, String? pubKey,
+  Future<void> addTxsRewards(Map<dynamic, dynamic>? data, String? pubKey,
       {bool shouldCache = false}) {
     return _$addTxsRewardsAsyncAction
         .run(() => super.addTxsRewards(data, pubKey, shouldCache: shouldCache));

@@ -185,9 +185,9 @@ abstract class _StakingStore with Store {
   }
 
   @action
-  Future<void> addTxsRewards(Map data, String? pubKey,
+  Future<void> addTxsRewards(Map? data, String? pubKey,
       {bool shouldCache = false}) async {
-    if (data['list'] == null) return;
+    if (data == null || data['list'] == null) return;
     List<TxRewardData> ls =
         List.of(data['list']).map((i) => TxRewardData.fromJson(i)).toList();
 
