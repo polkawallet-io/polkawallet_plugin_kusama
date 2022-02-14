@@ -33,7 +33,7 @@ const Map<String, String> zhGov = {
   'treasury.retract': '取消申请',
   'treasury.jet': '批准发送',
   'treasury.finder': '发现人',
-  'treasury.who': '地址',
+  'treasury.who': '受益人',
   'treasury.bond': '存入',
   'treasury.bond.min': '至少存入',
   'treasury.reason': '原因',

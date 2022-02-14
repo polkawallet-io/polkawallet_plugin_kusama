@@ -52,6 +52,15 @@ class _StakePageState extends State<StakePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      widget.plugin.service.staking.queryElectedInfo();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
 
