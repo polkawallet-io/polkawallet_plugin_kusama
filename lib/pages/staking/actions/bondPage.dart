@@ -63,10 +63,10 @@ class _BondPageState extends State<BondPage> {
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     final decimals = widget.plugin.networkState.tokenDecimals![0];
 
-    double available = 0;
+    double freeBalance = 0;
     if (widget.plugin.balances.native != null) {
-      available = Fmt.balanceDouble(
-          widget.plugin.balances.native!.availableBalance.toString(), decimals);
+      freeBalance = Fmt.balanceDouble(
+          widget.plugin.balances.native!.freeBalance.toString(), decimals);
     }
 
     final rewardToOptions =
@@ -124,7 +124,7 @@ class _BondPageState extends State<BondPage> {
                       hintText: dic['amount'],
                       labelText:
                           '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
-                        available,
+                        freeBalance,
                         lengthMax: 4,
                       )} $symbol)',
                     ),
@@ -138,9 +138,9 @@ class _BondPageState extends State<BondPage> {
                         return error;
                       }
                       final amount = double.parse(v.trim());
-                      // if (amount >= available) {
-                      //   return dic['amount.low'];
-                      // }
+                      if (amount >= freeBalance) {
+                        return dic['amount.low'];
+                      }
                       final minBond = Fmt.balanceInt(widget
                           .plugin.store.staking.overview['minNominatorBond']);
                       if (amount < Fmt.bigIntToDouble(minBond, decimals)) {
