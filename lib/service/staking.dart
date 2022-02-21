@@ -1,4 +1,5 @@
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
+import 'package:polkawallet_plugin_kusama/service/walletApi.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
 import 'package:polkawallet_plugin_kusama/utils/format.dart';
 import 'package:polkawallet_sdk/api/api.dart';
@@ -163,5 +164,12 @@ class ApiStaking {
       final data = await api.staking.queryBonded(accounts);
       store!.staking.setAccountBondedMap(data);
     }
+  }
+
+  Future<void> queryMarketPrices() async {
+    final Map? res = await WalletApi.getTokenPrice();
+    final Map<String, double> prices = {...((res?['prices'] as Map?) ?? {})};
+
+    store!.staking.setMarketPrices(prices);
   }
 }

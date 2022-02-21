@@ -318,6 +318,34 @@ mixin _$StakingStore on _StakingStore, Store {
     }
   }
 
+  final _$marketPricesAtom = Atom(name: '_AssetsStore.marketPrices');
+
+  @override
+  ObservableMap<String?, double> get marketPrices {
+    _$marketPricesAtom.reportRead();
+    return super.marketPrices;
+  }
+
+  @override
+  set marketPrices(ObservableMap<String?, double> value) {
+    _$marketPricesAtom.reportWrite(value, super.marketPrices, () {
+      super.marketPrices = value;
+    });
+  }
+
+  final _$_AssetsStoreActionController = ActionController(name: '_AssetsStore');
+
+  @override
+  void setMarketPrices(Map<String?, double> data) {
+    final _$actionInfo = _$_AssetsStoreActionController.startAction(
+        name: '_AssetsStore.setMarketPrices');
+    try {
+      return super.setMarketPrices(data);
+    } finally {
+      _$_AssetsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
@@ -334,7 +362,8 @@ txs: ${txs},
 txsRewards: ${txsRewards},
 rewardsChartDataCache: ${rewardsChartDataCache},
 nominatingList: ${nominatingList},
-accountUnlockingTotal: ${accountUnlockingTotal}
+accountUnlockingTotal: ${accountUnlockingTotal},
+marketPrices: ${marketPrices},
     ''';
   }
 }

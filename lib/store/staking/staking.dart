@@ -55,6 +55,9 @@ abstract class _StakingStore with Store {
   ObservableMap<String, dynamic> rewardsChartDataCache =
       ObservableMap<String, dynamic>();
 
+  @observable
+  ObservableMap<String?, double> marketPrices = ObservableMap();
+
   // @observable
   // Map? recommendedValidators = {};
 
@@ -80,6 +83,11 @@ abstract class _StakingStore with Store {
       res += BigInt.parse(i['value'].toString());
     });
     return res;
+  }
+
+  @action
+  void setMarketPrices(Map<String?, double> data) {
+    marketPrices.addAll(data);
   }
 
   @action
