@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
+import 'package:polkawallet_plugin_kusama/newUIRoutes.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
@@ -36,6 +37,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart'
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorChartsPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingPage.dart';
 import 'package:polkawallet_plugin_kusama/service/index.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
@@ -106,17 +108,19 @@ class PluginKusama extends PolkawalletPlugin {
     return home_nav_items.map((e) {
       final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
       return HomeNavItem(
-        text: dic[e]!,
-        icon: Container(),
-        iconActive: Container(),
-        // isAdapter: e == 'governance',
-        content: e == 'staking'
-            ? Staking(this, keyring)
-            : e == 'governance'
-                // ? Gov(this)
-                ? GovOld(this)
-                : ParachainsPage(this, keyring),
-      );
+          text: dic[e]!,
+          icon: Container(),
+          iconActive: Container(),
+          // isAdapter: e == 'governance',
+          content: e == 'staking'
+              ? Staking(this, keyring)
+              : e == 'governance'
+                  // ? Gov(this)
+                  ? GovOld(this)
+                  : ParachainsPage(this, keyring),
+          onTap: () {
+            Navigator.of(context).pushNamed(StakingPage.route);
+          });
     }).toList();
   }
 
@@ -168,6 +172,9 @@ class PluginKusama extends PolkawalletPlugin {
 
       // parachains
       ContributePage.route: (_) => ContributePage(this, keyring),
+
+      //new ui
+      ...getNewUiRoutes(this, keyring)
     };
   }
 
