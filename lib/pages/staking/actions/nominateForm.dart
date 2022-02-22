@@ -11,9 +11,11 @@ import 'package:polkawallet_plugin_kusama/utils/format.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginRadioButton.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -33,6 +35,7 @@ class _NominateFormState extends State<NominateForm> {
 
   String _search = '';
   List<bool> _filters = [true, false];
+  int _sortType = 0;
 
   void _setNominee() {
     final dicStaking =
@@ -66,20 +69,24 @@ class _NominateFormState extends State<NominateForm> {
         : widget.plugin.store.staking.nominationsCount![validator.accountId] ??
             0;
 
-    final textStyle = TextStyle(
-      color: Theme.of(context).unselectedWidgetColor,
-      fontSize: 12,
-    );
+    final textStyle = Theme.of(context)
+        .textTheme
+        .headline4!
+        .copyWith(color: PluginColorsDark.headline2, fontSize: 12, height: 1.2);
     final comm = NumberFormat('0.00%').format(validator.commission / 100);
     return GestureDetector(
       child: Container(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-        color: Theme.of(context).cardColor,
+        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom:
+                    BorderSide(width: 0.5, color: PluginColorsDark.cardColor))),
         child: Row(
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(right: 16),
-              child: AddressIcon(validator.accountId, svg: accIcon),
+              child: AddressIcon(validator.accountId, svg: accIcon, size: 36),
             ),
             Expanded(
               child: Column(
@@ -88,6 +95,7 @@ class _NominateFormState extends State<NominateForm> {
                   UI.accountDisplayName(
                     validator.accountId,
                     accInfo,
+                    textColor: PluginColorsDark.headline1,
                   ),
                   Text(
                     '${dicStaking['commission']}: $comm',
@@ -101,18 +109,38 @@ class _NominateFormState extends State<NominateForm> {
                       ),
                     ],
                   ),
-                  Text(
-                    isWaiting
-                        ? dicStaking['waiting']!
-                        : '${dicStaking['reward']}: ${validator.stakedReturnCmp.toStringAsFixed(2)}%',
-                    style: textStyle,
-                  ),
                 ],
               ),
             ),
-            CupertinoSwitch(
-              value: _selectedMap[validator.accountId]!,
-              onChanged: (bool value) {
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  isWaiting ? dicStaking['waiting']! : dicStaking['reward']!,
+                  style: textStyle,
+                ),
+                Text(
+                  isWaiting
+                      ? ''
+                      : '${validator.stakedReturnCmp.toStringAsFixed(2)}%',
+                  style: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: PluginColorsDark.headline1,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: PluginRadioButton(
+                  value: _selectedMap[validator.accountId]!,
+                ),
+              ),
+              onTap: () {
+                final value = !_selectedMap[validator.accountId]!;
                 if (value && _selected.length >= maxNomination) {
                   showCupertinoDialog(
                       context: context,
@@ -194,13 +222,13 @@ class _NominateFormState extends State<NominateForm> {
     retained = PluginFmt.filterValidatorList(retained, _filters, _search,
         widget.plugin.store.accounts.addressIndexMap);
     // and sort it
-    retained.sort((a, b) => a.rankReward! < b.rankReward! ? 1 : -1);
+    retained.sort((a, b) => PluginFmt.sortValidatorList(
+        widget.plugin.store.accounts.addressIndexMap, a, b, _sortType));
     list.addAll(retained);
 
     return Column(
       children: <Widget>[
         Container(
-          color: Theme.of(context).cardColor,
           padding: EdgeInsets.only(top: 8, bottom: 8),
           child: ValidatorListFilter(
             filters: _filters,
@@ -218,20 +246,31 @@ class _NominateFormState extends State<NominateForm> {
                 });
               }
             },
+            onSortChange: (v) {
+              if (_sortType != v) {
+                setState(() {
+                  _sortType = v;
+                });
+              }
+            },
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: list.length,
-            itemBuilder: (BuildContext context, int i) {
-              return _buildListItem(context, list[i]);
-            },
+          child: Container(
+            color: PluginColorsDark.listColor,
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: list.length,
+              itemBuilder: (BuildContext context, int i) {
+                return _buildListItem(context, list[i]);
+              },
+            ),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(16),
-          child: RoundedButton(
-            text: dicStaking['action.nominate'],
+          child: PluginButton(
+            title: dicStaking['action.nominate']!,
             onPressed: _selected.length > 0 ? _setNominee : null,
           ),
         ),

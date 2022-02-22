@@ -10,6 +10,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 
 class StakePage extends StatefulWidget {
@@ -45,6 +46,7 @@ class _StakePageState extends State<StakePage> {
           },
           params: [],
           rawParams: '[[$txBond,$txNominate]]',
+          isPlugin: true,
         ));
     if (res != null) {
       Navigator.of(context).pop(res);
@@ -64,8 +66,8 @@ class _StakePageState extends State<StakePage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
 
-    return Scaffold(
-      appBar: AppBar(
+    return PluginScaffold(
+      appBar: PluginAppBar(
         title: Text('${dic['staking']} ${_step + 1}/2'),
         centerTitle: true,
         leading: BackBtn(

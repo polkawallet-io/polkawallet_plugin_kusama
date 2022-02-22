@@ -35,6 +35,41 @@ class PluginFmt {
     };
   }
 
+  static int sortValidatorList(
+      Map addressIndexMap, ValidatorData a, ValidatorData b, int sortType) {
+    if (a.commission == null || a.commission == 0) {
+      return 1;
+    }
+    if (b.commission == null || b.commission == 0) {
+      return -1;
+    }
+    switch (sortType) {
+      case 0:
+        return a.rankReward! < b.rankReward! ? 1 : -1;
+      case 1:
+        return a.rankBondTotal! > b.rankBondTotal! ? 1 : -1;
+      case 2:
+        return a.commission == b.commission
+            ? a.rankReward! < b.rankReward!
+                ? 1
+                : -1
+            : a.commission > b.commission
+                ? 1
+                : -1;
+      case 3:
+        final infoA = addressIndexMap[a.accountId];
+        if (infoA != null && infoA['identity'] != null) {
+          final List judgements = infoA['identity']['judgements'];
+          if (judgements != null && judgements.length > 0) {
+            return -1;
+          }
+        }
+        return 1;
+      default:
+        return -1;
+    }
+  }
+
   static List<ValidatorData> filterValidatorList(List<ValidatorData> ls,
       List<bool> filters, String search, Map accIndexMap) {
     ls.retainWhere((i) {

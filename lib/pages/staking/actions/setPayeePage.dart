@@ -9,10 +9,11 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
-import 'package:polkawallet_ui/components/addressInputField.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginAddressTextFormField.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
 
 class SetPayeePage extends StatefulWidget {
   SetPayeePage(this.plugin, this.keyring);
@@ -174,50 +175,73 @@ class _PayeeSelectorState extends State<PayeeSelector> {
       }
     }
 
-    return Column(
-      children: <Widget>[
-        ListTile(
-          title: Text(dic['bond.reward']!),
-          subtitle: Text(rewardToOptions[
-              _rewardTo ?? widget.initialValue!.destinationId ?? 0]!),
-          trailing: Icon(Icons.arrow_forward_ios, size: 18),
-          onTap: () {
-            showCupertinoModalPopup(
-              context: context,
-              builder: (_) => Container(
-                height: MediaQuery.of(context).copyWith().size.height / 3,
-                child: CupertinoPicker(
-                  backgroundColor: Colors.white,
-                  itemExtent: 56,
-                  scrollController: FixedExtentScrollController(
-                      initialItem:
-                          _rewardTo ?? widget.initialValue!.destinationId ?? 0),
-                  children: rewardToOptions
-                      .map((i) => Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Text(
-                              i!,
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ))
-                      .toList(),
-                  onSelectedItemChanged: (v) {
-                    setState(() {
-                      _rewardTo = v;
-                      _rewardAccount = widget.keyring.current;
-                    });
-                    widget.onChange!(v, widget.keyring.current.address);
-                  },
-                ),
+    return PluginInputItem(
+      label: dic['bond.reward']!,
+      child: Column(
+        children: <Widget>[
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      rewardToOptions[_rewardTo ??
+                          widget.initialValue!.destinationId ??
+                          0]!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(color: Color(0xCCFFFFFF)),
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18,
+                    color: Color(0xCCFFFFFF),
+                  )
+                ],
               ),
-            );
-          },
-        ),
-        Visibility(
+            ),
+            onTap: () {
+              showCupertinoModalPopup(
+                context: context,
+                builder: (_) => Container(
+                  height: MediaQuery.of(context).copyWith().size.height / 3,
+                  child: CupertinoPicker(
+                    backgroundColor: Colors.white,
+                    itemExtent: 56,
+                    scrollController: FixedExtentScrollController(
+                        initialItem: _rewardTo ??
+                            widget.initialValue!.destinationId ??
+                            0),
+                    children: rewardToOptions
+                        .map((i) => Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Text(
+                                i!,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ))
+                        .toList(),
+                    onSelectedItemChanged: (v) {
+                      setState(() {
+                        _rewardTo = v;
+                        _rewardAccount = widget.keyring.current;
+                      });
+                      widget.onChange!(v, widget.keyring.current.address);
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+          Visibility(
             visible: (_rewardTo ?? widget.initialValue!.destinationId) == 3,
-            child: Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: AddressInputField(
+            child: Container(
+              margin: EdgeInsets.only(top: 12),
+              child: PluginAddressTextFormField(
                 widget.plugin.sdk.api,
                 widget.keyring.allWithContacts,
                 initialValue: _rewardAccount ?? defaultAcc,
@@ -229,22 +253,24 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                 },
                 key: ValueKey<KeyPairData?>(_rewardAccount),
               ),
-            )),
-        Visibility(
-            visible: _rewardTo == 3,
-            child: Row(
-              children: [
-                Expanded(
-                    child: TextTag(
-                  dic['stake.payee.warn'],
-                  color: Colors.deepOrange,
-                  fontSize: 12,
-                  margin: EdgeInsets.all(16),
-                  padding: EdgeInsets.all(8),
-                ))
-              ],
-            )),
-      ],
+            ),
+          ),
+          Visibility(
+              visible: _rewardTo == 3,
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextTag(
+                    dic['stake.payee.warn'],
+                    color: Colors.deepOrange,
+                    fontSize: 12,
+                    margin: EdgeInsets.symmetric(vertical: 16),
+                    padding: EdgeInsets.all(8),
+                  ))
+                ],
+              )),
+        ],
+      ),
     );
   }
 }
