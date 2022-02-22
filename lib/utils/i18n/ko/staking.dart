@@ -10,7 +10,7 @@ const Map<String, String> enStaking = {
   'elected': 'Elected',
   'waiting': 'Waiting',
   'filter.comm': 'no 20%+ comm',
-  'filter.id': 'only have an ID',
+  'filter.id': 'only with ID',
   'nominators': 'Nominators',
   'session': 'Session',
   'era': 'Era',
