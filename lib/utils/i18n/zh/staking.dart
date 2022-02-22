@@ -95,5 +95,13 @@ const Map<String, String> zhStaking = {
   'v3.minThreshold': '最低提名',
   'v3.unbondingPeriod': '解绑时间',
   'v3.activeNominators': '活跃提名者',
-  'v3.goStake': '去质押'
+  'v3.goStake': '去质押',
+  'v3.myStaked': '我的质押',
+  'v3.newGains': '最近收益',
+  'v3.unstaking': '解锁中',
+  'v3.nominations': '提名',
+  'v3.rewardDest': '分红方式',
+  'v3.rewardDetail': '分红详情',
+  'v3.account': '账户',
+  'v3.stopAll': '全部停止',
 };

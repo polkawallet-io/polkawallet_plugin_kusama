@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -38,6 +39,7 @@ class _OverViewState extends State<OverView> {
               padding: EdgeInsets.only(bottom: 20, top: 10),
               child: PluginButton(
                 title: dicStaking['v3.goStake']!,
+                onPressed: () => Navigator.pushNamed(context, StakePage.route),
               ))
         ],
       ),
@@ -70,7 +72,6 @@ class _OverViewWidgetState extends State<OverViewWidget> {
       final overview = widget.plugin.store.staking.overview;
       double stakedRatio = 0;
       BigInt totalStaked = BigInt.zero;
-      print(overview);
       if (overview['totalStaked'] != null) {
         totalStaked = Fmt.balanceInt('0x${overview['totalStaked']}');
         stakedRatio = totalStaked / Fmt.balanceInt(overview['totalIssuance']);
@@ -177,25 +178,25 @@ class _OverViewWidgetState extends State<OverViewWidget> {
                         // TODO:update content
                         InfoItemRow(
                           dicStaking['v3.lastReward']!,
-                          "asdafs $symbol",
+                          "TODO $symbol",
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         ),
                         InfoItemRow(
                           dicStaking['v3.minThreshold']!,
-                          "asdafs $symbol",
+                          "TODO $symbol",
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         ),
                         InfoItemRow(
                           dicStaking['v3.unbondingPeriod']!,
-                          "asdafs ",
+                          "TODO",
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         ),
                         InfoItemRow(
                           dicStaking['v3.activeNominators']!,
-                          "asdafs ",
+                          "TODO",
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         )

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/overView.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingHistoryPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingView.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
@@ -38,8 +40,8 @@ class _StakingPageState extends State<StakingPage> {
             Container(
               margin: EdgeInsets.only(right: 16),
               child: PluginIconButton(
-                // onPressed: () =>
-                //     Navigator.of(context).pushNamed(LoanHistoryPage.route),
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(StakingHistoryPage.route),
                 icon: Icon(
                   Icons.history,
                   size: 22,
@@ -52,10 +54,10 @@ class _StakingPageState extends State<StakingPage> {
         body: Observer(builder: (_) {
           final isDataLoading =
               widget.plugin.store.staking.ownStashInfo != null;
-          final isStash = widget
+          final isStash = isDataLoading&&(widget
                   .plugin.store.staking.ownStashInfo!.isOwnStash! ||
               (!widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
-                  !widget.plugin.store.staking.ownStashInfo!.isOwnController!);
+                  !widget.plugin.store.staking.ownStashInfo!.isOwnController!));
           return SafeArea(
               child: !isDataLoading
                   ? Column(
@@ -74,8 +76,7 @@ class _StakingPageState extends State<StakingPage> {
                                   null &&
                               isStash
                           ? OverView(widget.plugin)
-                          : Container() //staking,
-                      ));
+                          : StakingView(widget.plugin)));
         }));
   }
 }
