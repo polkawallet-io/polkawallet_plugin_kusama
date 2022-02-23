@@ -165,6 +165,7 @@ class _StakingOverviewPageState extends State<StakingOverviewPage> {
       call: 'chill',
       txDisplay: {'action': 'chill'},
       params: [],
+      isPlugin: true,
     );
     _onAction(() => Navigator.of(context)
         .pushNamed(TxConfirmPage.route, arguments: params));

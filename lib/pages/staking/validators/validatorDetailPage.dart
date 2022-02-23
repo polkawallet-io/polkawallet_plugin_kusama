@@ -10,10 +10,10 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/accountInfo.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
-import 'package:polkawallet_ui/components/borderedTitle.dart';
-import 'package:polkawallet_ui/components/infoItem.dart';
-import 'package:polkawallet_ui/components/v3/roundedCard.dart';
-import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
+import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -43,17 +43,17 @@ class ValidatorDetailPage extends StatelessWidget {
 
           final primaryColor = Theme.of(context).primaryColor;
 
-          return Scaffold(
-            appBar: AppBar(
-                title: Text(dicStaking['validator']!),
-                centerTitle: true,
-                leading: BackBtn()),
+          return PluginScaffold(
+            appBar: PluginAppBar(
+                title: Text(dicStaking['validator']!), centerTitle: true),
             body: SafeArea(
               child: ListView.builder(
-                itemCount: 2 + nominatorsCount,
+                itemCount: 3,
                 itemBuilder: (_, i) {
                   if (i == 0) {
-                    return RoundedCard(
+                    return RoundedPluginCard(
+                      borderRadius:
+                          const BorderRadius.all(const Radius.circular(14)),
                       margin: EdgeInsets.all(16),
                       child: Column(
                         children: <Widget>[
@@ -69,55 +69,77 @@ class ValidatorDetailPage extends StatelessWidget {
                                       color: Theme.of(context).errorColor,
                                       size: 16,
                                     ),
-                                    Text(dicStaking['blocking']!)
+                                    Text(
+                                      dicStaking['blocking']!,
+                                      style: TextStyle(color: Colors.white),
+                                    )
                                   ],
                                 ),
                               )),
-                          Stack(
-                            alignment: AlignmentDirectional.topEnd,
-                            children: [
-                              AccountInfo(
-                                network: plugin.basic.name,
-                                accInfo: accInfo,
-                                address: detail.accountId,
-                                icon: accIcon,
-                              ),
-                              GestureDetector(
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 24, right: 24),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Icon(
-                                        Icons.insert_chart_outlined,
-                                        color: primaryColor,
-                                      ),
-                                      Text(
-                                        dicStaking['validator.chart']!,
-                                        style: TextStyle(color: primaryColor),
-                                      )
-                                    ],
+                          AccountInfo(
+                            network: plugin.basic.name,
+                            accInfo: accInfo,
+                            address: detail.accountId,
+                            icon: accIcon,
+                            isPlugin: true,
+                            charts: GestureDetector(
+                              onTap: () => Navigator.of(context).pushNamed(
+                                  ValidatorChartsPage.route,
+                                  arguments: detail),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    dicStaking['validator.chart']!,
+                                    style: TextStyle(
+                                        color: PluginColorsDark.primary),
                                   ),
-                                ),
-                                onTap: () => Navigator.of(context).pushNamed(
-                                    ValidatorChartsPage.route,
-                                    arguments: detail),
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 2),
+                                      child: Icon(
+                                        Icons.insert_chart_outlined,
+                                        color: PluginColorsDark.primary,
+                                        size: 17,
+                                      )),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                           Divider(),
                           Padding(
                             padding: EdgeInsets.only(top: 16, left: 24),
                             child: Row(
                               children: <Widget>[
-                                InfoItem(
+                                PluginInfoItem(
                                   title: dicStaking['stake.own'],
                                   content: Fmt.token(detail.bondOwn, decimals),
+                                  contentCrossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  titleStyle: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      ?.copyWith(color: Colors.white),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      ?.copyWith(
+                                          fontSize: 22, color: Colors.white),
                                 ),
-                                InfoItem(
+                                PluginInfoItem(
                                   title: dicStaking['stake.other'],
                                   content:
                                       Fmt.token(detail.bondOther, decimals),
+                                  contentCrossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  titleStyle: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      ?.copyWith(color: Colors.white),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      ?.copyWith(
+                                          fontSize: 22, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -127,15 +149,37 @@ class ValidatorDetailPage extends StatelessWidget {
                                 EdgeInsets.only(top: 16, left: 24, bottom: 24),
                             child: Row(
                               children: <Widget>[
-                                InfoItem(
+                                PluginInfoItem(
                                   title: dicStaking['commission'],
                                   content: NumberFormat('0.00%')
                                       .format(detail.commission / 100),
+                                  contentCrossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  titleStyle: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      ?.copyWith(color: Colors.white),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      ?.copyWith(
+                                          fontSize: 22, color: Colors.white),
                                 ),
-                                InfoItem(
+                                PluginInfoItem(
                                   title: dicStaking['reward'],
                                   content:
                                       '${detail.stakedReturnCmp.toStringAsFixed(2)}%',
+                                  contentCrossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  titleStyle: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      ?.copyWith(color: Colors.white),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      ?.copyWith(
+                                          fontSize: 22, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -155,8 +199,15 @@ class ValidatorDetailPage extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 16, top: 16),
-                          child: BorderedTitle(
-                            title: dicStaking['nominators'],
+                          child: Text(
+                            dicStaking['nominators']!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline3
+                                ?.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white),
                           ),
                         ),
                         FutureBuilder(
@@ -167,17 +218,36 @@ class ValidatorDetailPage extends StatelessWidget {
                     );
                   }
                   if (detail.isElected!) {
-                    final item = detail.nominators[i - 2];
-                    return ListTile(
-                      leading: AddressIcon(item['who'],
-                          size: 32,
-                          svg: plugin
-                              .store.accounts.addressIconsMap[item['who']]),
-                      title: UI.accountDisplayName(item['who'],
-                          plugin.store.accounts.addressIndexMap[item['who']]),
-                      trailing: Text(
-                          '${Fmt.balance(item['value'].toString(), plugin.networkState.tokenDecimals![0])} ${plugin.networkState.tokenSymbol![0]}'),
-                    );
+                    return RoundedPluginCard(
+                        margin: EdgeInsets.all(16),
+                        borderRadius:
+                            const BorderRadius.all(const Radius.circular(16)),
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) => Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  child: Divider(),
+                                ),
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: detail.nominators.length,
+                            itemBuilder: (context, index) {
+                              final item = detail.nominators[index];
+                              return ListTile(
+                                leading: AddressIcon(item['who'],
+                                    size: 32,
+                                    svg: plugin.store.accounts
+                                        .addressIconsMap[item['who']]),
+                                title: UI.accountDisplayName(
+                                    item['who'],
+                                    plugin.store.accounts
+                                        .addressIndexMap[item['who']],
+                                    textColor: Colors.white),
+                                trailing: Text(
+                                  '${Fmt.balance(item['value'].toString(), plugin.networkState.tokenDecimals![0])} ${plugin.networkState.tokenSymbol![0]}',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                            }));
                   }
                   return Container();
                 },

@@ -3,6 +3,7 @@ import 'package:polkawallet_plugin_kusama/service/walletApi.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
 import 'package:polkawallet_plugin_kusama/utils/format.dart';
 import 'package:polkawallet_sdk/api/api.dart';
+import 'package:polkawallet_sdk/api/subscan.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 
 class ApiStaking {
@@ -37,13 +38,14 @@ class ApiStaking {
     return {};
   }
 
-  Future<Map> updateStakingTxs(int page) async {
+  Future<Map> updateStakingTxs(int page, {int size = tx_list_page_size}) async {
     store!.staking.setTxsLoading(true);
 
     final res = await Future.wait([
       api.subScan.fetchTxsAsync(
         'staking',
         page: page,
+        size: size,
         sender: keyring.current.address,
         network: plugin.basic.name!,
       ),
@@ -51,6 +53,7 @@ class ApiStaking {
         'utility',
         call: 'batchAll',
         page: page,
+        size: size,
         sender: keyring.current.address,
         network: plugin.basic.name!,
       ),

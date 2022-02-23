@@ -7,6 +7,8 @@ import 'package:polkawallet_ui/components/TransferIcon.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart'
+    as rewardDetail;
 import 'package:polkawallet_ui/utils/format.dart';
 
 class RewardDetailPage extends StatefulWidget {
@@ -145,7 +147,7 @@ class _RewardDetailPageState extends State<RewardDetailPage> {
                             ),
                             onTap: () {
                               Navigator.of(context).pushNamed(
-                                  RewardDetailPage.route,
+                                  rewardDetail.RewardDetailPage.route,
                                   arguments: i);
                             },
                           ),

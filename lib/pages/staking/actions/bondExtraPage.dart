@@ -12,6 +12,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputBalance.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -112,13 +113,17 @@ class _BondExtraPageState extends State<BondExtraPage> {
                         txDisplayBold: {
                           dic["amount"]!: Text(
                             '$inputAmount $symbol',
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                ?.copyWith(color: PluginColorsDark.headline1),
                           ),
                         },
                         params: [
                           // "amount"
                           Fmt.tokenInt(inputAmount, decimals).toString(),
                         ],
+                        isPlugin: true,
                       );
                     }
                     return null;

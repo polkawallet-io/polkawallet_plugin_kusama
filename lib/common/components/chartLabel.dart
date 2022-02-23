@@ -19,7 +19,10 @@ class ChartLabel extends StatelessWidget {
             border: Border(bottom: BorderSide(width: 3, color: color!)),
           ),
         ),
-        Text(name!),
+        Text(
+          name!,
+          style: TextStyle(color: Colors.white),
+        ),
       ],
     );
   }

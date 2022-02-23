@@ -51,6 +51,7 @@ class _NominateFormState extends State<NominateForm> {
       },
       txDisplayBold: {},
       params: [targets],
+      isPlugin: true,
     ));
   }
 

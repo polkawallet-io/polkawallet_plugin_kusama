@@ -7,6 +7,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -107,13 +108,17 @@ class _RebondPageState extends State<RebondPage> {
                         txDisplayBold: {
                           dic["amount"]!: Text(
                             '$inputAmount $symbol',
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                ?.copyWith(color: PluginColorsDark.headline1),
                           ),
                         },
                         params: [
                           // "amount"
                           Fmt.tokenInt(inputAmount, decimals).toString(),
                         ],
+                        isPlugin: true,
                       );
                     }
                     return null;

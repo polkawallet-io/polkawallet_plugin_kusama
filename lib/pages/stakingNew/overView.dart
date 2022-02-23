@@ -55,10 +55,30 @@ class OverViewWidget extends StatefulWidget {
   State<OverViewWidget> createState() => _OverViewWidgetState();
 }
 
-class _OverViewWidgetState extends State<OverViewWidget> {
+class _OverViewWidgetState extends State<OverViewWidget>
+    with TickerProviderStateMixin {
+  late AnimationController controller;
+  double animationNumber = 0;
+  late Animation<double> animation;
+  bool isInit = true;
+
   Future<void> _updateData() async {
     await widget.plugin.service.staking.queryElectedInfo();
     widget.plugin.service.staking.queryMarketPrices();
+  }
+
+  void _startAnimation(double progress) {
+    this.controller = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    animation = Tween(begin: 0.0, end: progress).animate(controller);
+    animation.addListener(() {
+      setState(() {
+        animationNumber = animation.value;
+      });
+    });
+    Future.delayed(Duration(milliseconds: 350), () {
+      controller.forward();
+    });
   }
 
   @override
@@ -82,6 +102,11 @@ class _OverViewWidgetState extends State<OverViewWidget> {
 
       final labelStyle =
           Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white);
+
+      if (!isDataLoading && isInit) {
+        isInit = false;
+        _startAnimation(stakedRatio * 0.4 + 0.6);
+      }
       return isDataLoading
           ? Column(
               children: [
@@ -102,7 +127,7 @@ class _OverViewWidgetState extends State<OverViewWidget> {
                               startAngle: pi * 3 / 2,
                               width: 12,
                               lineColor: [Color(0x0FFFFFFF), Color(0xFF81FEB9)],
-                              progress: stakedRatio * 0.4 + 0.6),
+                              progress: animationNumber),
                         )),
                     Column(
                       children: [
@@ -137,7 +162,7 @@ class _OverViewWidgetState extends State<OverViewWidget> {
                     ),
                   ]),
                   PluginTagCard(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 15),
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                     titleTag: dicStaking['v3.information'],
                     radius: const Radius.circular(14),

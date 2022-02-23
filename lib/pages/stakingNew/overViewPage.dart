@@ -40,7 +40,7 @@ class _OverViewPageState extends State<OverViewPage> {
                   });
                 },
                 _tabIndex,
-                margin: EdgeInsets.only(top: 32),
+                margin: EdgeInsets.only(top: 22),
               ),
               Expanded(
                   child: Container(

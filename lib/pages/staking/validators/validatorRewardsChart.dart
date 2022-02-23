@@ -79,24 +79,26 @@ class RewardsChart extends StatelessWidget {
           getTouchedSpotIndicator: (data, ints) {
             return ints
                 .map((e) => TouchedSpotIndicatorData(
-                    FlLine(color: Colors.black, strokeWidth: 2),
+                    FlLine(color: Colors.white, strokeWidth: 2),
                     FlDotData(
                       show: true,
                       getDotPainter: (p0, p1, p2, p3) {
                         return FlDotCirclePainter(
-                            radius: 3, color: Colors.black);
+                            radius: 3, color: Colors.white);
                       },
                     )))
                 .toList();
           },
           touchTooltipData: LineTouchTooltipData(
-              tooltipBgColor: Color(0xA0000000),
+              tooltipBgColor: Color(0x88000000),
               getTooltipItems: (datas) {
                 int i = 0;
                 return datas.map((e) {
                   return LineTooltipItem("", TextStyle(), children: [
                     (i++) == 0
-                        ? TextSpan(text: "X:${(minXValue + e.x).toInt()}\n")
+                        ? TextSpan(
+                            text: "X:${(minXValue + e.x).toInt()}\n",
+                            style: TextStyle(color: Colors.white))
                         : TextSpan(),
                     TextSpan(
                         text: "${e.y.toStringAsFixed(6)}",
@@ -109,7 +111,8 @@ class RewardsChart extends StatelessWidget {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (context, index) => const TextStyle(fontSize: 12),
+          getTextStyles: (context, index) =>
+              const TextStyle(fontSize: 12, color: Colors.white),
           getTitles: (value) {
             return "${(minXValue + value).toInt()}";
           },
@@ -119,7 +122,8 @@ class RewardsChart extends StatelessWidget {
         rightTitles: SideTitles(showTitles: false),
         leftTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (context, index) => const TextStyle(fontSize: 12),
+          getTextStyles: (context, index) =>
+              const TextStyle(fontSize: 12, color: Colors.white),
           getTitles: (value) {
             return value.toStringAsFixed(2);
           },

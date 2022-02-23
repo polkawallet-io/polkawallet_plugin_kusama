@@ -27,7 +27,9 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginOutlinedButtonSmall.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTagCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
+import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 import 'package:intl/intl.dart';
@@ -44,6 +46,8 @@ class StakingView extends StatefulWidget {
 class _StakingViewState extends State<StakingView> {
   Future<void> _updateData() async {
     await widget.plugin.service.staking.queryMarketPrices();
+    widget.plugin.service.staking.updateStakingTxs(0);
+    widget.plugin.service.staking.updateStakingRewards();
   }
 
   void _onAction(Future<dynamic> Function() doAction) {
@@ -52,6 +56,21 @@ class _StakingViewState extends State<StakingView> {
         _updateData();
       }
     });
+  }
+
+  Future<void> _chill() async {
+    final dicStaking =
+        I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
+    final params = TxConfirmParams(
+      txTitle: dicStaking['action.chill'],
+      module: 'staking',
+      call: 'chill',
+      txDisplay: {'action': 'chill'},
+      params: [],
+      isPlugin: true,
+    );
+    _onAction(() => Navigator.of(context)
+        .pushNamed(TxConfirmPage.route, arguments: params));
   }
 
   @override
@@ -419,7 +438,7 @@ class _StakingViewState extends State<StakingView> {
                                   active: true,
                                   fontSize: 12,
                                   minSize: 19,
-                                  onPressed: () {},
+                                  onPressed: () => _chill(),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 4, vertical: 2),
                                 )

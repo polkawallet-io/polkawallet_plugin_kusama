@@ -80,6 +80,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
         // "to"
         to == 3 ? {'Account': _rewardAccount} : to,
       ],
+      isPlugin: true,
     );
   }
 

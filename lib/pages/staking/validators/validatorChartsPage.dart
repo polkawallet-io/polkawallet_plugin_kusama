@@ -8,7 +8,8 @@ import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 
 class ValidatorChartsPage extends StatelessWidget {
   ValidatorChartsPage(this.plugin, this.keyring);
@@ -31,17 +32,15 @@ class ValidatorChartsPage extends StatelessWidget {
           final ValidatorData detail =
               ModalRoute.of(context)!.settings.arguments as ValidatorData;
 
-          return Scaffold(
-            appBar: AppBar(
-                title: Text(dic['validator.chart']!),
-                centerTitle: true,
-                leading: BackBtn()),
+          return PluginScaffold(
+            appBar: PluginAppBar(
+                title: Text(dic['validator.chart']!), centerTitle: true),
             body: SafeArea(
               child: FutureBuilder(
                 future: _getValidatorRewardsData(detail.accountId),
                 builder: (_, data) {
                   if (!data.hasData) {
-                    return Center(child: CupertinoActivityIndicator());
+                    return Center(child: PluginLoadingWidget());
                   }
                   final rewardsChartData = plugin
                       .store.staking.rewardsChartDataCache[detail.accountId!];
@@ -85,7 +84,7 @@ class ValidatorChartsPage extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 16),
                         child: rewardsChartData == null
                             ? CupertinoActivityIndicator()
-                            : new RewardsChart.withData(
+                            : RewardsChart.withData(
                                 pointsChartLines,
                                 rewardsChartData['points'][0],
                                 rewardsChartData['points'][1],
@@ -118,7 +117,7 @@ class ValidatorChartsPage extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 16),
                         child: rewardsChartData == null
                             ? CupertinoActivityIndicator()
-                            : new RewardsChart.withData(
+                            : RewardsChart.withData(
                                 rewardChartLines,
                                 rewardsChartData['rewards'][0],
                                 rewardsChartData['rewards'][1],
@@ -147,7 +146,7 @@ class ValidatorChartsPage extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 16),
                         child: rewardsChartData == null
                             ? CupertinoActivityIndicator()
-                            : new RewardsChart.withData(
+                            : RewardsChart.withData(
                                 stakesChartLines,
                                 List<List>.from([
                                   rewardsChartData['stakes'][0][1],

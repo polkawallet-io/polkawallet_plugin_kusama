@@ -204,6 +204,7 @@ class _BondPageState extends State<BondPage> {
                     // "to"
                     _rewardTo == 3 ? {'Account': _rewardAccount} : _rewardTo,
                   ],
+                  isPlugin: true,
                 ));
               }
             },

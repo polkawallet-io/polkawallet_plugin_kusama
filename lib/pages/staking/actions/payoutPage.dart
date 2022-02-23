@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_sdk/plugin/store/balances.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
@@ -9,8 +10,10 @@ import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginInputBalance.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -144,6 +147,7 @@ class _PayoutPageState extends State<PayoutPage> {
           // era
           era.toString(),
         ],
+        isPlugin: true,
       );
     }
 
@@ -170,6 +174,7 @@ class _PayoutPageState extends State<PayoutPage> {
       },
       params: [],
       rawParams: '[[${params.join(',')}]]',
+      isPlugin: true,
     );
   }
 
@@ -179,6 +184,7 @@ class _PayoutPageState extends State<PayoutPage> {
     final dicStaking =
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final decimals = widget.plugin.networkState.tokenDecimals![0];
+    final symbol = widget.plugin.networkState.tokenSymbol![0];
 
     late BigInt rewardTotal;
     if (_rewards != null) {
@@ -209,11 +215,19 @@ class _PayoutPageState extends State<PayoutPage> {
                   Visibility(
                       visible: _eraOptions.length > 0,
                       child: ListTile(
-                        title: Text(dicStaking['reward.time']!),
+                        title: Text(dicStaking['reward.time']!,
+                            style: TextStyle(color: Colors.white)),
                         subtitle: _eraOptions.length > 0
-                            ? Text(_getEraText(_eraOptions[_eraSelected]))
+                            ? Text(
+                                _getEraText(_eraOptions[_eraSelected]),
+                                style: TextStyle(color: Colors.white),
+                              )
                             : null,
-                        trailing: Icon(Icons.arrow_forward_ios, size: 18),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 18,
+                          color: Colors.white,
+                        ),
                         onTap: _loading ? null : () => _showEraSelect(),
                       )),
                   _loading
@@ -234,18 +248,21 @@ class _PayoutPageState extends State<PayoutPage> {
                         )
                       : Padding(
                           padding: EdgeInsets.only(left: 16, right: 16),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              labelText: dic!['amount'],
-                            ),
-                            initialValue: Fmt.token(
+                          child: PluginInputBalance(
+                            margin: EdgeInsets.only(top: 10),
+                            enabled: false,
+                            text: Fmt.token(
                               rewardTotal,
                               decimals,
                               length: 8,
                             ),
-                            readOnly: true,
-                          ),
-                        ),
+                            titleTag: dic!['reward'],
+                            balance: TokenBalanceData(
+                                symbol: symbol,
+                                decimals: decimals,
+                                amount: rewardTotal.toString()),
+                            tokenIconsMap: widget.plugin.tokenIcons,
+                          )),
                   Visibility(
                       visible: validators.length > 0,
                       child: Column(
@@ -255,9 +272,7 @@ class _PayoutPageState extends State<PayoutPage> {
                             margin: EdgeInsets.only(left: 16, top: 16),
                             child: Text(
                               dicStaking['validators']!,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).unselectedWidgetColor),
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                           ...validators.map((e) {
@@ -272,14 +287,18 @@ class _PayoutPageState extends State<PayoutPage> {
                               title: UI.accountDisplayName(
                                   e['validatorId'],
                                   widget.plugin.store.accounts
-                                      .addressIndexMap[e['validatorId']]),
-                              subtitle: Text('eras: ' +
-                                  List.of(e['eras'])
-                                      .map((e) =>
-                                          int.tryParse(e['era'].toString()))
-                                      .join(', ')),
-                              trailing:
-                                  Text(Fmt.balance(e['available'], decimals)),
+                                      .addressIndexMap[e['validatorId']],
+                                  textColor: Colors.white),
+                              subtitle: Text(
+                                  'eras: ' +
+                                      List.of(e['eras'])
+                                          .map((e) =>
+                                              int.tryParse(e['era'].toString()))
+                                          .join(', '),
+                                  style: TextStyle(color: Colors.white)),
+                              trailing: Text(
+                                  Fmt.balance(e['available'], decimals),
+                                  style: TextStyle(color: Colors.white)),
                             );
                           }).toList()
                         ],
@@ -291,7 +310,7 @@ class _PayoutPageState extends State<PayoutPage> {
               padding: EdgeInsets.all(16),
               child: Visibility(
                   visible: _rewards != null && _rewards!['available'] != null,
-                  child: TxButton(
+                  child: PluginTxButton(
                     getTxParams: _getParams,
                     onFinish: (Map? res) {
                       if (res != null) {

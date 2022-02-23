@@ -119,8 +119,8 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       txDisplayBold: {
                         "controller": Container(
                           margin: EdgeInsets.only(right: 16),
-                          child: AddressFormItem(
-                            controller,
+                          child: PluginAddressFormItem(
+                            account: controller,
                             svg: controller.icon,
                           ),
                         )
@@ -129,6 +129,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
                         // "address"
                         controller.address,
                       ],
+                      isPlugin: true,
                     );
                   },
                   onFinish: (Map? res) {
