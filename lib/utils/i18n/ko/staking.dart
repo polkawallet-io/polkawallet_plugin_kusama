@@ -111,4 +111,5 @@ const Map<String, String> enStaking = {
   'v3.rewardDetail': 'Reward Detail',
   'v3.account': 'Account',
   'v3.stopAll': 'Stop All',
+  'v3.stagedRewards': 'Staged Rewards'
 };
