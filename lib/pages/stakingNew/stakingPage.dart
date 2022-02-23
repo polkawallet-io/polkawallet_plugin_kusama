@@ -54,10 +54,11 @@ class _StakingPageState extends State<StakingPage> {
         body: Observer(builder: (_) {
           final isDataLoading =
               widget.plugin.store.staking.ownStashInfo != null;
-          final isStash = isDataLoading&&(widget
-                  .plugin.store.staking.ownStashInfo!.isOwnStash! ||
-              (!widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
-                  !widget.plugin.store.staking.ownStashInfo!.isOwnController!));
+          final isStash = isDataLoading &&
+              (widget.plugin.store.staking.ownStashInfo!.isOwnStash! ||
+                  (!widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
+                      !widget.plugin.store.staking.ownStashInfo!
+                          .isOwnController!));
           return SafeArea(
               child: !isDataLoading
                   ? Column(
@@ -76,7 +77,7 @@ class _StakingPageState extends State<StakingPage> {
                                   null &&
                               isStash
                           ? OverView(widget.plugin)
-                          : StakingView(widget.plugin)));
+                          : StakingView(widget.plugin, widget.keyring)));
         }));
   }
 }

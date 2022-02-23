@@ -12,8 +12,11 @@ import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 
 class SetPayeePage extends StatefulWidget {
   SetPayeePage(this.plugin, this.keyring);
@@ -91,13 +94,10 @@ class _SetPayeePageState extends State<SetPayeePage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(dic['action.setting']!),
+    return PluginScaffold(
+      appBar: PluginAppBar(
+        title: Text(dic['v3.rewardDest']!),
         centerTitle: true,
-        leading: BackBtn(
-          onBack: () => Navigator.of(context).pop(),
-        ),
       ),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
@@ -105,11 +105,12 @@ class _SetPayeePageState extends State<SetPayeePage> {
             children: <Widget>[
               Expanded(
                 child: ListView(
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 8),
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16, top: 8),
-                      child: AddressFormItem(
-                        widget.keyring.current,
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: PluginAddressFormItem(
+                        account: widget.keyring.current,
                         label: dic['controller'],
                       ),
                     ),
@@ -124,7 +125,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
               ),
               Padding(
                 padding: EdgeInsets.all(16),
-                child: TxButton(
+                child: PluginTxButton(
                   getTxParams: _getTxParams,
                   onFinish: (Map? res) {
                     if (res != null) {

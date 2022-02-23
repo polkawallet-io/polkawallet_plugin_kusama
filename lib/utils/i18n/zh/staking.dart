@@ -101,7 +101,8 @@ const Map<String, String> zhStaking = {
   'v3.unstaking': '解锁中',
   'v3.nominations': '提名',
   'v3.rewardDest': '分红方式',
-  'v3.rewardDetail': '分红详情',
+  'v3.rewardDetail': '收益详情',
   'v3.account': '账户',
   'v3.stopAll': '全部停止',
+  'v3.stagedRewards': '阶段性收益'
 };

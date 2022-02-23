@@ -9,6 +9,9 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 
 class SetControllerPage extends StatefulWidget {
   SetControllerPage(this.plugin, this.keyring);
@@ -50,13 +53,10 @@ class _SetControllerPageState extends State<SetControllerPage> {
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(dic['action.control']!),
+    return PluginScaffold(
+      appBar: PluginAppBar(
+        title: Text(dic['v3.account']!),
         centerTitle: true,
-        leading: BackBtn(
-          onBack: () => Navigator.of(context).pop(),
-        ),
       ),
       body: Builder(builder: (BuildContext context) {
         final controller = _controller ?? widget.keyring.current;
@@ -67,24 +67,26 @@ class _SetControllerPageState extends State<SetControllerPage> {
                 child: ListView(
                   padding: EdgeInsets.all(16),
                   children: <Widget>[
-                    AddressFormItem(
-                      widget.keyring.current,
+                    PluginAddressFormItem(
+                      account: widget.keyring.current,
                       label: dic['stash'],
                     ),
-                    AddressFormItem(
-                      controller,
-                      label: dic['controller'],
-                      svg: controller.icon ??
-                          widget.plugin.store.accounts
-                              .addressIconsMap[controller.address],
-                      onTap: () => _changeControllerId(context),
-                    ),
+                    Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: PluginAddressFormItem(
+                          account: controller,
+                          label: dic['controller'],
+                          svg: controller.icon ??
+                              widget.plugin.store.accounts
+                                  .addressIconsMap[controller.address],
+                          onTap: () => _changeControllerId(context),
+                        )),
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(16),
-                child: TxButton(
+                child: PluginTxButton(
                   getTxParams: () async {
                     var currentController =
                         ModalRoute.of(context)!.settings.arguments;

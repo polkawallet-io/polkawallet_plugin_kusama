@@ -1,12 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/RewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/overViewPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
+import 'package:polkawallet_sdk/storage/keyring.dart';
+import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/connectionChecker.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
@@ -22,8 +33,9 @@ import 'package:polkawallet_ui/utils/index.dart';
 import 'package:intl/intl.dart';
 
 class StakingView extends StatefulWidget {
-  StakingView(this.plugin, {Key? key}) : super(key: key);
+  StakingView(this.plugin, this.keyring, {Key? key}) : super(key: key);
   final PluginKusama plugin;
+  final Keyring keyring;
 
   @override
   State<StakingView> createState() => _StakingViewState();
@@ -34,6 +46,14 @@ class _StakingViewState extends State<StakingView> {
     await widget.plugin.service.staking.queryMarketPrices();
   }
 
+  void _onAction(Future<dynamic> Function() doAction) {
+    doAction().then((res) {
+      if (res != null) {
+        _updateData();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
@@ -42,6 +62,9 @@ class _StakingViewState extends State<StakingView> {
 
     final labelStyle =
         Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white);
+
+    final Color actionButtonColor = Color(0xFF007AFE);
+    final Color disabledColor = Theme.of(context).unselectedWidgetColor;
     return Observer(builder: (_) {
       final isDataLoading =
           widget.plugin.store.staking.marketPrices.length == 0;
@@ -65,6 +88,38 @@ class _StakingViewState extends State<StakingView> {
 
       final decimals = (widget.plugin.networkState.tokenDecimals ?? [12])[0];
       final marketPrice = widget.plugin.store.staking.marketPrices[symbol] ?? 0;
+
+      final isStash = widget.plugin.store.staking.ownStashInfo!.isOwnStash! ||
+          (!widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
+              !widget.plugin.store.staking.ownStashInfo!.isOwnController!);
+      final isController =
+          widget.plugin.store.staking.ownStashInfo!.isOwnController;
+
+      final acc02 = KeyPairData();
+      acc02.address = widget.keyring.current.address;
+      acc02.pubKey = widget.keyring.current.pubKey;
+
+      widget.plugin.store.accounts.pubKeyAddressMap[widget.plugin.basic.ss58!]
+          ?.forEach((k, v) {
+        if (widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
+            v == widget.plugin.store.staking.ownStashInfo!.controllerId) {
+          acc02.address = v;
+          acc02.pubKey = k;
+          return;
+        }
+        if (widget.plugin.store.staking.ownStashInfo!.isOwnController! &&
+            v == widget.plugin.store.staking.ownStashInfo!.stashId) {
+          acc02.address = v;
+          acc02.pubKey = k;
+          return;
+        }
+      });
+
+      // update account icon
+      if (acc02.icon == null) {
+        acc02.icon =
+            widget.plugin.store.accounts.addressIconsMap[acc02.address];
+      }
       return isDataLoading
           ? Column(
               children: [
@@ -196,35 +251,128 @@ class _StakingViewState extends State<StakingView> {
                               .pushNamed(OverViewPage.route),
                         ),
                         GridViewItemBtn(
-                            Image.asset(
-                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_adjustBonded.png',
-                              width: 36,
-                            ),
-                            dic['action.bondAdjust']!),
+                          Image.asset(
+                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_adjustBonded.png',
+                            width: 36,
+                          ),
+                          dic['action.bondAdjust']!,
+                          onTap: () {
+                            showCupertinoModalPopup(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  CupertinoActionSheet(
+                                actions: <Widget>[
+                                  /// disable bondExtra button if account is not stash
+                                  CupertinoActionSheetAction(
+                                    child: Text(
+                                      dic['action.bondExtra']!,
+                                      style: TextStyle(
+                                        color: !isStash
+                                            ? disabledColor
+                                            : actionButtonColor,
+                                      ),
+                                    ),
+                                    onPressed: !isStash
+                                        ? () => {}
+                                        : () {
+                                            Navigator.of(context).pop();
+                                            _onAction(() =>
+                                                Navigator.of(context).pushNamed(
+                                                    BondExtraPage.route));
+                                          },
+                                  ),
+
+                                  /// disable unbond button if account is not controller
+                                  CupertinoActionSheetAction(
+                                    child: Text(
+                                      dic['action.unbond']!,
+                                      style: TextStyle(
+                                        color: !isController!
+                                            ? disabledColor
+                                            : actionButtonColor,
+                                      ),
+                                    ),
+                                    onPressed: !isController
+                                        ? () => {}
+                                        : () {
+                                            Navigator.of(context).pop();
+                                            _onAction(() =>
+                                                Navigator.of(context).pushNamed(
+                                                    UnBondPage.route));
+                                          },
+                                  ),
+
+                                  // redeem unlocked
+                                  CupertinoActionSheetAction(
+                                    child: Text(
+                                      dic['action.redeem']!,
+                                      style: TextStyle(
+                                        color: redeemable == BigInt.zero ||
+                                                !isController
+                                            ? disabledColor
+                                            : actionButtonColor,
+                                      ),
+                                    ),
+                                    onPressed: redeemable == BigInt.zero ||
+                                            !isController
+                                        ? () => {}
+                                        : () {
+                                            Navigator.of(context).pop();
+                                            _onAction(() =>
+                                                Navigator.of(context).pushNamed(
+                                                    RedeemPage.route));
+                                          },
+                                  ),
+                                ],
+                                cancelButton: CupertinoActionSheetAction(
+                                  child: Text(I18n.of(context)!.getDic(
+                                      i18n_full_dic_kusama,
+                                      'common')!['cancel']!),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                         GridViewItemBtn(
-                            Image.asset(
-                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_rewardMethod.png',
-                              width: 36,
-                            ),
-                            dic['v3.rewardDest']!),
+                          Image.asset(
+                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_rewardMethod.png',
+                            width: 36,
+                          ),
+                          dic['v3.rewardDest']!,
+                          onTap: () => _onAction(() => Navigator.of(context)
+                              .pushNamed(SetPayeePage.route)),
+                        ),
                         GridViewItemBtn(
-                            Image.asset(
-                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_rewardDetail.png',
-                              width: 36,
-                            ),
-                            dic['v3.rewardDetail']!),
+                          Image.asset(
+                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_rewardDetail.png',
+                            width: 36,
+                          ),
+                          dic['v3.rewardDetail']!,
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(RewardDetailPage.route),
+                        ),
                         GridViewItemBtn(
-                            Image.asset(
-                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_payouts.png',
-                              width: 36,
-                            ),
-                            dic['payout']!),
+                          Image.asset(
+                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_payouts.png',
+                            width: 36,
+                          ),
+                          dic['action.payout']!,
+                          onTap: () => _onAction(() => Navigator.of(context)
+                              .pushNamed(PayoutPage.route)),
+                        ),
                         GridViewItemBtn(
-                            Image.asset(
-                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_account.png',
-                              width: 36,
-                            ),
-                            dic['v3.account']!),
+                          Image.asset(
+                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_account.png',
+                            width: 36,
+                          ),
+                          dic['v3.account']!,
+                          onTap: () => _onAction(() => Navigator.of(context)
+                              .pushNamed(SetControllerPage.route,
+                                  arguments: acc02)),
+                        ),
                       ],
                     ),
                     Visibility(
@@ -296,7 +444,10 @@ class _StakingViewState extends State<StakingView> {
                   ],
                 ),
               )),
-              DragDropBtn(),
+              DragDropBtn(
+                onTap: () =>
+                    Navigator.of(context).pushNamed(NominatePage.route),
+              ),
             ]);
     });
   }
@@ -416,8 +567,7 @@ class _NomineeItem extends StatelessWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(UI.accountDisplayNameString(validator.accountId, accInfo)!,
-                  overflow: TextOverflow.ellipsis,
+              UI.accountDisplayName(validator.accountId, accInfo,
                   style: TextStyle(
                       fontSize: 14,
                       fontFamily: "TitilliumWeb",
@@ -472,7 +622,7 @@ class _NomineeItem extends StatelessWidget {
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 12),
             child: Divider(
-              color: Color(0xFFF5f5f5),
+              color: Colors.white.withAlpha(36),
               height: 5,
             ))
       ],

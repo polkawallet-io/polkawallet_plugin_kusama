@@ -8,6 +8,9 @@ import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -186,14 +189,9 @@ class _PayoutPageState extends State<PayoutPage> {
       }
     }
     final List validators = _rewards?['validators'] ?? [];
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(dicStaking['action.payout']!),
-        centerTitle: true,
-        leading: BackBtn(
-          onBack: () => Navigator.of(context).pop(),
-        ),
-      ),
+    return PluginScaffold(
+      appBar: PluginAppBar(
+          title: Text(dicStaking['action.payout']!), centerTitle: true),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -203,8 +201,8 @@ class _PayoutPageState extends State<PayoutPage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(left: 16, right: 16),
-                    child: AddressFormItem(
-                      widget.keyring.current,
+                    child: PluginAddressFormItem(
+                      account: widget.keyring.current,
                       label: dicStaking['reward.sender'],
                     ),
                   ),
@@ -223,11 +221,14 @@ class _PayoutPageState extends State<PayoutPage> {
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.all(16),
-                              child: CupertinoActivityIndicator(),
+                              child: PluginLoadingWidget(),
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width / 2,
-                              child: Text(dicStaking['reward.tip']!),
+                              child: Text(
+                                dicStaking['reward.tip']!,
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ],
                         )

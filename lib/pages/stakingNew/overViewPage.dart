@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/validators/validator.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/validator.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/overView.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
@@ -27,32 +27,32 @@ class _OverViewPageState extends State<OverViewPage> {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     return PluginScaffold(
         appBar: PluginAppBar(title: Text(dic['overview']!)),
-        body: SingleChildScrollView(
-          child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              child: Column(
-                children: [
-                  OverViewWidget(widget.plugin),
-                  PluginTabCard(
-                    [dic['elected']!, dic['waiting']!],
-                    (index) {
-                      setState(() {
-                        _tabIndex = index;
-                      });
-                    },
-                    _tabIndex,
-                    margin: EdgeInsets.only(top: 32),
-                  ),
-                  Container(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          child: Column(
+            children: [
+              OverViewWidget(widget.plugin),
+              PluginTabCard(
+                [dic['elected']!, dic['waiting']!],
+                (index) {
+                  setState(() {
+                    _tabIndex = index;
+                  });
+                },
+                _tabIndex,
+                margin: EdgeInsets.only(top: 32),
+              ),
+              Expanded(
+                  child: Container(
                       decoration: BoxDecoration(
                           color: Color(0xFFFFFFFF).withAlpha(20),
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(14),
                               topRight: Radius.circular(14),
                               bottomRight: Radius.circular(14))),
-                      child: _buildListView())
-                ],
-              )),
+                      child: _buildListView()))
+            ],
+          ),
         ));
   }
 
@@ -72,9 +72,13 @@ class _OverViewPageState extends State<OverViewPage> {
       });
     }
     final int decimals = widget.plugin.networkState.tokenDecimals![0];
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+    return ListView.separated(
+      separatorBuilder: (context, index) => Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Divider(
+            color: Colors.white.withAlpha(36),
+            height: 5,
+          )),
       itemBuilder: (context, index) {
         ValidatorData acc = ls[index];
         Map? accInfo =

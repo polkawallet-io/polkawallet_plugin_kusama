@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/nominateForm.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -10,6 +11,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginIconButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 
@@ -68,20 +70,23 @@ class _StakePageState extends State<StakePage> {
 
     return PluginScaffold(
       appBar: PluginAppBar(
-        title: Text('${dic['staking']} ${_step + 1}/2'),
-        centerTitle: true,
-        leading: BackBtn(
-          onBack: () {
-            if (_step == 1) {
-              setState(() {
-                _step = 0;
-              });
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
-      ),
+          title: Text('${dic['staking']} ${_step + 1}/2'),
+          centerTitle: true,
+          leading: PluginIconButton(
+            icon: SvgPicture.asset(
+              "packages/polkawallet_ui/assets/images/icon_back_24.svg",
+              color: Colors.black,
+            ),
+            onPressed: () {
+              if (_step == 1) {
+                setState(() {
+                  _step = 0;
+                });
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+          )),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
           child: _step == 0
