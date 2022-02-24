@@ -101,7 +101,7 @@ const Map<String, String> enStaking = {
   'v3.lastReward': 'Last Reward',
   'v3.minThreshold': 'Min Threshold',
   'v3.unbondingPeriod': 'Unbonding Period',
-  'v3.activeNominators': 'Active Nominators',
+  'v3.activeNominators': 'Nominators',
   'v3.goStake': 'Go Stake',
   'v3.myStaked': 'My Staked',
   'v3.newGains': 'New Gains',
