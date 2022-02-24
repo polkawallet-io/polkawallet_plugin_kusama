@@ -8,10 +8,8 @@ import 'package:polkawallet_sdk/api/types/staking/ownStashInfo.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
@@ -28,10 +26,14 @@ class SetPayeePage extends StatefulWidget {
 }
 
 class _SetPayeePageState extends State<SetPayeePage> {
+  final _formKey = GlobalKey<FormState>();
+
   int? _rewardTo;
   String? _rewardAccount;
 
   Future<TxConfirmParams?> _getTxParams() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return null;
+
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking');
     final rewardToOptions =
         PayeeSelector.options.map((i) => dic!['reward.$i']).toList();
@@ -115,11 +117,14 @@ class _SetPayeePageState extends State<SetPayeePage> {
                         label: dic['controller'],
                       ),
                     ),
-                    PayeeSelector(
-                      widget.plugin,
-                      widget.keyring,
-                      initialValue: widget.plugin.store.staking.ownStashInfo,
-                      onChange: _onPayeeChanged,
+                    Form(
+                      key: _formKey,
+                      child: PayeeSelector(
+                        widget.plugin,
+                        widget.keyring,
+                        initialValue: widget.plugin.store.staking.ownStashInfo,
+                        onChange: _onPayeeChanged,
+                      ),
                     )
                   ],
                 ),
@@ -192,10 +197,8 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                       rewardToOptions[_rewardTo ??
                           widget.initialValue!.destinationId ??
                           0]!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4!
-                          .copyWith(color: Color(0xCCFFFFFF)),
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                          color: Color(0xCCFFFFFF), fontSize: 14, height: 1.2),
                     ),
                   ),
                   Icon(
