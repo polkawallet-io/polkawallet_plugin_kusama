@@ -86,7 +86,6 @@ class ApiStaking {
       sender: keyring.current.address,
       network: plugin.basic.name!,
     );
-
     await store!.staking
         .addTxsRewards(res, keyring.current.pubKey, shouldCache: true);
     return res;

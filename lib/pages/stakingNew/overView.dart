@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -209,13 +210,13 @@ class _OverViewWidgetState extends State<OverViewWidget>
                         ),
                         InfoItemRow(
                           dicStaking['v3.minThreshold']!,
-                          "TODO $symbol",
+                          "${Fmt.balance(overview['minNominatorBond'], decimals)} $symbol",
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         ),
                         InfoItemRow(
                           dicStaking['v3.unbondingPeriod']!,
-                          "TODO",
+                          "≈ ${widget.plugin.basic.name == network_name_kusama ? '7' : '28'} ${dicStaking['reward.days']}",
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         ),

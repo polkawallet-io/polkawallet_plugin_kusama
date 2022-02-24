@@ -25,38 +25,6 @@ class _OverViewPageState extends State<OverViewPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
-    return PluginScaffold(
-        appBar: PluginAppBar(title: Text(dic['overview']!)),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          child: Column(
-            children: [
-              OverViewWidget(widget.plugin),
-              PluginTabCard(
-                [dic['elected']!, dic['waiting']!],
-                (index) {
-                  setState(() {
-                    _tabIndex = index;
-                  });
-                },
-                _tabIndex,
-                margin: EdgeInsets.only(top: 22),
-              ),
-              Expanded(
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xFFFFFFFF).withAlpha(20),
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(14),
-                              topRight: Radius.circular(14),
-                              bottomRight: Radius.circular(14))),
-                      child: _buildListView()))
-            ],
-          ),
-        ));
-  }
-
-  Widget _buildListView() {
     List<ValidatorData> ls = _tabIndex == 0
         ? widget.plugin.store.staking.electedInfo.toList()
         : widget.plugin.store.staking.nextUpsInfo.toList();
@@ -72,28 +40,67 @@ class _OverViewPageState extends State<OverViewPage> {
       });
     }
     final int decimals = widget.plugin.networkState.tokenDecimals![0];
-    return ListView.separated(
-      separatorBuilder: (context, index) => Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          child: Divider(
-            color: Colors.white.withAlpha(36),
-            height: 5,
-          )),
-      itemBuilder: (context, index) {
-        ValidatorData acc = ls[index];
-        Map? accInfo =
-            widget.plugin.store.accounts.addressIndexMap[acc.accountId];
-        final icon =
-            widget.plugin.store.accounts.addressIconsMap[acc.accountId];
-        return Validator(
-          acc,
-          accInfo,
-          icon,
-          decimals,
-          widget.plugin.store.staking.nominationsCount![acc.accountId] ?? 0,
-        );
-      },
-      itemCount: ls.length,
+    return PluginScaffold(
+      appBar: PluginAppBar(title: Text(dic['overview']!)),
+      body: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          itemCount: ls.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Column(
+                children: [
+                  OverViewWidget(widget.plugin),
+                  PluginTabCard(
+                    [
+                      "${dic['elected']!} (${widget.plugin.store.staking.electedInfo.length})",
+                      "${dic['waiting']} (${widget.plugin.store.staking.nextUpsInfo.length})"
+                    ],
+                    (index) {
+                      setState(() {
+                        _tabIndex = index;
+                      });
+                    },
+                    _tabIndex,
+                    margin: EdgeInsets.only(top: 22),
+                  )
+                ],
+              );
+            }
+            ValidatorData acc = ls[index - 1];
+            Map? accInfo =
+                widget.plugin.store.accounts.addressIndexMap[acc.accountId];
+            final icon =
+                widget.plugin.store.accounts.addressIconsMap[acc.accountId];
+            return Container(
+                decoration: BoxDecoration(
+                    color: Color(0x24FFFFFF),
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(index == 1 ? 14 : 0),
+                        bottomLeft:
+                            Radius.circular(index == ls.length ? 14 : 0),
+                        bottomRight:
+                            Radius.circular(index == ls.length ? 14 : 0))),
+                child: Column(
+                  children: [
+                    Validator(
+                      acc,
+                      accInfo,
+                      icon,
+                      decimals,
+                      widget.plugin.store.staking
+                              .nominationsCount![acc.accountId] ??
+                          0,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Divider(
+                          color: Colors.white.withAlpha(36),
+                          height: 5,
+                        )),
+                  ],
+                ));
+          }),
     );
   }
 }

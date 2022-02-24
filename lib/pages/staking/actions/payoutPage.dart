@@ -256,7 +256,9 @@ class _PayoutPageState extends State<PayoutPage> {
                               decimals,
                               length: 8,
                             ),
-                            titleTag: dic!['reward'],
+                            titleTag: I18n.of(context)!.getDic(
+                                i18n_full_dic_kusama,
+                                'staking')!['txs.reward.reward'],
                             balance: TokenBalanceData(
                                 symbol: symbol,
                                 decimals: decimals,

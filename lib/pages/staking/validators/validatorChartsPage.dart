@@ -46,19 +46,19 @@ class ValidatorChartsPage extends StatelessWidget {
                       .store.staking.rewardsChartDataCache[detail.accountId!];
 
                   List<ChartLineInfo> pointsChartLines = [
-                    ChartLineInfo('Era Points', Colors.yellow),
-                    ChartLineInfo('Average', Colors.grey),
+                    ChartLineInfo('Era Points', Color(0xFFFF7849)),
+                    ChartLineInfo('Average', Colors.white),
                   ];
 
                   List<ChartLineInfo> rewardChartLines = [
-                    ChartLineInfo('Slashes', Colors.red),
-                    ChartLineInfo('Rewards', Colors.blue),
-                    ChartLineInfo('Average', Colors.grey),
+                    ChartLineInfo('Slashes', Color(0xFF81FEB9)),
+                    ChartLineInfo('Rewards', Color(0xFFFF7849)),
+                    ChartLineInfo('Average', Colors.white),
                   ];
 
                   List<ChartLineInfo> stakesChartLines = [
-                    ChartLineInfo('Elected Stake', Colors.yellow),
-                    ChartLineInfo('Average', Colors.grey),
+                    ChartLineInfo('Elected Stake', Color(0xFFFF7849)),
+                    ChartLineInfo('Average', Colors.white),
                   ];
                   return ListView(
                     children: <Widget>[
@@ -69,11 +69,11 @@ class ValidatorChartsPage extends StatelessWidget {
                           children: <Widget>[
                             ChartLabel(
                               name: 'Era Points',
-                              color: Colors.yellow,
+                              color: Color(0xFFFF7849),
                             ),
                             ChartLabel(
                               name: 'Average',
-                              color: Colors.grey,
+                              color: Colors.white,
                             ),
                           ],
                         ),
@@ -98,15 +98,15 @@ class ValidatorChartsPage extends StatelessWidget {
                           children: <Widget>[
                             ChartLabel(
                               name: 'Rewards',
-                              color: Colors.blue,
+                              color: Color(0xFF81FEB9),
                             ),
                             ChartLabel(
                               name: 'Slashes',
-                              color: Colors.red,
+                              color: Color(0xFFFF7849),
                             ),
                             ChartLabel(
                               name: 'Average',
-                              color: Colors.grey,
+                              color: Colors.white,
                             ),
                           ],
                         ),
@@ -131,11 +131,11 @@ class ValidatorChartsPage extends StatelessWidget {
                           children: <Widget>[
                             ChartLabel(
                               name: 'Elected Stake',
-                              color: Colors.yellow,
+                              color: Color(0xFFFF7849),
                             ),
                             ChartLabel(
                               name: 'Average',
-                              color: Colors.grey,
+                              color: Colors.white,
                             ),
                           ],
                         ),

@@ -195,11 +195,15 @@ abstract class _StakingStore with Store {
   @action
   Future<void> addTxsRewards(Map? data, String? pubKey,
       {bool shouldCache = false}) async {
-    if (data == null || data['list'] == null) return;
-    List<TxRewardData> ls =
-        List.of(data['list']).map((i) => TxRewardData.fromJson(i)).toList();
+    if (data == null || data['list'] == null) {
+      txsRewards = ObservableList.of([]);
+    } else {
+      List<TxRewardData> ls =
+          List.of(data['list']).map((i) => TxRewardData.fromJson(i)).toList();
+      ls.retainWhere((element) => double.parse(element.amount ?? "0") != 0);
 
-    txsRewards = ObservableList.of(ls);
+      txsRewards = ObservableList.of(ls);
+    }
 
     if (shouldCache) {
       final cached = cache.stakingRewardTxs.val;

@@ -157,7 +157,7 @@ class RewardsChart extends StatelessWidget {
         ),
         belowBarData: BarAreaData(
           show: true,
-          colors: [color].map((color) => color.withOpacity(0.3)).toList(),
+          colors: [color].map((color) => color.withOpacity(0.5)).toList(),
         ),
       );
     }).toList();

@@ -22,10 +22,8 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/connectionChecker.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
-import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginOutlinedButtonSmall.dart';
-import 'package:polkawallet_ui/components/v3/plugin/pluginTagCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
@@ -48,6 +46,15 @@ class _StakingViewState extends State<StakingView> {
     await widget.plugin.service.staking.queryMarketPrices();
     widget.plugin.service.staking.updateStakingTxs(0);
     widget.plugin.service.staking.updateStakingRewards();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _updateData();
+    });
   }
 
   void _onAction(Future<dynamic> Function() doAction) {
@@ -148,321 +155,328 @@ class _StakingViewState extends State<StakingView> {
             )
           : Stack(children: [
               SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Container(
-                padding:
-                    EdgeInsets.only(left: 16, top: 30, right: 16, bottom: 20),
-                child: Column(
-                  children: [
-                    RoundedPluginCard(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                        child: Column(
-                          children: [
-                            Row(
+                    padding: EdgeInsets.only(
+                        left: 16, top: 30, right: 16, bottom: 20),
+                    child: Column(
+                      children: [
+                        RoundedPluginCard(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 20),
+                            child: Column(
                               children: [
-                                Expanded(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Row(
                                   children: [
-                                    Text("${dic['v3.myStaked']} ($symbol)",
-                                        style: labelStyle),
-                                    Text(
-                                        Fmt.priceFloorBigIntFormatter(
-                                            bonded, decimals, lengthMax: 4),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5
-                                            ?.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold,
-                                                height: 2.0)),
-                                    Text(
-                                        "\$ ${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(bonded, decimals) * marketPrice)}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5
-                                            ?.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 10)),
+                                    Expanded(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("${dic['v3.myStaked']} ($symbol)",
+                                            style: labelStyle),
+                                        Text(
+                                            Fmt.priceFloorBigIntFormatter(
+                                                bonded, decimals, lengthMax: 4),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5
+                                                ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.bold,
+                                                    height: 2.0)),
+                                        Text(
+                                            "\$ ${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(bonded, decimals) * marketPrice)}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5
+                                                ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 10)),
+                                      ],
+                                    )),
+                                    Expanded(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("${dic['v3.newGains']} ($symbol)",
+                                            style: labelStyle),
+                                        Text(
+                                            Fmt.priceFloorBigIntFormatter(
+                                                bonded, decimals, lengthMax: 4),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5
+                                                ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.bold,
+                                                    height: 2.0)),
+                                        Text(
+                                            "\$ ${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(bonded, decimals) * marketPrice)}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5
+                                                ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 10)),
+                                      ],
+                                    )),
                                   ],
-                                )),
-                                Expanded(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("${dic['v3.newGains']} ($symbol)",
-                                        style: labelStyle),
-                                    Text(
-                                        Fmt.priceFloorBigIntFormatter(
-                                            bonded, decimals, lengthMax: 4),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5
-                                            ?.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold,
-                                                height: 2.0)),
-                                    Text(
-                                        "\$ ${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(bonded, decimals) * marketPrice)}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5
-                                            ?.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 10)),
-                                  ],
-                                )),
-                              ],
-                            ),
-                            Padding(
-                                padding: EdgeInsets.only(top: 10),
-                                child: InfoItemRow(
-                                  dic['available']!,
-                                  "${Fmt.priceFloorBigIntFormatter(available, decimals, lengthMax: 4)} $symbol",
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: InfoItemRow(
+                                      dic['available']!,
+                                      "${Fmt.priceFloorBigIntFormatter(available, decimals, lengthMax: 4)} $symbol",
+                                      labelStyle: labelStyle,
+                                      contentStyle: labelStyle,
+                                    )),
+                                InfoItemRow(
+                                  dic['v3.unstaking']!,
+                                  "${Fmt.priceFloorBigIntFormatter(unlocking, decimals, lengthMax: 4)} $symbol",
                                   labelStyle: labelStyle,
                                   contentStyle: labelStyle,
-                                )),
-                            InfoItemRow(
-                              dic['v3.unstaking']!,
-                              "${Fmt.priceFloorBigIntFormatter(unlocking, decimals, lengthMax: 4)} $symbol",
-                              labelStyle: labelStyle,
-                              contentStyle: labelStyle,
-                            ),
-                            InfoItemRow(
-                              dic['bond.redeemable']!,
-                              "${Fmt.priceFloorBigIntFormatter(redeemable, decimals, lengthMax: 4)} $symbol",
-                              labelStyle: labelStyle,
-                              contentStyle: labelStyle,
-                            ),
-                            InfoItemRow(
-                              dic['v3.nominations']!,
-                              "${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()} ${dic['validators']}",
-                              labelStyle: labelStyle,
-                              contentStyle: labelStyle,
-                            ),
-                            InfoItemRow(
-                              dic['v3.rewardDest']!,
-                              widget.plugin.store.staking.ownStashInfo!
-                                  .destination!,
-                              labelStyle: labelStyle,
-                              contentStyle: labelStyle,
-                            )
-                          ],
-                        )),
-                    GridView.count(
-                      crossAxisSpacing: 25,
-                      mainAxisSpacing: 12,
-                      crossAxisCount: 3,
-                      childAspectRatio: 103 / 64,
-                      padding: EdgeInsets.only(top: 21, bottom: 24),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        GridViewItemBtn(
-                          Image.asset(
-                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_overview.png',
-                            width: 36,
-                          ),
-                          dic['overview']!,
-                          onTap: () => Navigator.of(context)
-                              .pushNamed(OverViewPage.route),
-                        ),
-                        GridViewItemBtn(
-                          Image.asset(
-                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_adjustBonded.png',
-                            width: 36,
-                          ),
-                          dic['action.bondAdjust']!,
-                          onTap: () {
-                            showCupertinoModalPopup(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  CupertinoActionSheet(
-                                actions: <Widget>[
-                                  /// disable bondExtra button if account is not stash
-                                  CupertinoActionSheetAction(
-                                    child: Text(
-                                      dic['action.bondExtra']!,
-                                      style: TextStyle(
-                                        color: !isStash
-                                            ? disabledColor
-                                            : actionButtonColor,
-                                      ),
-                                    ),
-                                    onPressed: !isStash
-                                        ? () => {}
-                                        : () {
-                                            Navigator.of(context).pop();
-                                            _onAction(() =>
-                                                Navigator.of(context).pushNamed(
-                                                    BondExtraPage.route));
-                                          },
-                                  ),
-
-                                  /// disable unbond button if account is not controller
-                                  CupertinoActionSheetAction(
-                                    child: Text(
-                                      dic['action.unbond']!,
-                                      style: TextStyle(
-                                        color: !isController!
-                                            ? disabledColor
-                                            : actionButtonColor,
-                                      ),
-                                    ),
-                                    onPressed: !isController
-                                        ? () => {}
-                                        : () {
-                                            Navigator.of(context).pop();
-                                            _onAction(() =>
-                                                Navigator.of(context).pushNamed(
-                                                    UnBondPage.route));
-                                          },
-                                  ),
-
-                                  // redeem unlocked
-                                  CupertinoActionSheetAction(
-                                    child: Text(
-                                      dic['action.redeem']!,
-                                      style: TextStyle(
-                                        color: redeemable == BigInt.zero ||
-                                                !isController
-                                            ? disabledColor
-                                            : actionButtonColor,
-                                      ),
-                                    ),
-                                    onPressed: redeemable == BigInt.zero ||
-                                            !isController
-                                        ? () => {}
-                                        : () {
-                                            Navigator.of(context).pop();
-                                            _onAction(() =>
-                                                Navigator.of(context).pushNamed(
-                                                    RedeemPage.route));
-                                          },
-                                  ),
-                                ],
-                                cancelButton: CupertinoActionSheetAction(
-                                  child: Text(I18n.of(context)!.getDic(
-                                      i18n_full_dic_kusama,
-                                      'common')!['cancel']!),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                        GridViewItemBtn(
-                          Image.asset(
-                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_rewardMethod.png',
-                            width: 36,
-                          ),
-                          dic['v3.rewardDest']!,
-                          onTap: () => _onAction(() => Navigator.of(context)
-                              .pushNamed(SetPayeePage.route)),
-                        ),
-                        GridViewItemBtn(
-                          Image.asset(
-                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_rewardDetail.png',
-                            width: 36,
-                          ),
-                          dic['v3.rewardDetail']!,
-                          onTap: () => Navigator.of(context)
-                              .pushNamed(RewardDetailPage.route),
-                        ),
-                        GridViewItemBtn(
-                          Image.asset(
-                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_payouts.png',
-                            width: 36,
-                          ),
-                          dic['action.payout']!,
-                          onTap: () => _onAction(() => Navigator.of(context)
-                              .pushNamed(PayoutPage.route)),
-                        ),
-                        GridViewItemBtn(
-                          Image.asset(
-                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_account.png',
-                            width: 36,
-                          ),
-                          dic['v3.account']!,
-                          onTap: () => _onAction(() => Navigator.of(context)
-                              .pushNamed(SetControllerPage.route,
-                                  arguments: acc02)),
-                        ),
-                      ],
-                    ),
-                    Visibility(
-                        visible: widget.plugin.store.staking.ownStashInfo!
-                                .nominating!.length >
-                            0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                PluginTextTag(
-                                  padding: EdgeInsets.zero,
-                                  title: dic['v3.nominations']!,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        dic['v3.nominations']!,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFF212123)),
-                                      ),
-                                      Text(
-                                        " (${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()})",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFFFF7849)),
-                                      )
-                                    ],
-                                  ),
-                                  backgroundColor: Color(0xCCFFFFFF),
+                                InfoItemRow(
+                                  dic['bond.redeemable']!,
+                                  "${Fmt.priceFloorBigIntFormatter(redeemable, decimals, lengthMax: 4)} $symbol",
+                                  labelStyle: labelStyle,
+                                  contentStyle: labelStyle,
                                 ),
-                                PluginOutlinedButtonSmall(
-                                  margin: EdgeInsets.only(bottom: 6),
-                                  content: dic['v3.stopAll'],
-                                  color: Color(0xFFFF7849),
-                                  active: true,
-                                  fontSize: 12,
-                                  minSize: 19,
-                                  onPressed: () => _chill(),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 4, vertical: 2),
+                                InfoItemRow(
+                                  dic['v3.nominations']!,
+                                  "${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()} ${dic['validators']}",
+                                  labelStyle: labelStyle,
+                                  contentStyle: labelStyle,
+                                ),
+                                InfoItemRow(
+                                  dic['v3.rewardDest']!,
+                                  widget.plugin.store.staking.ownStashInfo!
+                                      .destination!,
+                                  labelStyle: labelStyle,
+                                  contentStyle: labelStyle,
                                 )
                               ],
+                            )),
+                        GridView.count(
+                          crossAxisSpacing: 25,
+                          mainAxisSpacing: 12,
+                          crossAxisCount: 3,
+                          childAspectRatio: 103 / 64,
+                          padding: EdgeInsets.only(top: 21, bottom: 24),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            GridViewItemBtn(
+                              Image.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/staking/icon_overview.png',
+                                width: 36,
+                              ),
+                              dic['overview']!,
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed(OverViewPage.route),
                             ),
-                            Container(
-                                padding: EdgeInsets.only(
-                                    left: 5, top: 10, right: 5, bottom: 10),
-                                decoration: BoxDecoration(
-                                    color: Color(0x24FFFFFF),
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(14),
-                                        topRight: Radius.circular(14),
-                                        bottomRight: Radius.circular(14))),
-                                child: ListView(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  children: _buildNominatingList(),
-                                ))
+                            GridViewItemBtn(
+                              Image.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/staking/icon_adjustBonded.png',
+                                width: 36,
+                              ),
+                              dic['action.bondAdjust']!,
+                              onTap: () {
+                                showCupertinoModalPopup(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      CupertinoActionSheet(
+                                    actions: <Widget>[
+                                      /// disable bondExtra button if account is not stash
+                                      CupertinoActionSheetAction(
+                                        child: Text(
+                                          dic['action.bondExtra']!,
+                                          style: TextStyle(
+                                            color: !isStash
+                                                ? disabledColor
+                                                : actionButtonColor,
+                                          ),
+                                        ),
+                                        onPressed: !isStash
+                                            ? () => {}
+                                            : () {
+                                                Navigator.of(context).pop();
+                                                _onAction(() => Navigator.of(
+                                                        context)
+                                                    .pushNamed(
+                                                        BondExtraPage.route));
+                                              },
+                                      ),
+
+                                      /// disable unbond button if account is not controller
+                                      CupertinoActionSheetAction(
+                                        child: Text(
+                                          dic['action.unbond']!,
+                                          style: TextStyle(
+                                            color: !isController!
+                                                ? disabledColor
+                                                : actionButtonColor,
+                                          ),
+                                        ),
+                                        onPressed: !isController
+                                            ? () => {}
+                                            : () {
+                                                Navigator.of(context).pop();
+                                                _onAction(() =>
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                            UnBondPage.route));
+                                              },
+                                      ),
+
+                                      // redeem unlocked
+                                      CupertinoActionSheetAction(
+                                        child: Text(
+                                          dic['action.redeem']!,
+                                          style: TextStyle(
+                                            color: redeemable == BigInt.zero ||
+                                                    !isController
+                                                ? disabledColor
+                                                : actionButtonColor,
+                                          ),
+                                        ),
+                                        onPressed: redeemable == BigInt.zero ||
+                                                !isController
+                                            ? () => {}
+                                            : () {
+                                                Navigator.of(context).pop();
+                                                _onAction(() =>
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                            RedeemPage.route));
+                                              },
+                                      ),
+                                    ],
+                                    cancelButton: CupertinoActionSheetAction(
+                                      child: Text(I18n.of(context)!.getDic(
+                                          i18n_full_dic_kusama,
+                                          'common')!['cancel']!),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            GridViewItemBtn(
+                              Image.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/staking/icon_rewardMethod.png',
+                                width: 36,
+                              ),
+                              dic['v3.rewardDest']!,
+                              onTap: () => _onAction(() => Navigator.of(context)
+                                  .pushNamed(SetPayeePage.route)),
+                            ),
+                            GridViewItemBtn(
+                              Image.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/staking/icon_rewardDetail.png',
+                                width: 36,
+                              ),
+                              dic['v3.rewardDetail']!,
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed(RewardDetailPage.route),
+                            ),
+                            GridViewItemBtn(
+                              Image.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/staking/icon_payouts.png',
+                                width: 36,
+                              ),
+                              dic['action.payout']!,
+                              onTap: () => _onAction(() => Navigator.of(context)
+                                  .pushNamed(PayoutPage.route)),
+                            ),
+                            GridViewItemBtn(
+                              Image.asset(
+                                'packages/polkawallet_plugin_kusama/assets/images/staking/icon_account.png',
+                                width: 36,
+                              ),
+                              dic['v3.account']!,
+                              onTap: () => _onAction(() => Navigator.of(context)
+                                  .pushNamed(SetControllerPage.route,
+                                      arguments: acc02)),
+                            ),
                           ],
-                        ))
-                  ],
-                ),
-              )),
+                        ),
+                        Visibility(
+                            visible: widget.plugin.store.staking.ownStashInfo!
+                                    .nominating!.length >
+                                0,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    PluginTextTag(
+                                      padding: EdgeInsets.zero,
+                                      title: dic['v3.nominations']!,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            dic['v3.nominations']!,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5
+                                                ?.copyWith(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xFF212123)),
+                                          ),
+                                          Text(
+                                            " (${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()})",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5
+                                                ?.copyWith(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xFFFF7849)),
+                                          )
+                                        ],
+                                      ),
+                                      backgroundColor: Color(0xCCFFFFFF),
+                                    ),
+                                    PluginOutlinedButtonSmall(
+                                      margin: EdgeInsets.only(bottom: 6),
+                                      content: dic['v3.stopAll'],
+                                      color: Color(0xFFFF7849),
+                                      active: true,
+                                      fontSize: 12,
+                                      minSize: 19,
+                                      onPressed: () => _chill(),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 4, vertical: 2),
+                                    )
+                                  ],
+                                ),
+                                Container(
+                                    padding: EdgeInsets.only(
+                                        left: 5, top: 10, right: 5, bottom: 10),
+                                    decoration: BoxDecoration(
+                                        color: Color(0x24FFFFFF),
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(14),
+                                            topRight: Radius.circular(14),
+                                            bottomRight: Radius.circular(14))),
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      children: _buildNominatingList(),
+                                    ))
+                              ],
+                            ))
+                      ],
+                    ),
+                  )),
               DragDropBtn(
                 onTap: () =>
                     Navigator.of(context).pushNamed(NominatePage.route),
@@ -634,6 +648,7 @@ class _NomineeItem extends StatelessWidget {
             ],
           ),
           onTap: () {
+            print("onTap");
             Navigator.of(context)
                 .pushNamed(ValidatorDetailPage.route, arguments: validator);
           },

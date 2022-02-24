@@ -86,6 +86,7 @@ class _StakingHistoryPageState extends State<StakingHistoryPage> {
           centerTitle: true,
         ),
         body: ListView.builder(
+          physics: BouncingScrollPhysics(),
           controller: _scrollController,
           itemCount: widget.plugin.store.staking.txs.length + 1,
           itemBuilder: (context, index) {

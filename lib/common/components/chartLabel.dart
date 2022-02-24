@@ -12,13 +12,10 @@ class ChartLabel extends StatelessWidget {
     return Row(
       children: <Widget>[
         Container(
-          height: 4,
-          width: 24,
-          margin: EdgeInsets.only(right: 8),
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(width: 3, color: color!)),
-          ),
-        ),
+            height: 8,
+            width: 15,
+            margin: EdgeInsets.only(right: 8),
+            color: color),
         Text(
           name!,
           style: TextStyle(color: Colors.white),
