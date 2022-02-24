@@ -7,7 +7,8 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/txData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/v3/txDetail.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTxDetail.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
 class StakingDetailPage extends StatelessWidget {
@@ -25,7 +26,9 @@ class StakingDetailPage extends StatelessWidget {
     final TxData detail = ModalRoute.of(context)!.settings.arguments as TxData;
     List<TxDetailInfoItem> info = <TxDetailInfoItem>[
       TxDetailInfoItem(
-          label: dicStaking['action'], content: Text(detail.call!)),
+          label: dicStaking['action'],
+          content: Text(detail.call!,
+              style: TextStyle(color: PluginColorsDark.headline1))),
     ];
     List? params = detail.params!.isEmpty ? [] : jsonDecode(detail.params!);
     if (params != null) {
@@ -70,11 +73,14 @@ class StakingDetailPage extends StatelessWidget {
         }
         return TxDetailInfoItem(
           label: i['name'],
-          content: Text(value!),
+          content: Text(
+            value!,
+            style: TextStyle(color: PluginColorsDark.headline1),
+          ),
         );
       }));
     }
-    return TxDetail(
+    return PluginTxDetail(
       networkName: plugin.basic.name,
       success: detail.success,
       action: detail.call,

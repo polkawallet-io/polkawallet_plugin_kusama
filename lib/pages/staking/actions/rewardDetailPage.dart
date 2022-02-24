@@ -5,7 +5,8 @@ import 'package:polkawallet_plugin_kusama/store/staking/types/txData.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/v3/txDetail.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTxDetail.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
 class RewardDetailPage extends StatelessWidget {
@@ -25,7 +26,7 @@ class RewardDetailPage extends StatelessWidget {
     final TxRewardData detail =
         ModalRoute.of(context)!.settings.arguments as TxRewardData;
 
-    return TxDetail(
+    return PluginTxDetail(
       networkName: plugin.basic.name,
       success: true,
       action: detail.eventId,
@@ -34,10 +35,13 @@ class RewardDetailPage extends StatelessWidget {
       eventId: detail.eventIndex,
       infoItems: <TxDetailInfoItem>[
         TxDetailInfoItem(
-            label: dicStaking['txs.event'], content: Text(detail.eventId!)),
+            label: dicStaking['txs.event'],
+            content: Text(detail.eventId!,
+                style: TextStyle(color: PluginColorsDark.headline1))),
         TxDetailInfoItem(
           label: dic['amount'],
-          content: Text('${Fmt.balance(detail.amount!, decimals)} $symbol'),
+          content: Text('${Fmt.balance(detail.amount!, decimals)} $symbol',
+              style: TextStyle(color: PluginColorsDark.headline1)),
         ),
       ],
       blockTime: Fmt.dateTime(
