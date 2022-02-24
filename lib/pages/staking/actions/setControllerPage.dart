@@ -65,6 +65,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
             children: <Widget>[
               Expanded(
                 child: ListView(
+                  physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.all(16),
                   children: <Widget>[
                     PluginAddressFormItem(
@@ -76,9 +77,8 @@ class _SetControllerPageState extends State<SetControllerPage> {
                         child: PluginAddressFormItem(
                           account: controller,
                           label: dic['controller'],
-                          svg: controller.icon ??
-                              widget.plugin.store.accounts
-                                  .addressIconsMap[controller.address],
+                          svg: widget.plugin.store.accounts
+                              .addressIconsMap[controller.address],
                           onTap: () => _changeControllerId(context),
                         )),
                   ],

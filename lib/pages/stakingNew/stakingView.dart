@@ -158,7 +158,7 @@ class _StakingViewState extends State<StakingView> {
                   physics: BouncingScrollPhysics(),
                   child: Container(
                     padding: EdgeInsets.only(
-                        left: 16, top: 30, right: 16, bottom: 20),
+                        left: 16, top: 20, right: 16, bottom: 20),
                     child: Column(
                       children: [
                         RoundedPluginCard(

@@ -65,6 +65,7 @@ class _RedeemPageState extends State<RedeemPage> {
             children: <Widget>[
               Expanded(
                 child: ListView(
+                  physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.all(16),
                   children: <Widget>[
                     PluginAddressFormItem(

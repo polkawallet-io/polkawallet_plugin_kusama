@@ -64,7 +64,6 @@ class _OverViewWidgetState extends State<OverViewWidget>
   bool isInit = true;
 
   Future<void> _updateData() async {
-    await widget.plugin.service.staking.queryElectedInfo();
     widget.plugin.service.staking.queryMarketPrices();
   }
 
@@ -108,6 +107,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
         isInit = false;
         _startAnimation(stakedRatio * 0.4 + 0.6);
       }
+
       return isDataLoading
           ? Column(
               children: [
@@ -204,7 +204,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
                         ),
                         InfoItemRow(
                           dicStaking['v3.lastReward']!,
-                          "${Fmt.balance(overview['lastReward'].toString(), decimals)} $symbol",
+                          "${Fmt.balance((overview['lastReward'] ?? 0).toString(), decimals)} $symbol",
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         ),
@@ -222,7 +222,8 @@ class _OverViewWidgetState extends State<OverViewWidget>
                         ),
                         InfoItemRow(
                           dicStaking['v3.activeNominators']!,
-                          Fmt.balance(overview['counterForNominators'], 0)
+                          Fmt.balance(
+                                  overview['counterForNominators'] ?? "0", 0)
                               .toString(),
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,

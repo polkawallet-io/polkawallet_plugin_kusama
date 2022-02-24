@@ -47,6 +47,7 @@ class _RewardDetailPageState extends State<RewardDetailPage> {
               ),
             )
           : SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

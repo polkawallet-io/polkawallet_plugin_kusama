@@ -203,6 +203,7 @@ class _PayoutPageState extends State<PayoutPage> {
           children: <Widget>[
             Expanded(
               child: ListView(
+                physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.only(top: 16),
                 children: <Widget>[
                   Padding(

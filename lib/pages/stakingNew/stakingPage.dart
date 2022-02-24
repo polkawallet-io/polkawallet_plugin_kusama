@@ -71,13 +71,18 @@ class _StakingPageState extends State<StakingPage> {
                         )
                       ],
                     )
-                  : Container(
-                      child: widget.plugin.store.staking.ownStashInfo!
-                                      .controllerId ==
-                                  null &&
-                              isStash
-                          ? OverView(widget.plugin)
-                          : StakingView(widget.plugin, widget.keyring)));
+                  : Column(children: [
+                      ConnectionChecker(widget.plugin,
+                          onConnected: _updateStakingInfo),
+                      Expanded(
+                          child: Container(
+                              child: widget.plugin.store.staking.ownStashInfo!
+                                              .controllerId ==
+                                          null &&
+                                      isStash
+                                  ? OverView(widget.plugin)
+                                  : StakingView(widget.plugin, widget.keyring)))
+                    ]));
         }));
   }
 }

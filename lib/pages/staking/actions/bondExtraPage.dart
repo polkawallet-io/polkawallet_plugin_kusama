@@ -64,6 +64,7 @@ class _BondExtraPageState extends State<BondExtraPage> {
                 child: Form(
                   key: _formKey,
                   child: ListView(
+                    physics: BouncingScrollPhysics(),
                     padding: EdgeInsets.all(16),
                     children: <Widget>[
                       PluginAddressFormItem(

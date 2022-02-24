@@ -83,6 +83,7 @@ class _UnBondPageState extends State<UnBondPage> {
                 child: Form(
                   key: _formKey,
                   child: ListView(
+                    physics: BouncingScrollPhysics(),
                     padding: EdgeInsets.all(16),
                     children: <Widget>[
                       PluginAddressFormItem(
