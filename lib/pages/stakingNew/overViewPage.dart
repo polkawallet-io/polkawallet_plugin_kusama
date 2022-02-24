@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/stakingNew/validator.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/overView.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/validator.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
-import 'package:polkawallet_plugin_kusama/utils/format.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
@@ -40,6 +39,11 @@ class _OverViewPageState extends State<OverViewPage> {
       });
     }
     final int decimals = widget.plugin.networkState.tokenDecimals![0];
+
+    final maxNomPerValidator = int.parse(widget
+        .plugin.networkConst['staking']['maxNominatorRewardedPerValidator']
+        .toString());
+
     return PluginScaffold(
       appBar: PluginAppBar(title: Text(dic['overview']!)),
       body: ListView.builder(
@@ -72,6 +76,11 @@ class _OverViewPageState extends State<OverViewPage> {
                 widget.plugin.store.accounts.addressIndexMap[acc.accountId];
             final icon =
                 widget.plugin.store.accounts.addressIconsMap[acc.accountId];
+            final nomCount = _tabIndex == 0
+                ? acc.nominators.length
+                : widget.plugin.store.staking
+                        .nominationsCount![acc.accountId] ??
+                    0;
             return Container(
                 decoration: BoxDecoration(
                     color: Color(0x24FFFFFF),
@@ -83,15 +92,8 @@ class _OverViewPageState extends State<OverViewPage> {
                             Radius.circular(index == ls.length ? 14 : 0))),
                 child: Column(
                   children: [
-                    Validator(
-                      acc,
-                      accInfo,
-                      icon,
-                      decimals,
-                      widget.plugin.store.staking
-                              .nominationsCount![acc.accountId] ??
-                          0,
-                    ),
+                    Validator(acc, accInfo, icon, decimals, nomCount,
+                        nomCount >= maxNomPerValidator),
                     Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         child: Divider(

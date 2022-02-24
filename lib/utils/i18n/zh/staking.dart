@@ -94,7 +94,7 @@ const Map<String, String> zhStaking = {
   'v3.lastReward': '最近发放',
   'v3.minThreshold': '最低提名',
   'v3.unbondingPeriod': '解绑时间',
-  'v3.activeNominators': '活跃提名者',
+  'v3.activeNominators': '提名人',
   'v3.goStake': '去质押',
   'v3.myStaked': '我的质押',
   'v3.newGains': '最近收益',

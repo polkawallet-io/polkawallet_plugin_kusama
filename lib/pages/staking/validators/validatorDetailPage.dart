@@ -104,7 +104,7 @@ class ValidatorDetailPage extends StatelessWidget {
                         ),
                         Divider(),
                         Padding(
-                          padding: EdgeInsets.only(top: 16, left: 24),
+                          padding: EdgeInsets.only(top: 8, left: 24),
                           child: Row(
                             children: <Widget>[
                               PluginInfoItem(
@@ -141,8 +141,7 @@ class ValidatorDetailPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding:
-                              EdgeInsets.only(top: 16, left: 24, bottom: 24),
+                          padding: EdgeInsets.only(top: 8, left: 24, bottom: 8),
                           child: Row(
                             children: <Widget>[
                               PluginInfoItem(
@@ -229,6 +228,7 @@ class ValidatorDetailPage extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final item = detail.nominators[index];
                             return ListTile(
+                              dense: true,
                               leading: AddressIcon(item['who'],
                                   size: 32,
                                   svg: plugin.store.accounts

@@ -101,6 +101,8 @@ abstract class _StakingStore with Store {
       'totalIssuance': data['totalIssuance'],
       'minNominated': data['minNominated'],
       'minNominatorBond': data['minNominatorBond'],
+      'counterForNominators': data['counterForNominators'],
+      'lastReward': data['lastReward'],
     };
 
     // all validators

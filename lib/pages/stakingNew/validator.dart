@@ -16,6 +16,7 @@ class Validator extends StatelessWidget {
     this.icon,
     this.decimals,
     this.nominationsCount,
+    this.isMax,
   ) : isWaiting = validator.total == BigInt.zero;
 
   final ValidatorData validator;
@@ -23,6 +24,7 @@ class Validator extends StatelessWidget {
   final String? icon;
   final int decimals;
   final bool isWaiting;
+  final bool isMax;
   final int nominationsCount;
 
   @override
@@ -46,12 +48,31 @@ class Validator extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  UI.accountDisplayName(validator.accountId, accInfo,
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: "TitilliumWeb",
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)),
+                  Row(
+                    children: [
+                      isMax
+                          ? Image.asset(
+                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_over_sub.png',
+                              width: 14,
+                            )
+                          : Container(),
+                      (validator.isBlocking ?? false)
+                          ? Image.asset(
+                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_block_nom.png',
+                              width: 14,
+                            )
+                          : Container(),
+                      Expanded(
+                        child: UI.accountDisplayName(
+                            validator.accountId, accInfo,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: "TitilliumWeb",
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white)),
+                      )
+                    ],
+                  ),
                   Text(
                     !isWaiting
                         // ignore: unnecessary_null_comparison

@@ -7,12 +7,12 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/circularProgressBar.dart';
 import 'package:polkawallet_ui/components/connectionChecker.dart';
 import 'package:polkawallet_ui/components/infoItemRow.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
-import 'package:polkawallet_ui/components/circularProgressBar.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTagCard.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
@@ -119,6 +119,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
               width: double.infinity,
               child: Column(
                 children: [
+                  ConnectionChecker(widget.plugin, onConnected: _updateData),
                   Stack(alignment: Alignment.center, children: [
                     Container(
                         width: 176,
@@ -151,7 +152,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
                                     fontSize: 22,
                                     color: Colors.white)),
                         Text(
-                            "\$ ${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(totalStaked, decimals) * marketPrice)}",
+                            "\$${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(totalStaked, decimals) * marketPrice)}",
                             style: Theme.of(context)
                                 .textTheme
                                 .headline4
@@ -201,10 +202,9 @@ class _OverViewWidgetState extends State<OverViewWidget>
                             ),
                           ],
                         ),
-                        // TODO:update content
                         InfoItemRow(
                           dicStaking['v3.lastReward']!,
-                          "TODO $symbol",
+                          "${Fmt.balance(overview['lastReward'].toString(), decimals)} $symbol",
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         ),
@@ -222,7 +222,8 @@ class _OverViewWidgetState extends State<OverViewWidget>
                         ),
                         InfoItemRow(
                           dicStaking['v3.activeNominators']!,
-                          "TODO",
+                          Fmt.balance(overview['counterForNominators'], 0)
+                              .toString(),
                           labelStyle: labelStyle,
                           contentStyle: labelStyle,
                         )

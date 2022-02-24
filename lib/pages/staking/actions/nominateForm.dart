@@ -60,6 +60,9 @@ class _NominateFormState extends State<NominateForm> {
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final maxNomination = int.parse(
         widget.plugin.networkConst['staking']['maxNominations'].toString());
+    final maxNomPerValidator = int.parse(widget
+        .plugin.networkConst['staking']['maxNominatorRewardedPerValidator']
+        .toString());
     final Map? accInfo =
         widget.plugin.store.accounts.addressIndexMap[validator.accountId];
     final accIcon =
@@ -93,10 +96,28 @@ class _NominateFormState extends State<NominateForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  UI.accountDisplayName(
-                    validator.accountId,
-                    accInfo,
-                    textColor: PluginColorsDark.headline1,
+                  Row(
+                    children: [
+                      nominationsCount >= maxNomPerValidator
+                          ? Image.asset(
+                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_over_sub.png',
+                              width: 14,
+                            )
+                          : Container(),
+                      (validator.isBlocking ?? false)
+                          ? Image.asset(
+                              'packages/polkawallet_plugin_kusama/assets/images/staking/icon_block_nom.png',
+                              width: 14,
+                            )
+                          : Container(),
+                      Expanded(
+                        child: UI.accountDisplayName(
+                          validator.accountId,
+                          accInfo,
+                          textColor: PluginColorsDark.headline1,
+                        ),
+                      )
+                    ],
                   ),
                   Text(
                     '${dicStaking['commission']}: $comm',
