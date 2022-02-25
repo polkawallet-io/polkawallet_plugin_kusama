@@ -159,7 +159,8 @@ class _PayoutPageState extends State<PayoutPage> {
             'api.tx.staking.payoutStakers("$validatorId", "${int.tryParse(era['era'])}")');
       });
     });
-    final total = Fmt.balanceInt('0x${_rewards!['available']}');
+    final total = Fmt.balanceInt(
+        '0x${(_rewards!['available'] as String).replaceAll('0x', '')}');
     return TxConfirmParams(
       txTitle: dicStaking!['action.payout'],
       module: 'utility',
@@ -191,7 +192,8 @@ class _PayoutPageState extends State<PayoutPage> {
       if (_rewards!['available'] == null) {
         rewardTotal = BigInt.zero;
       } else {
-        rewardTotal = Fmt.balanceInt('0x${_rewards!['available']}');
+        rewardTotal = Fmt.balanceInt(
+            '0x${(_rewards!['available'] as String).replaceAll('0x', '')}');
       }
     }
     final List validators = _rewards?['validators'] ?? [];
@@ -300,7 +302,9 @@ class _PayoutPageState extends State<PayoutPage> {
                                           .join(', '),
                                   style: TextStyle(color: Colors.white)),
                               trailing: Text(
-                                  Fmt.balance('0x${e['available']}', decimals),
+                                  Fmt.balance(
+                                      '0x${(e['available'] as String).replaceAll('0x', '')}',
+                                      decimals),
                                   style: TextStyle(color: Colors.white)),
                             );
                           }).toList()

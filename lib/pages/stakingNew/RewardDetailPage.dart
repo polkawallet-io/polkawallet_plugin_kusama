@@ -36,7 +36,6 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      print(widget.plugin.store.staking.txsRewards.length == 0);
       if (widget.plugin.store.staking.txsRewards.length == 0) {
         setState(() {
           _isLoading = true;
