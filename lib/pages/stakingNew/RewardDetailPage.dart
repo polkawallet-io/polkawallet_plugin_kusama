@@ -28,22 +28,23 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
   bool _isLoading = false;
 
   Future<void> _updateData() async {
-    setState(() {
-      _isLoading = true;
-    });
     await widget.plugin.service.staking.updateStakingRewards();
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      print(widget.plugin.store.staking.txsRewards.length == 0);
       if (widget.plugin.store.staking.txsRewards.length == 0) {
-        _updateData();
+        setState(() {
+          _isLoading = true;
+        });
+        await _updateData();
+        setState(() {
+          _isLoading = false;
+        });
       }
     });
   }
