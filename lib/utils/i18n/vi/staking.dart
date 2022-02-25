@@ -118,4 +118,7 @@ const Map<String, String> enStaking = {
       'You’re now using the controller account, the current change is not permitted.',
   'v3.stashError':
       'You’re now using the stash account, the current change is not permitted.',
+  'v3.noNomination':
+      'No nomination here, nominate validators right now to enjoy the staking and earn your rewards!',
+  'v3.noStaked': 'You have not staked yet'
 };
