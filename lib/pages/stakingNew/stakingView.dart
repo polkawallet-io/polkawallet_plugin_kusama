@@ -546,7 +546,7 @@ class _StakingViewState extends State<StakingView> {
                                         width: double.infinity,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          dic['total']!,
+                                          dic['v3.noNomination']!,
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5

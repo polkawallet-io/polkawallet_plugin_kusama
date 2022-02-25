@@ -19,7 +19,9 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitPropos
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitTipPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceOld.dart';
 import 'package:polkawallet_plugin_kusama/pages/parachains/contributePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/parachains/parachainsPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
@@ -110,8 +112,11 @@ class PluginKusama extends PolkawalletPlugin {
           text: dic[e]!,
           icon: Container(),
           iconActive: Container(),
-          isAdapter: e != 'staking',
-          content: e == 'staking' ? Container() : Gov(this),
+          content: e == 'governance'
+              ? GovOld(this)
+              : e == 'parachain'
+                  ? ParachainsPage(this, keyring)
+                  : Container(),
           onTap: e == 'staking'
               ? () {
                   Navigator.of(context).pushNamed(StakingPage.route);

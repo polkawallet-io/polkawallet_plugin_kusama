@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -38,9 +39,28 @@ class _OverViewState extends State<OverView> {
           Expanded(child: OverViewWidget(widget.plugin)),
           Padding(
               padding: EdgeInsets.only(bottom: 20, top: 10),
-              child: PluginButton(
-                title: dicStaking['v3.goStake']!,
-                onPressed: () => Navigator.pushNamed(context, StakePage.route),
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    'packages/polkawallet_plugin_kusama/assets/images/staking/overView.svg',
+                    width: 36,
+                    color: Colors.white,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: 5, bottom: 26),
+                      child: Text(
+                        dicStaking['v3.noStaked']!,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1
+                            ?.copyWith(color: Colors.white, fontSize: 20),
+                      )),
+                  PluginButton(
+                    title: dicStaking['v3.goStake']!,
+                    onPressed: () =>
+                        Navigator.pushNamed(context, StakePage.route),
+                  )
+                ],
               ))
         ],
       ),
