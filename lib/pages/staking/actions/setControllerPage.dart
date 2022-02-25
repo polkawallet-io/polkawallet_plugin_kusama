@@ -58,6 +58,10 @@ class _SetControllerPageState extends State<SetControllerPage> {
       ),
       body: Builder(builder: (BuildContext context) {
         final controller = _controller ?? widget.keyring.current;
+
+        final isStash = widget.plugin.store.staking.ownStashInfo!.isOwnStash! ||
+            (!widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
+                !widget.plugin.store.staking.ownStashInfo!.isOwnController!);
         return SafeArea(
           child: Column(
             children: <Widget>[
@@ -68,16 +72,18 @@ class _SetControllerPageState extends State<SetControllerPage> {
                   children: <Widget>[
                     PluginAddressFormItem(
                       account: widget.keyring.current,
-                      label: dic['stash'],
+                      label: isStash ? dic['stash'] : dic['controller'],
                     ),
                     Padding(
                         padding: EdgeInsets.only(top: 10),
                         child: PluginAddressFormItem(
                           account: controller,
-                          label: dic['controller'],
+                          label: isStash ? dic['controller'] : dic['stash'],
                           svg: widget.plugin.store.accounts
                               .addressIconsMap[controller.address],
-                          onTap: () => _changeControllerId(context),
+                          onTap: isStash
+                              ? () => _changeControllerId(context)
+                              : null,
                         )),
                   ],
                 ),
@@ -86,12 +92,6 @@ class _SetControllerPageState extends State<SetControllerPage> {
                 padding: EdgeInsets.all(16),
                 child: PluginTxButton(
                   getTxParams: () async {
-                    final isStash =
-                        widget.plugin.store.staking.ownStashInfo!.isOwnStash! ||
-                            (!widget.plugin.store.staking.ownStashInfo!
-                                    .isOwnStash! &&
-                                !widget.plugin.store.staking.ownStashInfo!
-                                    .isOwnController!);
                     if (!isStash) {
                       showCupertinoDialog(
                           context: context,
