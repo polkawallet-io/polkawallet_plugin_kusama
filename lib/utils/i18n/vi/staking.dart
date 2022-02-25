@@ -31,6 +31,7 @@ const Map<String, String> enStaking = {
   'reward': 'Return',
   'judgements': 'Judgements',
   'blocking': 'Blocks nominations',
+  'oversubscribe': 'Oversubscribed',
   'txs': 'Tx History',
   'txs.reward': 'Reward/Slash',
   'txs.reward.reward': 'Reward',
@@ -111,5 +112,10 @@ const Map<String, String> enStaking = {
   'v3.rewardDetail': 'Reward Detail',
   'v3.account': 'Account',
   'v3.stopAll': 'Stop All',
-  'v3.stagedRewards': 'Staged Rewards'
+  'v3.stagedRewards': 'Staged Rewards',
+  'v3.iUnderstand': 'I understand',
+  'v3.controllerError':
+      'You’re now using the controller account, the current change is not permitted.',
+  'v3.stashError':
+      'You’re now using the stash account, the current change is not permitted.',
 };
