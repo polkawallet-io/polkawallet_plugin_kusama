@@ -42,6 +42,10 @@ class RewardsChart extends StatelessWidget {
         minX = key;
       }
     });
+    if (datas.length == 1) {
+      minY = 0;
+      maxX = datas.keys.toList()[0].add(Duration(days: 7));
+    }
 
     List<FlSpot> flSpotDatas = [];
     datas.forEach((key, value) {

@@ -36,9 +36,11 @@ class _PayoutPageState extends State<PayoutPage> {
   Future<void> _queryLatestRewards() async {
     final dynamic options =
         await widget.plugin.service.staking.fetchAccountRewardsEraOptions();
-    setState(() {
-      _eraOptions = options;
-    });
+    if (mounted) {
+      setState(() {
+        _eraOptions = options;
+      });
+    }
     final res = await widget.plugin.service.staking
         .fetchAccountRewards(options[0]['value']);
     if (mounted) {

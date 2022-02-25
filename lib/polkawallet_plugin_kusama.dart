@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
-import 'package:polkawallet_plugin_kusama/newUIRoutes.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
@@ -19,14 +18,10 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitPropos
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitTipPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governanceOld.dart';
 import 'package:polkawallet_plugin_kusama/pages/parachains/contributePage.dart';
-import 'package:polkawallet_plugin_kusama/pages/parachains/parachainsPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/rebondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
@@ -37,6 +32,8 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart'
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorChartsPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/overViewPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingHistoryPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingPage.dart';
 import 'package:polkawallet_plugin_kusama/service/index.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
@@ -112,12 +109,7 @@ class PluginKusama extends PolkawalletPlugin {
           icon: Container(),
           iconActive: Container(),
           // isAdapter: e == 'governance',
-          content: e == 'staking'
-              ? Staking(this, keyring)
-              : e == 'governance'
-                  // ? Gov(this)
-                  ? GovOld(this)
-                  : ParachainsPage(this, keyring),
+          content: Container(),
           onTap: () {
             Navigator.of(context).pushNamed(StakingPage.route);
           });
@@ -139,7 +131,6 @@ class PluginKusama extends PolkawalletPlugin {
       ControllerSelectPage.route: (_) => ControllerSelectPage(this, keyring),
       SetControllerPage.route: (_) => SetControllerPage(this, keyring),
       UnBondPage.route: (_) => UnBondPage(this, keyring),
-      RebondPage.route: (_) => RebondPage(this, keyring),
       SetPayeePage.route: (_) => SetPayeePage(this, keyring),
       RedeemPage.route: (_) => RedeemPage(this, keyring),
       PayoutPage.route: (_) => PayoutPage(this, keyring),
@@ -148,6 +139,10 @@ class PluginKusama extends PolkawalletPlugin {
       RewardDetailPage.route: (_) => RewardDetailPage(this, keyring),
       ValidatorDetailPage.route: (_) => ValidatorDetailPage(this, keyring),
       ValidatorChartsPage.route: (_) => ValidatorChartsPage(this, keyring),
+      StakingPage.route: (_) => StakingPage(this, keyring),
+      StakingHistoryPage.route: (_) => StakingHistoryPage(this),
+      OverViewPage.route: (_) => OverViewPage(this),
+      RewardDetailPage.route: (_) => RewardDetailPage(this, keyring),
 
       // governance pages
       DemocracyPage.route: (_) => DemocracyPage(this, keyring),
@@ -172,9 +167,6 @@ class PluginKusama extends PolkawalletPlugin {
 
       // parachains
       ContributePage.route: (_) => ContributePage(this, keyring),
-
-      //new ui
-      ...getNewUiRoutes(this, keyring)
     };
   }
 

@@ -146,6 +146,12 @@ class _StakingViewState extends State<StakingView> {
         acc02.icon =
             widget.plugin.store.accounts.addressIconsMap[acc02.address];
       }
+
+      var sumReward = 0.0;
+      widget.plugin.store.staking.txsRewards.forEach((data) {
+        sumReward += Fmt.balanceDouble(data.amount!, decimals) *
+            (data.eventId == 'Reward' ? 1.0 : -1.0);
+      });
       return isDataLoading
           ? Column(
               children: [
@@ -158,7 +164,7 @@ class _StakingViewState extends State<StakingView> {
                   physics: BouncingScrollPhysics(),
                   child: Container(
                     padding: EdgeInsets.only(
-                        left: 16, top: 20, right: 16, bottom: 20),
+                        left: 16, top: 16, right: 16, bottom: 20),
                     child: Column(
                       children: [
                         RoundedPluginCard(
@@ -197,33 +203,40 @@ class _StakingViewState extends State<StakingView> {
                                       ],
                                     )),
                                     Expanded(
-                                        child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${dic['v3.newGains']} ($symbol)",
-                                            style: labelStyle),
-                                        Text(
-                                            Fmt.priceFloorBigIntFormatter(
-                                                bonded, decimals, lengthMax: 4),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5
-                                                ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.bold,
-                                                    height: 2.0)),
-                                        Text(
-                                            "\$ ${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(bonded, decimals) * marketPrice)}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5
-                                                ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontSize: 10)),
-                                      ],
-                                    )),
+                                        child: GestureDetector(
+                                            onTap: () => Navigator.of(context)
+                                                .pushNamed(
+                                                    RewardDetailPage.route),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    "${dic['v3.newGains']} ($symbol)",
+                                                    style: labelStyle),
+                                                Text(
+                                                    Fmt.priceFloorFormatter(
+                                                        sumReward,
+                                                        lengthMax: 4),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline5
+                                                        ?.copyWith(
+                                                            color: Colors.white,
+                                                            fontSize: 22,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            height: 2.0)),
+                                                Text(
+                                                    "\$ ${Fmt.priceFloorFormatter(sumReward * marketPrice)}",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline5
+                                                        ?.copyWith(
+                                                            color: Colors.white,
+                                                            fontSize: 10)),
+                                              ],
+                                            ))),
                                   ],
                                 ),
                                 Padding(
