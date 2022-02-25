@@ -103,7 +103,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
       final labelStyle =
           Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white);
 
-      if (!isDataLoading && isInit) {
+      if (!isDataLoading && isInit && stakedRatio != 0) {
         isInit = false;
         _startAnimation(stakedRatio * 0.4 + 0.6);
       }

@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
+import 'package:polkawallet_plugin_kusama/pages/governance.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
@@ -109,11 +110,13 @@ class PluginKusama extends PolkawalletPlugin {
           text: dic[e]!,
           icon: Container(),
           iconActive: Container(),
-          // isAdapter: e == 'governance',
-          content: Container(),
-          onTap: () {
-            Navigator.of(context).pushNamed(StakingPage.route);
-          });
+          isAdapter: e != 'staking',
+          content: e == 'staking' ? Container() : Gov(this),
+          onTap: e == 'staking'
+              ? () {
+                  Navigator.of(context).pushNamed(StakingPage.route);
+                }
+              : null);
     }).toList();
   }
 

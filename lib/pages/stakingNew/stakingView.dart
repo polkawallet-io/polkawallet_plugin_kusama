@@ -447,73 +447,116 @@ class _StakingViewState extends State<StakingView> {
                             ),
                           ],
                         ),
-                        Visibility(
-                            visible: widget.plugin.store.staking.ownStashInfo!
-                                    .nominating!.length >
-                                0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    PluginTextTag(
-                                      padding: EdgeInsets.zero,
-                                      title: dic['v3.nominations']!,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            dic['v3.nominations']!,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5
-                                                ?.copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(0xFF212123)),
-                                          ),
-                                          Text(
-                                            " (${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()})",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5
-                                                ?.copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(0xFFFF7849)),
-                                          )
-                                        ],
+                                PluginTextTag(
+                                  padding: EdgeInsets.zero,
+                                  title: dic['v3.nominations']!,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        dic['v3.nominations']!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xFF212123)),
                                       ),
-                                      backgroundColor: Color(0xCCFFFFFF),
-                                    ),
-                                    PluginOutlinedButtonSmall(
+                                      Text(
+                                        " (${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()})",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xFFFF7849)),
+                                      )
+                                    ],
+                                  ),
+                                  backgroundColor: Color(0xCCFFFFFF),
+                                ),
+                                Visibility(
+                                    visible: widget.plugin.store.staking
+                                            .ownStashInfo!.nominating!.length >
+                                        0,
+                                    child: PluginOutlinedButtonSmall(
                                       margin: EdgeInsets.only(bottom: 6),
                                       content: dic['v3.stopAll'],
                                       color: Color(0xFFFF7849),
                                       active: true,
                                       fontSize: 12,
                                       minSize: 19,
-                                      onPressed: () => _chill(),
+                                      onPressed: () {
+                                        if (isStash && !isController!) {
+                                          showCupertinoDialog(
+                                              context: context,
+                                              builder: (_) {
+                                                return CupertinoAlertDialog(
+                                                  content: Text(
+                                                      dic['v3.stashError']!),
+                                                  actions: <Widget>[
+                                                    CupertinoDialogAction(
+                                                      child: Text(dic[
+                                                          'v3.iUnderstand']!),
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                          return;
+                                        }
+                                        _chill();
+                                      },
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 4, vertical: 2),
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                    padding: EdgeInsets.only(
-                                        left: 5, top: 10, right: 5, bottom: 10),
-                                    decoration: BoxDecoration(
-                                        color: Color(0x24FFFFFF),
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(14),
-                                            topRight: Radius.circular(14),
-                                            bottomRight: Radius.circular(14))),
-                                    child: ListView(
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      children: _buildNominatingList(),
                                     ))
                               ],
-                            ))
+                            ),
+                            Container(
+                                padding: EdgeInsets.only(
+                                    left: 5, top: 10, right: 5, bottom: 10),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: Color(0x24FFFFFF),
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(14),
+                                        topRight: Radius.circular(14),
+                                        bottomRight: Radius.circular(14))),
+                                child: widget.plugin.store.staking.ownStashInfo!
+                                            .nominating!.length >
+                                        0
+                                    ? ListView(
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        children: _buildNominatingList(),
+                                      )
+                                    : Container(
+                                        padding: EdgeInsets.only(
+                                            left: 5,
+                                            top: 10,
+                                            right: 5,
+                                            bottom: 10),
+                                        width: double.infinity,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          dic['total']!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5
+                                              ?.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.white),
+                                        ),
+                                      ))
+                          ],
+                        )
                       ],
                     ),
                   )),
