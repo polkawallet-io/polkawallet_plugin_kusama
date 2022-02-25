@@ -69,7 +69,7 @@ const Map<String, String> enStaking = {
   'bond.reward': 'Reward',
   'bond.redeemable': 'Redeemable',
   'bond.unbond.min':
-      'Remaining bond is lower than the min nomination amount, please cancel the nomination first.',
+      'Remaining bond is lower than the min nomination amount, please stop nominating.',
   'payout': 'Payouts',
   'reward.Staked': 'Stash account (increase the amount at stake)',
   'reward.Stash': 'Stash account (do not increase the amount at stake)',
