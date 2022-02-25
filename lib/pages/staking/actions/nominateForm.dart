@@ -294,7 +294,8 @@ class _NominateFormState extends State<NominateForm> {
             color: PluginColorsDark.listColor,
             padding: EdgeInsets.all(16),
             child: PluginButton(
-              title: dicStaking['action.nominate']!,
+              title:
+                  "${dicStaking['action.nominate']}${_selected.length > 0 ? ' (${_selected.length})' : ''}",
               onPressed: _selected.length > 0 ? _setNominee : null,
             ),
           ),

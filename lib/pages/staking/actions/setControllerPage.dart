@@ -6,9 +6,7 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/addressFormItem.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
@@ -88,6 +86,28 @@ class _SetControllerPageState extends State<SetControllerPage> {
                 padding: EdgeInsets.all(16),
                 child: PluginTxButton(
                   getTxParams: () async {
+                    final isStash =
+                        widget.plugin.store.staking.ownStashInfo!.isOwnStash! ||
+                            (!widget.plugin.store.staking.ownStashInfo!
+                                    .isOwnStash! &&
+                                !widget.plugin.store.staking.ownStashInfo!
+                                    .isOwnController!);
+                    if (!isStash) {
+                      showCupertinoDialog(
+                          context: context,
+                          builder: (_) {
+                            return CupertinoAlertDialog(
+                              content: Text(dic['v3.controllerError']!),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  child: Text(dic['v3.iUnderstand']!),
+                                  onPressed: () => Navigator.of(context).pop(),
+                                ),
+                              ],
+                            );
+                          });
+                      return null;
+                    }
                     var currentController =
                         ModalRoute.of(context)!.settings.arguments;
                     if (currentController != null &&

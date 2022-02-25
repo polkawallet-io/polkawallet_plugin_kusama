@@ -24,6 +24,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelect
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/RewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
@@ -142,7 +143,7 @@ class PluginKusama extends PolkawalletPlugin {
       StakingPage.route: (_) => StakingPage(this, keyring),
       StakingHistoryPage.route: (_) => StakingHistoryPage(this),
       OverViewPage.route: (_) => OverViewPage(this),
-      RewardDetailPage.route: (_) => RewardDetailPage(this, keyring),
+      RewardDetailNewPage.route: (_) => RewardDetailNewPage(this),
 
       // governance pages
       DemocracyPage.route: (_) => DemocracyPage(this, keyring),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -46,15 +48,6 @@ class _StakingViewState extends State<StakingView> {
     await widget.plugin.service.staking.queryMarketPrices();
     widget.plugin.service.staking.updateStakingTxs(0);
     widget.plugin.service.staking.updateStakingRewards();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _updateData();
-    });
   }
 
   void _onAction(Future<dynamic> Function() doAction) {
@@ -167,6 +160,8 @@ class _StakingViewState extends State<StakingView> {
                         left: 16, top: 16, right: 16, bottom: 20),
                     child: Column(
                       children: [
+                        ConnectionChecker(widget.plugin,
+                            onConnected: _updateData),
                         RoundedPluginCard(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 20),
@@ -206,7 +201,7 @@ class _StakingViewState extends State<StakingView> {
                                         child: GestureDetector(
                                             onTap: () => Navigator.of(context)
                                                 .pushNamed(
-                                                    RewardDetailPage.route),
+                                                    RewardDetailNewPage.route),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -268,7 +263,16 @@ class _StakingViewState extends State<StakingView> {
                                 InfoItemRow(
                                   dic['v3.rewardDest']!,
                                   widget.plugin.store.staking.ownStashInfo!
-                                      .destination!,
+                                          .destination!
+                                          .contains('account')
+                                      ? Fmt.address(jsonDecode(widget
+                                          .plugin
+                                          .store
+                                          .staking
+                                          .ownStashInfo!
+                                          .destination!)["account"])
+                                      : widget.plugin.store.staking
+                                          .ownStashInfo!.destination!,
                                   labelStyle: labelStyle,
                                   contentStyle: labelStyle,
                                 )
@@ -387,8 +391,31 @@ class _StakingViewState extends State<StakingView> {
                                 width: 36,
                               ),
                               dic['v3.rewardDest']!,
-                              onTap: () => _onAction(() => Navigator.of(context)
-                                  .pushNamed(SetPayeePage.route)),
+                              onTap: () {
+                                if ((isStash &&
+                                        widget.plugin.store.staking
+                                            .ownStashInfo!.isOwnController!) ||
+                                    (!isStash && bonded > BigInt.zero)) {
+                                  _onAction(() => Navigator.of(context)
+                                      .pushNamed(SetPayeePage.route));
+                                } else {
+                                  showCupertinoDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return CupertinoAlertDialog(
+                                          content: Text(dic['v3.stashError']!),
+                                          actions: <Widget>[
+                                            CupertinoDialogAction(
+                                              child:
+                                                  Text(dic['v3.iUnderstand']!),
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
+                              },
                             ),
                             GridViewItemBtn(
                               Image.asset(
@@ -397,7 +424,7 @@ class _StakingViewState extends State<StakingView> {
                               ),
                               dic['v3.rewardDetail']!,
                               onTap: () => Navigator.of(context)
-                                  .pushNamed(RewardDetailPage.route),
+                                  .pushNamed(RewardDetailNewPage.route),
                             ),
                             GridViewItemBtn(
                               Image.asset(
@@ -491,8 +518,25 @@ class _StakingViewState extends State<StakingView> {
                     ),
                   )),
               DragDropBtn(
-                onTap: () =>
-                    Navigator.of(context).pushNamed(NominatePage.route),
+                onTap: () {
+                  if (isStash && !isController!) {
+                    showCupertinoDialog(
+                        context: context,
+                        builder: (_) {
+                          return CupertinoAlertDialog(
+                            content: Text(dic['v3.stashError']!),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text(dic['v3.iUnderstand']!),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                            ],
+                          );
+                        });
+                    return;
+                  }
+                  Navigator.of(context).pushNamed(NominatePage.route);
+                },
               ),
             ]);
     });

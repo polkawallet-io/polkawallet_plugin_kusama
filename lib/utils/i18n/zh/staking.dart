@@ -105,5 +105,8 @@ const Map<String, String> zhStaking = {
   'v3.rewardDetail': '收益详情',
   'v3.account': '账户',
   'v3.stopAll': '全部停止',
-  'v3.stagedRewards': '阶段性收益'
+  'v3.stagedRewards': '阶段性收益',
+  'v3.iUnderstand': '我明白了',
+  'v3.controllerError': '当前账号为控制账号，权限受限。',
+  'v3.stashError': '当前账号为储值账号，权限受限。',
 };
