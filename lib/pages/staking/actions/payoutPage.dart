@@ -5,10 +5,8 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/store/balances.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/addressFormItem.dart';
-import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
-import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputBalance.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
@@ -302,7 +300,7 @@ class _PayoutPageState extends State<PayoutPage> {
                                           .join(', '),
                                   style: TextStyle(color: Colors.white)),
                               trailing: Text(
-                                  Fmt.balance(e['available'], decimals),
+                                  Fmt.balance('0x${e['available']}', decimals),
                                   style: TextStyle(color: Colors.white)),
                             );
                           }).toList()
