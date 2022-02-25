@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorListFilter.dart';
@@ -120,16 +121,15 @@ class _NominateFormState extends State<NominateForm> {
                     ],
                   ),
                   Text(
-                    '${dicStaking['commission']}: $comm',
+                    (validator.isElected ?? false)
+                        // ignore: unnecessary_null_comparison
+                        ? '${dicStaking['total']}: ${validator.total != null ? Fmt.token(validator.total, widget.plugin.networkState.tokenDecimals![0]) : '~'}'
+                        : '${dicStaking['nominators']}: $nominationsCount',
                     style: textStyle,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        '${dicStaking['nominators']}: $nominationsCount',
-                        style: textStyle,
-                      ),
-                    ],
+                  Text(
+                    '${dicStaking['commission']}: $comm',
+                    style: textStyle,
                   ),
                 ],
               ),
@@ -141,16 +141,16 @@ class _NominateFormState extends State<NominateForm> {
                   isWaiting ? dicStaking['waiting']! : dicStaking['reward']!,
                   style: textStyle,
                 ),
-                Text(
-                  isWaiting
-                      ? ''
-                      : '${validator.stakedReturnCmp.toStringAsFixed(2)}%',
-                  style: Theme.of(context).textTheme.headline1!.copyWith(
-                        color: PluginColorsDark.headline1,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                isWaiting
+                    ? Container()
+                    : Text(
+                        '${validator.stakedReturnCmp.toStringAsFixed(2)}%',
+                        style: Theme.of(context).textTheme.headline1!.copyWith(
+                              color: PluginColorsDark.headline1,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                ),
               ],
             ),
             GestureDetector(
@@ -233,70 +233,73 @@ class _NominateFormState extends State<NominateForm> {
   Widget build(BuildContext context) {
     var dicStaking = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
 
-    List<ValidatorData> list = [];
-    list.addAll(_selected);
+    return Observer(builder: (_) {
+      List<ValidatorData> list = [];
+      list.addAll(_selected);
 
-    // add validators
-    // filter the _notSelected list
-    List<ValidatorData> retained = List.of(_notSelected);
-    // filter the blocking validators
-    retained.removeWhere((e) => e.isBlocking!);
-    retained = PluginFmt.filterValidatorList(retained, _filters, _search,
-        widget.plugin.store.accounts.addressIndexMap);
-    // and sort it
-    retained.sort((a, b) => PluginFmt.sortValidatorList(
-        widget.plugin.store.accounts.addressIndexMap, a, b, _sortType));
-    list.addAll(retained);
+      // add validators
+      // filter the _notSelected list
+      List<ValidatorData> retained = List.of(_notSelected);
+      // filter the blocking validators
+      retained.removeWhere((e) => e.isBlocking!);
+      retained = PluginFmt.filterValidatorList(retained, _filters, _search,
+          widget.plugin.store.accounts.addressIndexMap);
+      // and sort it
+      retained.sort((a, b) => PluginFmt.sortValidatorList(
+          widget.plugin.store.accounts.addressIndexMap, a, b, _sortType));
+      list.addAll(retained);
 
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(top: 8, bottom: 8),
-          child: ValidatorListFilter(
-            filters: _filters,
-            onSearchChange: (v) {
-              if (_search != v) {
-                setState(() {
-                  _search = v;
-                });
-              }
-            },
-            onFilterChange: (v) {
-              if (_filters != v) {
-                setState(() {
-                  _filters = v;
-                });
-              }
-            },
-            onSortChange: (v) {
-              if (_sortType != v) {
-                setState(() {
-                  _sortType = v;
-                });
-              }
-            },
-          ),
-        ),
-        Expanded(
-          child: Container(
-            color: PluginColorsDark.listColor,
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: list.length,
-              itemBuilder: (BuildContext context, int i) {
-                return _buildListItem(context, list[i]);
+      return Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(top: 8, bottom: 8),
+            child: ValidatorListFilter(
+              filters: _filters,
+              onSearchChange: (v) {
+                if (_search != v) {
+                  setState(() {
+                    _search = v;
+                  });
+                }
+              },
+              onFilterChange: (v) {
+                if (_filters != v) {
+                  setState(() {
+                    _filters = v;
+                  });
+                }
+              },
+              onSortChange: (v) {
+                if (_sortType != v) {
+                  setState(() {
+                    _sortType = v;
+                  });
+                }
               },
             ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: PluginButton(
-            title: dicStaking['action.nominate']!,
-            onPressed: _selected.length > 0 ? _setNominee : null,
+          Expanded(
+            child: Container(
+              color: PluginColorsDark.listColor,
+              child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int i) {
+                  return _buildListItem(context, list[i]);
+                },
+              ),
+            ),
           ),
-        ),
-      ],
-    );
+          Container(
+            color: PluginColorsDark.listColor,
+            padding: EdgeInsets.all(16),
+            child: PluginButton(
+              title: dicStaking['action.nominate']!,
+              onPressed: _selected.length > 0 ? _setNominee : null,
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

@@ -37,8 +37,13 @@ class ValidatorDetailPage extends StatelessWidget {
         final accInfo = plugin.store.accounts.addressIndexMap[detail.accountId];
         final accIcon = plugin.store.accounts.addressIconsMap[detail.accountId];
 
-        final int nominatorsCount =
-            detail.isElected! ? detail.nominators.length : 0;
+        final int nominatorsCount = detail.isElected!
+            ? detail.nominators.length
+            : plugin.store.staking.nominationsCount![detail.accountId] ?? 0;
+
+        final maxNomPerValidator = int.parse(plugin.networkConst['staking']
+                ['maxNominatorRewardedPerValidator']
+            .toString());
 
         return PluginScaffold(
           appBar: PluginAppBar(
@@ -54,25 +59,64 @@ class ValidatorDetailPage extends StatelessWidget {
                     margin: EdgeInsets.all(16),
                     child: Column(
                       children: <Widget>[
-                        Visibility(
-                            visible: detail.isBlocking!,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 16),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.remove_circle,
-                                    color: Theme.of(context).errorColor,
-                                    size: 16,
-                                  ),
-                                  Text(
-                                    dicStaking['blocking']!,
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              ),
-                            )),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0x0FFFFFFF),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(14),
+                                topRight: Radius.circular(14)),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(height: 16),
+                              Visibility(
+                                  visible: detail.isBlocking!,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: 4),
+                                          child: Image.asset(
+                                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_block_nom.png',
+                                            width: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          dicStaking['blocking']!,
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  )),
+                              Visibility(
+                                  visible:
+                                      nominatorsCount >= maxNomPerValidator,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(right: 4),
+                                          child: Image.asset(
+                                            'packages/polkawallet_plugin_kusama/assets/images/staking/icon_over_sub.png',
+                                            width: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          dicStaking['oversubscribe']!,
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
                         AccountInfo(
                           network: plugin.basic.name,
                           accInfo: accInfo,
@@ -89,96 +133,115 @@ class ValidatorDetailPage extends StatelessWidget {
                                 Text(
                                   dicStaking['validator.chart']!,
                                   style: TextStyle(
-                                      color: PluginColorsDark.primary),
+                                      color: PluginColorsDark.primary,
+                                      fontSize: 14),
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(left: 2),
                                     child: Icon(
                                       Icons.insert_chart_outlined,
                                       color: PluginColorsDark.primary,
-                                      size: 17,
+                                      size: 15,
                                     )),
                               ],
                             ),
                           ),
                         ),
-                        Divider(),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8, left: 24),
-                          child: Row(
-                            children: <Widget>[
-                              PluginInfoItem(
-                                title: dicStaking['stake.own'],
-                                content: Fmt.token(detail.bondOwn, decimals),
-                                contentCrossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                titleStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline5
-                                    ?.copyWith(color: Colors.white),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline1
-                                    ?.copyWith(
-                                        fontSize: 22, color: Colors.white),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0x0FFFFFFF),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(14),
+                                bottomRight: Radius.circular(14)),
+                          ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 8, left: 24),
+                                child: Row(
+                                  children: <Widget>[
+                                    PluginInfoItem(
+                                      title: dicStaking['stake.own'],
+                                      content:
+                                          Fmt.token(detail.bondOwn, decimals),
+                                      contentCrossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      titleStyle: Theme.of(context)
+                                          .textTheme
+                                          .headline5
+                                          ?.copyWith(color: Colors.white),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          ?.copyWith(
+                                              fontSize: 22,
+                                              color: Colors.white),
+                                    ),
+                                    PluginInfoItem(
+                                      title: dicStaking['stake.other'],
+                                      content:
+                                          Fmt.token(detail.bondOther, decimals),
+                                      contentCrossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      titleStyle: Theme.of(context)
+                                          .textTheme
+                                          .headline5
+                                          ?.copyWith(color: Colors.white),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          ?.copyWith(
+                                              fontSize: 22,
+                                              color: Colors.white),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              PluginInfoItem(
-                                title: dicStaking['stake.other'],
-                                content: Fmt.token(detail.bondOther, decimals),
-                                contentCrossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                titleStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline5
-                                    ?.copyWith(color: Colors.white),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline1
-                                    ?.copyWith(
-                                        fontSize: 22, color: Colors.white),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 8, left: 24, bottom: 8),
+                                child: Row(
+                                  children: <Widget>[
+                                    PluginInfoItem(
+                                      title: dicStaking['commission'],
+                                      content: NumberFormat('0.00%')
+                                          .format(detail.commission / 100),
+                                      contentCrossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      titleStyle: Theme.of(context)
+                                          .textTheme
+                                          .headline5
+                                          ?.copyWith(color: Colors.white),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          ?.copyWith(
+                                              fontSize: 22,
+                                              color: Colors.white),
+                                    ),
+                                    PluginInfoItem(
+                                      title: dicStaking['reward'],
+                                      content:
+                                          '${detail.stakedReturnCmp.toStringAsFixed(2)}%',
+                                      contentCrossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      titleStyle: Theme.of(context)
+                                          .textTheme
+                                          .headline5
+                                          ?.copyWith(color: Colors.white),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          ?.copyWith(
+                                              fontSize: 22,
+                                              color: Colors.white),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8, left: 24, bottom: 8),
-                          child: Row(
-                            children: <Widget>[
-                              PluginInfoItem(
-                                title: dicStaking['commission'],
-                                content: NumberFormat('0.00%')
-                                    .format(detail.commission / 100),
-                                contentCrossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                titleStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline5
-                                    ?.copyWith(color: Colors.white),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline1
-                                    ?.copyWith(
-                                        fontSize: 22, color: Colors.white),
-                              ),
-                              PluginInfoItem(
-                                title: dicStaking['reward'],
-                                content:
-                                    '${detail.stakedReturnCmp.toStringAsFixed(2)}%',
-                                contentCrossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                titleStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline5
-                                    ?.copyWith(color: Colors.white),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline1
-                                    ?.copyWith(
-                                        fontSize: 22, color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   );
