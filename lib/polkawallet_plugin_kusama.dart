@@ -23,6 +23,7 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPag
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/governancePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceOld.dart';
+import 'package:polkawallet_plugin_kusama/pages/newUIRoutes.dart';
 import 'package:polkawallet_plugin_kusama/pages/parachains/contributePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/parachains/parachainsPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
@@ -185,8 +186,7 @@ class PluginKusama extends PolkawalletPlugin {
       ContributePage.route: (_) => ContributePage(this, keyring),
 
       //governanceNew
-      GovernancePage.route: (_) => GovernancePage(this, keyring),
-      governanceNew.CouncilPage.route: (_) => governanceNew.CouncilPage(this),
+      ...getNewUiRoutes(this, keyring)
     };
   }
 

@@ -1,23 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/council.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/connectionChecker.dart';
-import 'package:polkawallet_ui/components/infoItem.dart';
-import 'package:polkawallet_ui/components/outlinedButtonSmall.dart';
-import 'package:polkawallet_ui/components/roundedButton.dart';
-import 'package:polkawallet_ui/components/v3/borderedTitle.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginOutlinedButtonSmall.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginRadioButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
-import 'package:polkawallet_ui/components/v3/roundedCard.dart';
+import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class CouncilPage extends StatefulWidget {
   CouncilPage(this.plugin, {Key? key}) : super(key: key);
@@ -30,7 +33,8 @@ class CouncilPage extends StatefulWidget {
 }
 
 class _CouncilPageState extends State<CouncilPage> {
-  bool _votesExpanded = false;
+  bool _select = false;
+  Map<String, bool> _selectDatas = Map<String, bool>();
 
   Future<void> _refreshData() async {
     await widget.plugin.service.gov.queryCouncilInfo();
@@ -91,122 +95,129 @@ class _CouncilPageState extends State<CouncilPage> {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
 
     final userVotes = widget.plugin.store.gov.userCouncilVotes;
+    int listCount = 0;
     BigInt voteAmount = BigInt.zero;
-    double listHeight = 48;
     if (userVotes != null) {
       voteAmount = BigInt.parse(userVotes['stake'].toString());
-      int listCount = List.of(userVotes['votes']).length;
-      if (listCount > 0) {
-        listHeight = double.parse((listCount * 52).toString());
-      }
+      listCount = List.of(userVotes['votes']).length;
     }
-    return RoundedCard(
+    return RoundedPluginCard(
       margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
-      padding: EdgeInsets.all(24),
+      borderRadius: const BorderRadius.all(const Radius.circular(14)),
+      color: Color(0x1aFFFFFF),
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              InfoItem(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                title: dic['seats'],
-                content:
-                    '${widget.plugin.store.gov.council.members!.length}/${int.parse(widget.plugin.store.gov.council.desiredSeats ?? '13')}',
+          Container(
+              padding:
+                  EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 14),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(14),
+                    topRight: const Radius.circular(14)),
+                color: Color.fromARGB(255, 68, 70, 74),
               ),
-              InfoItem(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                title: dic['up'],
-                content: widget.plugin.store.gov.council.runnersUp?.length
-                    .toString(),
-              ),
-              InfoItem(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                title: dic['candidate'],
-                content: widget.plugin.store.gov.council.candidates!.length
-                    .toString(),
-              )
-            ],
-          ),
-          Divider(height: 24),
-          Column(
-            children: <Widget>[
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      _votesExpanded
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
-                      size: 28,
-                      color: Theme.of(context).unselectedWidgetColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _votesExpanded = !_votesExpanded;
-                      });
-                    },
+              child: Row(
+                children: <Widget>[
+                  PluginInfoItem(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    contentCrossAxisAlignment: CrossAxisAlignment.start,
+                    titleStyle: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        ?.copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        height: 1.7),
+                    title: dic['seats'],
+                    content:
+                        '${widget.plugin.store.gov.council.members!.length}/${int.parse(widget.plugin.store.gov.council.desiredSeats ?? '13')}',
                   ),
-                  InfoItem(
-                    content: '${Fmt.token(voteAmount, decimals)} $tokenView',
-                    title: dic['vote.my'],
+                  PluginInfoItem(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    contentCrossAxisAlignment: CrossAxisAlignment.center,
+                    titleStyle: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        ?.copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        height: 1.7),
+                    title: dic['up'],
+                    content: widget.plugin.store.gov.council.runnersUp?.length
+                        .toString(),
                   ),
-                  OutlinedButtonSmall(
-                    content: dic['vote.remove'],
-                    active: false,
-                    onPressed: listHeight > 48
-                        ? () {
-                            _onCancelVotes();
-                          }
-                        : null,
-                  ),
+                  PluginInfoItem(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    contentCrossAxisAlignment: CrossAxisAlignment.start,
+                    titleStyle: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        ?.copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        height: 1.7),
+                    title: dic['candidate'],
+                    content: widget.plugin.store.gov.council.candidates!.length
+                        .toString(),
+                  )
                 ],
-              ),
-              AnimatedContainer(
-                height: _votesExpanded ? listHeight : 0,
-                duration: Duration(seconds: 1),
-                curve: Curves.fastOutSlowIn,
-                child: AnimatedOpacity(
-                  opacity: _votesExpanded ? 1.0 : 0.0,
-                  duration: Duration(seconds: 1),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  child: listHeight > 48
-                      ? ListView(
-                          children: List.of(userVotes!['votes']).map((i) {
-                            return CandidateItem(
-                              accInfo: widget
-                                  .plugin.store.accounts.addressIndexMap[i],
-                              icon: widget
-                                  .plugin.store.accounts.addressIconsMap[i],
-                              iconSize: 32,
-                              balance: [i],
-                              tokenSymbol: tokenView,
-                              decimals: decimals,
-                              noTap: true,
-                            );
-                          }).toList(),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Text(
-                            I18n.of(context)!.getDic(
-                                i18n_full_dic_ui, 'common')!['list.empty']!,
-                            style: TextStyle(color: Colors.black54),
-                          ),
-                        ),
+              )),
+          Container(
+            padding: EdgeInsets.only(left: 16, top: 15, right: 12, bottom: 15),
+            child: Row(
+              children: [
+                PluginInfoItem(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  contentCrossAxisAlignment: CrossAxisAlignment.start,
+                  titleStyle: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      ?.copyWith(color: Colors.white),
+                  style: Theme.of(context).textTheme.headline3?.copyWith(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      height: 1.7),
+                  title: dic['voted'],
+                  content:
+                      '${Fmt.priceFloorBigIntFormatter(voteAmount, decimals)} $tokenView',
                 ),
-              )
-            ],
-          ),
-          Divider(height: 24),
-          RoundedButton(
-            text: dic['vote'],
-            onPressed: () async {
-              final res =
-                  await Navigator.of(context).pushNamed(CouncilVotePage.route);
-              if (res != null) {
-                _refreshData();
-              }
-            },
+                Expanded(
+                    child: Row(
+                  children: [
+                    PluginInfoItem(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      contentCrossAxisAlignment: CrossAxisAlignment.start,
+                      titleStyle: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          ?.copyWith(color: Colors.white),
+                      style: Theme.of(context).textTheme.headline3?.copyWith(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          height: 1.7),
+                      title: dic['vote.my'],
+                      content: listCount.toString(),
+                    ),
+                    Expanded(
+                        child: PluginOutlinedButtonSmall(
+                      content: dic['v3.unvoteAll'],
+                      color: PluginColorsDark.primary,
+                      active: true,
+                      onPressed: listCount > 0 ? () => _onCancelVotes() : null,
+                    ))
+                  ],
+                ))
+              ],
+            ),
           )
         ],
       ),
@@ -221,7 +232,9 @@ class _CouncilPageState extends State<CouncilPage> {
           title: Text(dic['council']!),
         ),
         body: Observer(builder: (_) {
-          final isDataLoading = widget.plugin.store.gov.council.members == null;
+          final isDataLoading =
+              widget.plugin.store.gov.council.members == null ||
+                  widget.plugin.store.gov.userCouncilVotes == null;
           final decimals = widget.plugin.networkState.tokenDecimals![0];
           final symbol = widget.plugin.networkState.tokenSymbol![0];
           return SafeArea(
@@ -241,21 +254,48 @@ class _CouncilPageState extends State<CouncilPage> {
                           onConnected: _refreshData),
                       Expanded(
                           child: ListView(
+                        physics: BouncingScrollPhysics(),
                         children: <Widget>[
                           _buildTopCard(symbol),
-                          Container(
-                            padding:
-                                EdgeInsets.only(top: 16, left: 16, bottom: 8),
-                            color: Theme.of(context).cardColor,
-                            child: BorderedTitle(
-                              title: dic['member'],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              PluginTextTag(
+                                padding: EdgeInsets.zero,
+                                margin: EdgeInsets.only(left: 16),
+                                title: dic['member']!,
+                              ),
+                              PluginOutlinedButtonSmall(
+                                margin: EdgeInsets.only(bottom: 6, right: 16),
+                                content: dic['v3.select'],
+                                color: _select
+                                    ? PluginColorsDark.primary
+                                    : Color(0xFF737675),
+                                activeTextcolor:
+                                    _select ? Colors.white : Colors.black,
+                                active: true,
+                                fontSize: 12,
+                                minSize: 19,
+                                onPressed: () {
+                                  setState(() {
+                                    _select = !_select;
+                                  });
+                                },
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 4, vertical: 2),
+                              )
+                            ],
                           ),
                           Container(
-                            color: Theme.of(context).cardColor,
+                            color: Color(0xFFFFFFFF).withAlpha(25),
                             child: Column(
                               children: widget.plugin.store.gov.council.members!
                                   .map((i) {
+                                final index = List.of(widget.plugin.store.gov
+                                        .userCouncilVotes!['votes'])
+                                    .indexWhere((element) {
+                                  return element == i[0];
+                                });
                                 return CandidateItem(
                                   accInfo: widget.plugin.store.accounts
                                       .addressIndexMap[i[0]],
@@ -264,24 +304,52 @@ class _CouncilPageState extends State<CouncilPage> {
                                   balance: i,
                                   tokenSymbol: symbol,
                                   decimals: decimals,
+                                  isMyVote: index >= 0,
+                                  trailing: _select
+                                      ? GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 30,
+                                                top: 15,
+                                                right: 10,
+                                                bottom: 15),
+                                            child: PluginRadioButton(
+                                              value:
+                                                  _selectDatas[i[0]] != null &&
+                                                      _selectDatas[i[0]]!,
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              _selectDatas[i[0]] =
+                                                  _selectDatas[i[0]] != null
+                                                      ? !_selectDatas[i[0]]!
+                                                      : true;
+                                            });
+                                          },
+                                        )
+                                      : null,
                                 );
                               }).toList(),
                             ),
                           ),
-                          Container(
-                            padding:
-                                EdgeInsets.only(top: 16, left: 16, bottom: 8),
-                            color: Theme.of(context).cardColor,
-                            child: BorderedTitle(
-                              title: dic['up'],
-                            ),
+                          PluginTextTag(
+                            padding: EdgeInsets.zero,
+                            margin: EdgeInsets.only(left: 16, top: 15),
+                            title: dic['up']!,
                           ),
                           Container(
-                            color: Theme.of(context).cardColor,
+                            color: Color(0xFFFFFFFF).withAlpha(25),
                             child: Column(
                               children: widget
                                   .plugin.store.gov.council.runnersUp!
                                   .map((i) {
+                                final index = List.of(widget.plugin.store.gov
+                                        .userCouncilVotes!['votes'])
+                                    .indexWhere((element) {
+                                  return element == i[0];
+                                });
                                 return CandidateItem(
                                   accInfo: widget.plugin.store.accounts
                                       .addressIndexMap[i[0]],
@@ -290,20 +358,43 @@ class _CouncilPageState extends State<CouncilPage> {
                                   balance: i,
                                   tokenSymbol: symbol,
                                   decimals: decimals,
+                                  isMyVote: index >= 0,
+                                  trailing: _select
+                                      ? GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 30,
+                                                top: 15,
+                                                right: 10,
+                                                bottom: 15),
+                                            child: PluginRadioButton(
+                                              value:
+                                                  _selectDatas[i[0]] != null &&
+                                                      _selectDatas[i[0]]!,
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              _selectDatas[i[0]] =
+                                                  _selectDatas[i[0]] != null
+                                                      ? !_selectDatas[i[0]]!
+                                                      : true;
+                                            });
+                                          },
+                                        )
+                                      : null,
                                 );
                               }).toList(),
                             ),
                           ),
-                          Container(
-                            padding:
-                                EdgeInsets.only(top: 16, left: 16, bottom: 8),
-                            color: Theme.of(context).cardColor,
-                            child: BorderedTitle(
-                              title: dic['candidate'],
-                            ),
+                          PluginTextTag(
+                            padding: EdgeInsets.zero,
+                            margin: EdgeInsets.only(left: 16, top: 15),
+                            title: dic['candidate']!,
                           ),
                           Container(
-                            color: Theme.of(context).cardColor,
+                            color: Color(0xFFFFFFFF).withAlpha(25),
                             child: widget.plugin.store.gov.council.candidates!
                                         .length >
                                     0
@@ -311,6 +402,11 @@ class _CouncilPageState extends State<CouncilPage> {
                                     children: widget
                                         .plugin.store.gov.council.candidates!
                                         .map((i) {
+                                      final index = List.of(widget.plugin.store
+                                              .gov.userCouncilVotes!['votes'])
+                                          .indexWhere((element) {
+                                        return element == i[0];
+                                      });
                                       return CandidateItem(
                                         accInfo: widget.plugin.store.accounts
                                             .addressIndexMap[i],
@@ -319,17 +415,135 @@ class _CouncilPageState extends State<CouncilPage> {
                                         balance: [i],
                                         tokenSymbol: symbol,
                                         decimals: decimals,
+                                        isMyVote: index >= 0,
+                                        trailing: _select
+                                            ? GestureDetector(
+                                                behavior:
+                                                    HitTestBehavior.opaque,
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 30,
+                                                      top: 15,
+                                                      right: 10,
+                                                      bottom: 15),
+                                                  child: PluginRadioButton(
+                                                    value: _selectDatas[i[0]] !=
+                                                            null &&
+                                                        _selectDatas[i[0]]!,
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  setState(() {
+                                                    _selectDatas[i[0]] =
+                                                        _selectDatas[i[0]] !=
+                                                                null
+                                                            ? !_selectDatas[
+                                                                i[0]]!
+                                                            : true;
+                                                  });
+                                                },
+                                              )
+                                            : null,
                                       );
                                     }).toList(),
                                   )
                                 : Padding(
                                     padding: EdgeInsets.all(16),
-                                    child: Text(dic['candidate.empty']!),
+                                    child: Text(
+                                      dic['candidate.empty']!,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                           ),
                         ],
-                      ))
+                      )),
+                      Visibility(
+                        visible: _select,
+                        child: Container(
+                          color: Color(0xFFFFFFFF).withAlpha(25),
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 15),
+                          child: PluginButton(
+                            title: dic['vote']!,
+                          ),
+                        ),
+                      )
                     ]));
         }));
+  }
+}
+
+class CandidateItem extends StatelessWidget {
+  CandidateItem({
+    this.accInfo,
+    this.balance,
+    this.tokenSymbol,
+    this.decimals,
+    this.icon,
+    this.iconSize,
+    this.noTap = false,
+    this.isMyVote = false,
+    this.trailing,
+  });
+  final Map? accInfo;
+  // balance == [<candidate_address>, <0x_candidate_backing_amount>]
+  final List? balance;
+  final String? tokenSymbol;
+  final int? decimals;
+  final String? icon;
+  final double? iconSize;
+  final bool noTap;
+  final Widget? trailing;
+  final bool isMyVote;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          leading: AddressIcon(balance![0], size: iconSize, svg: icon),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              UI.accountDisplayName(balance![0], accInfo,
+                  expand: false,
+                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.w600)),
+              isMyVote
+                  ? Container(
+                      padding: EdgeInsets.only(left: 6),
+                      child: Image.asset(
+                        "packages/polkawallet_plugin_kusama/assets/images/gov/voted.png",
+                        width: 17.5,
+                      ),
+                    )
+                  : Container()
+            ],
+          ),
+          subtitle: balance!.length == 1
+              ? null
+              : Text(
+                  '${I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!['backing']}: ${Fmt.token(
+                    BigInt.parse(balance![1].toString()),
+                    decimals!,
+                    length: 0,
+                  )} $tokenSymbol',
+                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w300)),
+          onTap: noTap
+              ? null
+              : () => Navigator.of(context).pushNamed(CandidateDetailPage.route,
+                  arguments:
+                      balance!.length == 1 ? ([balance![0], '0x0']) : balance),
+          trailing: trailing,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Divider(),
+        )
+      ],
+    );
   }
 }

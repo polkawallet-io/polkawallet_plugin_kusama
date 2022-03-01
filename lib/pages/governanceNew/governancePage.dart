@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/govExternalLinks.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/referendumPanel.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingView.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/outlinedButtonSmall.dart';
@@ -33,6 +36,9 @@ class _GovernancePageState extends State<GovernancePage> {
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       new GlobalKey<RefreshIndicatorState>();
 
+  final Map<BigInt?, List> _links = {};
+  bool isLoading = false;
+
   Future<void> _queryDemocracyLocks() async {
     final List? locks = await widget.plugin.sdk.api.gov
         .getDemocracyLocks(widget.keyring.current.address!);
@@ -41,6 +47,46 @@ class _GovernancePageState extends State<GovernancePage> {
         _locks = locks;
       });
     }
+  }
+
+  Future<List?> _getExternalLinks(BigInt? id) async {
+    if (_links[id] != null) return _links[id];
+
+    final List? res = await widget.plugin.sdk.api.gov.getExternalLinks(
+      GenExternalLinksParams.fromJson(
+          {'data': id.toString(), 'type': 'referendum'}),
+    );
+    if (res != null) {
+      setState(() {
+        _links[id] = res;
+      });
+    }
+    return res;
+  }
+
+  Future<void> _fetchReferendums() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    if (widget.plugin.sdk.api.connectedNode == null) {
+      return;
+    }
+    widget.plugin.service.gov.getReferendumVoteConvictions();
+    final ls = await widget.plugin.service.gov.queryReferendums();
+    ls.forEach((e) {
+      _getExternalLinks(e.index);
+    });
+
+    _queryDemocracyLocks();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> _freshData() async {
+    await _queryDemocracyLocks();
+    await _fetchReferendums();
   }
 
   @override
@@ -55,6 +101,11 @@ class _GovernancePageState extends State<GovernancePage> {
   void _onUnlock(List<String> ids) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     _unlockTx(dic['democracy.unlock'], ids);
+  }
+
+  void _submitCancelVote(int id) {
+    final govDic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    _unlockTx(govDic['vote.remove'], ["$id"]);
   }
 
   void _unlockTx(String? txTitle, List<String> ids) async {
@@ -240,9 +291,12 @@ class _GovernancePageState extends State<GovernancePage> {
             .getDic(i18n_full_dic_kusama, 'common')!['governance']!),
       ),
       body: Observer(builder: (_) {
+        final list = widget.plugin.store.gov.referendums;
+        final decimals = widget.plugin.networkState.tokenDecimals![0];
+        final symbol = widget.plugin.networkState.tokenSymbol![0];
         return RefreshIndicator(
             key: _refreshKey,
-            onRefresh: _queryDemocracyLocks,
+            onRefresh: _freshData,
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               padding: EdgeInsets.all(16),
@@ -312,13 +366,38 @@ class _GovernancePageState extends State<GovernancePage> {
                           ],
                         )),
                     content: ListView.builder(
-                        itemCount: 150,
+                        itemCount: list?.length ?? 0,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return Container(
-                            height: 50,
-                            child: Text('List tile #$index'),
+                          bool isLock = false;
+                          if (_locks.length > 0) {
+                            _locks.forEach((element) {
+                              if (BigInt.parse(element['referendumId']) ==
+                                  list![index].index) {
+                                isLock = true;
+                              }
+                            });
+                          }
+                          return ReferendumPanel(
+                            data: list![index],
+                            isLock: isLock,
+                            bestNumber: widget.plugin.store.gov.bestNumber,
+                            symbol: symbol,
+                            decimals: decimals,
+                            blockDuration: BigInt.parse(widget.plugin
+                                    .networkConst['babe']['expectedBlockTime']
+                                    .toString())
+                                .toInt(),
+                            onCancelVote: _submitCancelVote,
+                            links: Visibility(
+                              visible: _links[list[index].index] != null,
+                              child: GovExternalLinks(
+                                  _links[list[index].index] ?? []),
+                            ),
+                            onRefresh: () {
+                              _refreshKey.currentState!.show();
+                            },
                           );
                         }));
               },
