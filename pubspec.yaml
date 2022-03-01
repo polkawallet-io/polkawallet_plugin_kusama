@@ -20,6 +20,7 @@ dependencies:
   polkawallet_sdk: ^0.3.7
   polkawallet_ui: ^0.3.6
   fl_chart: ^0.40.2
+  sticky_headers: ^0.2.0
 
 dev_dependencies:
   build_runner: ^2.1.2

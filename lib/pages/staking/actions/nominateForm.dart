@@ -60,7 +60,8 @@ class _NominateFormState extends State<NominateForm> {
     final dicStaking =
         I18n.of(context)!.getDic(i18n_full_dic_kusama, 'staking')!;
     final maxNomination = int.parse(
-        widget.plugin.networkConst['staking']['maxNominations'].toString());
+        (widget.plugin.networkConst['staking']['maxNominations'] ?? 16)
+            .toString());
     final maxNomPerValidator = int.parse(widget
         .plugin.networkConst['staking']['maxNominatorRewardedPerValidator']
         .toString());

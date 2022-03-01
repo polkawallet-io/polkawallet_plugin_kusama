@@ -9,6 +9,8 @@ import 'package:polkawallet_plugin_kusama/pages/governance.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart'
+    as governanceNew;
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracyPage.dart';
@@ -19,6 +21,7 @@ import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitPropos
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitTipPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/governancePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceOld.dart';
 import 'package:polkawallet_plugin_kusama/pages/parachains/contributePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/parachains/parachainsPage.dart';
@@ -117,11 +120,15 @@ class PluginKusama extends PolkawalletPlugin {
               : e == 'parachain'
                   ? ParachainsPage(this, keyring)
                   : Container(),
-          onTap: e == 'staking'
+          onTap: e == 'governance'
               ? () {
-                  Navigator.of(context).pushNamed(StakingPage.route);
+                  Navigator.of(context).pushNamed(GovernancePage.route);
                 }
-              : null);
+              : e == 'staking'
+                  ? () {
+                      Navigator.of(context).pushNamed(StakingPage.route);
+                    }
+                  : null);
     }).toList();
   }
 
@@ -176,6 +183,10 @@ class PluginKusama extends PolkawalletPlugin {
 
       // parachains
       ContributePage.route: (_) => ContributePage(this, keyring),
+
+      //governanceNew
+      GovernancePage.route: (_) => GovernancePage(this, keyring),
+      governanceNew.CouncilPage.route: (_) => governanceNew.CouncilPage(this),
     };
   }
 
