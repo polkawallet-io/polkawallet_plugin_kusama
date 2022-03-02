@@ -251,8 +251,13 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(_getConvictionLabel(
-                                            _voteConviction)!),
+                                        Text(
+                                          _getConvictionLabel(_voteConviction)!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5
+                                              ?.copyWith(color: Colors.white),
+                                        ),
                                         Icon(
                                           Icons.arrow_forward_ios,
                                           size: 18,
