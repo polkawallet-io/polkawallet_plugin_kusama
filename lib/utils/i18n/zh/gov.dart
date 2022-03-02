@@ -86,4 +86,10 @@ const Map<String, String> zhGov = {
   'v3.cancelMyVote': '取消上次投票',
   'v3.voteMessage.aye': '你上次投了赞成票。',
   'v3.voteMessage.nay': '你上次投了反对票。',
+  'v3.myStats': '我的数据',
+  'v3.referendaState': '公投状态',
+  'v3.canClear': '可取回',
+  'v3.locked': '锁定',
+  'v3.proposalContent': '提案内容',
+  'v3.voting': '你的投票'
 };

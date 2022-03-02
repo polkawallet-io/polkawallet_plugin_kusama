@@ -89,4 +89,10 @@ const Map<String, String> enGov = {
   'v3.cancelMyVote': 'Cancel Vote',
   'v3.voteMessage.aye': 'You voted Aye last time.',
   'v3.voteMessage.nay': 'You voted Nay last time.',
+  'v3.myStats': 'My Stats',
+  'v3.referendaState': 'Referenda State',
+  'v3.canClear': 'Can Clear',
+  'v3.locked': 'Locked',
+  'v3.proposalContent': 'Proposal Content',
+  'v3.voting': 'You are Voting'
 };

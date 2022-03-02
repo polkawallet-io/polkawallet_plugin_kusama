@@ -294,7 +294,7 @@ packages:
     source: hosted
     version: "0.23.0+1"
   flutter_swiper:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_swiper
       url: "https://pub.dartlang.org"

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/governancePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/referendumVotePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 
@@ -16,6 +17,7 @@ Map<String, WidgetBuilder> getNewUiRoutes(
           CouncilPage.route: (_) => CouncilPage(plugin),
           CandidateDetailPage.route: (_) =>
               CandidateDetailPage(plugin, keyring),
+          ReferendumVotePage.route: (_) => ReferendumVotePage(plugin, keyring),
         }
       : {};
 }

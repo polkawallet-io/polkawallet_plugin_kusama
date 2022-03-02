@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/referendumVotePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/referendumVotePage.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -324,13 +324,14 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
           });
         },
         child: Container(
+            margin: EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(14),
                 bottomLeft: Radius.circular(14),
                 bottomRight: Radius.circular(14),
               ),
-              color: Color(0xFF3A3D40),
+              color: PluginColorsDark.cardColor,
             ),
             child: Column(
               children: [

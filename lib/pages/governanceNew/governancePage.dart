@@ -2,22 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/govExternalLinks.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/proposalPanel.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/referendumPanel.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingView.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
+import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/outlinedButtonSmall.dart';
+import 'package:polkawallet_ui/components/infoItemRow.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
 import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
-import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class GovernancePage extends StatefulWidget {
   GovernancePage(this.plugin, this.keyring, {Key? key}) : super(key: key);
@@ -36,7 +42,7 @@ class _GovernancePageState extends State<GovernancePage> {
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  final Map<BigInt?, List> _links = {};
+  final Map<String, List> _links = {};
   bool isLoading = false;
 
   Future<void> _queryDemocracyLocks() async {
@@ -49,16 +55,15 @@ class _GovernancePageState extends State<GovernancePage> {
     }
   }
 
-  Future<List?> _getExternalLinks(BigInt? id) async {
+  Future<List?> _getExternalLinks(BigInt? id, String type) async {
     if (_links[id] != null) return _links[id];
 
     final List? res = await widget.plugin.sdk.api.gov.getExternalLinks(
-      GenExternalLinksParams.fromJson(
-          {'data': id.toString(), 'type': 'referendum'}),
+      GenExternalLinksParams.fromJson({'data': id.toString(), 'type': type}),
     );
     if (res != null) {
       setState(() {
-        _links[id] = res;
+        _links['$type===${id.toString()}'] = res;
       });
     }
     return res;
@@ -75,10 +80,25 @@ class _GovernancePageState extends State<GovernancePage> {
     widget.plugin.service.gov.getReferendumVoteConvictions();
     final ls = await widget.plugin.service.gov.queryReferendums();
     ls.forEach((e) {
-      _getExternalLinks(e.index);
+      _getExternalLinks(e.index, 'referendum');
     });
 
-    _queryDemocracyLocks();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> _fetchProposalsData() async {
+    if (widget.plugin.sdk.api.connectedNode == null) {
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+    final ls = await widget.plugin.service.gov.queryProposals();
+    ls.forEach((e) {
+      _getExternalLinks(BigInt.parse(e.index), 'proposal');
+    });
     setState(() {
       isLoading = false;
     });
@@ -87,15 +107,26 @@ class _GovernancePageState extends State<GovernancePage> {
   Future<void> _freshData() async {
     await _queryDemocracyLocks();
     await _fetchReferendums();
+    await _fetchProposalsData();
   }
 
   @override
   void initState() {
     super.initState();
+    if (widget.plugin.sdk.api.connectedNode != null) {
+      widget.plugin.service.gov.subscribeBestNumber();
+    }
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _refreshKey.currentState!.show();
     });
+  }
+
+  @override
+  void dispose() {
+    widget.plugin.service.gov.unsubscribeBestNumber();
+
+    super.dispose();
   }
 
   void _onUnlock(List<String> ids) {
@@ -127,6 +158,30 @@ class _GovernancePageState extends State<GovernancePage> {
     final res = await Navigator.of(context)
         .pushNamed(TxConfirmPage.route, arguments: params);
     if (res != null) {
+      _refreshKey.currentState!.show();
+    }
+  }
+
+  Future<void> _onSecondsTx(ProposalInfoData proposal) async {
+    final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
+    final TxConfirmParams params = TxConfirmParams(
+      module: 'democracy',
+      call: 'second',
+      txTitle: dic['proposal.second'],
+      txDisplay: {
+        dic["proposal"]: '#${BigInt.parse(proposal.index.toString()).toInt()}',
+        "seconds": proposal.seconds!.length,
+      },
+      params: [
+        BigInt.parse(proposal.index.toString()).toInt(),
+        proposal.seconds!.length,
+      ],
+      isPlugin: true,
+    );
+
+    final res = await Navigator.of(context)
+        .pushNamed(TxConfirmPage.route, arguments: params);
+    if (res as bool? ?? false) {
       _refreshKey.currentState!.show();
     }
   }
@@ -167,118 +222,166 @@ class _GovernancePageState extends State<GovernancePage> {
       }
     }
     final redeemable = maxUnlockAmount - maxLockAmount;
-    return RoundedCard(
-      margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
-      padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Container(
-              margin: EdgeInsets.only(bottom: 5),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Center(
-                          child: Text(dic['democracy.referendum.number']!))),
-                  Expanded(
-                      child: Center(
-                          child: Text(dic['democracy.referendum.balance']!))),
-                  Expanded(
-                      child: Center(
-                          child: Text(dic['democracy.referendum.period']!)))
-                ],
-              )),
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: locks.length,
-            itemBuilder: (context, index) {
-              var unlockAt = locks[index]['unlockAt'];
-              final int blockDuration = BigInt.parse(widget
-                      .plugin.networkConst['babe']['expectedBlockTime']
-                      .toString())
-                  .toInt();
-              if (unlockAt == "0") {
-                widget.plugin.store.gov.referendums!.forEach((element) {
-                  if (element.userVoted != null &&
-                      element.index ==
-                          BigInt.parse(locks[index]['referendumId'])) {
-                    unlockAt = element.status!['end'];
-                    if (element.userVoted!['vote']['conviction'] != 'None') {
-                      final String conviction =
-                          (element.userVoted!['vote']['conviction'] as String)
-                              .substring(6, 7);
-                      final con = widget.plugin.store.gov.voteConvictions!
-                          .where((element) =>
-                              element['value'] == int.parse(conviction))
-                          .first["period"];
-                      unlockAt =
-                          unlockAt + double.parse(con).toInt() * 24 * 600;
-                    }
-                  }
-                });
-              }
-              var endLeft;
-              try {
-                endLeft = BigInt.parse("${unlockAt.toString()}") - bestNumber;
-              } catch (e) {
-                endLeft = BigInt.parse("0x${unlockAt.toString()}") - bestNumber;
-              }
-              String amount = Fmt.balance(
-                locks[index]!['balance'].toString(),
-                decimals,
-              );
 
-              return Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Center(
-                      child: Text("#${int.parse(locks[index]['referendumId'])}",
-                          style: Theme.of(context).textTheme.headline4),
-                    )),
-                    Expanded(
-                        child: Center(
-                      child: Text('$amount $symbol'),
-                    )),
-                    Expanded(
-                      child: Center(
-                          child: Text(
-                              endLeft.toInt() <= 0
-                                  ? ""
-                                  : '${Fmt.blockToTime(endLeft.toInt(), blockDuration)}',
-                              style: TextStyle(color: Colors.grey))),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          Visibility(
-              visible: redeemable > 0,
-              child: Column(
-                children: [
-                  Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                          '${dic['democracy.unlock']}:${Fmt.priceFloor(redeemable, lengthMax: 4)} $symbol'),
-                      OutlinedButtonSmall(
-                        content: dic['democracy.referendum.clear']!,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                        active: true,
-                        onPressed: () {
-                          _onUnlock(unLockIds);
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ))
-        ],
-      ),
+    final style =
+        Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white);
+    return Column(
+      children: [
+        PluginTextTag(
+          margin: EdgeInsets.only(left: 16),
+          title: dic['v3.myStats']!,
+        ),
+        Container(
+            height: redeemable > 0 ? 147 : 127,
+            child: Swiper(
+              itemCount: locks.length,
+              itemWidth: double.infinity,
+              itemBuilder: (BuildContext context, int index) {
+                var unlockAt = locks[index]['unlockAt'];
+                final int blockDuration = BigInt.parse(widget
+                        .plugin.networkConst['babe']['expectedBlockTime']
+                        .toString())
+                    .toInt();
+                if (unlockAt == "0") {
+                  widget.plugin.store.gov.referendums!.forEach((element) {
+                    if (element.userVoted != null &&
+                        element.index ==
+                            BigInt.parse(locks[index]['referendumId'])) {
+                      unlockAt = element.status!['end'];
+                      if (element.userVoted!['vote']['conviction'] != 'None') {
+                        final String conviction =
+                            (element.userVoted!['vote']['conviction'] as String)
+                                .substring(6, 7);
+                        final con = widget.plugin.store.gov.voteConvictions!
+                            .where((element) =>
+                                element['value'] == int.parse(conviction))
+                            .first["period"];
+                        unlockAt =
+                            unlockAt + double.parse(con).toInt() * 24 * 600;
+                      }
+                    }
+                  });
+                }
+                var endLeft;
+                try {
+                  endLeft = BigInt.parse("${unlockAt.toString()}") - bestNumber;
+                } catch (e) {
+                  endLeft =
+                      BigInt.parse("0x${unlockAt.toString()}") - bestNumber;
+                }
+                String amount = Fmt.balance(
+                  locks[index]!['balance'].toString(),
+                  decimals,
+                );
+                return Container(
+                    padding: EdgeInsets.only(
+                        left: 17, top: 16, right: 16, bottom: 12),
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                        color: PluginColorsDark.cardColor,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(14),
+                            topRight: Radius.circular(14),
+                            bottomRight: Radius.circular(14))),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                PluginInfoItem(
+                                  title: dic['democracy.referendum.number'],
+                                  content:
+                                      "#${int.parse(locks[index]['referendumId'])}",
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  contentCrossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  titleStyle: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      ?.copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline3
+                                      ?.copyWith(
+                                          color: Colors.white,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                                //TODO:update context
+                                PluginInfoItem(
+                                  title: dic['v3.referendaState'],
+                                  content: "TODO",
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  contentCrossAxisAlignment:
+                                      CrossAxisAlignment.end,
+                                  titleStyle: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      ?.copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline3
+                                      ?.copyWith(
+                                          color: Colors.white,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            InfoItemRow(dic['democracy.referendum.balance']!,
+                                '$amount $symbol',
+                                labelStyle: style, contentStyle: style),
+                            InfoItemRow(
+                                dic['democracy.referendum.period']!,
+                                endLeft.toInt() <= 0
+                                    ? ""
+                                    : '${Fmt.blockToTime(endLeft.toInt(), blockDuration)}',
+                                labelStyle: style,
+                                contentStyle: style),
+                            Visibility(
+                                visible: redeemable > 0,
+                                child: InfoItemRow(dic['v3.canClear']!,
+                                    '${Fmt.priceFloor(redeemable, lengthMax: 4)} $symbol',
+                                    labelStyle: style, contentStyle: style))
+                          ],
+                        )),
+                        Container(
+                            width: 74,
+                            height: double.infinity,
+                            padding: EdgeInsets.only(left: 15),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Visibility(
+                                  visible: redeemable > 0,
+                                  child: PluginButton(
+                                    height: 30,
+                                    title: dic['democracy.referendum.clear']!,
+                                    onPressed: () {
+                                      _onUnlock(unLockIds);
+                                    },
+                                  ),
+                                )
+                              ],
+                            ))
+                      ],
+                    ));
+              },
+              pagination: SwiperPagination(
+                  alignment: Alignment.topRight,
+                  margin: EdgeInsets.only(top: 24, right: 32),
+                  builder: SwiperCustomPagination(builder:
+                      (BuildContext context, SwiperPluginConfig config) {
+                    return CustomP(config.activeIndex, config.itemCount);
+                  })),
+            ))
+      ],
     );
   }
 
@@ -291,7 +394,11 @@ class _GovernancePageState extends State<GovernancePage> {
             .getDic(i18n_full_dic_kusama, 'common')!['governance']!),
       ),
       body: Observer(builder: (_) {
-        final list = widget.plugin.store.gov.referendums;
+        final list = _tabIndex == 0
+            ? widget.plugin.store.gov.referendums
+            : _tabIndex == 1
+                ? widget.plugin.store.gov.proposals
+                : [];
         final decimals = widget.plugin.networkState.tokenDecimals![0];
         final symbol = widget.plugin.networkState.tokenSymbol![0];
         return RefreshIndicator(
@@ -299,110 +406,169 @@ class _GovernancePageState extends State<GovernancePage> {
             onRefresh: _freshData,
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(vertical: 16),
               itemCount: 2,
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return buildHeaderView(_locks);
                 }
-                return StickyHeader(
-                    header: Container(
-                        color: Color.fromARGB(255, 37, 39, 44),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GridView.count(
-                              crossAxisSpacing: 25,
-                              mainAxisSpacing: 12,
-                              crossAxisCount: 3,
-                              childAspectRatio: 103 / 64,
-                              padding: EdgeInsets.only(top: 20, bottom: 16),
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: StickyHeader(
+                        header: Container(
+                            color: Color.fromARGB(255, 37, 39, 44),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                GridViewItemBtn(
-                                  Image.asset(
-                                    'packages/polkawallet_plugin_kusama/assets/images/gov/gov_council.png',
-                                    width: 36,
-                                  ),
-                                  dic['council']!,
-                                  onTap: () => Navigator.of(context)
-                                      .pushNamed(CouncilPage.route),
-                                ),
-                                GridViewItemBtn(
-                                    Image.asset(
-                                      'packages/polkawallet_plugin_kusama/assets/images/gov/gov_treasury.png',
-                                      width: 36,
+                                GridView.count(
+                                  crossAxisSpacing: 25,
+                                  mainAxisSpacing: 12,
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 103 / 64,
+                                  padding: EdgeInsets.only(top: 20, bottom: 16),
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  children: [
+                                    GridViewItemBtn(
+                                      Image.asset(
+                                        'packages/polkawallet_plugin_kusama/assets/images/gov/gov_council.png',
+                                        width: 36,
+                                      ),
+                                      dic['council']!,
+                                      onTap: () => Navigator.of(context)
+                                          .pushNamed(CouncilPage.route),
                                     ),
-                                    dic['treasury']!),
-                                GridViewItemBtn(
-                                  Image.asset(
-                                    'packages/polkawallet_plugin_kusama/assets/images/gov/gov_polkassembly.png',
-                                    width: 36,
-                                  ),
-                                  'Polkassembly',
-                                  onTap: () => Navigator.of(context).pushNamed(
-                                    DAppWrapperPage.route,
-                                    arguments:
-                                        'https://${widget.plugin.basic.name}.polkassembly.io/',
-                                  ),
+                                    GridViewItemBtn(
+                                        Image.asset(
+                                          'packages/polkawallet_plugin_kusama/assets/images/gov/gov_treasury.png',
+                                          width: 36,
+                                        ),
+                                        dic['treasury']!),
+                                    GridViewItemBtn(
+                                      Image.asset(
+                                        'packages/polkawallet_plugin_kusama/assets/images/gov/gov_polkassembly.png',
+                                        width: 36,
+                                      ),
+                                      'Polkassembly',
+                                      onTap: () =>
+                                          Navigator.of(context).pushNamed(
+                                        DAppWrapperPage.route,
+                                        arguments:
+                                            'https://${widget.plugin.basic.name}.polkassembly.io/',
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                                PluginTabCard(
+                                  [
+                                    "${dic['referenda']}",
+                                    "${dic['democracy.proposal']}",
+                                    "Externals"
+                                  ],
+                                  (index) {
+                                    setState(() {
+                                      _tabIndex = index;
+                                    });
+                                  },
+                                  _tabIndex,
+                                  margin: EdgeInsets.zero,
+                                )
                               ],
-                            ),
-                            PluginTabCard(
-                              [
-                                "${dic['referenda']}",
-                                "${dic['democracy.proposal']}",
-                                "Externals"
-                              ],
-                              (index) {
-                                setState(() {
-                                  _tabIndex = index;
-                                });
-                              },
-                              _tabIndex,
-                              margin: EdgeInsets.zero,
-                            )
-                          ],
-                        )),
-                    content: ListView.builder(
-                        itemCount: list?.length ?? 0,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          bool isLock = false;
-                          if (_locks.length > 0) {
-                            _locks.forEach((element) {
-                              if (BigInt.parse(element['referendumId']) ==
-                                  list![index].index) {
-                                isLock = true;
+                            )),
+                        content: ListView.builder(
+                            itemCount: list?.length ?? 0,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              if (_tabIndex == 0) {
+                                bool isLock = false;
+                                if (_locks.length > 0) {
+                                  _locks.forEach((element) {
+                                    if (BigInt.parse(element['referendumId']) ==
+                                        list![index].index) {
+                                      isLock = true;
+                                    }
+                                  });
+                                }
+                                return ReferendumPanel(
+                                  data: list![index],
+                                  isLock: isLock,
+                                  bestNumber:
+                                      widget.plugin.store.gov.bestNumber,
+                                  symbol: symbol,
+                                  decimals: decimals,
+                                  blockDuration: BigInt.parse(widget
+                                          .plugin
+                                          .networkConst['babe']
+                                              ['expectedBlockTime']
+                                          .toString())
+                                      .toInt(),
+                                  onCancelVote: _submitCancelVote,
+                                  links: Visibility(
+                                    visible: _links[
+                                            'referendum===${list[index].index.toString()}'] !=
+                                        null,
+                                    child: GovExternalLinks(_links[
+                                            'referendum===${list[index].index.toString()}'] ??
+                                        []),
+                                  ),
+                                  onRefresh: () {
+                                    _refreshKey.currentState!.show();
+                                  },
+                                );
+                              } else if (_tabIndex == 1) {
+                                return ProposalPanel(
+                                  widget.plugin,
+                                  widget.plugin.store.gov.proposals[index],
+                                  Visibility(
+                                    visible: _links[
+                                            'proposal===${BigInt.parse(list![index].index).toString()}'] !=
+                                        null,
+                                    child: GovExternalLinks(_links[
+                                            'proposal===${BigInt.parse(list[index].index).toString()}'] ??
+                                        []),
+                                  ),
+                                  widget.keyring,
+                                  onSecondsAction: (p0) => _onSecondsTx(p0),
+                                );
+                              } else {
+                                return Container();
                               }
-                            });
-                          }
-                          return ReferendumPanel(
-                            data: list![index],
-                            isLock: isLock,
-                            bestNumber: widget.plugin.store.gov.bestNumber,
-                            symbol: symbol,
-                            decimals: decimals,
-                            blockDuration: BigInt.parse(widget.plugin
-                                    .networkConst['babe']['expectedBlockTime']
-                                    .toString())
-                                .toInt(),
-                            onCancelVote: _submitCancelVote,
-                            links: Visibility(
-                              visible: _links[list[index].index] != null,
-                              child: GovExternalLinks(
-                                  _links[list[index].index] ?? []),
-                            ),
-                            onRefresh: () {
-                              _refreshKey.currentState!.show();
-                            },
-                          );
-                        }));
+                            })));
               },
             ));
       }),
     );
+  }
+}
+
+class CustomP extends StatelessWidget {
+  var _currentIndex;
+  var _count;
+  CustomP(this._currentIndex, this._count);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 8,
+        child: ListView.separated(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          separatorBuilder: (context, index) => Container(
+            width: 6,
+          ),
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              height: 8,
+              width: _currentIndex == index ? 15 : 8,
+              decoration: BoxDecoration(
+                  color: _currentIndex == index
+                      ? PluginColorsDark.primary
+                      : PluginColorsDark.headline1,
+                  borderRadius: BorderRadius.circular(4)),
+            );
+          },
+          itemCount: _count,
+        ));
   }
 }
