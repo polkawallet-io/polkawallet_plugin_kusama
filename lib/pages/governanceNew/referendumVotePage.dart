@@ -13,6 +13,7 @@ import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTagCard.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
@@ -141,6 +142,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
       body: Observer(
         builder: (_) {
           final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
+          final dicGov = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
           final decimals = widget.plugin.networkState.tokenDecimals![0];
 
           BigInt available = Fmt.balanceInt(
@@ -166,31 +168,57 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                         child: ListView(
                           children: <Widget>[
                             PluginTagCard(
+                              margin: EdgeInsets.zero,
+                              padding: EdgeInsets.symmetric(vertical: 25),
                               radius: const Radius.circular(14),
                               titleTag: dicGov['v3.voting'],
-                              child: Text(
-                                dicGov[voteYes ? 'yes' : 'no']!,
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  dicGov[voteYes ? 'yes' : 'no']!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      ?.copyWith(
+                                          color: PluginColorsDark.green,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            PluginTagCard(
+                              margin: EdgeInsets.only(top: 16),
+                              titleTag: dicGov['v3.voteVaule'],
+                              padding: EdgeInsets.only(
+                                  left: 16, right: 16, bottom: 27, top: 12),
+                              child: TextFormField(
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline1
-                                    ?.copyWith(color: PluginColorsDark.green),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(16),
-                              child: Text(
-                                dicGov[voteYes ? 'yes.text' : 'no.text']!,
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 16, right: 16, bottom: 16),
-                              child: TextFormField(
+                                    .headline3
+                                    ?.copyWith(
+                                        color: Colors.white, fontSize: 40),
                                 decoration: InputDecoration(
-                                  hintText: dic['amount'],
-                                  labelText:
+                                  contentPadding: EdgeInsets.zero,
+                                  border: InputBorder.none,
+                                  hintText:
                                       '${dic['amount']} (${dic['balance']}: ${Fmt.token(available, decimals)})',
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      ?.copyWith(
+                                          color: Color(0xffbcbcbc),
+                                          fontWeight: FontWeight.w300),
+                                  suffix: GestureDetector(
+                                    child: Icon(
+                                      CupertinoIcons.clear_thick_circled,
+                                      color: Color(0xFFD8D8D8),
+                                      size: 22,
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        _amountCtrl.text = '';
+                                      });
+                                    },
+                                  ),
                                 ),
                                 inputFormatters: [
                                   UI.decimalInputFormatter(decimals)!
@@ -212,20 +240,33 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                                 },
                               ),
                             ),
-                            ListTile(
-                              title: Text(dicGov['locked']!),
-                              subtitle:
-                                  Text(_getConvictionLabel(_voteConviction)!),
-                              trailing: Icon(Icons.arrow_forward_ios, size: 18),
-                              onTap: _showConvictionSelect,
-                            ),
+                            PluginTagCard(
+                              margin: EdgeInsets.only(top: 16),
+                              padding: EdgeInsets.all(12),
+                              titleTag: dicGov['locked'],
+                              child: GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: _showConvictionSelect,
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(_getConvictionLabel(
+                                            _voteConviction)!),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 18,
+                                          color: Colors.white,
+                                        )
+                                      ])),
+                            )
                           ],
                         ),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(16),
-                      child: TxButton(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: PluginTxButton(
                         text: I18n.of(context)!
                             .getDic(i18n_full_dic_ui, 'common')!['tx.submit'],
                         getTxParams: _getTxParams,

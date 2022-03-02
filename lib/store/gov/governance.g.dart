@@ -41,6 +41,21 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
     });
   }
 
+  final _$externalAtom = Atom(name: '_GovernanceStore.external');
+
+  @override
+  ProposalInfoData get external {
+    _$externalAtom.reportRead();
+    return super.external;
+  }
+
+  @override
+  set external(ProposalInfoData value) {
+    _$externalAtom.reportWrite(value, super.external, () {
+      super.external = value;
+    });
+  }
+
   final _$councilAtom = Atom(name: '_GovernanceStore.council');
 
   @override
@@ -233,6 +248,17 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
+  void setExternal(ProposalInfoData data) {
+    final _$actionInfo = _$_GovernanceStoreActionController.startAction(
+        name: '_GovernanceStore.setExternal');
+    try {
+      return super.setExternal(data);
+    } finally {
+      _$_GovernanceStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setReferendums(List<ReferendumInfo> ls) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setReferendums');
@@ -322,7 +348,8 @@ referendums: ${referendums},
 voteConvictions: ${voteConvictions},
 proposals: ${proposals},
 treasuryOverview: ${treasuryOverview},
-treasuryTips: ${treasuryTips}
+treasuryTips: ${treasuryTips},
+external:${external}
     ''';
   }
 }

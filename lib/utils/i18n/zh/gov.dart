@@ -91,5 +91,10 @@ const Map<String, String> zhGov = {
   'v3.canClear': '可取回',
   'v3.locked': '锁定',
   'v3.proposalContent': '提案内容',
-  'v3.voting': '你的投票'
+  'v3.voting': '你的投票',
+  'v3.voteVaule': '投票数量',
+  'v3.votingAccount': '投票帐号',
+  'v3.votingBond': '投票绑定',
+  'v3.votingMessage': '此金额将保留至您投票期间',
+  'v3.externals': '外部提案'
 };

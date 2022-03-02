@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/candidateDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilVotePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -34,7 +35,7 @@ class CouncilPage extends StatefulWidget {
 
 class _CouncilPageState extends State<CouncilPage> {
   bool _select = false;
-  Map<String, bool> _selectDatas = Map<String, bool>();
+  List<dynamic> _selectDatas = [];
 
   Future<void> _refreshData() async {
     await widget.plugin.service.gov.queryCouncilInfo();
@@ -315,17 +316,22 @@ class _CouncilPageState extends State<CouncilPage> {
                                                 right: 10,
                                                 bottom: 15),
                                             child: PluginRadioButton(
-                                              value:
-                                                  _selectDatas[i[0]] != null &&
-                                                      _selectDatas[i[0]]!,
+                                              value: _selectDatas.indexWhere(
+                                                      (element) =>
+                                                          element == i) >=
+                                                  0,
                                             ),
                                           ),
                                           onTap: () {
                                             setState(() {
-                                              _selectDatas[i[0]] =
-                                                  _selectDatas[i[0]] != null
-                                                      ? !_selectDatas[i[0]]!
-                                                      : true;
+                                              if (_selectDatas.indexWhere(
+                                                      (element) =>
+                                                          element == i) >=
+                                                  0) {
+                                                _selectDatas.remove(i);
+                                              } else {
+                                                _selectDatas.add(i);
+                                              }
                                             });
                                           },
                                         )
@@ -369,17 +375,22 @@ class _CouncilPageState extends State<CouncilPage> {
                                                 right: 10,
                                                 bottom: 15),
                                             child: PluginRadioButton(
-                                              value:
-                                                  _selectDatas[i[0]] != null &&
-                                                      _selectDatas[i[0]]!,
+                                              value: _selectDatas.indexWhere(
+                                                      (element) =>
+                                                          element == i) >=
+                                                  0,
                                             ),
                                           ),
                                           onTap: () {
                                             setState(() {
-                                              _selectDatas[i[0]] =
-                                                  _selectDatas[i[0]] != null
-                                                      ? !_selectDatas[i[0]]!
-                                                      : true;
+                                              if (_selectDatas.indexWhere(
+                                                      (element) =>
+                                                          element == i) >=
+                                                  0) {
+                                                _selectDatas.remove(i);
+                                              } else {
+                                                _selectDatas.add(i);
+                                              }
                                             });
                                           },
                                         )
@@ -427,19 +438,24 @@ class _CouncilPageState extends State<CouncilPage> {
                                                       right: 10,
                                                       bottom: 15),
                                                   child: PluginRadioButton(
-                                                    value: _selectDatas[i[0]] !=
-                                                            null &&
-                                                        _selectDatas[i[0]]!,
+                                                    value: _selectDatas
+                                                            .indexWhere(
+                                                                (element) =>
+                                                                    element ==
+                                                                    i) >=
+                                                        0,
                                                   ),
                                                 ),
                                                 onTap: () {
                                                   setState(() {
-                                                    _selectDatas[i[0]] =
-                                                        _selectDatas[i[0]] !=
-                                                                null
-                                                            ? !_selectDatas[
-                                                                i[0]]!
-                                                            : true;
+                                                    if (_selectDatas.indexWhere(
+                                                            (element) =>
+                                                                element == i) >=
+                                                        0) {
+                                                      _selectDatas.remove(i);
+                                                    } else {
+                                                      _selectDatas.add(i);
+                                                    }
                                                   });
                                                 },
                                               )
@@ -466,6 +482,14 @@ class _CouncilPageState extends State<CouncilPage> {
                               horizontal: 16, vertical: 15),
                           child: PluginButton(
                             title: dic['vote']!,
+                            onPressed: () async {
+                              final res = await Navigator.of(context).pushNamed(
+                                  CouncilVotePage.route,
+                                  arguments: _selectDatas);
+                              if (res != null) {
+                                _refreshData();
+                              }
+                            },
                           ),
                         ),
                       )

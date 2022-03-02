@@ -51,6 +51,14 @@ abstract class _GovernanceStore with Store {
   @observable
   List<TreasuryTipData>? treasuryTips;
 
+  @observable
+  ProposalInfoData external = ProposalInfoData();
+
+  @action
+  void setExternal(ProposalInfoData data) {
+    external = data;
+  }
+
   @action
   void setCouncilInfo(Map info, {bool shouldCache = true}) {
     council = CouncilInfoData.fromJson(info as Map<String, dynamic>);
