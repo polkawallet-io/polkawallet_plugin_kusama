@@ -56,7 +56,7 @@ class ApiGov {
     return data;
   }
 
-  Future<ProposalInfoData> queryExternal() async {
+  Future<ProposalInfoData?> queryExternal() async {
     final data = await api.gov.queryNextExternal();
     store!.gov.setExternal(data);
     return data;

@@ -52,10 +52,10 @@ abstract class _GovernanceStore with Store {
   List<TreasuryTipData>? treasuryTips;
 
   @observable
-  ProposalInfoData external = ProposalInfoData();
+  ProposalInfoData? external;
 
   @action
-  void setExternal(ProposalInfoData data) {
+  void setExternal(ProposalInfoData? data) {
     external = data;
   }
 

@@ -35,7 +35,7 @@ class CouncilPage extends StatefulWidget {
 
 class _CouncilPageState extends State<CouncilPage> {
   bool _select = false;
-  List<dynamic> _selectDatas = [];
+  List<List> _selectDatas = [];
 
   Future<void> _refreshData() async {
     await widget.plugin.service.gov.queryCouncilInfo();
@@ -442,7 +442,7 @@ class _CouncilPageState extends State<CouncilPage> {
                                                             .indexWhere(
                                                                 (element) =>
                                                                     element ==
-                                                                    i) >=
+                                                                    [i]) >=
                                                         0,
                                                   ),
                                                 ),
@@ -450,11 +450,12 @@ class _CouncilPageState extends State<CouncilPage> {
                                                   setState(() {
                                                     if (_selectDatas.indexWhere(
                                                             (element) =>
-                                                                element == i) >=
+                                                                element ==
+                                                                [i]) >=
                                                         0) {
-                                                      _selectDatas.remove(i);
+                                                      _selectDatas.remove([i]);
                                                     } else {
-                                                      _selectDatas.add(i);
+                                                      _selectDatas.add([i]);
                                                     }
                                                   });
                                                 },

@@ -20,6 +20,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
 import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
+import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
@@ -406,7 +407,9 @@ class _GovernancePageState extends State<GovernancePage> {
             ? widget.plugin.store.gov.referendums
             : _tabIndex == 1
                 ? widget.plugin.store.gov.proposals
-                : [widget.plugin.store.gov.external];
+                : widget.plugin.store.gov.external != null
+                    ? [widget.plugin.store.gov.external]
+                    : [];
         final decimals = widget.plugin.networkState.tokenDecimals![0];
         final symbol = widget.plugin.networkState.tokenSymbol![0];
         return RefreshIndicator(
@@ -483,168 +486,197 @@ class _GovernancePageState extends State<GovernancePage> {
                                 )
                               ],
                             )),
-                        content: ListView.builder(
-                            itemCount: list?.length ?? 0,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              if (_tabIndex == 0) {
-                                final info = list![index] as ReferendumInfo;
-                                bool isLock = false;
-                                if (_locks.length > 0) {
-                                  _locks.forEach((element) {
-                                    if (BigInt.parse(element['referendumId']) ==
-                                        info.index) {
-                                      isLock = true;
+                        content: list?.length == 0
+                            ? Container(
+                                padding: EdgeInsets.all(16),
+                                margin: EdgeInsets.only(bottom: 16),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(14),
+                                    bottomLeft: Radius.circular(14),
+                                    bottomRight: Radius.circular(14),
+                                  ),
+                                  color: PluginColorsDark.cardColor,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  I18n.of(context)!.getDic(i18n_full_dic_ui,
+                                      'common')!['list.empty']!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4
+                                      ?.copyWith(color: Colors.white),
+                                ))
+                            : ListView.builder(
+                                itemCount: list?.length ?? 0,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  if (_tabIndex == 0) {
+                                    final info = list![index] as ReferendumInfo;
+                                    bool isLock = false;
+                                    if (_locks.length > 0) {
+                                      _locks.forEach((element) {
+                                        if (BigInt.parse(
+                                                element['referendumId']) ==
+                                            info.index) {
+                                          isLock = true;
+                                        }
+                                      });
                                     }
-                                  });
-                                }
-                                return ReferendumPanel(
-                                  data: info,
-                                  isLock: isLock,
-                                  bestNumber:
-                                      widget.plugin.store.gov.bestNumber,
-                                  symbol: symbol,
-                                  decimals: decimals,
-                                  blockDuration: BigInt.parse(widget
-                                          .plugin
-                                          .networkConst['babe']
-                                              ['expectedBlockTime']
-                                          .toString())
-                                      .toInt(),
-                                  onCancelVote: _submitCancelVote,
-                                  links: Visibility(
-                                    visible: _links[
-                                            'referendum===${info.index.toString()}'] !=
-                                        null,
-                                    child: GovExternalLinks(_links[
-                                            'referendum===${info.index.toString()}'] ??
-                                        []),
-                                  ),
-                                  onRefresh: () {
-                                    _refreshKey.currentState!.show();
-                                  },
-                                );
-                              } else if (_tabIndex == 1) {
-                                final info = list![index] as ProposalInfoData;
-                                return ProposalPanel(
-                                  widget.plugin,
-                                  widget.plugin.store.gov.proposals[index],
-                                  Visibility(
-                                    visible: _links[
-                                            'proposal===${BigInt.parse(info.index).toString()}'] !=
-                                        null,
-                                    child: GovExternalLinks(_links[
-                                            'proposal===${BigInt.parse(info.index).toString()}'] ??
-                                        []),
-                                  ),
-                                  widget.keyring,
-                                  onSecondsAction: (p0) => _onSecondsTx(p0),
-                                );
-                              } else {
-                                final info = list![index] as ProposalInfoData;
-                                return Container(
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.only(bottom: 16),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(14),
-                                      bottomLeft: Radius.circular(14),
-                                      bottomRight: Radius.circular(14),
-                                    ),
-                                    color: PluginColorsDark.cardColor,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        info.image?.proposal == null
-                                            ? ""
-                                            : info.image!.proposal!.meta!
-                                                .documentation!
-                                                .trim(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5
-                                            ?.copyWith(
-                                                fontSize: 12,
-                                                color: Colors.white),
+                                    return ReferendumPanel(
+                                      data: info,
+                                      isLock: isLock,
+                                      bestNumber:
+                                          widget.plugin.store.gov.bestNumber,
+                                      symbol: symbol,
+                                      decimals: decimals,
+                                      blockDuration: BigInt.parse(widget
+                                              .plugin
+                                              .networkConst['babe']
+                                                  ['expectedBlockTime']
+                                              .toString())
+                                          .toInt(),
+                                      onCancelVote: _submitCancelVote,
+                                      links: Visibility(
+                                        visible: _links[
+                                                'referendum===${info.index.toString()}'] !=
+                                            null,
+                                        child: GovExternalLinks(_links[
+                                                'referendum===${info.index.toString()}'] ??
+                                            []),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 8),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(dic['treasury.proposer']!,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5
-                                                    ?.copyWith(
-                                                        fontSize: 12,
-                                                        color: Colors.white)),
-                                            Row(
+                                      onRefresh: () {
+                                        _refreshKey.currentState!.show();
+                                      },
+                                    );
+                                  } else if (_tabIndex == 1) {
+                                    final info =
+                                        list![index] as ProposalInfoData;
+                                    return ProposalPanel(
+                                      widget.plugin,
+                                      widget.plugin.store.gov.proposals[index],
+                                      Visibility(
+                                        visible: _links[
+                                                'proposal===${BigInt.parse(info.index).toString()}'] !=
+                                            null,
+                                        child: GovExternalLinks(_links[
+                                                'proposal===${BigInt.parse(info.index).toString()}'] ??
+                                            []),
+                                      ),
+                                      widget.keyring,
+                                      onSecondsAction: (p0) => _onSecondsTx(p0),
+                                    );
+                                  } else {
+                                    final info =
+                                        list![index] as ProposalInfoData;
+                                    return Container(
+                                      padding: EdgeInsets.all(16),
+                                      margin: EdgeInsets.only(bottom: 16),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(14),
+                                          bottomLeft: Radius.circular(14),
+                                          bottomRight: Radius.circular(14),
+                                        ),
+                                        color: PluginColorsDark.cardColor,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            info.image?.proposal == null
+                                                ? ""
+                                                : info.image!.proposal!.meta!
+                                                    .documentation!
+                                                    .trim(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5
+                                                ?.copyWith(
+                                                    fontSize: 12,
+                                                    color: Colors.white),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                AddressIcon(
-                                                  info.proposer,
-                                                  svg: widget
-                                                          .plugin
-                                                          .store
-                                                          .accounts
-                                                          .addressIconsMap[
-                                                      info.proposer],
-                                                  size: 12,
-                                                ),
-                                                Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 5),
-                                                    child: UI.accountDisplayName(
-                                                        info.proposer,
-                                                        widget
-                                                                .plugin
-                                                                .store
-                                                                .accounts
-                                                                .addressIndexMap[
-                                                            info.proposer],
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headline5
-                                                            ?.copyWith(
-                                                                fontSize: 12,
-                                                                color: Colors
-                                                                    .white),
-                                                        expand: false))
+                                                Text(dic['treasury.proposer']!,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline5
+                                                        ?.copyWith(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Colors.white)),
+                                                Row(
+                                                  children: [
+                                                    AddressIcon(
+                                                      info.proposer,
+                                                      svg: widget
+                                                              .plugin
+                                                              .store
+                                                              .accounts
+                                                              .addressIconsMap[
+                                                          info.proposer],
+                                                      size: 12,
+                                                    ),
+                                                    Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5),
+                                                        child: UI.accountDisplayName(
+                                                            info.proposer,
+                                                            widget
+                                                                    .plugin
+                                                                    .store
+                                                                    .accounts
+                                                                    .addressIndexMap[
+                                                                info.proposer],
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .headline5
+                                                                ?.copyWith(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .white),
+                                                            expand: false))
+                                                  ],
+                                                )
                                               ],
-                                            )
-                                          ],
-                                        ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 4),
+                                            child: InfoItemRow(
+                                              dic['v3.locked']!,
+                                              '${Fmt.balance(
+                                                info.balance.toString(),
+                                                decimals,
+                                              )} $symbol',
+                                              labelStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .headline5
+                                                  ?.copyWith(
+                                                      fontSize: 12,
+                                                      color: Colors.white),
+                                              contentStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .headline5
+                                                  ?.copyWith(
+                                                      fontSize: 12,
+                                                      color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 4),
-                                        child: InfoItemRow(
-                                          dic['v3.locked']!,
-                                          '${Fmt.balance(
-                                            info.balance.toString(),
-                                            decimals,
-                                          )} $symbol',
-                                          labelStyle: Theme.of(context)
-                                              .textTheme
-                                              .headline5
-                                              ?.copyWith(
-                                                  fontSize: 12,
-                                                  color: Colors.white),
-                                          contentStyle: Theme.of(context)
-                                              .textTheme
-                                              .headline5
-                                              ?.copyWith(
-                                                  fontSize: 12,
-                                                  color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            })));
+                                    );
+                                  }
+                                })));
               },
             ));
       }),

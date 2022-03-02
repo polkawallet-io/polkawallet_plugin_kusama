@@ -44,13 +44,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   final _$externalAtom = Atom(name: '_GovernanceStore.external');
 
   @override
-  ProposalInfoData get external {
+  ProposalInfoData? get external {
     _$externalAtom.reportRead();
     return super.external;
   }
 
   @override
-  set external(ProposalInfoData value) {
+  set external(ProposalInfoData? value) {
     _$externalAtom.reportWrite(value, super.external, () {
       super.external = value;
     });
@@ -248,7 +248,7 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setExternal(ProposalInfoData data) {
+  void setExternal(ProposalInfoData? data) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setExternal');
     try {
