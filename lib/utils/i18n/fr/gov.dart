@@ -94,5 +94,11 @@ const Map<String, String> enGov = {
   'v3.canClear': 'Can Clear',
   'v3.locked': 'Locked',
   'v3.proposalContent': 'Proposal Content',
-  'v3.voting': 'You are Voting'
+  'v3.voting': 'You are Voting',
+  'v3.voteVaule': 'Vote Vaule',
+  'v3.votingAccount': 'Voting Account',
+  'v3.votingBond': 'Voting Bond',
+  'v3.votingMessage':
+      'The Amount will be reserved for the duration of your vote',
+  'v3.externals': 'Externals'
 };
