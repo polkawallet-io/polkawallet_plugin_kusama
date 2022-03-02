@@ -35,7 +35,7 @@ class CouncilPage extends StatefulWidget {
 
 class _CouncilPageState extends State<CouncilPage> {
   bool _select = false;
-  List<List> _selectDatas = [];
+  List<List>? _selectDatas;
 
   Future<void> _refreshData() async {
     await widget.plugin.service.gov.queryCouncilInfo();
@@ -238,6 +238,15 @@ class _CouncilPageState extends State<CouncilPage> {
                   widget.plugin.store.gov.userCouncilVotes == null;
           final decimals = widget.plugin.networkState.tokenDecimals![0];
           final symbol = widget.plugin.networkState.tokenSymbol![0];
+          if (_selectDatas == null) {
+            final userVotes = widget.plugin.store.gov.userCouncilVotes;
+            _selectDatas = [];
+            if (userVotes != null) {
+              List.of(userVotes['votes']).forEach((element) {
+                _selectDatas!.add([element]);
+              });
+            }
+          }
           return SafeArea(
               child: isDataLoading
                   ? Column(
@@ -316,21 +325,21 @@ class _CouncilPageState extends State<CouncilPage> {
                                                 right: 10,
                                                 bottom: 15),
                                             child: PluginRadioButton(
-                                              value: _selectDatas.indexWhere(
+                                              value: _selectDatas!.indexWhere(
                                                       (element) =>
-                                                          element == i) >=
+                                                          element[0] == i[0]) >=
                                                   0,
                                             ),
                                           ),
                                           onTap: () {
                                             setState(() {
-                                              if (_selectDatas.indexWhere(
+                                              if (_selectDatas!.indexWhere(
                                                       (element) =>
-                                                          element == i) >=
+                                                          element[0] == i[0]) >=
                                                   0) {
-                                                _selectDatas.remove(i);
+                                                _selectDatas!.remove([i[0]]);
                                               } else {
-                                                _selectDatas.add(i);
+                                                _selectDatas!.add([i[0]]);
                                               }
                                             });
                                           },
@@ -375,21 +384,21 @@ class _CouncilPageState extends State<CouncilPage> {
                                                 right: 10,
                                                 bottom: 15),
                                             child: PluginRadioButton(
-                                              value: _selectDatas.indexWhere(
+                                              value: _selectDatas!.indexWhere(
                                                       (element) =>
-                                                          element == i) >=
+                                                          element[0] == i[0]) >=
                                                   0,
                                             ),
                                           ),
                                           onTap: () {
                                             setState(() {
-                                              if (_selectDatas.indexWhere(
+                                              if (_selectDatas!.indexWhere(
                                                       (element) =>
-                                                          element == i) >=
+                                                          element[0] == i[0]) >=
                                                   0) {
-                                                _selectDatas.remove(i);
+                                                _selectDatas!.remove([i[0]]);
                                               } else {
-                                                _selectDatas.add(i);
+                                                _selectDatas!.add([i[0]]);
                                               }
                                             });
                                           },
@@ -438,24 +447,27 @@ class _CouncilPageState extends State<CouncilPage> {
                                                       right: 10,
                                                       bottom: 15),
                                                   child: PluginRadioButton(
-                                                    value: _selectDatas
+                                                    value: _selectDatas!
                                                             .indexWhere(
                                                                 (element) =>
-                                                                    element ==
-                                                                    [i]) >=
+                                                                    element[
+                                                                        0] ==
+                                                                    i) >=
                                                         0,
                                                   ),
                                                 ),
                                                 onTap: () {
                                                   setState(() {
-                                                    if (_selectDatas.indexWhere(
-                                                            (element) =>
-                                                                element ==
-                                                                [i]) >=
+                                                    if (_selectDatas!
+                                                            .indexWhere(
+                                                                (element) =>
+                                                                    element[
+                                                                        0] ==
+                                                                    i) >=
                                                         0) {
-                                                      _selectDatas.remove([i]);
+                                                      _selectDatas!.remove([i]);
                                                     } else {
-                                                      _selectDatas.add([i]);
+                                                      _selectDatas!.add([i]);
                                                     }
                                                   });
                                                 },
