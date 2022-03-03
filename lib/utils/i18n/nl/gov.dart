@@ -16,6 +16,7 @@ const Map<String, String> enGov = {
   'treasury.total': 'Total',
   'treasury.approval': 'Approvals',
   'treasury.available': 'Available',
+  'treasury.spendable': 'Spendable',
   'treasury.period': 'Spend Period',
   'treasury.day': 'Days',
   'treasury.value': 'Value',
