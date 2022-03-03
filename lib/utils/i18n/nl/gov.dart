@@ -101,5 +101,8 @@ const Map<String, String> enGov = {
   'v3.votingBond': 'Voting Bond',
   'v3.votingMessage':
       'The Amount will be reserved for the duration of your vote',
-  'v3.externals': 'Externals'
+  'v3.externals': 'Externals',
+  'v3.treasury.payment': 'Payment',
+  'v3.treasury.pending': 'PENDING',
+  'v3.treasury.Approved': 'APPROVED'
 };
