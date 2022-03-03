@@ -5,12 +5,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart'
-    as governanceNew;
 import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracyPage.dart';
@@ -31,7 +28,6 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelect
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/payoutPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/redeemPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/stakingNew/RewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setControllerPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakePage.dart';
@@ -40,6 +36,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/actions/unbondPage.dart'
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorChartsPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/RewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/overViewPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingHistoryPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingPage.dart';
@@ -77,7 +74,7 @@ class PluginKusama extends PolkawalletPlugin {
               'packages/polkawallet_plugin_kusama/assets/images/public/$name.png'),
           iconDisabled: Image.asset(
               'packages/polkawallet_plugin_kusama/assets/images/public/${name}_gray.png'),
-          jsCodeVersion: 22501,
+          jsCodeVersion: 31501,
           isTestNet: false,
           isXCMSupport: name == network_name_kusama,
         ),
