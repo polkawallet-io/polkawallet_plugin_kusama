@@ -11,7 +11,6 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
-import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTagCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
@@ -180,7 +179,9 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                                       .textTheme
                                       .headline1
                                       ?.copyWith(
-                                          color: PluginColorsDark.green,
+                                          color: voteYes
+                                              ? PluginColorsDark.green
+                                              : PluginColorsDark.primary,
                                           fontWeight: FontWeight.bold),
                                 ),
                               ),

@@ -292,7 +292,7 @@ class _CouncilPageState extends State<CouncilPage> {
                                   });
                                 },
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 4, vertical: 2),
+                                    horizontal: 10, vertical: 2),
                               )
                             ],
                           ),
@@ -315,6 +315,9 @@ class _CouncilPageState extends State<CouncilPage> {
                                   tokenSymbol: symbol,
                                   decimals: decimals,
                                   isMyVote: index >= 0,
+                                  isShowDivider: i !=
+                                      widget.plugin.store.gov.council.members!
+                                          .last,
                                   trailing: _select
                                       ? GestureDetector(
                                           behavior: HitTestBehavior.opaque,
@@ -374,6 +377,9 @@ class _CouncilPageState extends State<CouncilPage> {
                                   tokenSymbol: symbol,
                                   decimals: decimals,
                                   isMyVote: index >= 0,
+                                  isShowDivider: i !=
+                                      widget.plugin.store.gov.council.runnersUp!
+                                          .last,
                                   trailing: _select
                                       ? GestureDetector(
                                           behavior: HitTestBehavior.opaque,
@@ -436,6 +442,9 @@ class _CouncilPageState extends State<CouncilPage> {
                                         tokenSymbol: symbol,
                                         decimals: decimals,
                                         isMyVote: index >= 0,
+                                        isShowDivider: i !=
+                                            widget.plugin.store.gov.council
+                                                .candidates!.last,
                                         trailing: _select
                                             ? GestureDetector(
                                                 behavior:
@@ -521,6 +530,7 @@ class CandidateItem extends StatelessWidget {
     this.iconSize,
     this.noTap = false,
     this.isMyVote = false,
+    this.isShowDivider = true,
     this.trailing,
   });
   final Map? accInfo;
@@ -533,30 +543,33 @@ class CandidateItem extends StatelessWidget {
   final bool noTap;
   final Widget? trailing;
   final bool isMyVote;
+  final bool isShowDivider;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
           leading: AddressIcon(balance![0], size: iconSize, svg: icon),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              UI.accountDisplayName(balance![0], accInfo,
-                  expand: false,
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.w600)),
-              isMyVote
-                  ? Container(
+          title: isMyVote
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    UI.accountDisplayName(balance![0], accInfo,
+                        expand: false,
+                        style: Theme.of(context).textTheme.headline5?.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.w600)),
+                    Container(
                       padding: EdgeInsets.only(left: 6),
                       child: Image.asset(
                         "packages/polkawallet_plugin_kusama/assets/images/gov/voted.png",
                         width: 17.5,
                       ),
                     )
-                  : Container()
-            ],
-          ),
+                  ],
+                )
+              : UI.accountDisplayName(balance![0], accInfo,
+                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.w600)),
           subtitle: balance!.length == 1
               ? null
               : Text(
@@ -576,10 +589,12 @@ class CandidateItem extends StatelessWidget {
                       balance!.length == 1 ? ([balance![0], '0x0']) : balance),
           trailing: trailing,
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Divider(),
-        )
+        Visibility(
+            visible: isShowDivider,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Divider(),
+            ))
       ],
     );
   }

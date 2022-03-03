@@ -118,8 +118,16 @@ class _GovernancePageState extends State<GovernancePage> {
 
   Future<void> _freshData() async {
     _queryDemocracyLocks();
-    await _fetchReferendums();
-    _fetchProposalsData();
+    if (_tabIndex == 0) {
+      await _fetchReferendums();
+    } else {
+      _fetchReferendums();
+    }
+    if (_tabIndex == 1) {
+      await _fetchProposalsData();
+    } else {
+      _fetchProposalsData();
+    }
     _fetchExternal();
   }
 
