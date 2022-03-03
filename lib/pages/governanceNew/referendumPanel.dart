@@ -192,21 +192,22 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                       onTap: () async {
                         if ('Aye' ==
                             (widget.data!.userVoted?['vote']['vote'] ?? '')) {
-                          showCupertinoDialog(
+                          showCupertinoModalPopup(
                             context: context,
+                            barrierDismissible: true,
                             builder: (BuildContext context) {
-                              return CupertinoAlertDialog(
+                              return CupertinoActionSheet(
                                 title: Text(dic['vote']!),
-                                content: Text(dic['v3.voteMessage.aye']!),
+                                message: Text(dic['v3.voteMessage.aye']!),
                                 actions: [
-                                  CupertinoButton(
+                                  CupertinoActionSheetAction(
                                     child: Text(dic['v3.continueVote']!),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       _referendumAction(true);
                                     },
                                   ),
-                                  CupertinoButton(
+                                  CupertinoActionSheetAction(
                                     child: Text(dic['v3.cancelMyVote']!),
                                     onPressed: () {
                                       Navigator.of(context).pop();
@@ -215,6 +216,14 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                                     },
                                   )
                                 ],
+                                cancelButton: CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(I18n.of(context)!.getDic(
+                                      i18n_full_dic_kusama,
+                                      'common')!['cancel']!),
+                                ),
                               );
                             },
                           );
