@@ -5,6 +5,7 @@ import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/govExternalLinks.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/proposalPanel.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/referendumPanel.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/treasuryPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingView.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -465,11 +466,14 @@ class _GovernancePageState extends State<GovernancePage> {
                                           .pushNamed(CouncilPage.route),
                                     ),
                                     GridViewItemBtn(
-                                        Image.asset(
-                                          'packages/polkawallet_plugin_kusama/assets/images/gov/gov_treasury.png',
-                                          width: 36,
-                                        ),
-                                        dic['treasury']!),
+                                      Image.asset(
+                                        'packages/polkawallet_plugin_kusama/assets/images/gov/gov_treasury.png',
+                                        width: 36,
+                                      ),
+                                      dic['treasury']!,
+                                      onTap: () => Navigator.of(context)
+                                          .pushNamed(TreasuryPage.route),
+                                    ),
                                     GridViewItemBtn(
                                       Image.asset(
                                         'packages/polkawallet_plugin_kusama/assets/images/gov/gov_polkassembly.png',

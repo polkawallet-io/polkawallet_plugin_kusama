@@ -318,6 +318,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
       ]);
     }
     return GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () {
           setState(() {
             _isExpansion = !_isExpansion;

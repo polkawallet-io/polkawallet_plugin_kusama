@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
+import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
-import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
-import 'package:polkawallet_sdk/utils/i18n.dart';
 
 class ProposalPanel extends StatefulWidget {
   ProposalPanel(this.plugin, this.proposal, this.links, this.keyring,
@@ -93,6 +93,7 @@ class _ProposalPanelState extends State<ProposalPanel> {
             ]);
           }
           return GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               setState(() {
                 _isExpansion = !_isExpansion;

@@ -97,5 +97,8 @@ const Map<String, String> zhGov = {
   'v3.votingAccount': '投票帐号',
   'v3.votingBond': '投票绑定',
   'v3.votingMessage': '此金额将保留至您投票期间',
-  'v3.externals': '外部提案'
+  'v3.externals': '外部提案',
+  'v3.treasury.payment': '支付',
+  'v3.treasury.pending': '等待',
+  'v3.treasury.Approved': '通过'
 };
