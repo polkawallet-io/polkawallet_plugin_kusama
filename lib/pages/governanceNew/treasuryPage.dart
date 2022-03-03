@@ -145,9 +145,9 @@ class _TreasuryPageState extends State<TreasuryPage> {
                           decoration: BoxDecoration(
                               color: PluginColorsDark.cardColor,
                               borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(14),
-                                  topRight: Radius.circular(14),
-                                  bottomRight: Radius.circular(14))),
+                                  bottomLeft: Radius.circular(8),
+                                  topRight: Radius.circular(8),
+                                  bottomRight: Radius.circular(8))),
                           child: ListView.separated(
                               padding: EdgeInsets.zero,
                               separatorBuilder: (context, index) => _tab == 0
@@ -349,7 +349,7 @@ class _OverviewCard extends StatelessWidget {
     return RoundedPluginCard(
         padding: EdgeInsets.all(16),
         margin: EdgeInsets.symmetric(vertical: 16),
-        borderRadius: const BorderRadius.all(const Radius.circular(14)),
+        borderRadius: const BorderRadius.all(const Radius.circular(8)),
         child: Row(
           children: [
             Expanded(
@@ -604,8 +604,8 @@ class __ProposalItemState extends State<_ProposalItem> {
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(14),
-                        bottomLeft: Radius.circular(14),
+                        topRight: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
                       ),
                       color: Color(0x1AFFFFFF),
                     ),

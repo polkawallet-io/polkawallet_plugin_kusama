@@ -104,7 +104,7 @@ class _CouncilPageState extends State<CouncilPage> {
     }
     return RoundedPluginCard(
       margin: EdgeInsets.fromLTRB(16, 12, 16, 24),
-      borderRadius: const BorderRadius.all(const Radius.circular(14)),
+      borderRadius: const BorderRadius.all(const Radius.circular(8)),
       color: Color(0x1aFFFFFF),
       child: Column(
         children: <Widget>[

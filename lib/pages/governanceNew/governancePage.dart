@@ -303,9 +303,9 @@ class _GovernancePageState extends State<GovernancePage> {
                     decoration: BoxDecoration(
                         color: PluginColorsDark.cardColor,
                         borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(14),
-                            topRight: Radius.circular(14),
-                            bottomRight: Radius.circular(14))),
+                            bottomLeft: Radius.circular(8),
+                            topRight: Radius.circular(8),
+                            bottomRight: Radius.circular(8))),
                     child: Row(
                       children: [
                         Expanded(
@@ -511,9 +511,9 @@ class _GovernancePageState extends State<GovernancePage> {
                                 margin: EdgeInsets.only(bottom: 16),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(14),
-                                    bottomLeft: Radius.circular(14),
-                                    bottomRight: Radius.circular(14),
+                                    topRight: Radius.circular(8),
+                                    bottomLeft: Radius.circular(8),
+                                    bottomRight: Radius.circular(8),
                                   ),
                                   color: PluginColorsDark.cardColor,
                                 ),
@@ -594,9 +594,9 @@ class _GovernancePageState extends State<GovernancePage> {
                                       margin: EdgeInsets.only(bottom: 16),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(14),
-                                          bottomLeft: Radius.circular(14),
-                                          bottomRight: Radius.circular(14),
+                                          topRight: Radius.circular(8),
+                                          bottomLeft: Radius.circular(8),
+                                          bottomRight: Radius.circular(8),
                                         ),
                                         color: PluginColorsDark.cardColor,
                                       ),

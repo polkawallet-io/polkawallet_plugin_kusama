@@ -78,21 +78,22 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                       onTap: () async {
                         if ('Nay' ==
                             (widget.data!.userVoted?['vote']['vote'] ?? '')) {
-                          showCupertinoDialog(
+                          showCupertinoModalPopup(
                             context: context,
+                            barrierDismissible: true,
                             builder: (BuildContext context) {
-                              return CupertinoAlertDialog(
+                              return CupertinoActionSheet(
                                 title: Text(dic['vote']!),
-                                content: Text(dic['v3.voteMessage.nay']!),
+                                message: Text(dic['v3.voteMessage.nay']!),
                                 actions: [
-                                  CupertinoButton(
+                                  CupertinoActionSheetAction(
                                     child: Text(dic['v3.continueVote']!),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       _referendumAction(false);
                                     },
                                   ),
-                                  CupertinoButton(
+                                  CupertinoActionSheetAction(
                                     child: Text(dic['v3.cancelMyVote']!),
                                     onPressed: () {
                                       Navigator.of(context).pop();
@@ -101,6 +102,14 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                                     },
                                   )
                                 ],
+                                cancelButton: CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(I18n.of(context)!.getDic(
+                                      i18n_full_dic_kusama,
+                                      'common')!['cancel']!),
+                                ),
                               );
                             },
                           );
@@ -328,9 +337,9 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
             margin: EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                topRight: Radius.circular(14),
-                bottomLeft: Radius.circular(14),
-                bottomRight: Radius.circular(14),
+                topRight: Radius.circular(8),
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
               ),
               color: PluginColorsDark.cardColor,
             ),
@@ -369,8 +378,8 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                             EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(14),
-                            bottomLeft: Radius.circular(14),
+                            topRight: Radius.circular(8),
+                            bottomLeft: Radius.circular(8),
                           ),
                           color: Color(0x1AFFFFFF),
                         ),
