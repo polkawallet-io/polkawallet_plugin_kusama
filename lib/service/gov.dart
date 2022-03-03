@@ -1,4 +1,5 @@
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
+import 'package:polkawallet_plugin_kusama/service/walletApi.dart';
 import 'package:polkawallet_plugin_kusama/store/index.dart';
 import 'package:polkawallet_sdk/api/api.dart';
 import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
@@ -60,6 +61,21 @@ class ApiGov {
     final data = await api.gov.queryNextExternal();
     store!.gov.setExternal(data);
     return data;
+  }
+
+  Future<void> queryReferendumStatus(List<int> ids) async {
+    final data = await Future.wait(ids
+        .map((e) => WalletApi.getDemocracyReferendumInfo(e,
+            network: plugin.basic.name!))
+        .toList());
+    final res = {};
+    data.forEach((e) {
+      if ((e ?? {})['data'] != null) {
+        final id = (e ?? {})['data']['info']['referendum_index'];
+        res[id] = (e ?? {})['data']['info']['status'];
+      }
+    });
+    store!.gov.setReferendumStatus(res);
   }
 
   Future<List> queryProposals() async {

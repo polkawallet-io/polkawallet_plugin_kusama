@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/govExternalLinks.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/proposalPanel.dart';
@@ -17,17 +18,16 @@ import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/pages/dAppWrapperPage.dart';
+import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
+import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 import 'package:sticky_headers/sticky_headers.dart';
-import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
-import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
-import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
-import 'package:polkawallet_ui/utils/format.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 
 class GovernancePage extends StatefulWidget {
   GovernancePage(this.plugin, this.keyring, {Key? key}) : super(key: key);
@@ -52,7 +52,11 @@ class _GovernancePageState extends State<GovernancePage> {
   Future<void> _queryDemocracyLocks() async {
     final List? locks = await widget.plugin.sdk.api.gov
         .getDemocracyLocks(widget.keyring.current.address!);
-    if (mounted && locks != null) {
+    if (locks == null) return;
+
+    await widget.plugin.service.gov.queryReferendumStatus(
+        locks.map((e) => int.parse(e['referendumId'])).toList());
+    if (mounted) {
       setState(() {
         _locks = locks;
       });
@@ -113,10 +117,10 @@ class _GovernancePageState extends State<GovernancePage> {
   }
 
   Future<void> _freshData() async {
-    await _queryDemocracyLocks();
+    _queryDemocracyLocks();
     await _fetchReferendums();
-    await _fetchProposalsData();
-    await _fetchExternal();
+    _fetchProposalsData();
+    _fetchExternal();
   }
 
   @override
@@ -282,6 +286,7 @@ class _GovernancePageState extends State<GovernancePage> {
                   locks[index]!['balance'].toString(),
                   decimals,
                 );
+                final id = int.parse(locks[index]['referendumId']);
                 return Container(
                     padding: EdgeInsets.only(
                         left: 17, top: 16, right: 16, bottom: 12),
@@ -301,8 +306,7 @@ class _GovernancePageState extends State<GovernancePage> {
                               children: [
                                 PluginInfoItem(
                                   title: dic['democracy.referendum.number'],
-                                  content:
-                                      "#${int.parse(locks[index]['referendumId'])}",
+                                  content: "#$id",
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   contentCrossAxisAlignment:
                                       CrossAxisAlignment.start,
@@ -320,10 +324,13 @@ class _GovernancePageState extends State<GovernancePage> {
                                           fontSize: 22,
                                           fontWeight: FontWeight.bold),
                                 ),
-                                //TODO:update context
                                 PluginInfoItem(
                                   title: dic['v3.referendaState'],
-                                  content: "TODO",
+                                  content: (widget.plugin.store.gov
+                                              .referendumStatus[id] ??
+                                          '--')
+                                      .toString()
+                                      .toUpperCase(),
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   contentCrossAxisAlignment:
                                       CrossAxisAlignment.end,

@@ -1,8 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
-
-import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/councilInfoData.dart';
+import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryOverviewData.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryTipData.dart';
@@ -38,6 +37,9 @@ abstract class _GovernanceStore with Store {
 
   @observable
   List<ReferendumInfo>? referendums;
+
+  @observable
+  Map referendumStatus = {};
 
   @observable
   List? voteConvictions;
@@ -93,6 +95,11 @@ abstract class _GovernanceStore with Store {
   }
 
   @action
+  void setReferendumStatus(Map data) {
+    referendumStatus = data;
+  }
+
+  @action
   void setReferendumVoteConvictions(List? ls) {
     voteConvictions = ls;
   }
@@ -130,6 +137,7 @@ abstract class _GovernanceStore with Store {
   @action
   void clearState() {
     referendums = [];
+    referendumStatus = {};
     proposals = [];
     councilMotions = [];
     treasuryOverview = TreasuryOverviewData();
