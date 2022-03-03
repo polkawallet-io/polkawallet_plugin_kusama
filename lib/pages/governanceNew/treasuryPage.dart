@@ -421,11 +421,41 @@ class _OverviewCard extends StatelessWidget {
   }
 }
 
-class _ProgressBar extends StatelessWidget {
-  _ProgressBar({this.progress = 0.5});
+class _ProgressBar extends StatefulWidget {
+  _ProgressBar({Key? key, this.progress = 0.5}) : super(key: key);
   final double progress;
+
+  @override
+  State<_ProgressBar> createState() => __ProgressBarState();
+}
+
+class __ProgressBarState extends State<_ProgressBar>
+    with TickerProviderStateMixin {
+  late AnimationController controller;
+  double animationNumber = 0;
+  late Animation<double> animation;
+  bool isInit = true;
+
+  void _startAnimation(double progress) {
+    this.controller = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    animation = Tween(begin: 0.0, end: progress).animate(controller);
+    animation.addListener(() {
+      setState(() {
+        animationNumber = animation.value;
+      });
+    });
+    Future.delayed(Duration(milliseconds: 350), () {
+      controller.forward();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (isInit) {
+      isInit = false;
+      _startAnimation(widget.progress);
+    }
     return Padding(
         padding: EdgeInsets.only(bottom: 12),
         child: Stack(alignment: Alignment.center, children: [
@@ -437,11 +467,11 @@ class _ProgressBar extends StatelessWidget {
                   startAngle: pi * 3 / 2,
                   width: 10,
                   lineColor: [Color(0x0FFFFFFF), Color(0xFF81FEB9)],
-                  progress: progress),
+                  progress: animationNumber),
             ),
           ),
           Text(
-            Fmt.ratio(progress),
+            Fmt.ratio(widget.progress),
             style: Theme.of(context)
                 .textTheme
                 .headline4
