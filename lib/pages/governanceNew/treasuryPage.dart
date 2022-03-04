@@ -59,8 +59,6 @@ class _TreasuryPageState extends State<TreasuryPage> {
     if (widget.plugin.networkConst['treasury'] != null) {
       final period =
           int.parse(widget.plugin.networkConst['treasury']['spendPeriod']);
-      final blockTime =
-          int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']);
       final ongoing = widget.plugin.store.gov.bestNumber.toInt() % period;
       return ongoing / (period * 1.0);
     }
@@ -361,8 +359,10 @@ class _OverviewCard extends StatelessWidget {
         Fmt.balanceInt(overview?.balance ?? '0'), decimals);
     final spendable = Fmt.priceFloorBigIntFormatter(
         Fmt.balanceInt(overview?.spendable ?? '0'), decimals);
-    final leftRatio = Fmt.balanceInt(overview?.spendable ?? '0') /
-        Fmt.balanceInt(overview?.balance ?? '0');
+    final leftRatio = Fmt.balanceInt(overview?.balance ?? '0') == BigInt.zero
+        ? 0.0
+        : Fmt.balanceInt(overview?.spendable ?? '0') /
+            Fmt.balanceInt(overview?.balance ?? '0');
     return RoundedPluginCard(
         padding: EdgeInsets.all(16),
         margin: EdgeInsets.symmetric(vertical: 16),
@@ -373,7 +373,7 @@ class _OverviewCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ProgressBar(progress: leftRatio),
+                  _ProgressBar(progress: leftRatio, key: Key("${leftRatio}")),
                   PluginInfoItem(
                     contentCrossAxisAlignment: CrossAxisAlignment.start,
                     title: '$spendable/$available $symbol',
@@ -411,7 +411,9 @@ class _OverviewCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _ProgressBar(progress: this.spendPeriodRatio),
+                _ProgressBar(
+                    progress: this.spendPeriodRatio,
+                    key: Key("${this.spendPeriodRatio}")),
                 PluginInfoItem(
                   contentCrossAxisAlignment: CrossAxisAlignment.start,
                   title: spendPeriod,
@@ -451,7 +453,6 @@ class __ProgressBarState extends State<_ProgressBar>
   late AnimationController controller;
   double animationNumber = 0;
   late Animation<double> animation;
-  bool isInit = true;
 
   void _startAnimation(double progress) {
     this.controller = AnimationController(
@@ -468,11 +469,15 @@ class __ProgressBarState extends State<_ProgressBar>
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (isInit) {
-      isInit = false;
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _startAnimation(widget.progress);
-    }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(bottom: 12),
         child: Stack(alignment: Alignment.center, children: [

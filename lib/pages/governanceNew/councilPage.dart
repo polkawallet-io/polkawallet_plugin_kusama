@@ -138,7 +138,7 @@ class _CouncilPageState extends State<CouncilPage> {
                   ),
                   PluginInfoItem(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    contentCrossAxisAlignment: CrossAxisAlignment.center,
+                    contentCrossAxisAlignment: CrossAxisAlignment.start,
                     titleStyle: Theme.of(context)
                         .textTheme
                         .headline5
@@ -210,8 +210,10 @@ class _CouncilPageState extends State<CouncilPage> {
                     ),
                     Expanded(
                         child: PluginOutlinedButtonSmall(
+                      margin: EdgeInsets.only(top: 15),
                       content: dic['v3.unvoteAll'],
                       color: PluginColorsDark.primary,
+                      minSize: 29,
                       active: true,
                       onPressed: listCount > 0 ? () => _onCancelVotes() : null,
                     ))
@@ -278,9 +280,7 @@ class _CouncilPageState extends State<CouncilPage> {
                               PluginOutlinedButtonSmall(
                                 margin: EdgeInsets.only(bottom: 6, right: 16),
                                 content: dic['v3.select'],
-                                color: _select
-                                    ? PluginColorsDark.primary
-                                    : Color(0xFF737675),
+                                color: PluginColorsDark.primary,
                                 activeTextcolor:
                                     _select ? Colors.white : Colors.black,
                                 active: true,
@@ -335,12 +335,16 @@ class _CouncilPageState extends State<CouncilPage> {
                                             ),
                                           ),
                                           onTap: () {
+                                            print(_selectDatas!.indexWhere(
+                                                (element) =>
+                                                    element[0] == i[0]));
                                             setState(() {
-                                              if (_selectDatas!.indexWhere(
-                                                      (element) =>
-                                                          element[0] == i[0]) >=
-                                                  0) {
-                                                _selectDatas!.remove([i[0]]);
+                                              final valueIndex = _selectDatas!
+                                                  .indexWhere((element) =>
+                                                      element[0] == i[0]);
+                                              if (valueIndex >= 0) {
+                                                _selectDatas!
+                                                    .removeAt(valueIndex);
                                               } else {
                                                 _selectDatas!.add([i[0]]);
                                               }

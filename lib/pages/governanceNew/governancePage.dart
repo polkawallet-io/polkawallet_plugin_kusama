@@ -258,6 +258,7 @@ class _GovernancePageState extends State<GovernancePage> {
             child: Swiper(
               itemCount: locks.length,
               itemWidth: double.infinity,
+              loop: locks.length == 1 ? false : true,
               itemBuilder: (BuildContext context, int index) {
                 var unlockAt = locks[index]['unlockAt'];
                 final int blockDuration = BigInt.parse(widget
@@ -711,25 +712,27 @@ class CustomP extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 8,
-        child: ListView.separated(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          separatorBuilder: (context, index) => Container(
-            width: 6,
-          ),
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              height: 8,
-              width: _currentIndex == index ? 15 : 8,
-              decoration: BoxDecoration(
-                  color: _currentIndex == index
-                      ? PluginColorsDark.primary
-                      : PluginColorsDark.headline1,
-                  borderRadius: BorderRadius.circular(4)),
-            );
-          },
-          itemCount: _count,
-        ));
+        child: _count == 1
+            ? Container()
+            : ListView.separated(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                separatorBuilder: (context, index) => Container(
+                  width: 6,
+                ),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: 8,
+                    width: _currentIndex == index ? 15 : 8,
+                    decoration: BoxDecoration(
+                        color: _currentIndex == index
+                            ? PluginColorsDark.primary
+                            : PluginColorsDark.headline1,
+                        borderRadius: BorderRadius.circular(4)),
+                  );
+                },
+                itemCount: _count,
+              ));
   }
 }
