@@ -55,6 +55,18 @@ class _TreasuryPageState extends State<TreasuryPage> {
     return '--/--';
   }
 
+  double _getSpendPeriodRatio() {
+    if (widget.plugin.networkConst['treasury'] != null) {
+      final period =
+          int.parse(widget.plugin.networkConst['treasury']['spendPeriod']);
+      final blockTime =
+          int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']);
+      final ongoing = widget.plugin.store.gov.bestNumber.toInt() % period;
+      return ongoing / (period * 1.0);
+    }
+    return 0;
+  }
+
   Future<List?> _getExternalLinks(int id) async {
     if (_links[id.toString()] != null) return _links[id.toString()];
     final List? res = await widget.plugin.sdk.api.gov.getExternalLinks(
@@ -124,6 +136,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
                             symbol: symbol,
                             decimals: decimals,
                             spendPeriod: _getSpendPeriod(),
+                            spendPeriodRatio: _getSpendPeriodRatio(),
                             overview: widget.plugin.store.gov.treasuryOverview,
                           ),
                           PluginTabCard(
@@ -322,11 +335,13 @@ class _OverviewCard extends StatelessWidget {
     required this.spendPeriod,
     this.overview,
     this.refreshPage,
+    required this.spendPeriodRatio,
   });
 
   final String symbol;
   final int decimals;
   final String spendPeriod;
+  final double spendPeriodRatio;
   final TreasuryOverviewData? overview;
   final Function? refreshPage;
 
@@ -346,6 +361,8 @@ class _OverviewCard extends StatelessWidget {
         Fmt.balanceInt(overview?.balance ?? '0'), decimals);
     final spendable = Fmt.priceFloorBigIntFormatter(
         Fmt.balanceInt(overview?.spendable ?? '0'), decimals);
+    final leftRatio = Fmt.balanceInt(overview?.spendable ?? '0') /
+        Fmt.balanceInt(overview?.balance ?? '0');
     return RoundedPluginCard(
         padding: EdgeInsets.all(16),
         margin: EdgeInsets.symmetric(vertical: 16),
@@ -356,7 +373,7 @@ class _OverviewCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ProgressBar(),
+                  _ProgressBar(progress: leftRatio),
                   PluginInfoItem(
                     contentCrossAxisAlignment: CrossAxisAlignment.start,
                     title: '$spendable/$available $symbol',
@@ -394,7 +411,7 @@ class _OverviewCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _ProgressBar(),
+                _ProgressBar(progress: this.spendPeriodRatio),
                 PluginInfoItem(
                   contentCrossAxisAlignment: CrossAxisAlignment.start,
                   title: spendPeriod,
@@ -656,32 +673,6 @@ class __ProposalItemState extends State<_ProposalItem> {
                       ...widgets
                     ]))
           ],
-        ));
-    return ListTile(
-        leading: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-                padding: EdgeInsets.only(right: 5),
-                child: Text('# ${int.parse(widget.proposal!.id!)}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.copyWith(color: Colors.white))),
-            AddressIcon(widget.proposal!.proposal!.proposer, svg: widget.icon)
-          ],
-        ),
-        title: UI.accountDisplayName(
-            widget.proposal!.proposal!.proposer, widget.accInfo,
-            style: Theme.of(context).textTheme.headline5?.copyWith(
-                color: PluginColorsDark.headline1,
-                fontWeight: FontWeight.w600)),
-        subtitle: Text(
-          '${dic['v3.treasury.payment']}:${Fmt.balance(widget.proposal!.proposal!.value.toString(), widget.decimals!)} ${widget.symbol}',
-          style: Theme.of(context)
-              .textTheme
-              .headline5
-              ?.copyWith(fontSize: 10, color: PluginColorsDark.headline1),
         ));
   }
 }
