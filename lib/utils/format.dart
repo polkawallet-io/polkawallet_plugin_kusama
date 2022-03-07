@@ -89,7 +89,7 @@ class PluginFmt {
       // filter by search input
       final value = search.trim().toLowerCase();
       return UI
-              .accountDisplayNameString(i.accountId, accInfo)!
+              .accountDisplayNameString(i.accountId, accInfo)
               .toLowerCase()
               .contains(value) ||
           i.accountId!.toLowerCase().contains(value);

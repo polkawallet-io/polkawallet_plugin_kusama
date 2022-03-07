@@ -373,7 +373,7 @@ class _OverviewCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ProgressBar(progress: leftRatio, key: Key("${leftRatio}")),
+                  _ProgressBar(progress: leftRatio, key: Key("$leftRatio")),
                   PluginInfoItem(
                     contentCrossAxisAlignment: CrossAxisAlignment.start,
                     title: '$spendable/$available $symbol',

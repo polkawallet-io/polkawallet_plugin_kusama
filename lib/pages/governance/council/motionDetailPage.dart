@@ -167,7 +167,7 @@ class _MotionDetailPageState extends State<MotionDetailPage> {
                         child: ProposalArgsItem(
                           label: Text('Hash'),
                           content: Text(
-                            Fmt.address(motion.hash, pad: 10)!,
+                            Fmt.address(motion.hash, pad: 10),
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           margin: EdgeInsets.all(0),

@@ -104,7 +104,7 @@ class ReferendumPanel extends StatelessWidget {
         child: ProposalArgsItem(
           label: Text('Hash'),
           content: Text(
-            Fmt.address(data!.imageHash, pad: 10)!,
+            Fmt.address(data!.imageHash, pad: 10),
             style: Theme.of(context).textTheme.headline4,
           ),
           margin: EdgeInsets.all(0),
@@ -366,7 +366,7 @@ class _ReferendumArgsList extends State<ReferendumArgsList> {
                   children: <Widget>[
                     Text('${v['name']}: ${v['type']['type']}'),
                     Text(
-                      value.length > 300 ? Fmt.address(value, pad: 24)! : value,
+                      value.length > 300 ? Fmt.address(value, pad: 24) : value,
                       style: Theme.of(context).textTheme.headline4,
                     )
                   ],

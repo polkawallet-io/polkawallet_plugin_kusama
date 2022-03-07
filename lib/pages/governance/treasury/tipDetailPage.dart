@@ -337,7 +337,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                               child: Padding(
                                 padding: EdgeInsets.only(left: 16),
                                 child: Text(
-                                  Fmt.address(tipData.hash, pad: 10)!,
+                                  Fmt.address(tipData.hash, pad: 10),
                                   textAlign: TextAlign.right,
                                 ),
                               ),

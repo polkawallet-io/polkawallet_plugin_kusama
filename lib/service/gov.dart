@@ -61,9 +61,10 @@ class ApiGov {
     final data = await api.gov.queryNextExternal();
 
     if (data != null) {
+      print(data.balance);
       store!.gov.setExternal(data);
 
-      updateIconsAndIndices([data.proposer!]);
+      updateIconsAndIndices([data.image!.proposer!]);
     }
     return data;
   }

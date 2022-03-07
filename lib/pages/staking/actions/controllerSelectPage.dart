@@ -65,7 +65,7 @@ class ControllerSelectPage extends StatelessWidget {
                                           style: TextStyle(color: grey),
                                         ),
                                         Text(
-                                          Fmt.address(i.address)!,
+                                          Fmt.address(i.address),
                                           style: TextStyle(color: grey),
                                         ),
                                         Text(
@@ -84,7 +84,7 @@ class ControllerSelectPage extends StatelessWidget {
                                         Text(i.name!,
                                             style:
                                                 TextStyle(color: Colors.white)),
-                                        Text(Fmt.address(i.address)!,
+                                        Text(Fmt.address(i.address),
                                             style:
                                                 TextStyle(color: Colors.white)),
                                       ],

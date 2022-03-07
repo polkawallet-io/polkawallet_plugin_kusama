@@ -677,7 +677,7 @@ class _GovernancePageState extends State<GovernancePage> {
                                             child: InfoItemRow(
                                               dic['v3.locked']!,
                                               '${Fmt.balance(
-                                                info.balance.toString(),
+                                                info.image!.balance.toString(),
                                                 decimals,
                                               )} $symbol',
                                               labelStyle: Theme.of(context)

@@ -157,7 +157,7 @@ class _CouncilVote extends State<CouncilVotePage> {
                                       children: <Widget>[
                                         UI.accountDisplayName(i[0], accInfo),
                                         Text(
-                                          Fmt.address(i[0])!,
+                                          Fmt.address(i[0]),
                                           style:
                                               TextStyle(color: Colors.black54),
                                         ),
