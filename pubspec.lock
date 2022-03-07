@@ -610,7 +610,7 @@ packages:
       path: "../sdk"
       relative: true
     source: path
-    version: "0.4.2"
+    version: "0.4.3"
   polkawallet_ui:
     dependency: "direct main"
     description:

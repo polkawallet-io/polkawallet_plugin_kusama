@@ -563,10 +563,10 @@ class CandidateItem extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline5?.copyWith(
                             color: Colors.white, fontWeight: FontWeight.w600)),
                     Container(
-                      padding: EdgeInsets.only(left: 6),
+                      padding: EdgeInsets.only(left: 4),
                       child: Image.asset(
                         "packages/polkawallet_plugin_kusama/assets/images/gov/voted.png",
-                        width: 17.5,
+                        width: 24,
                       ),
                     )
                   ],

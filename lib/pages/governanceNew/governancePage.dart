@@ -14,8 +14,8 @@ import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItemRow.dart';
-import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
@@ -602,6 +602,8 @@ class _GovernancePageState extends State<GovernancePage> {
                                         color: PluginColorsDark.cardColor,
                                       ),
                                       child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             info.image?.proposal == null
@@ -641,7 +643,7 @@ class _GovernancePageState extends State<GovernancePage> {
                                                               .accounts
                                                               .addressIconsMap[
                                                           info.proposer],
-                                                      size: 12,
+                                                      size: 14,
                                                     ),
                                                     Padding(
                                                         padding:

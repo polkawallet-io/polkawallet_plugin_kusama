@@ -59,7 +59,12 @@ class ApiGov {
 
   Future<ProposalInfoData?> queryExternal() async {
     final data = await api.gov.queryNextExternal();
-    store!.gov.setExternal(data);
+
+    if (data != null) {
+      store!.gov.setExternal(data);
+
+      updateIconsAndIndices([data.proposer!]);
+    }
     return data;
   }
 

@@ -374,10 +374,10 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                               ),
                               Visibility(
                                   child: Container(
-                                padding: EdgeInsets.only(left: 6),
+                                padding: EdgeInsets.only(left: 4),
                                 child: Image.asset(
                                   "packages/polkawallet_plugin_kusama/assets/images/gov/voted.png",
-                                  width: 17.5,
+                                  width: 24,
                                 ),
                               ))
                             ],

@@ -556,7 +556,7 @@ class __ProposalItemState extends State<_ProposalItem> {
                     widget.proposal!.proposal!.beneficiary,
                     svg: widget.plugin.store.accounts.addressIconsMap[
                         widget.proposal!.proposal!.beneficiary],
-                    size: 12,
+                    size: 14,
                   ),
                   Padding(
                       padding: EdgeInsets.only(left: 5),
