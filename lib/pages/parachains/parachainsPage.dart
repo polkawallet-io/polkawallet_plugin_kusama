@@ -44,8 +44,8 @@ class _ParachainsPageState extends State<ParachainsPage> {
     ]);
 
     if (mounted && res[0] != null && res[1] != null) {
-      widget.plugin.store.paras
-          .setAuctionData(res[0] as AuctionData, res[1] as Map);
+      // widget.plugin.store.paras
+      //     .setOverviewData(res[0] as AuctionData, res[1] as Map);
 
       if (!_loaded) {
         setState(() {

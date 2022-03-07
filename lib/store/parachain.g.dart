@@ -9,6 +9,21 @@ part of 'parachain.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ParachainStore on _ParachainStore, Store {
+  final _$overviewAtom = Atom(name: '_ParachainStore.overview');
+
+  @override
+  ParasOverviewData get overview {
+    _$overviewAtom.reportRead();
+    return super.overview;
+  }
+
+  @override
+  set overview(ParasOverviewData value) {
+    _$overviewAtom.reportWrite(value, super.overview, () {
+      super.overview = value;
+    });
+  }
+
   final _$auctionDataAtom = Atom(name: '_ParachainStore.auctionData');
 
   @override
@@ -59,11 +74,12 @@ mixin _$ParachainStore on _ParachainStore, Store {
       ActionController(name: '_ParachainStore');
 
   @override
-  void setAuctionData(AuctionData data, Map<dynamic, dynamic> visible) {
+  void setOverviewData(AuctionData data, Map<dynamic, dynamic> visible,
+      ParasOverviewData overviewData) {
     final _$actionInfo = _$_ParachainStoreActionController.startAction(
-        name: '_ParachainStore.setAuctionData');
+        name: '_ParachainStore.setOverviewData');
     try {
-      return super.setAuctionData(data, visible);
+      return super.setOverviewData(data, visible, overviewData);
     } finally {
       _$_ParachainStoreActionController.endAction(_$actionInfo);
     }
@@ -83,6 +99,7 @@ mixin _$ParachainStore on _ParachainStore, Store {
   @override
   String toString() {
     return '''
+overview: ${overview},
 auctionData: ${auctionData},
 fundsVisible: ${fundsVisible},
 userContributions: ${userContributions}

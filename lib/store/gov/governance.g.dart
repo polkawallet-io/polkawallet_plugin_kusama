@@ -41,21 +41,6 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
     });
   }
 
-  final _$externalAtom = Atom(name: '_GovernanceStore.external');
-
-  @override
-  ProposalInfoData? get external {
-    _$externalAtom.reportRead();
-    return super.external;
-  }
-
-  @override
-  set external(ProposalInfoData? value) {
-    _$externalAtom.reportWrite(value, super.external, () {
-      super.external = value;
-    });
-  }
-
   final _$councilAtom = Atom(name: '_GovernanceStore.council');
 
   @override
@@ -132,6 +117,22 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
     });
   }
 
+  final _$referendumStatusAtom =
+      Atom(name: '_GovernanceStore.referendumStatus');
+
+  @override
+  Map<dynamic, dynamic> get referendumStatus {
+    _$referendumStatusAtom.reportRead();
+    return super.referendumStatus;
+  }
+
+  @override
+  set referendumStatus(Map<dynamic, dynamic> value) {
+    _$referendumStatusAtom.reportWrite(value, super.referendumStatus, () {
+      super.referendumStatus = value;
+    });
+  }
+
   final _$voteConvictionsAtom = Atom(name: '_GovernanceStore.voteConvictions');
 
   @override
@@ -193,6 +194,21 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
     });
   }
 
+  final _$externalAtom = Atom(name: '_GovernanceStore.external');
+
+  @override
+  ProposalInfoData? get external {
+    _$externalAtom.reportRead();
+    return super.external;
+  }
+
+  @override
+  set external(ProposalInfoData? value) {
+    _$externalAtom.reportWrite(value, super.external, () {
+      super.external = value;
+    });
+  }
+
   final _$loadCacheAsyncAction = AsyncAction('_GovernanceStore.loadCache');
 
   @override
@@ -202,6 +218,17 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
 
   final _$_GovernanceStoreActionController =
       ActionController(name: '_GovernanceStore');
+
+  @override
+  void setExternal(ProposalInfoData? data) {
+    final _$actionInfo = _$_GovernanceStoreActionController.startAction(
+        name: '_GovernanceStore.setExternal');
+    try {
+      return super.setExternal(data);
+    } finally {
+      _$_GovernanceStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setCouncilInfo(Map<dynamic, dynamic> info, {bool shouldCache = true}) {
@@ -248,22 +275,22 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setExternal(ProposalInfoData? data) {
+  void setReferendums(List<ReferendumInfo> ls) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
-        name: '_GovernanceStore.setExternal');
+        name: '_GovernanceStore.setReferendums');
     try {
-      return super.setExternal(data);
+      return super.setReferendums(ls);
     } finally {
       _$_GovernanceStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setReferendums(List<ReferendumInfo> ls) {
+  void setReferendumStatus(Map<dynamic, dynamic> data) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
-        name: '_GovernanceStore.setReferendums');
+        name: '_GovernanceStore.setReferendumStatus');
     try {
-      return super.setReferendums(ls);
+      return super.setReferendumStatus(data);
     } finally {
       _$_GovernanceStoreActionController.endAction(_$actionInfo);
     }
@@ -345,11 +372,12 @@ councilMotions: ${councilMotions},
 councilVotes: ${councilVotes},
 userCouncilVotes: ${userCouncilVotes},
 referendums: ${referendums},
+referendumStatus: ${referendumStatus},
 voteConvictions: ${voteConvictions},
 proposals: ${proposals},
 treasuryOverview: ${treasuryOverview},
 treasuryTips: ${treasuryTips},
-external:${external}
+external: ${external}
     ''';
   }
 }

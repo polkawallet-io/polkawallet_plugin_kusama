@@ -206,6 +206,21 @@ mixin _$StakingStore on _StakingStore, Store {
     });
   }
 
+  final _$marketPricesAtom = Atom(name: '_StakingStore.marketPrices');
+
+  @override
+  ObservableMap<String?, double> get marketPrices {
+    _$marketPricesAtom.reportRead();
+    return super.marketPrices;
+  }
+
+  @override
+  set marketPrices(ObservableMap<String?, double> value) {
+    _$marketPricesAtom.reportWrite(value, super.marketPrices, () {
+      super.marketPrices = value;
+    });
+  }
+
   final _$setTxsLoadingAsyncAction = AsyncAction('_StakingStore.setTxsLoading');
 
   @override
@@ -249,6 +264,17 @@ mixin _$StakingStore on _StakingStore, Store {
 
   final _$_StakingStoreActionController =
       ActionController(name: '_StakingStore');
+
+  @override
+  void setMarketPrices(Map<String?, double> data) {
+    final _$actionInfo = _$_StakingStoreActionController.startAction(
+        name: '_StakingStore.setMarketPrices');
+    try {
+      return super.setMarketPrices(data);
+    } finally {
+      _$_StakingStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setValidatorsInfo(Map<dynamic, dynamic> data,
@@ -318,34 +344,6 @@ mixin _$StakingStore on _StakingStore, Store {
     }
   }
 
-  final _$marketPricesAtom = Atom(name: '_AssetsStore.marketPrices');
-
-  @override
-  ObservableMap<String?, double> get marketPrices {
-    _$marketPricesAtom.reportRead();
-    return super.marketPrices;
-  }
-
-  @override
-  set marketPrices(ObservableMap<String?, double> value) {
-    _$marketPricesAtom.reportWrite(value, super.marketPrices, () {
-      super.marketPrices = value;
-    });
-  }
-
-  final _$_AssetsStoreActionController = ActionController(name: '_AssetsStore');
-
-  @override
-  void setMarketPrices(Map<String?, double> data) {
-    final _$actionInfo = _$_AssetsStoreActionController.startAction(
-        name: '_AssetsStore.setMarketPrices');
-    try {
-      return super.setMarketPrices(data);
-    } finally {
-      _$_AssetsStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''
@@ -354,16 +352,16 @@ electedInfo: ${electedInfo},
 nextUpsInfo: ${nextUpsInfo},
 overview: ${overview},
 nominationsMap: ${nominationsMap},
-setNominationsCount: ${setNominationsCount},
+nominationsCount: ${nominationsCount},
 ownStashInfo: ${ownStashInfo},
 accountBondedMap: ${accountBondedMap},
 txsLoading: ${txsLoading},
 txs: ${txs},
 txsRewards: ${txsRewards},
 rewardsChartDataCache: ${rewardsChartDataCache},
-nominatingList: ${nominatingList},
-accountUnlockingTotal: ${accountUnlockingTotal},
 marketPrices: ${marketPrices},
+nominatingList: ${nominatingList},
+accountUnlockingTotal: ${accountUnlockingTotal}
     ''';
   }
 }

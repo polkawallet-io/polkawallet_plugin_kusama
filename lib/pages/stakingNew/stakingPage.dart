@@ -7,17 +7,17 @@ import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/connectionChecker.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginIconButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
-import 'package:polkawallet_ui/components/connectionChecker.dart';
 
 class StakingPage extends StatefulWidget {
   StakingPage(this.plugin, this.keyring, {Key? key}) : super(key: key);
   final PluginKusama plugin;
   final Keyring keyring;
 
-  static final String route = '/staking/stakingPage';
+  static final String route = '/staking/index';
 
   @override
   State<StakingPage> createState() => _StakingPageState();

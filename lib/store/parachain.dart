@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:polkawallet_sdk/api/types/parachain/auctionData.dart';
+import 'package:polkawallet_sdk/api/types/parachain/parasOverviewData.dart';
 
 part 'parachain.g.dart';
 
@@ -8,6 +9,9 @@ class ParachainStore extends _ParachainStore with _$ParachainStore {
 }
 
 abstract class _ParachainStore with Store {
+  @observable
+  ParasOverviewData overview = ParasOverviewData();
+
   @observable
   AuctionData auctionData = AuctionData();
 
@@ -18,9 +22,11 @@ abstract class _ParachainStore with Store {
   Map userContributions = {};
 
   @action
-  void setAuctionData(AuctionData data, Map visible) {
+  void setOverviewData(
+      AuctionData data, Map visible, ParasOverviewData overviewData) {
     auctionData = data;
     fundsVisible = visible;
+    overview = overviewData;
   }
 
   @action
