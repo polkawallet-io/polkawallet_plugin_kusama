@@ -507,7 +507,7 @@ class _CouncilPageState extends State<CouncilPage> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 16, vertical: 15),
                           child: PluginButton(
-                            title: dic['vote']!,
+                            title: "${dic['vote']}(${_selectDatas!.length})",
                             onPressed: () async {
                               final res = await Navigator.of(context).pushNamed(
                                   CouncilVotePage.route,
