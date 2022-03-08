@@ -104,5 +104,6 @@ const Map<String, String> enGov = {
   'v3.externals': 'Externals',
   'v3.treasury.payment': 'Payment',
   'v3.treasury.pending': 'PENDING',
-  'v3.treasury.Approved': 'APPROVED'
+  'v3.treasury.Approved': 'APPROVED',
+  'v3.treasury.nextBurn': 'Next Burn'
 };
