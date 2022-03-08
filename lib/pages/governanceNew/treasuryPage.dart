@@ -373,7 +373,8 @@ class _OverviewCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ProgressBar(progress: leftRatio, key: Key("$leftRatio")),
+                  _ProgressBar(
+                      progress: leftRatio, key: Key("${Fmt.ratio(leftRatio)}")),
                   PluginInfoItem(
                     contentCrossAxisAlignment: CrossAxisAlignment.start,
                     title: '$spendable/$available $symbol',
@@ -411,9 +412,7 @@ class _OverviewCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _ProgressBar(
-                    progress: this.spendPeriodRatio,
-                    key: Key("${this.spendPeriodRatio}")),
+                _ProgressBar(progress: this.spendPeriodRatio, key: Key("1")),
                 PluginInfoItem(
                   contentCrossAxisAlignment: CrossAxisAlignment.start,
                   title: spendPeriod,
@@ -450,30 +449,33 @@ class _ProgressBar extends StatefulWidget {
 
 class __ProgressBarState extends State<_ProgressBar>
     with TickerProviderStateMixin {
-  late AnimationController controller;
+  AnimationController? controller;
   double animationNumber = 0;
   late Animation<double> animation;
 
   void _startAnimation(double progress) {
     this.controller = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
-    animation = Tween(begin: 0.0, end: progress).animate(controller);
+    animation =
+        Tween(begin: animationNumber, end: progress).animate(this.controller!);
     animation.addListener(() {
       setState(() {
         animationNumber = animation.value;
       });
     });
-    Future.delayed(Duration(milliseconds: 350), () {
-      controller.forward();
+    Future.delayed(Duration(milliseconds: 150), () {
+      controller!.forward();
     });
   }
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+  void didUpdateWidget(covariant _ProgressBar oldWidget) {
+    if (this.controller == null ||
+        (!this.controller!.isAnimating &&
+            oldWidget.progress != widget.progress)) {
       _startAnimation(widget.progress);
-    });
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
