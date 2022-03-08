@@ -21,6 +21,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/i18n.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class TreasuryPage extends StatefulWidget {
@@ -149,174 +150,202 @@ class _TreasuryPageState extends State<TreasuryPage> {
                         ],
                       );
                     } else {
-                      return Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.zero,
-                          margin: EdgeInsets.only(bottom: 16),
-                          decoration: BoxDecoration(
-                              color: PluginColorsDark.cardColor,
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(8),
+                      return (_tab == 0 ? proposals.length : tips.length) == 0
+                          ? Container(
+                              padding: EdgeInsets.all(16),
+                              margin: EdgeInsets.only(bottom: 16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(8),
-                                  bottomRight: Radius.circular(8))),
-                          child: ListView.separated(
+                                  bottomLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(8),
+                                ),
+                                color: PluginColorsDark.cardColor,
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                I18n.of(context)!.getDic(
+                                    i18n_full_dic_ui, 'common')!['list.empty']!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4
+                                    ?.copyWith(color: Colors.white),
+                              ))
+                          : Container(
+                              width: double.infinity,
                               padding: EdgeInsets.zero,
-                              separatorBuilder: (context, index) => _tab == 0
-                                  ? Padding(
-                                      padding: EdgeInsets.only(left: 13),
-                                      child: Divider(),
-                                    )
-                                  : Container(),
-                              itemCount:
-                                  _tab == 0 ? proposals.length : tips.length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                final i = index;
-                                if (_tab == 0) {
-                                  final link = _links[
-                                      int.parse(proposals[i].id!).toString()];
-                                  return _ProposalItem(
-                                    symbol: symbol,
-                                    decimals: decimals,
-                                    icon: widget.plugin.store.accounts
-                                            .addressIconsMap[
-                                        proposals[i].proposal!.proposer],
-                                    accInfo: widget.plugin.store.accounts
-                                            .addressIndexMap[
-                                        proposals[i].proposal!.proposer],
-                                    proposal: proposals[i],
-                                    plugin: widget.plugin,
-                                    isApproved: index >=
-                                        (widget
-                                                    .plugin
-                                                    .store
-                                                    .gov
-                                                    .treasuryOverview
-                                                    .proposals ??
-                                                [])
-                                            .length,
-                                    links: Visibility(
-                                      visible: link != null,
-                                      child: GovExternalLinks(link ?? []),
-                                    ),
-                                  );
-                                }
+                              margin: EdgeInsets.only(bottom: 16),
+                              decoration: BoxDecoration(
+                                  color: PluginColorsDark.cardColor,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(8),
+                                      topRight: Radius.circular(8),
+                                      bottomRight: Radius.circular(8))),
+                              child: ListView.separated(
+                                  padding: EdgeInsets.zero,
+                                  separatorBuilder: (context, index) => _tab ==
+                                          0
+                                      ? Padding(
+                                          padding: EdgeInsets.only(left: 13),
+                                          child: Divider(),
+                                        )
+                                      : Container(),
+                                  itemCount: _tab == 0
+                                      ? proposals.length
+                                      : tips.length,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    final i = index;
+                                    if (_tab == 0) {
+                                      final link = _links[
+                                          int.parse(proposals[i].id!)
+                                              .toString()];
+                                      return _ProposalItem(
+                                        symbol: symbol,
+                                        decimals: decimals,
+                                        icon: widget.plugin.store.accounts
+                                                .addressIconsMap[
+                                            proposals[i].proposal!.proposer],
+                                        accInfo: widget.plugin.store.accounts
+                                                .addressIndexMap[
+                                            proposals[i].proposal!.proposer],
+                                        proposal: proposals[i],
+                                        plugin: widget.plugin,
+                                        isApproved: index >=
+                                            (widget
+                                                        .plugin
+                                                        .store
+                                                        .gov
+                                                        .treasuryOverview
+                                                        .proposals ??
+                                                    [])
+                                                .length,
+                                        links: Visibility(
+                                          visible: link != null,
+                                          child: GovExternalLinks(link ?? []),
+                                        ),
+                                      );
+                                    }
 
-                                final TreasuryTipData tip = tips[i];
-                                final icon = widget.plugin.store.accounts
-                                    .addressIconsMap[tip.who];
-                                final indices = widget.plugin.store.accounts
-                                    .addressIndexMap[tip.who];
-                                return Padding(
-                                    padding: EdgeInsets.all(12),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                    final TreasuryTipData tip = tips[i];
+                                    final icon = widget.plugin.store.accounts
+                                        .addressIconsMap[tip.who];
+                                    final indices = widget.plugin.store.accounts
+                                        .addressIndexMap[tip.who];
+                                    return Padding(
+                                        padding: EdgeInsets.all(12),
+                                        child: Row(
                                           children: [
-                                            Row(
+                                            Expanded(
+                                                child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 10),
+                                                        child: AddressIcon(
+                                                          tip.who,
+                                                          svg: icon,
+                                                          size: 28,
+                                                        )),
+                                                    Expanded(
+                                                        child: UI.accountDisplayName(
+                                                            tip.who, indices,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .headline5
+                                                                ?.copyWith(
+                                                                    color: PluginColorsDark
+                                                                        .headline1,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600)))
+                                                  ],
+                                                ),
+                                                Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 3),
+                                                    child: Text.rich(
+                                                        TextSpan(children: [
+                                                      TextSpan(
+                                                          text:
+                                                              "${dic['treasury.reason']}：",
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .headline5
+                                                              ?.copyWith(
+                                                                  color: PluginColorsDark
+                                                                      .headline1,
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600)),
+                                                      TextSpan(
+                                                          text: tip.reason!,
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .headline5
+                                                              ?.copyWith(
+                                                                  color: PluginColorsDark
+                                                                      .headline1,
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300))
+                                                    ])))
+                                              ],
+                                            )),
+                                            Column(
                                               children: [
                                                 Padding(
                                                     padding: EdgeInsets.only(
-                                                        right: 10),
-                                                    child: AddressIcon(
-                                                      tip.who,
-                                                      svg: icon,
-                                                      size: 28,
+                                                        bottom: 6),
+                                                    child: Image.asset(
+                                                      'packages/polkawallet_plugin_kusama/assets/images/gov/gov_treasury.png',
+                                                      width: 32,
                                                     )),
-                                                Expanded(
-                                                    child: UI.accountDisplayName(
-                                                        tip.who, indices,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headline5
-                                                            ?.copyWith(
-                                                                color: PluginColorsDark
-                                                                    .headline1,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600)))
+                                                Text(
+                                                  "${dic['treasury.tipper']}(${tip.tips!.length.toString()})",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5
+                                                      ?.copyWith(
+                                                          color:
+                                                              PluginColorsDark
+                                                                  .headline1,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                ),
+                                                Text(
+                                                  '${Fmt.balance(
+                                                    tip.deposit.toString(),
+                                                    decimals,
+                                                  )} $symbol',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5
+                                                      ?.copyWith(
+                                                          color:
+                                                              PluginColorsDark
+                                                                  .headline1,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                ),
                                               ],
-                                            ),
-                                            Padding(
-                                                padding:
-                                                    EdgeInsets.only(top: 3),
-                                                child: Text.rich(
-                                                    TextSpan(children: [
-                                                  TextSpan(
-                                                      text:
-                                                          "${dic['treasury.reason']}：",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline5
-                                                          ?.copyWith(
-                                                              color:
-                                                                  PluginColorsDark
-                                                                      .headline1,
-                                                              fontSize: 10,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600)),
-                                                  TextSpan(
-                                                      text: tip.reason!,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline5
-                                                          ?.copyWith(
-                                                              color:
-                                                                  PluginColorsDark
-                                                                      .headline1,
-                                                              fontSize: 10,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w300))
-                                                ])))
+                                            )
                                           ],
-                                        )),
-                                        Column(
-                                          children: [
-                                            Padding(
-                                                padding:
-                                                    EdgeInsets.only(bottom: 6),
-                                                child: Image.asset(
-                                                  'packages/polkawallet_plugin_kusama/assets/images/gov/gov_treasury.png',
-                                                  width: 32,
-                                                )),
-                                            Text(
-                                              "${dic['treasury.tipper']}(${tip.tips!.length.toString()})",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline5
-                                                  ?.copyWith(
-                                                      color: PluginColorsDark
-                                                          .headline1,
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                            ),
-                                            Text(
-                                              '${Fmt.balance(
-                                                tip.deposit.toString(),
-                                                decimals,
-                                              )} $symbol',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline5
-                                                  ?.copyWith(
-                                                      color: PluginColorsDark
-                                                          .headline1,
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ));
-                              }));
+                                        ));
+                                  }));
                     }
                   }),
               onRefresh: _fetchData);
@@ -426,7 +455,7 @@ class _OverviewCard extends StatelessWidget {
                   contentCrossAxisAlignment: CrossAxisAlignment.start,
                   title:
                       "${Fmt.priceFloorBigIntFormatter(Fmt.balanceInt(overview?.burn ?? '0'), decimals)} $symbol",
-                  content: 'next',
+                  content: dic['v3.treasury.nextBurn'],
                   isExpanded: false,
                   lowTitle: true,
                   style: labelStyle,
@@ -490,8 +519,9 @@ class __ProgressBarState extends State<_ProgressBar>
               painter: CircularProgressBar(
                   startAngle: pi * 3 / 2,
                   width: 10,
-                  lineColor: [Color(0x0FFFFFFF), Color(0xFF81FEB9)],
-                  progress: animationNumber),
+                  lineColor: [Color(0x4DFFFFFF), Color(0xFF81FEB9)],
+                  progress: animationNumber,
+                  bgColor: Colors.white.withAlpha(38)),
             ),
           ),
           Text(

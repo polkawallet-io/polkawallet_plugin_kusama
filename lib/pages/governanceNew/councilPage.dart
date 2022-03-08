@@ -271,6 +271,7 @@ class _CouncilPageState extends State<CouncilPage> {
                           _buildTopCard(symbol),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               PluginTextTag(
                                 padding: EdgeInsets.zero,
@@ -279,7 +280,11 @@ class _CouncilPageState extends State<CouncilPage> {
                               ),
                               PluginOutlinedButtonSmall(
                                 margin: EdgeInsets.only(bottom: 6, right: 16),
-                                content: dic['v3.select'],
+                                content: _select
+                                    ? I18n.of(context)!.getDic(
+                                        i18n_full_dic_kusama,
+                                        'common')!['cancel']
+                                    : dic['v3.select'],
                                 color: PluginColorsDark.primary,
                                 activeTextcolor:
                                     _select ? Colors.white : Colors.black,
@@ -292,7 +297,7 @@ class _CouncilPageState extends State<CouncilPage> {
                                   });
                                 },
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 2),
+                                    horizontal: 12, vertical: 3),
                               )
                             ],
                           ),
@@ -553,6 +558,7 @@ class CandidateItem extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          dense: true,
           leading: AddressIcon(balance![0], size: iconSize, svg: icon),
           title: isMyVote
               ? Row(
@@ -597,7 +603,7 @@ class CandidateItem extends StatelessWidget {
             visible: isShowDivider,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Divider(),
+              child: Divider(height: 1),
             ))
       ],
     );

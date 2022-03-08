@@ -100,5 +100,6 @@ const Map<String, String> zhGov = {
   'v3.externals': '外部提案',
   'v3.treasury.payment': '支付',
   'v3.treasury.pending': '等待',
-  'v3.treasury.Approved': '通过'
+  'v3.treasury.Approved': '通过',
+  'v3.treasury.nextBurn': '次回灼烧'
 };

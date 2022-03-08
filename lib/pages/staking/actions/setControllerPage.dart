@@ -81,6 +81,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
                           label: isStash ? dic['controller'] : dic['stash'],
                           svg: widget.plugin.store.accounts
                               .addressIconsMap[controller.address],
+                          isDisable: false,
                           onTap: isStash
                               ? () => _changeControllerId(context)
                               : null,
