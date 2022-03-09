@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_fail_24</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_fail_24" transform="translate(-20.000000, -134.000000)" filter="url(#filter-1)">
+            <g transform="translate(20.000000, 134.000000)">
+                <circle id="椭圆形" stroke="#979797" stroke-width="1.5" cx="12" cy="12" r="9"></circle>
+                <polyline id="路径-21" stroke="#979797" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="7.2 12.0714286 11.4857143 15.5 17.0571429 9.5"></polyline>
+            </g>
+        </g>
+    </g>
+</svg> 
