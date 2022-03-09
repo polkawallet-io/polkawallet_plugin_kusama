@@ -55,7 +55,7 @@ class _GovernancePageState extends State<GovernancePage> {
         .getDemocracyLocks(widget.keyring.current.address!);
     if (locks == null) return;
 
-    await widget.plugin.service.gov.queryReferendumStatus(
+    widget.plugin.service.gov.queryReferendumStatus(
         locks.map((e) => int.parse(e['referendumId'])).toList());
     if (mounted) {
       setState(() {
@@ -118,7 +118,7 @@ class _GovernancePageState extends State<GovernancePage> {
   }
 
   Future<void> _freshData() async {
-    _queryDemocracyLocks();
+    await _queryDemocracyLocks();
     if (_tabIndex == 0) {
       await _fetchReferendums();
     } else {
@@ -255,157 +255,188 @@ class _GovernancePageState extends State<GovernancePage> {
         ),
         Container(
             height: redeemable > 0 ? 147 : 127,
-            child: Swiper(
-              itemCount: locks.length,
-              itemWidth: double.infinity,
-              loop: locks.length == 1 ? false : true,
-              itemBuilder: (BuildContext context, int index) {
-                var unlockAt = locks[index]['unlockAt'];
-                final int blockDuration = BigInt.parse(widget
-                        .plugin.networkConst['babe']['expectedBlockTime']
-                        .toString())
-                    .toInt();
-                if (unlockAt == "0") {
-                  widget.plugin.store.gov.referendums!.forEach((element) {
-                    if (element.userVoted != null &&
-                        element.index ==
-                            BigInt.parse(locks[index]['referendumId'])) {
-                      unlockAt = element.status!['end'];
-                      if (element.userVoted!['vote']['conviction'] != 'None') {
-                        final String conviction =
-                            (element.userVoted!['vote']['conviction'] as String)
-                                .substring(6, 7);
-                        final con = widget.plugin.store.gov.voteConvictions!
-                            .where((element) =>
-                                element['value'] == int.parse(conviction))
-                            .first["period"];
-                        unlockAt =
-                            unlockAt + double.parse(con).toInt() * 24 * 600;
-                      }
-                    }
-                  });
-                }
-                var endLeft;
-                try {
-                  endLeft = BigInt.parse("${unlockAt.toString()}") - bestNumber;
-                } catch (e) {
-                  endLeft =
-                      BigInt.parse("0x${unlockAt.toString()}") - bestNumber;
-                }
-                String amount = Fmt.balance(
-                  locks[index]!['balance'].toString(),
-                  decimals,
-                );
-                final id = int.parse(locks[index]['referendumId']);
-                return Container(
-                    padding: EdgeInsets.only(
-                        left: 17, top: 16, right: 16, bottom: 12),
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: PluginColorsDark.cardColor,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(8),
-                            topRight: Radius.circular(8),
-                            bottomRight: Radius.circular(8))),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: Column(
-                          children: [
-                            Row(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+                color: PluginColorsDark.cardColor,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8))),
+            child: Stack(
+              children: [
+                Container(
+                    height: 127,
+                    child: Swiper(
+                      itemCount: locks.length,
+                      itemWidth: double.infinity,
+                      loop: locks.length == 1 ? false : true,
+                      itemBuilder: (BuildContext context, int index) {
+                        var unlockAt = locks[index]['unlockAt'];
+                        final int blockDuration = BigInt.parse(widget.plugin
+                                .networkConst['babe']['expectedBlockTime']
+                                .toString())
+                            .toInt();
+                        if (unlockAt == "0") {
+                          widget.plugin.store.gov.referendums!
+                              .forEach((element) {
+                            if (element.userVoted != null &&
+                                element.index ==
+                                    BigInt.parse(
+                                        locks[index]['referendumId'])) {
+                              unlockAt = element.status!['end'];
+                              if (element.userVoted!['vote']['conviction'] !=
+                                  'None') {
+                                final String conviction =
+                                    (element.userVoted!['vote']['conviction']
+                                            as String)
+                                        .substring(6, 7);
+                                final con = widget
+                                    .plugin.store.gov.voteConvictions!
+                                    .where((element) =>
+                                        element['value'] ==
+                                        int.parse(conviction))
+                                    .first["period"];
+                                unlockAt = unlockAt +
+                                    double.parse(con).toInt() * 24 * 600;
+                              }
+                            }
+                          });
+                        }
+                        var endLeft;
+                        try {
+                          endLeft = BigInt.parse("${unlockAt.toString()}") -
+                              bestNumber;
+                        } catch (e) {
+                          endLeft = BigInt.parse("0x${unlockAt.toString()}") -
+                              bestNumber;
+                        }
+                        String amount = Fmt.balance(
+                          locks[index]!['balance'].toString(),
+                          decimals,
+                        );
+                        final id = int.parse(locks[index]['referendumId']);
+                        return Container(
+                            padding: EdgeInsets.only(
+                                left: 17, top: 16, right: 16, bottom: 12),
+                            child: Row(
                               children: [
-                                PluginInfoItem(
-                                  title: dic['democracy.referendum.number'],
-                                  content: "#$id",
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  contentCrossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  titleStyle: Theme.of(context)
-                                      .textTheme
-                                      .headline5
-                                      ?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline3
-                                      ?.copyWith(
-                                          color: Colors.white,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold),
-                                ),
-                                PluginInfoItem(
-                                  title: dic['v3.referendaState'],
-                                  content: (widget.plugin.store.gov
-                                              .referendumStatus[id] ??
-                                          '--')
-                                      .toString()
-                                      .toUpperCase(),
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  contentCrossAxisAlignment:
-                                      CrossAxisAlignment.end,
-                                  titleStyle: Theme.of(context)
-                                      .textTheme
-                                      .headline5
-                                      ?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline3
-                                      ?.copyWith(
-                                          color: Colors.white,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold),
-                                )
+                                Expanded(
+                                    child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        PluginInfoItem(
+                                          title: dic[
+                                              'democracy.referendum.number'],
+                                          content: "#$id",
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          contentCrossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          titleStyle: Theme.of(context)
+                                              .textTheme
+                                              .headline5
+                                              ?.copyWith(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline3
+                                              ?.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        PluginInfoItem(
+                                          title: dic['v3.referendaState'],
+                                          content: (widget.plugin.store.gov
+                                                      .referendumStatus[id] ??
+                                                  '--')
+                                              .toString()
+                                              .toUpperCase(),
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          contentCrossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          titleStyle: Theme.of(context)
+                                              .textTheme
+                                              .headline5
+                                              ?.copyWith(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline3
+                                              ?.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    InfoItemRow(
+                                        dic['democracy.referendum.balance']!,
+                                        '$amount $symbol',
+                                        labelStyle: style,
+                                        contentStyle: style),
+                                    InfoItemRow(
+                                        dic['democracy.referendum.period']!,
+                                        endLeft.toInt() <= 0
+                                            ? dic['v3.end']
+                                            : '${Fmt.blockToTime(endLeft.toInt(), blockDuration)}',
+                                        labelStyle: style,
+                                        contentStyle: style),
+                                  ],
+                                )),
+                                Container(width: 74)
                               ],
-                            ),
-                            InfoItemRow(dic['democracy.referendum.balance']!,
-                                '$amount $symbol',
-                                labelStyle: style, contentStyle: style),
-                            InfoItemRow(
-                                dic['democracy.referendum.period']!,
-                                endLeft.toInt() <= 0
-                                    ? ""
-                                    : '${Fmt.blockToTime(endLeft.toInt(), blockDuration)}',
-                                labelStyle: style,
-                                contentStyle: style),
-                            Visibility(
-                                visible: redeemable > 0,
-                                child: InfoItemRow(dic['v3.canClear']!,
-                                    '${Fmt.priceFloor(redeemable, lengthMax: 4)} $symbol',
-                                    labelStyle: style, contentStyle: style))
-                          ],
-                        )),
-                        Container(
-                            width: 74,
-                            height: double.infinity,
-                            padding: EdgeInsets.only(left: 15),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                            ));
+                      },
+                      pagination: SwiperPagination(
+                          alignment: Alignment.topRight,
+                          margin: EdgeInsets.only(top: 24, right: 16),
+                          builder: SwiperCustomPagination(builder:
+                              (BuildContext context,
+                                  SwiperPluginConfig config) {
+                            return CustomP(
+                                config.activeIndex, config.itemCount);
+                          })),
+                    )),
+                Visibility(
+                    visible: redeemable > 0,
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                            padding: EdgeInsets.only(
+                                left: 17, top: 16, right: 16, bottom: 12),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Visibility(
-                                  visible: redeemable > 0,
-                                  child: PluginButton(
-                                    height: 30,
-                                    title: dic['democracy.referendum.clear']!,
-                                    onPressed: () {
-                                      _onUnlock(unLockIds);
-                                    },
-                                  ),
-                                )
+                                Expanded(
+                                    child: InfoItemRow(dic['v3.canClear']!,
+                                        '${Fmt.priceFloor(redeemable, lengthMax: 4)} $symbol',
+                                        labelStyle: style,
+                                        contentStyle: style)),
+                                Container(
+                                    width: 74,
+                                    height: double.infinity,
+                                    padding: EdgeInsets.only(left: 15),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        PluginButton(
+                                          height: 30,
+                                          title: dic[
+                                              'democracy.referendum.clear']!,
+                                          onPressed: () {
+                                            _onUnlock(unLockIds);
+                                          },
+                                        )
+                                      ],
+                                    ))
                               ],
-                            ))
-                      ],
-                    ));
-              },
-              pagination: SwiperPagination(
-                  alignment: Alignment.topRight,
-                  margin: EdgeInsets.only(top: 24, right: 32),
-                  builder: SwiperCustomPagination(builder:
-                      (BuildContext context, SwiperPluginConfig config) {
-                    return CustomP(config.activeIndex, config.itemCount);
-                  })),
+                            ))))
+              ],
             ))
       ],
     );

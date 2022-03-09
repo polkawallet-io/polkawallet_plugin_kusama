@@ -520,7 +520,10 @@ class __ProgressBarState extends State<_ProgressBar>
                   startAngle: pi * 3 / 2,
                   width: 10,
                   lineColor: [Color(0x4DFFFFFF), Color(0xFF81FEB9)],
-                  progress: animationNumber,
+                  progress:
+                      this.controller != null && this.controller!.isAnimating
+                          ? animationNumber
+                          : widget.progress,
                   bgColor: Colors.white.withAlpha(38)),
             ),
           ),
