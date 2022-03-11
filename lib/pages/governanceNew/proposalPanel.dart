@@ -131,7 +131,7 @@ class _ProposalPanelState extends State<ProposalPanel> {
                                     color: Colors.white),
                           ),
                           Text(
-                            "${widget.proposal.image?.proposal == null ? "" : '${widget.proposal.image!.proposal!.section}.${widget.proposal.image!.proposal!.method}. '}${widget.proposal.image?.proposal == null ? "" : widget.proposal.image!.proposal!.meta!.documentation!.trim()}",
+                            "${widget.proposal.image?.proposal == null ? "" : '${widget.proposal.image!.proposal!.section}.${widget.proposal.image!.proposal!.method}\n'}${widget.proposal.image?.proposal == null ? "" : widget.proposal.image!.proposal!.meta!.documentation!.trim()}",
                             style: style,
                           )
                         ],

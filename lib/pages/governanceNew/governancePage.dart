@@ -637,11 +637,7 @@ class _GovernancePageState extends State<GovernancePage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            info.image?.proposal == null
-                                                ? ""
-                                                : info.image!.proposal!.meta!
-                                                    .documentation!
-                                                    .trim(),
+                                            "${info.image?.proposal == null ? "" : '${info.image!.proposal!.section}.${info.image!.proposal!.method}\n'}${info.image?.proposal == null ? "" : info.image!.proposal!.meta!.documentation!.trim()}",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline5
