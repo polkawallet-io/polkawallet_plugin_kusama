@@ -62,7 +62,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
       Visibility(
         visible: widget.data!.detail!['content'].toString().isNotEmpty,
         child: Text(
-          (widget.data!.detail!['content'] ?? "").toString().trim(),
+          "${widget.data!.image != null && widget.data!.image!['proposal'] != null ? '${widget.data!.image!['proposal']['section']}.${widget.data!.image!['proposal']['method']}. ' : ''}${(widget.data!.detail!['content'] ?? "").toString().trim()}",
           style: Theme.of(context)
               .textTheme
               .headline5
