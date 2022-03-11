@@ -87,8 +87,9 @@ class _ProposalPanelState extends State<ProposalPanel> {
                   contentStyle: style,
                 ),
               ),
-              Padding(
-                  padding: EdgeInsets.only(top: 20, left: 80),
+              Container(
+                  width: double.infinity,
+                  alignment: Alignment.centerRight,
                   child: widget.links)
             ]);
           }

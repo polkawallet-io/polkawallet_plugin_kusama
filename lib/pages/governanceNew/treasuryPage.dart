@@ -630,8 +630,11 @@ class __ProposalItemState extends State<_ProposalItem> {
             contentStyle: style,
           ),
         ),
-        Padding(
-            padding: EdgeInsets.only(top: 20, left: 80), child: widget.links)
+        Container(
+            padding: EdgeInsets.only(top: 20),
+            width: double.infinity,
+            alignment: Alignment.centerRight,
+            child: widget.links)
       ]);
     }
     return GestureDetector(

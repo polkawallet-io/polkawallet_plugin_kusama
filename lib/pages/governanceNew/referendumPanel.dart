@@ -331,8 +331,11 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                     ?.copyWith(fontSize: 12, color: Colors.white),
               ),
             )),
-        Padding(
-            padding: EdgeInsets.only(top: 20, left: 80), child: widget.links)
+        Container(
+            padding: EdgeInsets.only(top: 20),
+            width: double.infinity,
+            alignment: Alignment.centerRight,
+            child: widget.links)
       ]);
     }
     return GestureDetector(
