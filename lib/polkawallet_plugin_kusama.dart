@@ -5,21 +5,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/candidateListPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/councilPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/councilVotePage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/council/motionDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/democracyPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/proposalDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/democracy/referendumVotePage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/spendProposalPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitProposalPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/submitTipPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/tipDetailPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governance/treasury/treasuryPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/newUIRoutes.dart';
-import 'package:polkawallet_plugin_kusama/pages/parachains/contributePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/candidateDetailPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilVotePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/governancePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/referendumVotePage.dart';
+import 'package:polkawallet_plugin_kusama/pages/governanceNew/treasuryPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/parasNew/contributePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/parasNew/parasPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
@@ -147,19 +139,12 @@ class PluginKusama extends PolkawalletPlugin {
       RewardDetailNewPage.route: (_) => RewardDetailNewPage(this),
 
       // governance pages
-      DemocracyPage.route: (_) => DemocracyPage(this, keyring),
-      ReferendumVotePage.route: (_) => ReferendumVotePage(this, keyring),
-      CouncilPage.route: (_) => CouncilPage(this, keyring),
-      CouncilVotePage.route: (_) => CouncilVotePage(this),
-      CandidateListPage.route: (_) => CandidateListPage(this, keyring),
+      GovernancePage.route: (_) => GovernancePage(this, keyring),
+      CouncilPage.route: (_) => CouncilPage(this),
       CandidateDetailPage.route: (_) => CandidateDetailPage(this, keyring),
-      MotionDetailPage.route: (_) => MotionDetailPage(this, keyring),
-      ProposalDetailPage.route: (_) => ProposalDetailPage(this, keyring),
+      ReferendumVotePage.route: (_) => ReferendumVotePage(this, keyring),
+      CouncilVotePage.route: (_) => CouncilVotePage(this, keyring),
       TreasuryPage.route: (_) => TreasuryPage(this, keyring),
-      SpendProposalPage.route: (_) => SpendProposalPage(this, keyring),
-      SubmitProposalPage.route: (_) => SubmitProposalPage(this, keyring),
-      SubmitTipPage.route: (_) => SubmitTipPage(this, keyring),
-      TipDetailPage.route: (_) => TipDetailPage(this, keyring),
       DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
       WalletExtensionSignPage.route: (_) => WalletExtensionSignPage(
           this,
@@ -170,9 +155,6 @@ class PluginKusama extends PolkawalletPlugin {
       // parachains
       ParasPage.route: (_) => ParasPage(this, keyring),
       ContributePage.route: (_) => ContributePage(this, keyring),
-
-      //governanceNew
-      ...getNewUiRoutes(this, keyring)
     };
   }
 
