@@ -1,3 +1,8 @@
+## [0.4.4] - 20220321.
+
+* bump polkawallet_sdk: 0.4.4.
+* v3 UI update.
+
 ## [0.3.6] - 20211101.
 
 * bump polkawallet_sdk: 0.3.7.
