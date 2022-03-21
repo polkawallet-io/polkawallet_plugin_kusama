@@ -18,7 +18,7 @@ dependencies:
   get_storage: ^2.0.3
   json_annotation: ^4.0.1
   polkawallet_sdk: ^0.4.4
-  polkawallet_ui: ^0.4.4
+  polkawallet_ui: ^0.4.1
   fl_chart: ^0.40.2
   sticky_headers: ^0.2.0
   flutter_swiper: ^1.1.6
