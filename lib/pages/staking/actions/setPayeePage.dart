@@ -254,7 +254,7 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                   setState(() {
                     _rewardAccount = acc;
                   });
-                  widget.onChange!(_rewardTo, acc!.address);
+                  widget.onChange!(_rewardTo, acc.address);
                 },
                 key: ValueKey<KeyPairData?>(_rewardAccount),
               ),

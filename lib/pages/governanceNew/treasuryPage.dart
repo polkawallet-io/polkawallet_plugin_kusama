@@ -468,67 +468,24 @@ class _OverviewCard extends StatelessWidget {
   }
 }
 
-class _ProgressBar extends StatefulWidget {
+class _ProgressBar extends StatelessWidget {
   _ProgressBar({Key? key, this.progress = 0.5}) : super(key: key);
   final double progress;
-
-  @override
-  State<_ProgressBar> createState() => __ProgressBarState();
-}
-
-class __ProgressBarState extends State<_ProgressBar>
-    with TickerProviderStateMixin {
-  AnimationController? controller;
-  double animationNumber = 0;
-  late Animation<double> animation;
-
-  void _startAnimation(double progress) {
-    this.controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this);
-    animation =
-        Tween(begin: animationNumber, end: progress).animate(this.controller!);
-    animation.addListener(() {
-      setState(() {
-        animationNumber = animation.value;
-      });
-    });
-    Future.delayed(Duration(milliseconds: 150), () {
-      controller!.forward();
-    });
-  }
-
-  @override
-  void didUpdateWidget(covariant _ProgressBar oldWidget) {
-    if (this.controller == null ||
-        (!this.controller!.isAnimating &&
-            oldWidget.progress != widget.progress)) {
-      _startAnimation(widget.progress);
-    }
-    super.didUpdateWidget(oldWidget);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(bottom: 12),
         child: Stack(alignment: Alignment.center, children: [
-          Container(
-            width: 96,
-            height: 96,
-            child: CustomPaint(
-              painter: CircularProgressBar(
-                  startAngle: pi * 3 / 2,
-                  width: 10,
-                  lineColor: [Color(0x4DFFFFFF), Color(0xFF81FEB9)],
-                  progress:
-                      this.controller != null && this.controller!.isAnimating
-                          ? animationNumber
-                          : widget.progress,
-                  bgColor: Colors.white.withAlpha(38)),
-            ),
-          ),
+          AnimationCircularProgressBar(
+              progress: progress,
+              width: 10,
+              lineColor: [Color(0x4DFFFFFF), Color(0xFF81FEB9)],
+              size: 96,
+              startAngle: pi * 3 / 2,
+              bgColor: Colors.white.withAlpha(38)),
           Text(
-            Fmt.ratio(widget.progress),
+            Fmt.ratio(progress),
             style: Theme.of(context)
                 .textTheme
                 .headline4
