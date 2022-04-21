@@ -58,12 +58,10 @@ class _UnBondPageState extends State<UnBondPage> {
     final decimals = widget.plugin.networkState.tokenDecimals![0];
 
     final stashInfo = widget.plugin.store.staking.ownStashInfo;
-    double bonded = 0;
+    BigInt bonded = BigInt.zero;
     bool hasNomination = false;
     if (stashInfo != null) {
-      bonded = Fmt.bigIntToDouble(
-          BigInt.parse(stashInfo.stakingLedger!['active'].toString()),
-          decimals);
+      bonded = BigInt.parse(stashInfo.stakingLedger!['active'].toString());
       hasNomination = stashInfo.nominating!.length > 0;
     }
 
@@ -99,12 +97,14 @@ class _UnBondPageState extends State<UnBondPage> {
                         onInputChange: (value) {
                           var error = Fmt.validatePrice(value, context);
                           if (error == null) {
+                            final _bonded =
+                                Fmt.bigIntToDouble(bonded, decimals);
                             final amount = double.parse(value.trim());
-                            if (amount > bonded) {
+                            if (amount > _bonded) {
                               error = dic['amount.low'];
                             }
                             if (hasNomination &&
-                                bonded - amount <=
+                                _bonded - amount <=
                                     Fmt.bigIntToDouble(
                                         _minNominate, decimals)) {
                               error = dicStaking['bond.unbond.min'];
