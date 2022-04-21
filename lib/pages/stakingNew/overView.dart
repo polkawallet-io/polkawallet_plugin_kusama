@@ -36,7 +36,9 @@ class _OverViewState extends State<OverView> {
       padding: EdgeInsets.only(left: 16, top: 30, right: 16, bottom: 20),
       child: Column(
         children: [
-          Expanded(child: OverViewWidget(widget.plugin)),
+          Expanded(
+              child:
+                  SingleChildScrollView(child: OverViewWidget(widget.plugin))),
           Padding(
               padding: EdgeInsets.only(bottom: 20, top: 10),
               child: Column(
