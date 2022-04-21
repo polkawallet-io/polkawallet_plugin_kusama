@@ -20,9 +20,9 @@ const node_list_kusama = [
     'endpoint': 'wss://kusama.api.onfinality.io/public-ws',
   },
   {
-    'name': 'Kusama (via Geometry Labs)',
+    'name': 'Kusama (via RadiumBlock)',
     'ss58': 2,
-    'endpoint': 'wss://kusama.geometry.io/websockets',
+    'endpoint': 'wss://kusama.public.curie.radiumblock.co/ws',
   },
   {
     'name': 'Kusama (via Dwellir)',
@@ -57,9 +57,9 @@ const node_list_polkadot = [
     'endpoint': 'wss://polkadot.api.onfinality.io/public-ws',
   },
   {
-    'name': 'Polkadot (via Geometry Labs)',
+    'name': 'Polkadot (via Dwellir)',
     'ss58': 0,
-    'endpoint': 'wss://polkadot.geometry.io/websockets',
+    'endpoint': 'wss://polkadot-rpc.dwellir.com',
   },
   // {
   //   'name': 'Polkadot (light client - experimental)',
