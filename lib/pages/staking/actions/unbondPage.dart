@@ -94,6 +94,12 @@ class _UnBondPageState extends State<UnBondPage> {
                             amount: bonded.toString()),
                         inputCtrl: _amountCtrl,
                         tokenIconsMap: widget.plugin.tokenIcons,
+                        onClear: () {
+                          setState(() {
+                            _amountCtrl.text = "";
+                            _error = null;
+                          });
+                        },
                         onInputChange: (value) {
                           var error = Fmt.validatePrice(value, context);
                           if (error == null) {
@@ -102,8 +108,7 @@ class _UnBondPageState extends State<UnBondPage> {
                             final amount = double.parse(value.trim());
                             if (amount > _bonded) {
                               error = dic['amount.low'];
-                            }
-                            if (hasNomination &&
+                            } else if (hasNomination &&
                                 _bonded - amount <=
                                     Fmt.bigIntToDouble(
                                         _minNominate, decimals)) {
