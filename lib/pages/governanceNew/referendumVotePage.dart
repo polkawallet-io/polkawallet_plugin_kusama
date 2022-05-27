@@ -61,18 +61,19 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
         txs.add(
             'api.tx.democracy.vote(${info.index!.toInt()},${jsonEncode(standard)})');
         return TxConfirmParams(
-          txTitle: govDic['vote.proposal'],
-          module: 'utility',
-          call: 'batch',
-          txDisplay: {
-            govDic["referenda"]: '#${info.index!.toInt()}',
-            govDic["vote"]: voteYes ? govDic['yes'] : govDic['no'],
-            dic["amount"]: '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
-            '': _getConvictionLabel(_voteConviction),
-          },
-          params: [],
-          rawParams: '[[${txs.join(',')}]]',
-        );
+            txTitle: govDic['vote.proposal'],
+            module: 'utility',
+            call: 'batch',
+            txDisplay: {
+              govDic["referenda"]: '#${info.index!.toInt()}',
+              govDic["vote"]: voteYes ? govDic['yes'] : govDic['no'],
+              dic["amount"]:
+                  '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
+              '': _getConvictionLabel(_voteConviction),
+            },
+            params: [],
+            rawParams: '[[${txs.join(',')}]]',
+            isPlugin: true);
       } else {
         return TxConfirmParams(
             module: 'democracy',
@@ -90,7 +91,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
               info.index!.toInt(),
               // "options"
               {"Standard": vote},
-            ]);
+            ],
+            isPlugin: true);
       }
     }
     return null;
