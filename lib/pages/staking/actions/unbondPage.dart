@@ -158,7 +158,7 @@ class _UnBondPageState extends State<UnBondPage> {
                     return null;
                   },
                   onFinish: (Map? res) {
-                    if (res != null) {
+                    if (res != null && _error != null) {
                       Navigator.of(context).pop(res);
                     }
                   },
