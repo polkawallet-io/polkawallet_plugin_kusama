@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -44,6 +46,8 @@ class StakingView extends StatefulWidget {
 }
 
 class _StakingViewState extends State<StakingView> {
+  bool _isInfoOpen = false;
+
   Future<void> _updateData() async {
     await widget.plugin.service.staking.queryMarketPrices();
     widget.plugin.service.staking.updateStakingTxs(0);
@@ -145,6 +149,21 @@ class _StakingViewState extends State<StakingView> {
         sumReward += Fmt.balanceDouble(data.amount!, decimals) *
             (data.eventId == 'Reward' ? 1.0 : -1.0);
       });
+
+      final blockDuration =
+          int.parse(widget.plugin.networkConst['babe']['expectedBlockTime']);
+      final unlockDetail = List.of(
+              widget.plugin.store.staking.ownStashInfo!.unbondings!['mapped'])
+          .map((e) {
+        return {
+          "balance": e[0],
+          "time": "${Fmt.blockToTime(e[1], blockDuration)}"
+        };
+      }).toList();
+      final lineNumber = unlockDetail.length % 2 > 0
+          ? unlockDetail.length ~/ 2 + 1
+          : unlockDetail.length ~/ 2;
+
       return isDataLoading
           ? Column(
               children: [
@@ -162,120 +181,319 @@ class _StakingViewState extends State<StakingView> {
                       children: [
                         ConnectionChecker(widget.plugin,
                             onConnected: _updateData),
-                        RoundedPluginCard(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 20),
-                            child: Column(
+                        Container(
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                  const Radius.circular(6)),
+                              color: Color(0xFF3A3D40),
+                            ),
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
                               children: [
-                                Row(
-                                  children: [
-                                    Expanded(
+                                ClipRect(
+                                    child: Container(
+                                        height: _isInfoOpen ? 330 : 150,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 20),
                                         child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${dic['v3.myStaked']} ($symbol)",
-                                            style: labelStyle),
-                                        Text(
-                                            Fmt.priceFloorBigIntFormatter(
-                                                bonded, decimals, lengthMax: 4),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5
-                                                ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.bold,
-                                                    height: 2.0)),
-                                        Text(
-                                            "\$ ${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(bonded, decimals) * marketPrice)}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5
-                                                ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontSize: 10)),
-                                      ],
-                                    )),
-                                    Expanded(
-                                        child: GestureDetector(
-                                            onTap: () => Navigator.of(context)
-                                                .pushNamed(
-                                                    RewardDetailNewPage.route),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
                                               children: [
-                                                Text(
-                                                    "${dic['v3.newGains']} ($symbol)",
-                                                    style: labelStyle),
-                                                Text(
-                                                    Fmt.priceFloorFormatter(
-                                                        sumReward,
-                                                        lengthMax: 4),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline5
-                                                        ?.copyWith(
-                                                            color: Colors.white,
-                                                            fontSize: 22,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            height: 2.0)),
-                                                Text(
-                                                    "\$ ${Fmt.priceFloorFormatter(sumReward * marketPrice)}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline5
-                                                        ?.copyWith(
-                                                            color: Colors.white,
-                                                            fontSize: 10)),
+                                                Expanded(
+                                                    child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        "${dic['v3.myStaked']} ($symbol)",
+                                                        style: labelStyle),
+                                                    Text(
+                                                        Fmt.priceFloorBigIntFormatter(
+                                                            bonded, decimals,
+                                                            lengthMax: 4),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headline5
+                                                            ?.copyWith(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 22,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                height: 2.0)),
+                                                    Text(
+                                                        "\$ ${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(bonded, decimals) * marketPrice)}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headline5
+                                                            ?.copyWith(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 10)),
+                                                  ],
+                                                )),
+                                                Expanded(
+                                                    child: GestureDetector(
+                                                        onTap: () => Navigator
+                                                                .of(context)
+                                                            .pushNamed(
+                                                                RewardDetailNewPage
+                                                                    .route),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                                "${dic['v3.newGains']} ($symbol)",
+                                                                style:
+                                                                    labelStyle),
+                                                            Text(
+                                                                Fmt.priceFloorFormatter(
+                                                                    sumReward,
+                                                                    lengthMax:
+                                                                        4),
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .headline5
+                                                                    ?.copyWith(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            22,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        height:
+                                                                            2.0)),
+                                                            Text(
+                                                                "\$ ${Fmt.priceFloorFormatter(sumReward * marketPrice)}",
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .headline5
+                                                                    ?.copyWith(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            10)),
+                                                          ],
+                                                        ))),
                                               ],
-                                            ))),
-                                  ],
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10),
-                                    child: InfoItemRow(
-                                      dic['available']!,
-                                      "${Fmt.priceFloorBigIntFormatter(available, decimals, lengthMax: 4)} $symbol",
-                                      labelStyle: labelStyle,
-                                      contentStyle: labelStyle,
-                                    )),
-                                InfoItemRow(
-                                  dic['v3.unstaking']!,
-                                  "${Fmt.priceFloorBigIntFormatter(unlocking, decimals, lengthMax: 4)} $symbol",
-                                  labelStyle: labelStyle,
-                                  contentStyle: labelStyle,
-                                ),
-                                InfoItemRow(
-                                  dic['bond.redeemable']!,
-                                  "${Fmt.priceFloorBigIntFormatter(redeemable, decimals, lengthMax: 4)} $symbol",
-                                  labelStyle: labelStyle,
-                                  contentStyle: labelStyle,
-                                ),
-                                InfoItemRow(
-                                  dic['v3.nominations']!,
-                                  "${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()} ${dic['validators']}",
-                                  labelStyle: labelStyle,
-                                  contentStyle: labelStyle,
-                                ),
-                                InfoItemRow(
-                                  dic['v3.rewardDest']!,
-                                  widget.plugin.store.staking.ownStashInfo!
-                                          .destination!
-                                          .contains('account')
-                                      ? Fmt.address(jsonDecode(widget
-                                          .plugin
-                                          .store
-                                          .staking
-                                          .ownStashInfo!
-                                          .destination!)["account"])
-                                      : widget.plugin.store.staking
-                                          .ownStashInfo!.destination!,
-                                  labelStyle: labelStyle,
-                                  contentStyle: labelStyle,
-                                )
+                                            ),
+                                            Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 10),
+                                                child: InfoItemRow(
+                                                  dic['available']!,
+                                                  "${Fmt.priceFloorBigIntFormatter(available, decimals, lengthMax: 4)} $symbol",
+                                                  labelStyle: labelStyle,
+                                                  contentStyle: labelStyle,
+                                                )),
+                                            InfoItemRow(
+                                              dic['v3.unstaking']!,
+                                              "${Fmt.priceFloorBigIntFormatter(unlocking, decimals, lengthMax: 4)} $symbol",
+                                              labelStyle: labelStyle,
+                                              contentStyle: labelStyle,
+                                            ),
+                                            ListView.builder(
+                                              physics:
+                                                  new NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: lineNumber,
+                                              itemBuilder: (context, index) {
+                                                final datas =
+                                                    unlockDetail.sublist(
+                                                        index * 2,
+                                                        (index * 2 + 2) >
+                                                                unlockDetail
+                                                                    .length
+                                                            ? unlockDetail
+                                                                .length
+                                                            : index * 2 + 2);
+                                                return Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: datas
+                                                      .map((e) =>
+                                                          GestureDetector(
+                                                              behavior:
+                                                                  HitTestBehavior
+                                                                      .opaque,
+                                                              onTap: () async {
+                                                                final params =
+                                                                    TxConfirmParams(
+                                                                        txTitle:
+                                                                            dic[
+                                                                                'action.rebond'],
+                                                                        module:
+                                                                            'staking',
+                                                                        call:
+                                                                            'rebond',
+                                                                        txDisplay: {
+                                                                          "amount":
+                                                                              '${Fmt.balance(e["balance"], decimals)} $symbol'
+                                                                        },
+                                                                        params: [
+                                                                          // "amount"
+                                                                          Fmt.tokenInt(e["balance"], decimals)
+                                                                              .toString(),
+                                                                        ],
+                                                                        isPlugin:
+                                                                            true);
+                                                                final res = await Navigator.of(
+                                                                        context)
+                                                                    .pushNamed(
+                                                                        TxConfirmPage
+                                                                            .route,
+                                                                        arguments:
+                                                                            params);
+                                                                if (res !=
+                                                                    null) {
+                                                                  _updateData();
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            17),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            3),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Padding(
+                                                                            padding:
+                                                                                EdgeInsets.only(right: 5),
+                                                                            child: Image.asset("packages/polkawallet_plugin_kusama/assets/images/staking/icon_rebond.png", width: 16)),
+                                                                        Text(
+                                                                          "${Fmt.balance(e["balance"], decimals)} $symbol",
+                                                                          style:
+                                                                              labelStyle,
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    Text(
+                                                                      e["time"]!,
+                                                                      style: labelStyle?.copyWith(
+                                                                          fontSize:
+                                                                              10,
+                                                                          fontWeight:
+                                                                              FontWeight.w300),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              )))
+                                                      .toList(),
+                                                );
+                                              },
+                                            ),
+                                            InfoItemRow(
+                                              dic['bond.redeemable']!,
+                                              "${Fmt.priceFloorBigIntFormatter(redeemable, decimals, lengthMax: 4)} $symbol",
+                                              labelStyle: labelStyle,
+                                              contentStyle: labelStyle,
+                                            ),
+                                            InfoItemRow(
+                                              dic['v3.nominations']!,
+                                              "${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()} ${dic['validators']}",
+                                              labelStyle: labelStyle,
+                                              contentStyle: labelStyle,
+                                            ),
+                                            InfoItemRow(
+                                              dic['v3.rewardDest']!,
+                                              widget
+                                                      .plugin
+                                                      .store
+                                                      .staking
+                                                      .ownStashInfo!
+                                                      .destination!
+                                                      .contains('account')
+                                                  ? Fmt.address(jsonDecode(
+                                                          widget
+                                                              .plugin
+                                                              .store
+                                                              .staking
+                                                              .ownStashInfo!
+                                                              .destination!)[
+                                                      "account"])
+                                                  : widget
+                                                      .plugin
+                                                      .store
+                                                      .staking
+                                                      .ownStashInfo!
+                                                      .destination!,
+                                              labelStyle: labelStyle,
+                                              contentStyle: labelStyle,
+                                            )
+                                          ],
+                                        ))),
+                                Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Column(
+                                      children: [
+                                        Visibility(
+                                            visible: !_isInfoOpen,
+                                            child: Container(
+                                              height: 26,
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                      stops: [
+                                                    0.3,
+                                                    1.0
+                                                  ],
+                                                      colors: [
+                                                    Color(0x00FF7849),
+                                                    Color(0x3DFF7849)
+                                                  ])),
+                                            )),
+                                        GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _isInfoOpen = !_isInfoOpen;
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 32,
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xFF626467),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  4),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  4))),
+                                              child: Center(
+                                                child: Transform.rotate(
+                                                    angle: _isInfoOpen ? pi : 0,
+                                                    child: SvgPicture.asset(
+                                                      "packages/polkawallet_ui/assets/images/triangle_bottom.svg",
+                                                      color: _isInfoOpen
+                                                          ? PluginColorsDark
+                                                              .headline1
+                                                          : PluginColorsDark
+                                                              .primary,
+                                                    )),
+                                              ),
+                                            ))
+                                      ],
+                                    ))
                               ],
                             )),
                         GridView.count(
@@ -748,7 +966,6 @@ class _NomineeItem extends StatelessWidget {
             ],
           ),
           onTap: () {
-            print("onTap");
             Navigator.of(context)
                 .pushNamed(ValidatorDetailPage.route, arguments: validator);
           },
