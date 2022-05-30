@@ -133,7 +133,8 @@ class _UnBondPageState extends State<UnBondPage> {
                 child: PluginTxButton(
                   getTxParams: () async {
                     if (_formKey.currentState!.validate() &&
-                        _amountCtrl.text.trim().isNotEmpty) {
+                        _amountCtrl.text.trim().isNotEmpty &&
+                        _error != null) {
                       final inputAmount = _amountCtrl.text.trim();
                       return TxConfirmParams(
                         txTitle: dicStaking['action.unbond'],
@@ -158,7 +159,7 @@ class _UnBondPageState extends State<UnBondPage> {
                     return null;
                   },
                   onFinish: (Map? res) {
-                    if (res != null && _error != null) {
+                    if (res != null) {
                       Navigator.of(context).pop(res);
                     }
                   },
