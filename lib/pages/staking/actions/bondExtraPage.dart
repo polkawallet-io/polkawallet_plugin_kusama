@@ -105,7 +105,7 @@ class _BondExtraPageState extends State<BondExtraPage> {
                 padding: EdgeInsets.all(16),
                 child: PluginTxButton(
                   getTxParams: () async {
-                    if (_formKey.currentState!.validate() && _error1 != null) {
+                    if (_formKey.currentState!.validate() && _error1 == null) {
                       final inputAmount = _amountCtrl.text.trim();
                       return TxConfirmParams(
                         txTitle: dicStaking['action.bondExtra'],

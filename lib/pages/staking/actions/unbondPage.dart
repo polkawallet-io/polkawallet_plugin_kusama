@@ -134,7 +134,7 @@ class _UnBondPageState extends State<UnBondPage> {
                   getTxParams: () async {
                     if (_formKey.currentState!.validate() &&
                         _amountCtrl.text.trim().isNotEmpty &&
-                        _error != null) {
+                        _error == null) {
                       final inputAmount = _amountCtrl.text.trim();
                       return TxConfirmParams(
                         txTitle: dicStaking['action.unbond'],

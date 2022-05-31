@@ -192,9 +192,9 @@ class _StakingViewState extends State<StakingView> {
                               children: [
                                 ClipRect(
                                     child: Container(
-                                        height: _isInfoOpen ? 330 : 150,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 20),
+                                        height: _isInfoOpen ? null : 150,
+                                        padding:
+                                            EdgeInsets.fromLTRB(16, 20, 16, 40),
                                         child: Column(
                                           children: [
                                             Row(
@@ -302,17 +302,11 @@ class _StakingViewState extends State<StakingView> {
                                               physics:
                                                   new NeverScrollableScrollPhysics(),
                                               shrinkWrap: true,
-                                              itemCount: lineNumber,
+                                              itemCount: unlockDetail.length,
                                               itemBuilder: (context, index) {
-                                                final datas =
-                                                    unlockDetail.sublist(
-                                                        index * 2,
-                                                        (index * 2 + 2) >
-                                                                unlockDetail
-                                                                    .length
-                                                            ? unlockDetail
-                                                                .length
-                                                            : index * 2 + 2);
+                                                final datas = [
+                                                  unlockDetail[index]
+                                                ];
                                                 return Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
