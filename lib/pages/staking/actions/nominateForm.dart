@@ -215,7 +215,7 @@ class _NominateFormState extends State<NominateForm> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         widget.plugin.store.staking.validatorsInfo.forEach((i) {
           _notSelected.add(i);

@@ -31,18 +31,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return items.map((e) {
       final active = items[_tabIndex].text == e.text;
       return BottomNavigationBarItem(
-        icon: SizedBox(
-          child: active ? e.iconActive : e.icon,
-          width: 32,
-          height: 32,
-        ),
-        title: Text(
-          e.text,
-          style: TextStyle(
-              fontSize: 14,
-              color: active ? Theme.of(context).primaryColor : Colors.grey),
-        ),
-      );
+          icon: SizedBox(
+            child: active ? e.iconActive : e.icon,
+            width: 32,
+            height: 32,
+          ),
+          label: e.text);
     }).toList();
   }
 

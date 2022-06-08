@@ -139,7 +139,7 @@ class _GovernancePageState extends State<GovernancePage> {
       widget.plugin.service.gov.subscribeBestNumber();
     }
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshKey.currentState!.show();
     });
   }

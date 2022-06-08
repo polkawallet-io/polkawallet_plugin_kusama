@@ -30,7 +30,6 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginOutlinedButtonSmall.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
-import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
@@ -160,9 +159,6 @@ class _StakingViewState extends State<StakingView> {
           "time": "${Fmt.blockToTime(e[1], blockDuration)}"
         };
       }).toList();
-      final lineNumber = unlockDetail.length % 2 > 0
-          ? unlockDetail.length ~/ 2 + 1
-          : unlockDetail.length ~/ 2;
 
       return isDataLoading
           ? Column(
