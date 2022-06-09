@@ -16,6 +16,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/validators/nominatePage.
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/RewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/overViewPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/rebondPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/store/staking/types/validatorData.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
@@ -288,105 +289,88 @@ class _StakingViewState extends State<StakingView> {
                                                   labelStyle: labelStyle,
                                                   contentStyle: labelStyle,
                                                 )),
-                                            InfoItemRow(
-                                              dic['v3.unstaking']!,
-                                              "${Fmt.priceFloorBigIntFormatter(unlocking, decimals, lengthMax: 4)} $symbol",
-                                              labelStyle: labelStyle,
-                                              contentStyle: labelStyle,
-                                            ),
-                                            ListView.builder(
-                                              physics:
-                                                  new NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: unlockDetail.length,
-                                              itemBuilder: (context, index) {
-                                                final datas = [
-                                                  unlockDetail[index]
-                                                ];
-                                                return Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: datas
-                                                      .map((e) =>
-                                                          GestureDetector(
-                                                              behavior:
-                                                                  HitTestBehavior
-                                                                      .opaque,
-                                                              onTap: () async {
-                                                                final params =
-                                                                    TxConfirmParams(
-                                                                        txTitle:
-                                                                            dic[
-                                                                                'action.rebond'],
-                                                                        module:
-                                                                            'staking',
-                                                                        call:
-                                                                            'rebond',
-                                                                        txDisplay: {
-                                                                          "amount":
-                                                                              '${Fmt.balance(e["balance"], decimals)} $symbol'
-                                                                        },
-                                                                        params: [
-                                                                          // "amount"
-                                                                          Fmt.tokenInt(e["balance"], decimals)
-                                                                              .toString(),
-                                                                        ],
-                                                                        isPlugin:
-                                                                            true);
-                                                                final res = await Navigator.of(
-                                                                        context)
-                                                                    .pushNamed(
-                                                                        TxConfirmPage
-                                                                            .route,
-                                                                        arguments:
-                                                                            params);
-                                                                if (res !=
-                                                                    null) {
-                                                                  _updateData();
-                                                                }
-                                                              },
-                                                              child: Container(
+                                            GestureDetector(
+                                                onTap: () async {
+                                                  final res =
+                                                      await Navigator.of(
+                                                              context)
+                                                          .pushNamed(
+                                                              RebondPage.route,
+                                                              arguments:
+                                                                  unlockDetail);
+                                                  if (res != null) {
+                                                    _updateData();
+                                                  }
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 2),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Text(dic['v3.unstaking']!,
+                                                          style: labelStyle),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      PluginColorsDark
+                                                                          .green,
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              4.0)),
+                                                                ),
                                                                 margin: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            17),
-                                                                padding: EdgeInsets
                                                                     .only(
                                                                         bottom:
                                                                             3),
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    Row(
-                                                                      children: [
-                                                                        Padding(
-                                                                            padding:
-                                                                                EdgeInsets.only(right: 5),
-                                                                            child: Image.asset("packages/polkawallet_plugin_kusama/assets/images/staking/icon_rebond.png", width: 16)),
-                                                                        Text(
-                                                                          "${Fmt.balance(e["balance"], decimals)} $symbol",
-                                                                          style:
-                                                                              labelStyle,
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    Text(
-                                                                      e["time"]!,
-                                                                      style: labelStyle?.copyWith(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .fromLTRB(
+                                                                            14,
+                                                                            2,
+                                                                            9,
+                                                                            2),
+                                                                child: Text(
+                                                                    "${Fmt.priceFloorBigIntFormatter(unlocking, decimals, lengthMax: 4)} $symbol ${unlockDetail.length > 0 ? "(${unlockDetail.length})" : ""}",
+                                                                    style: labelStyle?.copyWith(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .black))),
+                                                            Visibility(
+                                                                visible:
+                                                                    unlockDetail
+                                                                            .length >
+                                                                        0,
+                                                                child: Text(
+                                                                  I18n.of(context)!
+                                                                              .locale
+                                                                              .languageCode ==
+                                                                          'zh'
+                                                                      ? "${Fmt.balance(unlockDetail[0]["balance"], decimals)} $symbol 将于${unlockDetail[0]['time']}后可提取"
+                                                                      : "${Fmt.balance(unlockDetail[0]["balance"], decimals)} $symbol can be redeemed in ${unlockDetail[0]['time']}",
+                                                                  style: labelStyle
+                                                                      ?.copyWith(
                                                                           fontSize:
-                                                                              10,
-                                                                          fontWeight:
-                                                                              FontWeight.w300),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              )))
-                                                      .toList(),
-                                                );
-                                              },
-                                            ),
+                                                                              10),
+                                                                ))
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
                                             InfoItemRow(
                                               dic['bond.redeemable']!,
                                               "${Fmt.priceFloorBigIntFormatter(redeemable, decimals, lengthMax: 4)} $symbol",

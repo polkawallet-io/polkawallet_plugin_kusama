@@ -99,7 +99,7 @@ const Map<String, String> zhStaking = {
   'v3.goStake': '去质押',
   'v3.myStaked': '我的质押',
   'v3.newGains': '最近收益',
-  'v3.unstaking': '解锁中',
+  'v3.unstaking': '解绑中',
   'v3.nominations': '提名',
   'v3.rewardDest': '分红方式',
   'v3.rewardDetail': '收益详情',
@@ -110,5 +110,7 @@ const Map<String, String> zhStaking = {
   'v3.controllerError': '当前账号不是储值帐号，权限受限。',
   'v3.stashError': '当前账号不是控制帐号，权限受限。',
   'v3.noNomination': '当前暂无提名，赶紧提名验证人来享受质押获得收益吧！',
-  'v3.noStaked': '你还没质押呢'
+  'v3.noStaked': '你还没质押呢',
+  'v3.totalUnbonding': '总解绑中',
+  'v3.rebondAmount': '重新绑定数量'
 };

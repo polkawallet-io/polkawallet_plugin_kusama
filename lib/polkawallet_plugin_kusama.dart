@@ -28,6 +28,7 @@ import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorChar
 import 'package:polkawallet_plugin_kusama/pages/staking/validators/validatorDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/RewardDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/overViewPage.dart';
+import 'package:polkawallet_plugin_kusama/pages/stakingNew/rebondPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingHistoryPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/stakingNew/stakingPage.dart';
 import 'package:polkawallet_plugin_kusama/service/index.dart';
@@ -137,6 +138,7 @@ class PluginKusama extends PolkawalletPlugin {
       StakingHistoryPage.route: (_) => StakingHistoryPage(this),
       OverViewPage.route: (_) => OverViewPage(this),
       RewardDetailNewPage.route: (_) => RewardDetailNewPage(this),
+      RebondPage.route: (_) => RebondPage(this),
 
       // governance pages
       GovernancePage.route: (_) => GovernancePage(this, keyring),
