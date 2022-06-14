@@ -274,7 +274,6 @@ class _CouncilPageState extends State<CouncilPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               PluginTextTag(
-                                padding: EdgeInsets.zero,
                                 margin: EdgeInsets.only(left: 16),
                                 title: dic['member']!,
                               ),
@@ -362,7 +361,6 @@ class _CouncilPageState extends State<CouncilPage> {
                             ),
                           ),
                           PluginTextTag(
-                            padding: EdgeInsets.zero,
                             margin: EdgeInsets.only(left: 16, top: 15),
                             title: dic['up']!,
                           ),
@@ -424,7 +422,6 @@ class _CouncilPageState extends State<CouncilPage> {
                             ),
                           ),
                           PluginTextTag(
-                            padding: EdgeInsets.zero,
                             margin: EdgeInsets.only(left: 16, top: 15),
                             title: dic['candidate']!,
                           ),

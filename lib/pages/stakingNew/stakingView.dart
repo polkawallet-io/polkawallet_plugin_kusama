@@ -646,7 +646,6 @@ class _StakingViewState extends State<StakingView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 PluginTextTag(
-                                  padding: EdgeInsets.zero,
                                   title: dic['v3.nominations']!,
                                   child: Row(
                                     children: [

@@ -146,7 +146,6 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                           children: [
                             PluginTextTag(
                                 margin: EdgeInsets.only(top: 22, left: 16),
-                                padding: EdgeInsets.zero,
                                 title: dic['txs.reward']!),
                             Container(
                               color: Color(0x1AFFFFFF),
