@@ -94,8 +94,8 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                             decoration: BoxDecoration(
                                 color: Color(0x24FFFFFF),
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(14),
-                                    topRight: Radius.circular(14))),
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8))),
                             child: PluginInfoItem(
                               title: dic['v3.stagedRewards'],
                               isExpanded: false,
@@ -114,9 +114,9 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                           decoration: BoxDecoration(
                               color: Color(0x1AFFFFFF),
                               borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(14),
-                                  topRight: Radius.circular(14),
-                                  bottomRight: Radius.circular(14))),
+                                  bottomLeft: Radius.circular(8),
+                                  topRight: Radius.circular(8),
+                                  bottomRight: Radius.circular(8))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
