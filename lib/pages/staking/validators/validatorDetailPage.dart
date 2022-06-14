@@ -62,8 +62,8 @@ class ValidatorDetailPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Color(0x0FFFFFFF),
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(14),
-                                topRight: Radius.circular(14)),
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8)),
                           ),
                           child: Column(
                             children: [
@@ -150,8 +150,8 @@ class ValidatorDetailPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Color(0x0FFFFFFF),
                             borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(14),
-                                bottomRight: Radius.circular(14)),
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8)),
                           ),
                           child: Column(
                             children: [

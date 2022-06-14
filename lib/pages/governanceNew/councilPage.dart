@@ -114,8 +114,8 @@ class _CouncilPageState extends State<CouncilPage> {
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(14),
-                    topRight: const Radius.circular(14)),
+                    topLeft: const Radius.circular(8),
+                    topRight: const Radius.circular(8)),
                 color: Color.fromARGB(255, 68, 70, 74),
               ),
               child: Row(

@@ -170,7 +170,6 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                             PluginTagCard(
                               margin: EdgeInsets.zero,
                               padding: EdgeInsets.symmetric(vertical: 25),
-                              radius: const Radius.circular(14),
                               titleTag: dicGov['v3.voting'],
                               child: Container(
                                 alignment: Alignment.center,

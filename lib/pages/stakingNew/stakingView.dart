@@ -299,15 +299,16 @@ class _StakingViewState extends State<StakingView> {
                                                 )),
                                             GestureDetector(
                                                 onTap: () async {
-                                                  final res =
-                                                      await Navigator.of(
-                                                              context)
-                                                          .pushNamed(
-                                                              RebondPage.route,
-                                                              arguments:
-                                                                  unlockDetail);
-                                                  if (res != null) {
-                                                    _updateData();
+                                                  if (unlockDetail.length > 0) {
+                                                    final res = await Navigator
+                                                            .of(context)
+                                                        .pushNamed(
+                                                            RebondPage.route,
+                                                            arguments:
+                                                                unlockDetail);
+                                                    if (res != null) {
+                                                      _updateData();
+                                                    }
                                                   }
                                                 },
                                                 child: Padding(
@@ -356,24 +357,19 @@ class _StakingViewState extends State<StakingView> {
                                                                                 .bold,
                                                                         color: Colors
                                                                             .black))),
-                                                            Visibility(
-                                                                visible:
-                                                                    unlockDetail
-                                                                            .length >
-                                                                        0,
-                                                                child: Text(
-                                                                  I18n.of(context)!
-                                                                              .locale
-                                                                              .languageCode ==
-                                                                          'zh'
-                                                                      ? "${Fmt.balance(unlockDetail[0]["balance"], decimals)} $symbol 将于${unlockDetail[0]['time']}后可提取"
-                                                                      : "${Fmt.balance(unlockDetail[0]["balance"], decimals)} $symbol can be redeemed in ${unlockDetail[0]['time']}",
-                                                                  style: labelStyle?.copyWith(
-                                                                      fontSize:
-                                                                          UI.getTextSize(
-                                                                              10,
-                                                                              context)),
-                                                                ))
+                                                            unlockDetail.length >
+                                                                    0
+                                                                ? Text(
+                                                                    I18n.of(context)!.locale.languageCode ==
+                                                                            'zh'
+                                                                        ? "${Fmt.balance(unlockDetail[0]["balance"], decimals)} $symbol 将于${unlockDetail[0]['time']}后可提取"
+                                                                        : "${Fmt.balance(unlockDetail[0]["balance"], decimals)} $symbol can be redeemed in ${unlockDetail[0]['time']}",
+                                                                    style: labelStyle?.copyWith(
+                                                                        fontSize: UI.getTextSize(
+                                                                            10,
+                                                                            context)),
+                                                                  )
+                                                                : Container()
                                                           ],
                                                         ),
                                                       ),
@@ -726,9 +722,9 @@ class _StakingViewState extends State<StakingView> {
                                 decoration: BoxDecoration(
                                     color: Color(0x24FFFFFF),
                                     borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(14),
-                                        topRight: Radius.circular(14),
-                                        bottomRight: Radius.circular(14))),
+                                        bottomLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8),
+                                        bottomRight: Radius.circular(8))),
                                 child: widget.plugin.store.staking.ownStashInfo!
                                             .nominating!.length >
                                         0

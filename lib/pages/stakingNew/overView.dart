@@ -189,7 +189,6 @@ class _OverViewWidgetState extends State<OverViewWidget>
                     margin: EdgeInsets.only(top: 15),
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                     titleTag: dicStaking['v3.information'],
-                    radius: const Radius.circular(14),
                     child: Column(
                       children: [
                         Row(
