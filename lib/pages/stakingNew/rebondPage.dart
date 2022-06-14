@@ -67,12 +67,14 @@ class _RebondPageState extends State<RebondPage> {
                 onClear: () {
                   setState(() {
                     _amountCtrl.text = "";
+                    _error = null;
                   });
                 },
                 onSetMax: (amount) {
                   setState(() {
                     _amountCtrl.text =
                         Fmt.balance(unlocking.toString(), decimals);
+                    _error = null;
                   });
                 },
                 onInputChange: (value) {
@@ -81,7 +83,8 @@ class _RebondPageState extends State<RebondPage> {
                     final amount = double.parse(value.trim());
                     if (amount >=
                         unlocking / BigInt.from(pow(10, decimals)) - 0.001) {
-                      error = dic['amount.low'];
+                      error = I18n.of(context)!.getDic(
+                          i18n_full_dic_kusama, 'common')!['amount.low'];
                     }
                   }
                   setState(() {
