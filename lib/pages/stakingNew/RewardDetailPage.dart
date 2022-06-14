@@ -13,6 +13,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class RewardDetailNewPage extends StatefulWidget {
   RewardDetailNewPage(this.plugin, {Key? key}) : super(key: key);
@@ -123,7 +124,8 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                                 padding: EdgeInsets.only(left: 50, top: 8),
                                 child: Text('Rewards ($symbol)',
                                     style: TextStyle(
-                                        fontSize: 12, color: Colors.white)),
+                                        fontSize: UI.getTextSize(12, context),
+                                        color: Colors.white)),
                               ),
                               Container(
                                 height: MediaQuery.of(context).size.width / 2.4,
@@ -187,7 +189,8 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                                                 .headline5
                                                 ?.copyWith(
                                                     color: Colors.white,
-                                                    fontSize: 10)),
+                                                    fontSize: UI.getTextSize(
+                                                        10, context))),
                                         trailing: Text(
                                           '${isReward ? '+' : '-'} ${Fmt.balance(i.amount!, decimals)} $symbol',
                                           style: Theme.of(context)

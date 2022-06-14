@@ -23,6 +23,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class ParasPage extends StatefulWidget {
   ParasPage(this.plugin, this.keyring);
@@ -234,14 +235,12 @@ class _OverviewCard extends StatelessWidget {
     final textStyle =
         Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white);
 
-    final labelStyle = Theme.of(context)
-        .textTheme
-        .headline3
-        ?.copyWith(fontSize: 14, color: PluginColorsDark.headline1);
-    final contentStyle = Theme.of(context)
-        .textTheme
-        .headline1
-        ?.copyWith(fontSize: 22, color: PluginColorsDark.headline1);
+    final labelStyle = Theme.of(context).textTheme.headline3?.copyWith(
+        fontSize: UI.getTextSize(14, context),
+        color: PluginColorsDark.headline1);
+    final contentStyle = Theme.of(context).textTheme.headline1?.copyWith(
+        fontSize: UI.getTextSize(22, context),
+        color: PluginColorsDark.headline1);
 
     final contributed =
         contributions.values.map((e) => Fmt.balanceInt(e)).toList();

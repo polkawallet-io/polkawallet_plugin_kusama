@@ -16,6 +16,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTagCard.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class OverView extends StatefulWidget {
   OverView(this.plugin, {Key? key}) : super(key: key);
@@ -52,10 +53,9 @@ class _OverViewState extends State<OverView> {
                       padding: EdgeInsets.only(top: 5, bottom: 26),
                       child: Text(
                         dicStaking['v3.noStaked']!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline1
-                            ?.copyWith(color: Colors.white, fontSize: 20),
+                        style: Theme.of(context).textTheme.headline1?.copyWith(
+                            color: Colors.white,
+                            fontSize: UI.getTextSize(20, context)),
                       )),
                   PluginButton(
                     title: dicStaking['v3.goStake']!,
@@ -171,7 +171,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
                                 .headline4
                                 ?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 22,
+                                    fontSize: UI.getTextSize(22, context),
                                     color: Colors.white)),
                         Text(
                             "\$${Fmt.priceFloorFormatter(Fmt.bigIntToDouble(totalStaked, decimals) * marketPrice)}",
@@ -180,7 +180,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
                                 .headline4
                                 ?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 22,
+                                    fontSize: UI.getTextSize(22, context),
                                     color: Colors.white))
                       ],
                     ),
@@ -203,7 +203,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
                                     .headline5
                                     ?.copyWith(
                                         color: Colors.white,
-                                        fontSize: 22,
+                                        fontSize: UI.getTextSize(22, context),
                                         fontWeight: FontWeight.bold,
                                         height: 2.0),
                                 contentCrossAxisAlignment:
@@ -216,7 +216,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
                                   .headline5
                                   ?.copyWith(
                                       color: Colors.white,
-                                      fontSize: 22,
+                                      fontSize: UI.getTextSize(22, context),
                                       fontWeight: FontWeight.bold,
                                       height: 2.0),
                               content:

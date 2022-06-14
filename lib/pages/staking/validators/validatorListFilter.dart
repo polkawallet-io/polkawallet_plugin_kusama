@@ -6,6 +6,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginIconButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginOutlinedButtonSmall.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 enum ValidatorSortOptions { reward, staked, commission, judgements }
 
@@ -67,7 +68,8 @@ class ValidatorListFilter extends StatelessWidget {
                         .textTheme
                         .headline4!
                         .copyWith(
-                            color: PluginColorsDark.headline3, fontSize: 14),
+                            color: PluginColorsDark.headline3,
+                            fontSize: UI.getTextSize(14, context)),
                     decoration: BoxDecoration(color: Colors.transparent),
                     suffix: Container(
                       padding: EdgeInsets.only(right: 8),
@@ -75,7 +77,8 @@ class ValidatorListFilter extends StatelessWidget {
                           color: PluginColorsDark.headline3, size: 24),
                     ),
                     style: Theme.of(context).textTheme.headline4!.copyWith(
-                        color: PluginColorsDark.headline2, fontSize: 14),
+                        color: PluginColorsDark.headline2,
+                        fontSize: UI.getTextSize(14, context)),
                     onChanged: (value) => onSearchChange(value.trim()),
                   ),
                   bgHeight: 40,

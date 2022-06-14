@@ -13,6 +13,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/pages/v3/txConfirmPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class RebondPage extends StatefulWidget {
   RebondPage(this.plugin, {Key? key}) : super(key: key);
@@ -136,7 +137,8 @@ class _RebondPageState extends State<RebondPage> {
                                         Text(
                                           unlockDetail[index]["time"]!,
                                           style: labelStyle?.copyWith(
-                                              fontSize: 10,
+                                              fontSize:
+                                                  UI.getTextSize(10, context),
                                               fontWeight: FontWeight.w300),
                                         )
                                       ],

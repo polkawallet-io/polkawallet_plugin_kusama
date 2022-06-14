@@ -32,7 +32,7 @@ class GovExternalLinks extends StatelessWidget {
                   data['name'],
                   style: Theme.of(context).textTheme.headline5?.copyWith(
                       color: Colors.white,
-                      fontSize: 10,
+                      fontSize: UI.getTextSize(10, context),
                       fontWeight: FontWeight.w300),
                 )
               ],

@@ -65,7 +65,7 @@ class Validator extends StatelessWidget {
                         child: UI.accountDisplayName(
                             validator.accountId, accInfo,
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: UI.getTextSize(14, context),
                                 fontFamily: "TitilliumWeb",
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white)),
@@ -77,17 +77,15 @@ class Validator extends StatelessWidget {
                         // ignore: unnecessary_null_comparison
                         ? '${dic['total']}: ${validator.total != null ? Fmt.token(validator.total, decimals) : '~'}'
                         : '${dic['nominators']}: $nominationsCount',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.copyWith(fontSize: 10, color: Colors.white),
+                    style: Theme.of(context).textTheme.headline5?.copyWith(
+                        fontSize: UI.getTextSize(10, context),
+                        color: Colors.white),
                   ),
                   Text(
                     '${dic['commission']}: ${NumberFormat('0.00%').format(validator.commission / 100)}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.copyWith(fontSize: 10, color: Colors.white),
+                    style: Theme.of(context).textTheme.headline5?.copyWith(
+                        fontSize: UI.getTextSize(10, context),
+                        color: Colors.white),
                   )
                 ],
               ),
@@ -99,10 +97,9 @@ class Validator extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Text(dic['reward']!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5
-                            ?.copyWith(fontSize: 10, color: Colors.white)),
+                        style: Theme.of(context).textTheme.headline5?.copyWith(
+                            fontSize: UI.getTextSize(10, context),
+                            color: Colors.white)),
                     Text(
                         validator.isActive!
                             ? '${validator.stakedReturnCmp.toStringAsFixed(2)}%'

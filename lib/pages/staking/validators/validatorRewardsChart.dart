@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class RewardsChart extends StatelessWidget {
   final List<List<FlSpot>> seriesList;
@@ -111,8 +112,8 @@ class RewardsChart extends StatelessWidget {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (context, index) =>
-              const TextStyle(fontSize: 12, color: Colors.white),
+          getTextStyles: (context, index) => TextStyle(
+              fontSize: UI.getTextSize(12, context), color: Colors.white),
           getTitles: (value) {
             return "${(minXValue + value).toInt()}";
           },
@@ -122,8 +123,8 @@ class RewardsChart extends StatelessWidget {
         rightTitles: SideTitles(showTitles: false),
         leftTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (context, index) =>
-              const TextStyle(fontSize: 12, color: Colors.white),
+          getTextStyles: (context, index) => TextStyle(
+              fontSize: UI.getTextSize(12, context), color: Colors.white),
           getTitles: (value) {
             return value.toStringAsFixed(2);
           },

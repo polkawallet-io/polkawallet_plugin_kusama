@@ -6,6 +6,7 @@ import 'package:polkawallet_ui/components/linearProgressBar.dart';
 import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class AuctionPanel extends StatelessWidget {
   AuctionPanel(this.auction, this.config, this.decimals, this.tokenSymbol,
@@ -26,7 +27,7 @@ class AuctionPanel extends StatelessWidget {
     final textStyleSmall = Theme.of(context)
         .textTheme
         .headline5
-        ?.copyWith(color: Colors.white, fontSize: 12);
+        ?.copyWith(color: Colors.white, fontSize: UI.getTextSize(12, context));
 
     final auctionPeriodBlocks = endingPeriodBlocks * 3 ~/ 8;
     final endBlock = int.parse(auction.auction.endBlock ?? '0');
@@ -102,7 +103,7 @@ class AuctionPanel extends StatelessWidget {
                                   .textTheme
                                   .headline5
                                   ?.copyWith(
-                                    fontSize: 12,
+                                    fontSize: UI.getTextSize(12, context),
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
@@ -209,13 +210,17 @@ class AuctionPanel extends StatelessWidget {
                                         Text(
                                           e.paraId ?? '',
                                           style: textStyle?.copyWith(
-                                              fontSize: 16, height: 1.2),
+                                              fontSize:
+                                                  UI.getTextSize(16, context),
+                                              height: 1.2),
                                         ),
                                         Text(
                                           ((config[e.paraId] ?? {})['name'] ??
                                               ''),
                                           style: textStyleSmall?.copyWith(
-                                              fontSize: 10, height: 1),
+                                              fontSize:
+                                                  UI.getTextSize(10, context),
+                                              height: 1),
                                         )
                                       ],
                                     ),

@@ -97,7 +97,7 @@ class _BondPageState extends State<BondPage> {
                           I18n.of(context)!.getDic(
                               i18n_full_dic_kusama, 'staking')!['stake.warn'],
                           color: Colors.deepOrange,
-                          fontSize: 12,
+                          fontSize: UI.getTextSize(12, context),
                           margin: EdgeInsets.all(0),
                           padding: EdgeInsets.all(8),
                         ))

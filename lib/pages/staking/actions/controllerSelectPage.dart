@@ -7,6 +7,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class ControllerSelectPage extends StatelessWidget {
   ControllerSelectPage(this.plugin, this.keyring);
@@ -70,7 +71,8 @@ class ControllerSelectPage extends StatelessWidget {
                                           unavailable,
                                           style: TextStyle(
                                             color: Colors.orange,
-                                            fontSize: 12,
+                                            fontSize:
+                                                UI.getTextSize(12, context),
                                           ),
                                         ),
                                       ],

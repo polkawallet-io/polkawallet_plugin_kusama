@@ -7,6 +7,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/infoItemRow.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class ReferendumPanel extends StatefulWidget {
   ReferendumPanel({
@@ -63,10 +64,8 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
         visible: widget.data!.detail!['content'].toString().isNotEmpty,
         child: Text(
           "${widget.data!.image != null && widget.data!.image!['proposal'] != null ? '${widget.data!.image!['proposal']['section']}.${widget.data!.image!['proposal']['method']}\n' : ''}${(widget.data!.detail!['content'] ?? "").toString().trim()}",
-          style: Theme.of(context)
-              .textTheme
-              .headline5
-              ?.copyWith(fontSize: 12, color: Colors.white),
+          style: Theme.of(context).textTheme.headline5?.copyWith(
+              fontSize: UI.getTextSize(12, context), color: Colors.white),
         ),
       ),
       Padding(
@@ -167,7 +166,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                   Text(
                     '${widget.data!.voteCountNay ?? 0}',
                     style: Theme.of(context).textTheme.headline5?.copyWith(
-                        fontSize: 14,
+                        fontSize: UI.getTextSize(14, context),
                         color: Colors.white,
                         height: 1.2,
                         fontWeight: FontWeight.w600),
@@ -175,7 +174,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                   Text(
                     '${Fmt.balance(widget.data!.votedNay!, widget.decimals!)} ${widget.symbol}',
                     style: Theme.of(context).textTheme.headline5?.copyWith(
-                        fontSize: 10,
+                        fontSize: UI.getTextSize(10, context),
                         color: Colors.white,
                         fontWeight: FontWeight.w300),
                   ),
@@ -280,7 +279,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                   Text(
                     '${widget.data!.voteCountAye ?? 0}',
                     style: Theme.of(context).textTheme.headline5?.copyWith(
-                        fontSize: 14,
+                        fontSize: UI.getTextSize(14, context),
                         color: Colors.white,
                         height: 1.2,
                         fontWeight: FontWeight.w600),
@@ -288,7 +287,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                   Text(
                     '${Fmt.balance(widget.data!.votedAye!, widget.decimals!)} ${widget.symbol}',
                     style: Theme.of(context).textTheme.headline5?.copyWith(
-                        fontSize: 10,
+                        fontSize: UI.getTextSize(10, context),
                         color: Colors.white,
                         fontWeight: FontWeight.w300),
                   ),
@@ -304,14 +303,10 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
           child: InfoItemRow(
             dic['remain']!,
             '${Fmt.blockToTime(endLeft.toInt(), widget.blockDuration!)}(${Fmt.priceFloorBigInt(endLeft, 0, lengthFixed: 0)} blocks)',
-            labelStyle: Theme.of(context)
-                .textTheme
-                .headline5
-                ?.copyWith(fontSize: 12, color: Colors.white),
-            contentStyle: Theme.of(context)
-                .textTheme
-                .headline5
-                ?.copyWith(fontSize: 12, color: Colors.white),
+            labelStyle: Theme.of(context).textTheme.headline5?.copyWith(
+                fontSize: UI.getTextSize(12, context), color: Colors.white),
+            contentStyle: Theme.of(context).textTheme.headline5?.copyWith(
+                fontSize: UI.getTextSize(12, context), color: Colors.white),
           ),
         ),
         Visibility(
@@ -321,14 +316,10 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
               child: InfoItemRow(
                 dic['activate']!,
                 '${Fmt.blockToTime(activateLeft.toInt(), widget.blockDuration!)}(#${Fmt.priceFloorBigInt(widget.bestNumber! + activateLeft, 0, lengthFixed: 0)})',
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.copyWith(fontSize: 12, color: Colors.white),
-                contentStyle: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.copyWith(fontSize: 12, color: Colors.white),
+                labelStyle: Theme.of(context).textTheme.headline5?.copyWith(
+                    fontSize: UI.getTextSize(12, context), color: Colors.white),
+                contentStyle: Theme.of(context).textTheme.headline5?.copyWith(
+                    fontSize: UI.getTextSize(12, context), color: Colors.white),
               ),
             )),
         Container(
@@ -371,7 +362,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                                     .textTheme
                                     .headline3
                                     ?.copyWith(
-                                        fontSize: 22,
+                                        fontSize: UI.getTextSize(22, context),
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
                               ),
@@ -401,7 +392,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                               .textTheme
                               .headline5
                               ?.copyWith(
-                                  fontSize: 12,
+                                  fontSize: UI.getTextSize(12, context),
                                   fontWeight: FontWeight.bold,
                                   color: (widget.data!.isPassing ?? false)
                                       ? PluginColorsDark.green

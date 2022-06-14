@@ -129,7 +129,7 @@ class _CouncilPageState extends State<CouncilPage> {
                         ?.copyWith(color: Colors.white),
                     style: Theme.of(context).textTheme.headline3?.copyWith(
                         color: Colors.white,
-                        fontSize: 22,
+                        fontSize: UI.getTextSize(22, context),
                         fontWeight: FontWeight.bold,
                         height: 1.7),
                     title: dic['seats'],
@@ -145,7 +145,7 @@ class _CouncilPageState extends State<CouncilPage> {
                         ?.copyWith(color: Colors.white),
                     style: Theme.of(context).textTheme.headline3?.copyWith(
                         color: Colors.white,
-                        fontSize: 22,
+                        fontSize: UI.getTextSize(22, context),
                         fontWeight: FontWeight.bold,
                         height: 1.7),
                     title: dic['up'],
@@ -161,7 +161,7 @@ class _CouncilPageState extends State<CouncilPage> {
                         ?.copyWith(color: Colors.white),
                     style: Theme.of(context).textTheme.headline3?.copyWith(
                         color: Colors.white,
-                        fontSize: 22,
+                        fontSize: UI.getTextSize(22, context),
                         fontWeight: FontWeight.bold,
                         height: 1.7),
                     title: dic['candidate'],
@@ -183,7 +183,7 @@ class _CouncilPageState extends State<CouncilPage> {
                       ?.copyWith(color: Colors.white),
                   style: Theme.of(context).textTheme.headline3?.copyWith(
                       color: Colors.white,
-                      fontSize: 22,
+                      fontSize: UI.getTextSize(22, context),
                       fontWeight: FontWeight.bold,
                       height: 1.7),
                   title: dic['voted'],
@@ -202,7 +202,7 @@ class _CouncilPageState extends State<CouncilPage> {
                           ?.copyWith(color: Colors.white),
                       style: Theme.of(context).textTheme.headline3?.copyWith(
                           color: Colors.white,
-                          fontSize: 22,
+                          fontSize: UI.getTextSize(22, context),
                           fontWeight: FontWeight.bold,
                           height: 1.7),
                       title: dic['vote.my'],
@@ -288,7 +288,7 @@ class _CouncilPageState extends State<CouncilPage> {
                                 activeTextcolor:
                                     _select ? Colors.white : Colors.black,
                                 active: true,
-                                fontSize: 12,
+                                fontSize: UI.getTextSize(12, context),
                                 minSize: 19,
                                 onPressed: () {
                                   setState(() {
@@ -587,7 +587,7 @@ class CandidateItem extends StatelessWidget {
                   )} $tokenSymbol',
                   style: Theme.of(context).textTheme.headline5?.copyWith(
                       color: Colors.white,
-                      fontSize: 10,
+                      fontSize: UI.getTextSize(10, context),
                       fontWeight: FontWeight.w300)),
           onTap: noTap
               ? null

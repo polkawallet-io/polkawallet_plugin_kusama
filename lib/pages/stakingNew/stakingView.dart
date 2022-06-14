@@ -214,7 +214,10 @@ class _StakingViewState extends State<StakingView> {
                                                             ?.copyWith(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 22,
+                                                                fontSize: UI
+                                                                    .getTextSize(
+                                                                        22,
+                                                                        context),
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
@@ -227,7 +230,10 @@ class _StakingViewState extends State<StakingView> {
                                                             ?.copyWith(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 10)),
+                                                                fontSize: UI
+                                                                    .getTextSize(
+                                                                        10,
+                                                                        context))),
                                                   ],
                                                 )),
                                                 Expanded(
@@ -258,8 +264,9 @@ class _StakingViewState extends State<StakingView> {
                                                                     ?.copyWith(
                                                                         color: Colors
                                                                             .white,
-                                                                        fontSize:
+                                                                        fontSize: UI.getTextSize(
                                                                             22,
+                                                                            context),
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .bold,
@@ -274,8 +281,9 @@ class _StakingViewState extends State<StakingView> {
                                                                     ?.copyWith(
                                                                         color: Colors
                                                                             .white,
-                                                                        fontSize:
-                                                                            10)),
+                                                                        fontSize: UI.getTextSize(
+                                                                            10,
+                                                                            context))),
                                                           ],
                                                         ))),
                                               ],
@@ -360,10 +368,11 @@ class _StakingViewState extends State<StakingView> {
                                                                           'zh'
                                                                       ? "${Fmt.balance(unlockDetail[0]["balance"], decimals)} $symbol 将于${unlockDetail[0]['time']}后可提取"
                                                                       : "${Fmt.balance(unlockDetail[0]["balance"], decimals)} $symbol can be redeemed in ${unlockDetail[0]['time']}",
-                                                                  style: labelStyle
-                                                                      ?.copyWith(
-                                                                          fontSize:
-                                                                              10),
+                                                                  style: labelStyle?.copyWith(
+                                                                      fontSize:
+                                                                          UI.getTextSize(
+                                                                              10,
+                                                                              context)),
                                                                 ))
                                                           ],
                                                         ),
@@ -680,7 +689,7 @@ class _StakingViewState extends State<StakingView> {
                                       content: dic['v3.stopAll'],
                                       color: Color(0xFFFF7849),
                                       active: true,
-                                      fontSize: 12,
+                                      fontSize: UI.getTextSize(12, context),
                                       minSize: 19,
                                       onPressed: () {
                                         if (isStash && !isController!) {
@@ -742,7 +751,8 @@ class _StakingViewState extends State<StakingView> {
                                               .textTheme
                                               .headline5
                                               ?.copyWith(
-                                                  fontSize: 12,
+                                                  fontSize: UI.getTextSize(
+                                                      12, context),
                                                   color: Colors.white),
                                         ),
                                       ))
@@ -893,23 +903,19 @@ class _NomineeItem extends StatelessWidget {
             children: [
               UI.accountDisplayName(validator.accountId, accInfo,
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: UI.getTextSize(14, context),
                       fontFamily: "TitilliumWeb",
                       fontWeight: FontWeight.w600,
                       color: Colors.white)),
               Text(
                 "${dicStaking['total']}: ${Fmt.token(meStaked ?? BigInt.zero, decimals)}",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.copyWith(fontSize: 10, color: Colors.white),
+                style: Theme.of(context).textTheme.headline5?.copyWith(
+                    fontSize: UI.getTextSize(10, context), color: Colors.white),
               ),
               Text(
                 "${dicStaking['commission']}: ${NumberFormat('0.00%').format(validator.commission / 100)}",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.copyWith(fontSize: 10, color: Colors.white),
+                style: Theme.of(context).textTheme.headline5?.copyWith(
+                    fontSize: UI.getTextSize(10, context), color: Colors.white),
               )
             ],
           ),
@@ -926,10 +932,9 @@ class _NomineeItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(dicStaking['reward']!,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.copyWith(fontSize: 10, color: Colors.white)),
+                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                      fontSize: UI.getTextSize(10, context),
+                      color: Colors.white)),
               Text(
                   validator.isActive!
                       ? '${validator.stakedReturnCmp.toStringAsFixed(2)}%'
@@ -1030,7 +1035,7 @@ class _GridViewItemBtnState extends State<GridViewItemBtn> {
                   widget.text,
                   style: Theme.of(context).textTheme.headline5?.copyWith(
                       color: Color(0xFFFF7849),
-                      fontSize: 12,
+                      fontSize: UI.getTextSize(12, context),
                       fontWeight: FontWeight.bold),
                 )
               ],

@@ -74,7 +74,7 @@ class _CrowdLoanListItemState extends State<CrowdLoanListItem> {
                   color: isEnded
                       ? PluginColorsDark.headline3
                       : PluginColorsDark.green,
-                  fontSize: 14),
+                  fontSize: UI.getTextSize(14, context)),
             ),
             Container(
               child: Row(
@@ -84,7 +84,7 @@ class _CrowdLoanListItemState extends State<CrowdLoanListItem> {
                     '#${widget.fund.paraId}',
                     style: Theme.of(context).textTheme.headline3!.copyWith(
                         color: PluginColorsDark.headline1,
-                        fontSize: 22,
+                        fontSize: UI.getTextSize(22, context),
                         height: 1.2),
                   )),
                   isEnded
@@ -122,7 +122,8 @@ class _CrowdLoanListItemState extends State<CrowdLoanListItem> {
                     child: Text(
                       name,
                       style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: PluginColorsDark.headline1, fontSize: 16),
+                          color: PluginColorsDark.headline1,
+                          fontSize: UI.getTextSize(16, context)),
                     ),
                   ),
                   GestureDetector(
@@ -138,7 +139,8 @@ class _CrowdLoanListItemState extends State<CrowdLoanListItem> {
                       'You Contributed: $amount ${widget.tokenSymbol}',
                       textAlign: TextAlign.end,
                       style: Theme.of(context).textTheme.headline4!.copyWith(
-                          color: PluginColorsDark.headline1, fontSize: 12),
+                          color: PluginColorsDark.headline1,
+                          fontSize: UI.getTextSize(12, context)),
                     ),
                   )
                 ],

@@ -10,6 +10,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class BondExtraPage extends StatefulWidget {
   BondExtraPage(this.plugin, this.keyring);
@@ -155,7 +156,8 @@ class ErrorMessage extends StatelessWidget {
               Expanded(
                   child: Text(
                 error,
-                style: TextStyle(fontSize: 12, color: Colors.red),
+                style: TextStyle(
+                    fontSize: UI.getTextSize(12, context), color: Colors.red),
               ))
             ]),
     );

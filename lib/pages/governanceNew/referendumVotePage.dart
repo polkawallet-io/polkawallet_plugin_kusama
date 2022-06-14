@@ -121,7 +121,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   _getConvictionLabel(i)!,
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: UI.getTextSize(16, context)),
                 ));
           }).toList(),
           onSelectedItemChanged: (v) {
@@ -197,7 +197,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                                     .textTheme
                                     .headline3
                                     ?.copyWith(
-                                        color: Colors.white, fontSize: 40),
+                                        color: Colors.white,
+                                        fontSize: UI.getTextSize(40, context)),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.zero,
                                   border: InputBorder.none,

@@ -15,6 +15,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class CouncilVotePage extends StatefulWidget {
   CouncilVotePage(this.plugin, this.keyring);
@@ -162,7 +163,8 @@ class _CouncilVote extends State<CouncilVotePage> {
                                           .headline4
                                           ?.copyWith(
                                               color: Colors.white,
-                                              fontSize: 12),
+                                              fontSize:
+                                                  UI.getTextSize(12, context)),
                                     )
                                   ],
                                 ),

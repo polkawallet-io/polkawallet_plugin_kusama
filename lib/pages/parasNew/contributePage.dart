@@ -109,10 +109,8 @@ class _ContributePageState extends State<ContributePage> {
         final logoUri = widget.plugin.store.paras.fundsVisible[fund.paraId]
             ['logo'] as String;
 
-        final titleStyle = Theme.of(context)
-            .textTheme
-            .headline3
-            ?.copyWith(color: Colors.white, fontSize: 14);
+        final titleStyle = Theme.of(context).textTheme.headline3?.copyWith(
+            color: Colors.white, fontSize: UI.getTextSize(14, context));
         return PluginScaffold(
           appBar: PluginAppBar(title: Text('Contribute')),
           body: Container(
@@ -147,8 +145,9 @@ class _ContributePageState extends State<ContributePage> {
                             Text(
                               widget.plugin.store.paras
                                   .fundsVisible[fund.paraId]['name'],
-                              style:
-                                  titleStyle?.copyWith(fontSize: 12, height: 1),
+                              style: titleStyle?.copyWith(
+                                  fontSize: UI.getTextSize(12, context),
+                                  height: 1),
                             ),
                           ],
                         ))
@@ -173,7 +172,9 @@ class _ContributePageState extends State<ContributePage> {
                           style: Theme.of(context)
                               .textTheme
                               .headline3
-                              ?.copyWith(color: Colors.white, fontSize: 40),
+                              ?.copyWith(
+                                  color: Colors.white,
+                                  fontSize: UI.getTextSize(40, context)),
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.zero,
                             border: InputBorder.none,
