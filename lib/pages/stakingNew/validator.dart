@@ -66,7 +66,8 @@ class Validator extends StatelessWidget {
                             validator.accountId, accInfo,
                             style: TextStyle(
                                 fontSize: UI.getTextSize(14, context),
-                                fontFamily: "TitilliumWeb",
+                                fontFamily:
+                                    UI.getFontFamily('TitilliumWeb', context),
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white)),
                       )
