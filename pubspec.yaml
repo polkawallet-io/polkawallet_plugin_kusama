@@ -1,6 +1,6 @@
 name: polkawallet_plugin_kusama
 description: The kusama/polkadot network flutter plugin for polkawallet app.
-version: 0.4.6
+version: 0.4.8
 homepage:
 
 environment:
@@ -17,8 +17,8 @@ dependencies:
   flutter_svg: ^1.0.3
   get_storage: ^2.0.3
   json_annotation: ^4.0.1
-  polkawallet_sdk: ^0.4.6
-  polkawallet_ui: ^0.4.6
+  polkawallet_sdk: ^0.4.8
+  polkawallet_ui: ^0.4.8
   fl_chart: ^0.40.2
   sticky_headers: ^0.2.0
   flutter_swiper: ^1.1.6
@@ -30,11 +30,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-dependency_overrides:
- polkawallet_ui:
-   path: ../ui
- polkawallet_sdk:
-   path: ../sdk
+#dependency_overrides:
+# polkawallet_ui:
+#   path: ../ui
+# polkawallet_sdk:
+#   path: ../sdk
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
