@@ -85,11 +85,10 @@ class _OverViewPageState extends State<OverViewPage> {
                 decoration: BoxDecoration(
                     color: Color(0x24FFFFFF),
                     borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(index == 1 ? 14 : 0),
-                        bottomLeft:
-                            Radius.circular(index == ls.length ? 14 : 0),
+                        topRight: Radius.circular(index == 1 ? 8 : 0),
+                        bottomLeft: Radius.circular(index == ls.length ? 8 : 0),
                         bottomRight:
-                            Radius.circular(index == ls.length ? 14 : 0))),
+                            Radius.circular(index == ls.length ? 8 : 0))),
                 child: Column(
                   children: [
                     Validator(acc, accInfo, icon, decimals, nomCount,

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart';
@@ -11,6 +10,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/roundedPluginCard.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class CandidateDetailPage extends StatefulWidget {
   CandidateDetailPage(this.plugin, this.keyring);
@@ -29,7 +29,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.plugin.store.gov.councilVotes != null) {
         final List info =
             ModalRoute.of(context)!.settings.arguments as List<dynamic>;
@@ -104,7 +104,7 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
                       child: Text(
                         dic['vote.voter'],
                         style: Theme.of(context).textTheme.headline3?.copyWith(
-                            fontSize: 18,
+                            fontSize: UI.getTextSize(18, context),
                             fontWeight: FontWeight.w600,
                             color: Colors.white),
                       ),

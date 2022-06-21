@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -6,9 +5,9 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
-import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class ControllerSelectPage extends StatelessWidget {
   ControllerSelectPage(this.plugin, this.keyring);
@@ -72,7 +71,8 @@ class ControllerSelectPage extends StatelessWidget {
                                           unavailable,
                                           style: TextStyle(
                                             color: Colors.orange,
-                                            fontSize: 12,
+                                            fontSize:
+                                                UI.getTextSize(12, context),
                                           ),
                                         ),
                                       ],

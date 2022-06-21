@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
@@ -95,7 +94,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshKey.currentState?.show();
     });
   }
@@ -283,7 +282,10 @@ class _TreasuryPageState extends State<TreasuryPage> {
                                                               ?.copyWith(
                                                                   color: PluginColorsDark
                                                                       .headline1,
-                                                                  fontSize: 10,
+                                                                  fontSize: UI
+                                                                      .getTextSize(
+                                                                          10,
+                                                                          context),
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600)),
@@ -296,7 +298,10 @@ class _TreasuryPageState extends State<TreasuryPage> {
                                                               ?.copyWith(
                                                                   color: PluginColorsDark
                                                                       .headline1,
-                                                                  fontSize: 10,
+                                                                  fontSize: UI
+                                                                      .getTextSize(
+                                                                          10,
+                                                                          context),
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w300))
@@ -321,7 +326,9 @@ class _TreasuryPageState extends State<TreasuryPage> {
                                                           color:
                                                               PluginColorsDark
                                                                   .headline1,
-                                                          fontSize: 12,
+                                                          fontSize:
+                                                              UI.getTextSize(
+                                                                  12, context),
                                                           fontWeight:
                                                               FontWeight.w600),
                                                 ),
@@ -337,7 +344,9 @@ class _TreasuryPageState extends State<TreasuryPage> {
                                                           color:
                                                               PluginColorsDark
                                                                   .headline1,
-                                                          fontSize: 12,
+                                                          fontSize:
+                                                              UI.getTextSize(
+                                                                  12, context),
                                                           fontWeight:
                                                               FontWeight.w600),
                                                 ),
@@ -375,14 +384,12 @@ class _OverviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final labelStyle = Theme.of(context)
-        .textTheme
-        .headline4
-        ?.copyWith(fontSize: 12, color: PluginColorsDark.headline2);
-    final titleStyle = Theme.of(context)
-        .textTheme
-        .headline1
-        ?.copyWith(fontSize: 14, color: PluginColorsDark.headline1);
+    final labelStyle = Theme.of(context).textTheme.headline4?.copyWith(
+        fontSize: UI.getTextSize(12, context),
+        color: PluginColorsDark.headline2);
+    final titleStyle = Theme.of(context).textTheme.headline1?.copyWith(
+        fontSize: UI.getTextSize(14, context),
+        color: PluginColorsDark.headline1);
 
     final available = Fmt.priceFloorBigIntFormatter(
         Fmt.balanceInt(overview?.balance ?? '0'), decimals);
@@ -532,7 +539,7 @@ class __ProposalItemState extends State<_ProposalItem> {
     final style = Theme.of(context)
         .textTheme
         .headline5
-        ?.copyWith(fontSize: 12, color: Colors.white);
+        ?.copyWith(fontSize: UI.getTextSize(12, context), color: Colors.white);
     List<Widget> widgets = [];
     if (_isExpansion) {
       widgets.addAll([
@@ -613,7 +620,7 @@ class __ProposalItemState extends State<_ProposalItem> {
                       child: Text(
                         '#${int.parse(widget.proposal!.id!)}',
                         style: Theme.of(context).textTheme.headline3?.copyWith(
-                            fontSize: 22,
+                            fontSize: UI.getTextSize(22, context),
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       )),
@@ -629,7 +636,7 @@ class __ProposalItemState extends State<_ProposalItem> {
                     child: Text(
                       dic['v3.treasury.${widget.isApproved ? 'Approved' : 'pending'}']!,
                       style: Theme.of(context).textTheme.headline5?.copyWith(
-                          fontSize: 12,
+                          fontSize: UI.getTextSize(12, context),
                           fontWeight: FontWeight.bold,
                           color: widget.isApproved
                               ? PluginColorsDark.green

@@ -4,12 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/stakingDetailPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
-import 'package:polkawallet_sdk/api/subscan.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/TransferIcon.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class StakingHistoryPage extends StatefulWidget {
   StakingHistoryPage(this.plugin, {Key? key}) : super(key: key);
@@ -70,7 +69,7 @@ class _StakingHistoryPageState extends State<StakingHistoryPage> {
       }
     });
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.plugin.store.staking.txs.length < tx_list_page_size) {
         _updateStakingTxs(page: 0);
       }
@@ -130,10 +129,9 @@ class _StakingHistoryPageState extends State<StakingHistoryPage> {
                   subtitle: Text(
                       Fmt.dateTime(DateTime.fromMillisecondsSinceEpoch(
                           i.blockTimestamp! * 1000)),
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5
-                          ?.copyWith(color: Colors.white, fontSize: 10)),
+                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                          color: Colors.white,
+                          fontSize: UI.getTextSize(10, context))),
                   trailing: i.success!
                       ? Text(
                           dicCommon['success']!,

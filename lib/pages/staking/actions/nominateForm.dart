@@ -75,10 +75,10 @@ class _NominateFormState extends State<NominateForm> {
         : widget.plugin.store.staking.nominationsCount![validator.accountId] ??
             0;
 
-    final textStyle = Theme.of(context)
-        .textTheme
-        .headline4!
-        .copyWith(color: PluginColorsDark.headline2, fontSize: 12, height: 1.2);
+    final textStyle = Theme.of(context).textTheme.headline4!.copyWith(
+        color: PluginColorsDark.headline2,
+        fontSize: UI.getTextSize(12, context),
+        height: 1.2);
     final comm = NumberFormat('0.00%').format(validator.commission / 100);
     return GestureDetector(
       child: Container(
@@ -148,7 +148,7 @@ class _NominateFormState extends State<NominateForm> {
                         '${validator.stakedReturnCmp.toStringAsFixed(2)}%',
                         style: Theme.of(context).textTheme.headline1!.copyWith(
                               color: PluginColorsDark.headline1,
-                              fontSize: 16,
+                              fontSize: UI.getTextSize(16, context),
                               fontWeight: FontWeight.bold,
                             ),
                       ),
@@ -215,7 +215,7 @@ class _NominateFormState extends State<NominateForm> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         widget.plugin.store.staking.validatorsInfo.forEach((i) {
           _notSelected.add(i);

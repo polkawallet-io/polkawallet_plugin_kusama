@@ -106,7 +106,7 @@ const Map<String, String> enStaking = {
   'v3.goStake': 'Go Stake',
   'v3.myStaked': 'My Staked',
   'v3.newGains': 'New Gains',
-  'v3.unstaking': 'Unstaking',
+  'v3.unstaking': 'Unbonding',
   'v3.nominations': 'Nominations',
   'v3.rewardDest': 'Reward Method',
   'v3.rewardDetail': 'Reward Detail',
@@ -120,5 +120,7 @@ const Map<String, String> enStaking = {
       'Limited permissions as the current account is not controller account.',
   'v3.noNomination':
       'No nomination here, nominate validators right now to enjoy the staking and earn your rewards!',
-  'v3.noStaked': 'You have not staked yet'
+  'v3.noStaked': 'You have not staked yet',
+  'v3.totalUnbonding': 'Total Unbonding',
+  'v3.rebondAmount': 'Rebond amount'
 };

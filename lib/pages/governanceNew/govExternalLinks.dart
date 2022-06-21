@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -33,7 +32,7 @@ class GovExternalLinks extends StatelessWidget {
                   data['name'],
                   style: Theme.of(context).textTheme.headline5?.copyWith(
                       color: Colors.white,
-                      fontSize: 10,
+                      fontSize: UI.getTextSize(10, context),
                       fontWeight: FontWeight.w300),
                 )
               ],

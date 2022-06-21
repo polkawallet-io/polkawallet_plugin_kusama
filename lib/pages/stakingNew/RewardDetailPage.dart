@@ -13,6 +13,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginTextTag.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/rewardDetailPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/i18n.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class RewardDetailNewPage extends StatefulWidget {
   RewardDetailNewPage(this.plugin, {Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (widget.plugin.store.staking.txsRewards.length == 0) {
         setState(() {
           _isLoading = true;
@@ -93,8 +94,8 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                             decoration: BoxDecoration(
                                 color: Color(0x24FFFFFF),
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(14),
-                                    topRight: Radius.circular(14))),
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8))),
                             child: PluginInfoItem(
                               title: dic['v3.stagedRewards'],
                               isExpanded: false,
@@ -113,9 +114,9 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                           decoration: BoxDecoration(
                               color: Color(0x1AFFFFFF),
                               borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(14),
-                                  topRight: Radius.circular(14),
-                                  bottomRight: Radius.circular(14))),
+                                  bottomLeft: Radius.circular(8),
+                                  topRight: Radius.circular(8),
+                                  bottomRight: Radius.circular(8))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -123,7 +124,8 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                                 padding: EdgeInsets.only(left: 50, top: 8),
                                 child: Text('Rewards ($symbol)',
                                     style: TextStyle(
-                                        fontSize: 12, color: Colors.white)),
+                                        fontSize: UI.getTextSize(12, context),
+                                        color: Colors.white)),
                               ),
                               Container(
                                 height: MediaQuery.of(context).size.width / 2.4,
@@ -146,7 +148,6 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                           children: [
                             PluginTextTag(
                                 margin: EdgeInsets.only(top: 22, left: 16),
-                                padding: EdgeInsets.zero,
                                 title: dic['txs.reward']!),
                             Container(
                               color: Color(0x1AFFFFFF),
@@ -188,7 +189,8 @@ class _RewardDetailNewPageState extends State<RewardDetailNewPage> {
                                                 .headline5
                                                 ?.copyWith(
                                                     color: Colors.white,
-                                                    fontSize: 10)),
+                                                    fontSize: UI.getTextSize(
+                                                        10, context))),
                                         trailing: Text(
                                           '${isReward ? '+' : '-'} ${Fmt.balance(i.amount!, decimals)} $symbol',
                                           style: Theme.of(context)

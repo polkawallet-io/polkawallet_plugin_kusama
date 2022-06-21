@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
@@ -63,8 +62,8 @@ class ValidatorDetailPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Color(0x0FFFFFFF),
                             borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(14),
-                                topRight: Radius.circular(14)),
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8)),
                           ),
                           child: Column(
                             children: [
@@ -134,7 +133,7 @@ class ValidatorDetailPage extends StatelessWidget {
                                   dicStaking['validator.chart']!,
                                   style: TextStyle(
                                       color: PluginColorsDark.primary,
-                                      fontSize: 14),
+                                      fontSize: UI.getTextSize(14, context)),
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(left: 2),
@@ -151,8 +150,8 @@ class ValidatorDetailPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Color(0x0FFFFFFF),
                             borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(14),
-                                bottomRight: Radius.circular(14)),
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8)),
                           ),
                           child: Column(
                             children: [
@@ -174,7 +173,8 @@ class ValidatorDetailPage extends StatelessWidget {
                                           .textTheme
                                           .headline1
                                           ?.copyWith(
-                                              fontSize: 22,
+                                              fontSize:
+                                                  UI.getTextSize(22, context),
                                               color: Colors.white),
                                     ),
                                     PluginInfoItem(
@@ -191,7 +191,8 @@ class ValidatorDetailPage extends StatelessWidget {
                                           .textTheme
                                           .headline1
                                           ?.copyWith(
-                                              fontSize: 22,
+                                              fontSize:
+                                                  UI.getTextSize(22, context),
                                               color: Colors.white),
                                     ),
                                   ],
@@ -216,7 +217,8 @@ class ValidatorDetailPage extends StatelessWidget {
                                           .textTheme
                                           .headline1
                                           ?.copyWith(
-                                              fontSize: 22,
+                                              fontSize:
+                                                  UI.getTextSize(22, context),
                                               color: Colors.white),
                                     ),
                                     PluginInfoItem(
@@ -233,7 +235,8 @@ class ValidatorDetailPage extends StatelessWidget {
                                           .textTheme
                                           .headline1
                                           ?.copyWith(
-                                              fontSize: 22,
+                                              fontSize:
+                                                  UI.getTextSize(22, context),
                                               color: Colors.white),
                                     ),
                                   ],
@@ -263,7 +266,7 @@ class ValidatorDetailPage extends StatelessWidget {
                               .textTheme
                               .headline3
                               ?.copyWith(
-                                  fontSize: 18,
+                                  fontSize: UI.getTextSize(18, context),
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white),
                         ),

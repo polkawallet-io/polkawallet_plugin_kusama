@@ -9,12 +9,12 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
-import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class SetPayeePage extends StatefulWidget {
   SetPayeePage(this.plugin, this.keyring);
@@ -198,7 +198,9 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                           widget.initialValue!.destinationId ??
                           0]!,
                       style: Theme.of(context).textTheme.headline4!.copyWith(
-                          color: Color(0xCCFFFFFF), fontSize: 14, height: 1.2),
+                          color: Color(0xCCFFFFFF),
+                          fontSize: UI.getTextSize(14, context),
+                          height: 1.2),
                     ),
                   ),
                   Icon(
@@ -226,7 +228,8 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                               padding: EdgeInsets.all(12),
                               child: Text(
                                 i!,
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(
+                                    fontSize: UI.getTextSize(14, context)),
                               ),
                             ))
                         .toList(),
@@ -268,7 +271,7 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                       child: TextTag(
                     dic['stake.payee.warn'],
                     color: Colors.deepOrange,
-                    fontSize: 12,
+                    fontSize: UI.getTextSize(12, context),
                     margin: EdgeInsets.symmetric(vertical: 16),
                     padding: EdgeInsets.all(8),
                   ))

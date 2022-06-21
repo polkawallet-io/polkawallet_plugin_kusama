@@ -9,7 +9,6 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTagCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
@@ -61,18 +60,19 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
         txs.add(
             'api.tx.democracy.vote(${info.index!.toInt()},${jsonEncode(standard)})');
         return TxConfirmParams(
-          txTitle: govDic['vote.proposal'],
-          module: 'utility',
-          call: 'batch',
-          txDisplay: {
-            govDic["referenda"]: '#${info.index!.toInt()}',
-            govDic["vote"]: voteYes ? govDic['yes'] : govDic['no'],
-            dic["amount"]: '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
-            '': _getConvictionLabel(_voteConviction),
-          },
-          params: [],
-          rawParams: '[[${txs.join(',')}]]',
-        );
+            txTitle: govDic['vote.proposal'],
+            module: 'utility',
+            call: 'batch',
+            txDisplay: {
+              govDic["referenda"]: '#${info.index!.toInt()}',
+              govDic["vote"]: voteYes ? govDic['yes'] : govDic['no'],
+              dic["amount"]:
+                  '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
+              '': _getConvictionLabel(_voteConviction),
+            },
+            params: [],
+            rawParams: '[[${txs.join(',')}]]',
+            isPlugin: true);
       } else {
         return TxConfirmParams(
             module: 'democracy',
@@ -90,7 +90,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
               info.index!.toInt(),
               // "options"
               {"Standard": vote},
-            ]);
+            ],
+            isPlugin: true);
       }
     }
     return null;
@@ -120,7 +121,7 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   _getConvictionLabel(i)!,
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: UI.getTextSize(16, context)),
                 ));
           }).toList(),
           onSelectedItemChanged: (v) {
@@ -169,7 +170,6 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                             PluginTagCard(
                               margin: EdgeInsets.zero,
                               padding: EdgeInsets.symmetric(vertical: 25),
-                              radius: const Radius.circular(14),
                               titleTag: dicGov['v3.voting'],
                               child: Container(
                                 alignment: Alignment.center,
@@ -196,7 +196,8 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                                     .textTheme
                                     .headline3
                                     ?.copyWith(
-                                        color: Colors.white, fontSize: 40),
+                                        color: Colors.white,
+                                        fontSize: UI.getTextSize(40, context)),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.zero,
                                   border: InputBorder.none,

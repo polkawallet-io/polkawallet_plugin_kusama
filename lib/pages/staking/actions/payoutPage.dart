@@ -5,7 +5,6 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/store/balances.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputBalance.dart';
@@ -80,7 +79,7 @@ class _PayoutPageState extends State<PayoutPage> {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   _getEraText(i),
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: UI.getTextSize(16, context)),
                 ),
               );
             }).toList(),
@@ -115,7 +114,7 @@ class _PayoutPageState extends State<PayoutPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _queryLatestRewards();
     });
   }

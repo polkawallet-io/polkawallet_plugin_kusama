@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -14,7 +13,6 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTagCard.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
-import 'package:polkawallet_ui/components/v3/txButton.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -85,7 +83,7 @@ class _ContributePageState extends State<ContributePage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getTxFee();
     });
   }
@@ -111,10 +109,8 @@ class _ContributePageState extends State<ContributePage> {
         final logoUri = widget.plugin.store.paras.fundsVisible[fund.paraId]
             ['logo'] as String;
 
-        final titleStyle = Theme.of(context)
-            .textTheme
-            .headline3
-            ?.copyWith(color: Colors.white, fontSize: 14);
+        final titleStyle = Theme.of(context).textTheme.headline3?.copyWith(
+            color: Colors.white, fontSize: UI.getTextSize(14, context));
         return PluginScaffold(
           appBar: PluginAppBar(title: Text('Contribute')),
           body: Container(
@@ -149,8 +145,9 @@ class _ContributePageState extends State<ContributePage> {
                             Text(
                               widget.plugin.store.paras
                                   .fundsVisible[fund.paraId]['name'],
-                              style:
-                                  titleStyle?.copyWith(fontSize: 12, height: 1),
+                              style: titleStyle?.copyWith(
+                                  fontSize: UI.getTextSize(12, context),
+                                  height: 1),
                             ),
                           ],
                         ))
@@ -175,7 +172,9 @@ class _ContributePageState extends State<ContributePage> {
                           style: Theme.of(context)
                               .textTheme
                               .headline3
-                              ?.copyWith(color: Colors.white, fontSize: 40),
+                              ?.copyWith(
+                                  color: Colors.white,
+                                  fontSize: UI.getTextSize(40, context)),
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.zero,
                             border: InputBorder.none,

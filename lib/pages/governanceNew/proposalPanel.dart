@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -36,10 +35,8 @@ class _ProposalPanelState extends State<ProposalPanel> {
           final decimals = widget.plugin.networkState.tokenDecimals![0];
           final symbol = widget.plugin.networkState.tokenSymbol![0];
 
-          final style = Theme.of(context)
-              .textTheme
-              .headline5
-              ?.copyWith(fontSize: 12, color: Colors.white);
+          final style = Theme.of(context).textTheme.headline5?.copyWith(
+              fontSize: UI.getTextSize(12, context), color: Colors.white);
           final List seconding = widget.proposal.seconds!.toList();
           final bool isSecondOn = widget.proposal.seconds!
                   .indexOf(widget.keyring.current.address!) >=
@@ -126,7 +123,7 @@ class _ProposalPanelState extends State<ProposalPanel> {
                                 .textTheme
                                 .headline3
                                 ?.copyWith(
-                                    fontSize: 22,
+                                    fontSize: UI.getTextSize(22, context),
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                           ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
@@ -98,7 +97,7 @@ class _BondPageState extends State<BondPage> {
                           I18n.of(context)!.getDic(
                               i18n_full_dic_kusama, 'staking')!['stake.warn'],
                           color: Colors.deepOrange,
-                          fontSize: 12,
+                          fontSize: UI.getTextSize(12, context),
                           margin: EdgeInsets.all(0),
                           padding: EdgeInsets.all(8),
                         ))
