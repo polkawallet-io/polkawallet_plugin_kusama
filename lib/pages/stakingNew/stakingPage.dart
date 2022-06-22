@@ -8,6 +8,7 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/connectionChecker.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginAccountInfoAction.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginIconButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
@@ -38,7 +39,7 @@ class _StakingPageState extends State<StakingPage> {
           title: Text(dic['staking']!),
           actions: [
             Container(
-              margin: EdgeInsets.only(right: 16),
+              margin: EdgeInsets.only(right: 12),
               child: PluginIconButton(
                 onPressed: () =>
                     Navigator.of(context).pushNamed(StakingHistoryPage.route),
@@ -48,7 +49,8 @@ class _StakingPageState extends State<StakingPage> {
                   color: Color(0xFF17161F),
                 ),
               ),
-            )
+            ),
+            PluginAccountInfoAction(widget.keyring)
           ],
         ),
         body: Observer(builder: (_) {

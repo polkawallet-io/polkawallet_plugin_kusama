@@ -16,6 +16,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItemRow.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginAccountInfoAction.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
@@ -451,6 +452,7 @@ class _GovernancePageState extends State<GovernancePage> {
       appBar: PluginAppBar(
         title: Text(I18n.of(context)!
             .getDic(i18n_full_dic_kusama, 'common')!['governance']!),
+        actions: [PluginAccountInfoAction(widget.keyring)],
       ),
       body: Observer(builder: (_) {
         final list = _tabIndex == 0
