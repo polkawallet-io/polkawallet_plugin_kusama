@@ -179,8 +179,7 @@ class _OverViewWidgetState extends State<OverViewWidget>
                                 .textTheme
                                 .headline4
                                 ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: UI.getTextSize(22, context),
+                                    fontWeight: FontWeight.w600,
                                     color: Colors.white))
                       ],
                     ),
@@ -220,27 +219,36 @@ class _OverViewWidgetState extends State<OverViewWidget>
                                       height: 2.0),
                               content:
                                   Fmt.ratio(overview['stakedReturn'] / 100),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              contentCrossAxisAlignment:
+                                  CrossAxisAlignment.start,
                             ),
                           ],
                         ),
-                        InfoItemRow(
-                          dicStaking['v3.lastReward']!,
-                          "${Fmt.balance((overview['lastReward'] ?? 0).toString(), decimals)} $symbol",
-                          labelStyle: labelStyle,
-                          contentStyle: labelStyle,
-                        ),
-                        InfoItemRow(
-                          dicStaking['v3.minThreshold']!,
-                          "${Fmt.balance(overview['minNominatorBond'], decimals)} $symbol",
-                          labelStyle: labelStyle,
-                          contentStyle: labelStyle,
-                        ),
-                        InfoItemRow(
-                          dicStaking['v3.unbondingPeriod']!,
-                          "≈ ${widget.plugin.basic.name == network_name_kusama ? '7' : '28'} ${dicStaking['reward.days']}",
-                          labelStyle: labelStyle,
-                          contentStyle: labelStyle,
-                        ),
+                        Padding(
+                            padding: EdgeInsets.only(bottom: 8),
+                            child: InfoItemRow(
+                              dicStaking['v3.lastReward']!,
+                              "${Fmt.balance((overview['lastReward'] ?? 0).toString(), decimals)} $symbol",
+                              labelStyle: labelStyle,
+                              contentStyle: labelStyle,
+                            )),
+                        Padding(
+                            padding: EdgeInsets.only(bottom: 8),
+                            child: InfoItemRow(
+                              dicStaking['v3.minThreshold']!,
+                              "${Fmt.balance(overview['minNominatorBond'], decimals)} $symbol",
+                              labelStyle: labelStyle,
+                              contentStyle: labelStyle,
+                            )),
+                        Padding(
+                            padding: EdgeInsets.only(bottom: 8),
+                            child: InfoItemRow(
+                              dicStaking['v3.unbondingPeriod']!,
+                              "≈ ${widget.plugin.basic.name == network_name_kusama ? '7' : '28'} ${dicStaking['reward.days']}",
+                              labelStyle: labelStyle,
+                              contentStyle: labelStyle,
+                            )),
                         InfoItemRow(
                           dicStaking['v3.activeNominators']!,
                           Fmt.balance(

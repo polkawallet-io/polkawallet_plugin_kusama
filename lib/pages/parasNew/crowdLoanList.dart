@@ -107,6 +107,8 @@ class _CrowdLoanListItemState extends State<CrowdLoanListItem> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(right: 8),
+                    height: 30,
+                    width: 30,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
