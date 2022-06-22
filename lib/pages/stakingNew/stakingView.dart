@@ -26,6 +26,7 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/connectionChecker.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginOutlinedButtonSmall.dart';
@@ -599,7 +600,8 @@ class _StakingViewState extends State<StakingView> {
                                   showCupertinoDialog(
                                       context: context,
                                       builder: (_) {
-                                        return CupertinoAlertDialog(
+                                        return PolkawalletAlertDialog(
+                                          type: DialogType.warn,
                                           content: Text(dic['v3.stashError']!),
                                           actions: <Widget>[
                                             CupertinoDialogAction(
@@ -692,7 +694,8 @@ class _StakingViewState extends State<StakingView> {
                                           showCupertinoDialog(
                                               context: context,
                                               builder: (_) {
-                                                return CupertinoAlertDialog(
+                                                return PolkawalletAlertDialog(
+                                                  type: DialogType.warn,
                                                   content: Text(
                                                       dic['v3.stashError']!),
                                                   actions: <Widget>[
@@ -763,7 +766,8 @@ class _StakingViewState extends State<StakingView> {
                     showCupertinoDialog(
                         context: context,
                         builder: (_) {
-                          return CupertinoAlertDialog(
+                          return PolkawalletAlertDialog(
+                            type: DialogType.warn,
                             content: Text(dic['v3.stashError']!),
                             actions: <Widget>[
                               CupertinoDialogAction(

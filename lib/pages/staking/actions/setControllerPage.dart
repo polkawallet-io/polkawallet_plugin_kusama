@@ -8,6 +8,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 
 class SetControllerPage extends StatefulWidget {
   SetControllerPage(this.plugin, this.keyring);
@@ -95,7 +96,8 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       showCupertinoDialog(
                           context: context,
                           builder: (_) {
-                            return CupertinoAlertDialog(
+                            return PolkawalletAlertDialog(
+                              type: DialogType.warn,
                               content: Text(dic['v3.controllerError']!),
                               actions: <Widget>[
                                 CupertinoDialogAction(
@@ -115,7 +117,8 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       showCupertinoDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return CupertinoAlertDialog(
+                          return PolkawalletAlertDialog(
+                            type: DialogType.warn,
                             title: Container(),
                             content: Text(dic['controller.warn']!),
                             actions: <Widget>[
