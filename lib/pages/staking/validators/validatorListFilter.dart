@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginIconButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginOutlinedButtonSmall.dart';
@@ -27,9 +28,9 @@ class ValidatorListFilter extends StatelessWidget {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common');
     showCupertinoModalPopup(
       context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
+      builder: (BuildContext context) => PolkawalletActionSheet(
         actions: ValidatorSortOptions.values
-            .map((i) => CupertinoActionSheetAction(
+            .map((i) => PolkawalletActionSheetAction(
                   child: Text(dicStaking![i.toString().split('.')[1]] ?? ''),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -39,7 +40,7 @@ class ValidatorListFilter extends StatelessWidget {
                   },
                 ))
             .toList(),
-        cancelButton: CupertinoActionSheetAction(
+        cancelButton: PolkawalletActionSheetAction(
           child: Text(dic!['cancel']!),
           onPressed: () {
             Navigator.pop(context);

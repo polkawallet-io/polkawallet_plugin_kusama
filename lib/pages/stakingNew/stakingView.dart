@@ -504,10 +504,10 @@ class _StakingViewState extends State<StakingView> {
                                 showCupertinoModalPopup(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      CupertinoActionSheet(
+                                      PolkawalletActionSheet(
                                     actions: <Widget>[
                                       /// disable bondExtra button if account is not stash
-                                      CupertinoActionSheetAction(
+                                      PolkawalletActionSheetAction(
                                         child: Text(
                                           dic['action.bondExtra']!,
                                           style: TextStyle(
@@ -528,7 +528,7 @@ class _StakingViewState extends State<StakingView> {
                                       ),
 
                                       /// disable unbond button if account is not controller
-                                      CupertinoActionSheetAction(
+                                      PolkawalletActionSheetAction(
                                         child: Text(
                                           dic['action.unbond']!,
                                           style: TextStyle(
@@ -549,7 +549,7 @@ class _StakingViewState extends State<StakingView> {
                                       ),
 
                                       // redeem unlocked
-                                      CupertinoActionSheetAction(
+                                      PolkawalletActionSheetAction(
                                         child: Text(
                                           dic['action.redeem']!,
                                           style: TextStyle(
@@ -571,7 +571,7 @@ class _StakingViewState extends State<StakingView> {
                                               },
                                       ),
                                     ],
-                                    cancelButton: CupertinoActionSheetAction(
+                                    cancelButton: PolkawalletActionSheetAction(
                                       child: Text(I18n.of(context)!.getDic(
                                           i18n_full_dic_kusama,
                                           'common')!['cancel']!),
