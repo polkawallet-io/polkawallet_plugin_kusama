@@ -519,8 +519,11 @@ class _GovernancePageState extends State<GovernancePage> {
                                       onTap: () =>
                                           Navigator.of(context).pushNamed(
                                         DAppWrapperPage.route,
-                                        arguments:
-                                            'https://${widget.plugin.basic.name}.polkassembly.io/',
+                                        arguments: {
+                                          "url":
+                                              'https://${widget.plugin.basic.name}.polkassembly.io/',
+                                          "isPlugin": true
+                                        },
                                       ),
                                     ),
                                   ],
