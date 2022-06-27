@@ -73,13 +73,14 @@ class _CouncilPageState extends State<CouncilPage> {
           content: Text(I18n.of(context)!
               .getDic(i18n_full_dic_kusama, 'gov')!['vote.remove.confirm']!),
           actions: [
-            CupertinoButton(
+            PolkawalletActionSheetAction(
               child: Text(dic!['cancel']!),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            CupertinoButton(
+            PolkawalletActionSheetAction(
+              isDefaultAction: true,
               child: Text(dic['ok']!),
               onPressed: () {
                 Navigator.of(context).pop();

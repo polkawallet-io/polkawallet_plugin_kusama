@@ -604,7 +604,7 @@ class _StakingViewState extends State<StakingView> {
                                           type: DialogType.warn,
                                           content: Text(dic['v3.stashError']!),
                                           actions: <Widget>[
-                                            CupertinoDialogAction(
+                                            PolkawalletActionSheetAction(
                                               child:
                                                   Text(dic['v3.iUnderstand']!),
                                               onPressed: () =>
@@ -699,7 +699,7 @@ class _StakingViewState extends State<StakingView> {
                                                   content: Text(
                                                       dic['v3.stashError']!),
                                                   actions: <Widget>[
-                                                    CupertinoDialogAction(
+                                                    PolkawalletActionSheetAction(
                                                       child: Text(dic[
                                                           'v3.iUnderstand']!),
                                                       onPressed: () =>
@@ -770,7 +770,7 @@ class _StakingViewState extends State<StakingView> {
                             type: DialogType.warn,
                             content: Text(dic['v3.stashError']!),
                             actions: <Widget>[
-                              CupertinoDialogAction(
+                              PolkawalletActionSheetAction(
                                 child: Text(dic['v3.iUnderstand']!),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),

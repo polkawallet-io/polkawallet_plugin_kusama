@@ -100,7 +100,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
                               type: DialogType.warn,
                               content: Text(dic['v3.controllerError']!),
                               actions: <Widget>[
-                                CupertinoDialogAction(
+                                PolkawalletActionSheetAction(
                                   child: Text(dic['v3.iUnderstand']!),
                                   onPressed: () => Navigator.of(context).pop(),
                                 ),
@@ -122,7 +122,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
                             title: Container(),
                             content: Text(dic['controller.warn']!),
                             actions: <Widget>[
-                              CupertinoButton(
+                              PolkawalletActionSheetAction(
                                 child: Text(I18n.of(context)!.getDic(
                                     i18n_full_dic_kusama, 'common')!['ok']!),
                                 onPressed: () => Navigator.of(context).pop(),

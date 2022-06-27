@@ -58,7 +58,7 @@ class _SetPayeePageState extends State<SetPayeePage> {
               title: Container(),
               content: Text('${dic!['reward.warn']}'),
               actions: <Widget>[
-                CupertinoButton(
+                PolkawalletActionSheetAction(
                   child: Text(I18n.of(context)!
                       .getDic(i18n_full_dic_kusama, 'common')!['ok']!),
                   onPressed: () => Navigator.of(context).pop(),

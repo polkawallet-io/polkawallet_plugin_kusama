@@ -174,7 +174,7 @@ class _NominateFormState extends State<NominateForm> {
                           content: Text(
                               '${dicStaking['nominate.max']} $maxNomination'),
                           actions: [
-                            CupertinoButton(
+                            PolkawalletActionSheetAction(
                               child: Text(I18n.of(context)!.getDic(
                                   i18n_full_dic_kusama, 'common')!['ok']!),
                               onPressed: () {
