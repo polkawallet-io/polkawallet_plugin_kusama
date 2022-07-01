@@ -270,7 +270,7 @@ class _GovernancePageState extends State<GovernancePage> {
                     child: Swiper(
                       itemCount: locks.length,
                       itemWidth: double.infinity,
-                      loop: locks.length == 1 ? false : true,
+                      loop: false,
                       itemBuilder: (BuildContext context, int index) {
                         var unlockAt = locks[index]['unlockAt'];
                         final int blockDuration = BigInt.parse(widget.plugin
