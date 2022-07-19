@@ -122,6 +122,8 @@ class _TreasuryPageState extends State<TreasuryPage> {
 
           return RefreshIndicator(
               key: _refreshKey,
+              color: Colors.black,
+              backgroundColor: Colors.white,
               child: ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   // itemCount: (_tab == 0 ? proposals.length : tips.length) + 1,

@@ -46,7 +46,7 @@ class _StakingPageState extends State<StakingPage> {
                 icon: Icon(
                   Icons.history,
                   size: 22,
-                  color: Color(0xFF17161F),
+                  color: Colors.white,
                 ),
               ),
             ),

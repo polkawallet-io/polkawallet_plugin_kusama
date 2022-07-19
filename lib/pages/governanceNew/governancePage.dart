@@ -467,6 +467,8 @@ class _GovernancePageState extends State<GovernancePage> {
         return RefreshIndicator(
             key: _refreshKey,
             onRefresh: _freshData,
+            color: Colors.black,
+            backgroundColor: Colors.white,
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               padding: EdgeInsets.symmetric(vertical: 16),

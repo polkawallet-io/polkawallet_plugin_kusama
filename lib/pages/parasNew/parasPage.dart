@@ -133,6 +133,8 @@ class _ParasPageState extends State<ParasPage> {
           ? RefreshIndicator(
               key: _refreshKey,
               onRefresh: _getCrowdLoans,
+              color: Colors.black,
+              backgroundColor: Colors.white,
               child: Observer(
                 builder: (_) {
                   final auction = widget.plugin.store.paras.auctionData;
