@@ -188,7 +188,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
                                           0
                                       ? Padding(
                                           padding: EdgeInsets.only(left: 13),
-                                          child: Divider(),
+                                          child: Divider(height: 1),
                                         )
                                       : Container(),
                                   itemCount: _tab == 0
