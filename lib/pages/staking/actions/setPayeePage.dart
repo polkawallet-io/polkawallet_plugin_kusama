@@ -231,7 +231,8 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                               child: Text(
                                 i!,
                                 style: TextStyle(
-                                    fontSize: UI.getTextSize(14, context)),
+                                    fontSize: UI.getTextSize(14, context),
+                                    color: Colors.black),
                               ),
                             ))
                         .toList(),
