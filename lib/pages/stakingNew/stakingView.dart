@@ -88,7 +88,7 @@ class _StakingViewState extends State<StakingView> {
         Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white);
 
     final Color actionButtonColor = Color(0xFF007AFE);
-    final Color disabledColor = Theme.of(context).unselectedWidgetColor;
+    final Color disabledColor = Color(0xFF858380);
     return Observer(builder: (_) {
       final isDataLoading =
           widget.plugin.store.staking.marketPrices.length == 0;
