@@ -489,10 +489,11 @@ class _ProgressBar extends StatelessWidget {
           AnimationCircularProgressBar(
               progress: progress,
               width: 10,
-              lineColor: [Color(0x4DFFFFFF), Color(0xFF81FEB9)],
+              bgWidth: 7,
+              lineColor: [Color(0xFF60FFA7), Color(0xFF60FFA7)],
               size: 96,
               startAngle: pi * 3 / 2,
-              bgColor: Colors.white.withAlpha(38)),
+              bgColor: const Color(0x4cFFFFFF)),
           Text(
             Fmt.ratio(progress),
             style: Theme.of(context)
