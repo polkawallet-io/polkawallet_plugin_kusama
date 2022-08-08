@@ -121,7 +121,9 @@ class _ReferendumVoteState extends State<ReferendumVotePage> {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   _getConvictionLabel(i)!,
-                  style: TextStyle(fontSize: UI.getTextSize(16, context)),
+                  style: TextStyle(
+                      fontSize: UI.getTextSize(16, context),
+                      color: Colors.black),
                 ));
           }).toList(),
           onSelectedItemChanged: (v) {

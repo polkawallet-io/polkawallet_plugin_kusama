@@ -8,6 +8,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 
 class SetControllerPage extends StatefulWidget {
   SetControllerPage(this.plugin, this.keyring);
@@ -95,10 +96,11 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       showCupertinoDialog(
                           context: context,
                           builder: (_) {
-                            return CupertinoAlertDialog(
+                            return PolkawalletAlertDialog(
+                              type: DialogType.warn,
                               content: Text(dic['v3.controllerError']!),
                               actions: <Widget>[
-                                CupertinoDialogAction(
+                                PolkawalletActionSheetAction(
                                   child: Text(dic['v3.iUnderstand']!),
                                   onPressed: () => Navigator.of(context).pop(),
                                 ),
@@ -115,11 +117,12 @@ class _SetControllerPageState extends State<SetControllerPage> {
                       showCupertinoDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return CupertinoAlertDialog(
+                          return PolkawalletAlertDialog(
+                            type: DialogType.warn,
                             title: Container(),
                             content: Text(dic['controller.warn']!),
                             actions: <Widget>[
-                              CupertinoButton(
+                              PolkawalletActionSheetAction(
                                 child: Text(I18n.of(context)!.getDic(
                                     i18n_full_dic_kusama, 'common')!['ok']!),
                                 onPressed: () => Navigator.of(context).pop(),

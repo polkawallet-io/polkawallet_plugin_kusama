@@ -83,7 +83,8 @@ class ValidatorChartsPage extends StatelessWidget {
                         padding: EdgeInsets.all(8),
                         margin: EdgeInsets.only(bottom: 16),
                         child: rewardsChartData == null
-                            ? CupertinoActivityIndicator()
+                            ? CupertinoActivityIndicator(
+                                color: const Color(0xFF3C3C44))
                             : RewardsChart.withData(
                                 pointsChartLines,
                                 rewardsChartData['points'][0],
@@ -116,7 +117,8 @@ class ValidatorChartsPage extends StatelessWidget {
                         padding: EdgeInsets.all(8),
                         margin: EdgeInsets.only(bottom: 16),
                         child: rewardsChartData == null
-                            ? CupertinoActivityIndicator()
+                            ? CupertinoActivityIndicator(
+                                color: const Color(0xFF3C3C44))
                             : RewardsChart.withData(
                                 rewardChartLines,
                                 rewardsChartData['rewards'][0],
@@ -145,7 +147,8 @@ class ValidatorChartsPage extends StatelessWidget {
                         padding: EdgeInsets.all(8),
                         margin: EdgeInsets.only(bottom: 16),
                         child: rewardsChartData == null
-                            ? CupertinoActivityIndicator()
+                            ? CupertinoActivityIndicator(
+                                color: const Color(0xFF3C3C44))
                             : RewardsChart.withData(
                                 stakesChartLines,
                                 List<List>.from([

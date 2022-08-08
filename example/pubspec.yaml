@@ -32,9 +32,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
 
-#dependency_overrides:
-#  polkawallet_ui:
-#    path: ../../ui
+dependency_overrides:
+ polkawallet_ui:
+   path: ../../ui
 
 dev_dependencies:
   polkawallet_plugin_kusama:

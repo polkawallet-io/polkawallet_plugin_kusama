@@ -8,6 +8,7 @@ import 'package:polkawallet_ui/components/infoItemRow.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 
 class ReferendumPanel extends StatefulWidget {
   ReferendumPanel({
@@ -81,18 +82,18 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                             context: context,
                             barrierDismissible: true,
                             builder: (BuildContext context) {
-                              return CupertinoActionSheet(
+                              return PolkawalletActionSheet(
                                 title: Text(dic['vote']!),
                                 message: Text(dic['v3.voteMessage.nay']!),
                                 actions: [
-                                  CupertinoActionSheetAction(
+                                  PolkawalletActionSheetAction(
                                     child: Text(dic['v3.continueVote']!),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       _referendumAction(false);
                                     },
                                   ),
-                                  CupertinoActionSheetAction(
+                                  PolkawalletActionSheetAction(
                                     child: Text(dic['v3.cancelMyVote']!),
                                     onPressed: () {
                                       Navigator.of(context).pop();
@@ -101,7 +102,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                                     },
                                   )
                                 ],
-                                cancelButton: CupertinoActionSheetAction(
+                                cancelButton: PolkawalletActionSheetAction(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -195,18 +196,18 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                             context: context,
                             barrierDismissible: true,
                             builder: (BuildContext context) {
-                              return CupertinoActionSheet(
+                              return PolkawalletActionSheet(
                                 title: Text(dic['vote']!),
                                 message: Text(dic['v3.voteMessage.aye']!),
                                 actions: [
-                                  CupertinoActionSheetAction(
+                                  PolkawalletActionSheetAction(
                                     child: Text(dic['v3.continueVote']!),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       _referendumAction(true);
                                     },
                                   ),
-                                  CupertinoActionSheetAction(
+                                  PolkawalletActionSheetAction(
                                     child: Text(dic['v3.cancelMyVote']!),
                                     onPressed: () {
                                       Navigator.of(context).pop();
@@ -215,7 +216,7 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
                                     },
                                   )
                                 ],
-                                cancelButton: CupertinoActionSheetAction(
+                                cancelButton: PolkawalletActionSheetAction(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },

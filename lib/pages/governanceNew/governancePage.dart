@@ -16,6 +16,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItemRow.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginAccountInfoAction.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
@@ -269,7 +270,7 @@ class _GovernancePageState extends State<GovernancePage> {
                     child: Swiper(
                       itemCount: locks.length,
                       itemWidth: double.infinity,
-                      loop: locks.length == 1 ? false : true,
+                      loop: false,
                       itemBuilder: (BuildContext context, int index) {
                         var unlockAt = locks[index]['unlockAt'];
                         final int blockDuration = BigInt.parse(widget.plugin
@@ -451,6 +452,7 @@ class _GovernancePageState extends State<GovernancePage> {
       appBar: PluginAppBar(
         title: Text(I18n.of(context)!
             .getDic(i18n_full_dic_kusama, 'common')!['governance']!),
+        actions: [PluginAccountInfoAction(widget.keyring)],
       ),
       body: Observer(builder: (_) {
         final list = _tabIndex == 0
@@ -465,6 +467,8 @@ class _GovernancePageState extends State<GovernancePage> {
         return RefreshIndicator(
             key: _refreshKey,
             onRefresh: _freshData,
+            color: Colors.black,
+            backgroundColor: Colors.white,
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               padding: EdgeInsets.symmetric(vertical: 16),
@@ -477,7 +481,7 @@ class _GovernancePageState extends State<GovernancePage> {
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: StickyHeader(
                         header: Container(
-                            color: Colors.transparent,
+                            color: const Color(0xFF212224),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -517,8 +521,11 @@ class _GovernancePageState extends State<GovernancePage> {
                                       onTap: () =>
                                           Navigator.of(context).pushNamed(
                                         DAppWrapperPage.route,
-                                        arguments:
-                                            'https://${widget.plugin.basic.name}.polkassembly.io/',
+                                        arguments: {
+                                          "url":
+                                              'https://${widget.plugin.basic.name}.polkassembly.io/',
+                                          "isPlugin": true
+                                        },
                                       ),
                                     ),
                                   ],

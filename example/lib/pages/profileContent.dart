@@ -66,7 +66,9 @@ class _ProfileContentState extends State<ProfileContent> {
                 initialItem: _langOptions.indexOf(langCurrent)),
             children: _langOptions.map((i) {
               return Padding(
-                  padding: EdgeInsets.all(16), child: Text(_getLang(i)));
+                  padding: EdgeInsets.all(16),
+                  child:
+                      Text(_getLang(i), style: TextStyle(color: Colors.black)));
             }).toList(),
             onSelectedItemChanged: (v) {
               setState(() {

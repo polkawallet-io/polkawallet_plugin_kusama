@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 
 class WalletApi {
   static const String _endpoint = 'https://api.polkawallet.io';
-  static const String _configEndpoint = 'https://acala.subdao.com';
+  static const String _configEndpoint = 'https://acala.polkawallet-cloud.com';
   static const String _cdnEndpoint = 'https://cdn.polkawallet-cloud.com';
 
   static Future<Map?> getTokenPrice() async {

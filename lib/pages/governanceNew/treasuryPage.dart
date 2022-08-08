@@ -122,6 +122,8 @@ class _TreasuryPageState extends State<TreasuryPage> {
 
           return RefreshIndicator(
               key: _refreshKey,
+              color: Colors.black,
+              backgroundColor: Colors.white,
               child: ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   // itemCount: (_tab == 0 ? proposals.length : tips.length) + 1,
@@ -186,7 +188,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
                                           0
                                       ? Padding(
                                           padding: EdgeInsets.only(left: 13),
-                                          child: Divider(),
+                                          child: Divider(height: 1),
                                         )
                                       : Container(),
                                   itemCount: _tab == 0
@@ -487,10 +489,11 @@ class _ProgressBar extends StatelessWidget {
           AnimationCircularProgressBar(
               progress: progress,
               width: 10,
-              lineColor: [Color(0x4DFFFFFF), Color(0xFF81FEB9)],
+              bgWidth: 7,
+              lineColor: [Color(0xFF60FFA7), Color(0xFF60FFA7)],
               size: 96,
               startAngle: pi * 3 / 2,
-              bgColor: Colors.white.withAlpha(38)),
+              bgColor: const Color(0x4cFFFFFF)),
           Text(
             Fmt.ratio(progress),
             style: Theme.of(context)

@@ -26,6 +26,7 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/connectionChecker.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginOutlinedButtonSmall.dart';
@@ -87,7 +88,7 @@ class _StakingViewState extends State<StakingView> {
         Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white);
 
     final Color actionButtonColor = Color(0xFF007AFE);
-    final Color disabledColor = Theme.of(context).unselectedWidgetColor;
+    final Color disabledColor = Color(0xFF858380);
     return Observer(builder: (_) {
       final isDataLoading =
           widget.plugin.store.staking.marketPrices.length == 0;
@@ -503,10 +504,10 @@ class _StakingViewState extends State<StakingView> {
                                 showCupertinoModalPopup(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      CupertinoActionSheet(
+                                      PolkawalletActionSheet(
                                     actions: <Widget>[
                                       /// disable bondExtra button if account is not stash
-                                      CupertinoActionSheetAction(
+                                      PolkawalletActionSheetAction(
                                         child: Text(
                                           dic['action.bondExtra']!,
                                           style: TextStyle(
@@ -527,7 +528,7 @@ class _StakingViewState extends State<StakingView> {
                                       ),
 
                                       /// disable unbond button if account is not controller
-                                      CupertinoActionSheetAction(
+                                      PolkawalletActionSheetAction(
                                         child: Text(
                                           dic['action.unbond']!,
                                           style: TextStyle(
@@ -548,7 +549,7 @@ class _StakingViewState extends State<StakingView> {
                                       ),
 
                                       // redeem unlocked
-                                      CupertinoActionSheetAction(
+                                      PolkawalletActionSheetAction(
                                         child: Text(
                                           dic['action.redeem']!,
                                           style: TextStyle(
@@ -570,7 +571,7 @@ class _StakingViewState extends State<StakingView> {
                                               },
                                       ),
                                     ],
-                                    cancelButton: CupertinoActionSheetAction(
+                                    cancelButton: PolkawalletActionSheetAction(
                                       child: Text(I18n.of(context)!.getDic(
                                           i18n_full_dic_kusama,
                                           'common')!['cancel']!),
@@ -599,10 +600,11 @@ class _StakingViewState extends State<StakingView> {
                                   showCupertinoDialog(
                                       context: context,
                                       builder: (_) {
-                                        return CupertinoAlertDialog(
+                                        return PolkawalletAlertDialog(
+                                          type: DialogType.warn,
                                           content: Text(dic['v3.stashError']!),
                                           actions: <Widget>[
-                                            CupertinoDialogAction(
+                                            PolkawalletActionSheetAction(
                                               child:
                                                   Text(dic['v3.iUnderstand']!),
                                               onPressed: () =>
@@ -692,11 +694,12 @@ class _StakingViewState extends State<StakingView> {
                                           showCupertinoDialog(
                                               context: context,
                                               builder: (_) {
-                                                return CupertinoAlertDialog(
+                                                return PolkawalletAlertDialog(
+                                                  type: DialogType.warn,
                                                   content: Text(
                                                       dic['v3.stashError']!),
                                                   actions: <Widget>[
-                                                    CupertinoDialogAction(
+                                                    PolkawalletActionSheetAction(
                                                       child: Text(dic[
                                                           'v3.iUnderstand']!),
                                                       onPressed: () =>
@@ -763,10 +766,11 @@ class _StakingViewState extends State<StakingView> {
                     showCupertinoDialog(
                         context: context,
                         builder: (_) {
-                          return CupertinoAlertDialog(
+                          return PolkawalletAlertDialog(
+                            type: DialogType.warn,
                             content: Text(dic['v3.stashError']!),
                             actions: <Widget>[
-                              CupertinoDialogAction(
+                              PolkawalletActionSheetAction(
                                 child: Text(dic['v3.iUnderstand']!),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),

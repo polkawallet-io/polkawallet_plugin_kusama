@@ -14,6 +14,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginRadioButton.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
@@ -168,12 +169,12 @@ class _NominateFormState extends State<NominateForm> {
                   showCupertinoDialog(
                       context: context,
                       builder: (_) {
-                        return CupertinoAlertDialog(
+                        return PolkawalletAlertDialog(
                           title: Container(),
                           content: Text(
                               '${dicStaking['nominate.max']} $maxNomination'),
                           actions: [
-                            CupertinoButton(
+                            PolkawalletActionSheetAction(
                               child: Text(I18n.of(context)!.getDic(
                                   i18n_full_dic_kusama, 'common')!['ok']!),
                               onPressed: () {

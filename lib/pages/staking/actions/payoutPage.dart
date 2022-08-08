@@ -79,7 +79,9 @@ class _PayoutPageState extends State<PayoutPage> {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   _getEraText(i),
-                  style: TextStyle(fontSize: UI.getTextSize(16, context)),
+                  style: TextStyle(
+                      fontSize: UI.getTextSize(16, context),
+                      color: Colors.black),
                 ),
               );
             }).toList(),

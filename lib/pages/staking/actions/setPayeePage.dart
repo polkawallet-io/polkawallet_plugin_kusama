@@ -9,6 +9,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
@@ -52,11 +53,12 @@ class _SetPayeePageState extends State<SetPayeePage> {
         showCupertinoDialog(
           context: context,
           builder: (BuildContext context) {
-            return CupertinoAlertDialog(
+            return PolkawalletAlertDialog(
+              type: DialogType.warn,
               title: Container(),
               content: Text('${dic!['reward.warn']}'),
               actions: <Widget>[
-                CupertinoButton(
+                PolkawalletActionSheetAction(
                   child: Text(I18n.of(context)!
                       .getDic(i18n_full_dic_kusama, 'common')!['ok']!),
                   onPressed: () => Navigator.of(context).pop(),
@@ -229,7 +231,8 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                               child: Text(
                                 i!,
                                 style: TextStyle(
-                                    fontSize: UI.getTextSize(14, context)),
+                                    fontSize: UI.getTextSize(14, context),
+                                    color: Colors.black),
                               ),
                             ))
                         .toList(),
