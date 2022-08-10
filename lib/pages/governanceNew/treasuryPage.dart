@@ -115,10 +115,7 @@ class _TreasuryPageState extends State<TreasuryPage> {
           proposals
               .addAll(widget.plugin.store.gov.treasuryOverview.approvals ?? []);
 
-          final tips = <TreasuryTipData>[];
-          if (widget.plugin.store.gov.treasuryTips != null) {
-            tips.addAll(widget.plugin.store.gov.treasuryTips!.reversed);
-          }
+          final tips = widget.plugin.store.gov.treasuryTips?.toList() ?? [];
 
           return RefreshIndicator(
               key: _refreshKey,
