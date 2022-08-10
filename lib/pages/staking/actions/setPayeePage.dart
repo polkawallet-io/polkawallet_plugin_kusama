@@ -15,6 +15,7 @@ import 'package:polkawallet_ui/components/v3/plugin/pluginAddressTextFormField.d
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
 class SetPayeePage extends StatefulWidget {
@@ -273,7 +274,8 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                   Expanded(
                       child: TextTag(
                     dic['stake.payee.warn'],
-                    color: Colors.deepOrange,
+                    color: PluginColorsDark.primary,
+                    textColor: PluginColorsDark.headline1,
                     fontSize: UI.getTextSize(12, context),
                     margin: EdgeInsets.symmetric(vertical: 16),
                     padding: EdgeInsets.all(8),
