@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_kusama/pages/staking/actions/bondExtraPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/staking/actions/setPayeePage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
+import 'package:polkawallet_sdk/plugin/store/balances.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -9,6 +11,7 @@ import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
+import 'package:polkawallet_ui/components/v3/plugin/pluginInputBalance.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTextFormField.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 // import 'package:polkawallet_ui/pages/accountListPage.dart';
@@ -25,7 +28,6 @@ class BondPage extends StatefulWidget {
 }
 
 class _BondPageState extends State<BondPage> {
-  final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountCtrl = new TextEditingController();
 
   final _rewardToOptions = ['Staked', 'Stash', 'Controller'];
@@ -34,6 +36,8 @@ class _BondPageState extends State<BondPage> {
 
   int _rewardTo = 0;
   String? _rewardAccount;
+
+  String? _error;
 
   // Future<void> _changeControllerId(BuildContext context) async {
   //   final accounts = widget.keyring.keyPairs.toList();
@@ -64,10 +68,10 @@ class _BondPageState extends State<BondPage> {
     final symbol = widget.plugin.networkState.tokenSymbol![0];
     final decimals = widget.plugin.networkState.tokenDecimals![0];
 
-    double freeBalance = 0;
+    BigInt freeBalance = BigInt.zero;
     if (widget.plugin.balances.native != null) {
-      freeBalance = Fmt.balanceDouble(
-          widget.plugin.balances.native!.freeBalance.toString(), decimals);
+      freeBalance =
+          Fmt.balanceInt(widget.plugin.balances.native!.freeBalance.toString());
     }
 
     final rewardToOptions =
@@ -82,88 +86,92 @@ class _BondPageState extends State<BondPage> {
     return Column(
       children: <Widget>[
         Expanded(
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: TextTag(
+                        I18n.of(context)!.getDic(
+                            i18n_full_dic_kusama, 'staking')!['stake.warn'],
+                        color: PluginColorsDark.primary,
+                        textColor: PluginColorsDark.headline1,
+                        fontSize: UI.getTextSize(12, context),
+                        margin: EdgeInsets.all(0),
+                        padding: EdgeInsets.all(8),
+                      ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: PluginAddressFormItem(
+                    account: widget.keyring.current,
+                    label: dicStaking['stash'],
+                  ),
+                ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 16, right: 16),
+                //   child: PluginAddressFormItem(
+                //     account: _controller ?? widget.keyring.current,
+                //     label: dicStaking['controller'],
+                //     // do not allow change controller here.
+                //     // onTap: () => _changeControllerId(context),
+                //   ),
+                // ),
+                Container(
+                    margin: EdgeInsets.fromLTRB(16, 12, 16, 0),
+                    child: Column(
                       children: [
-                        Expanded(
-                            child: TextTag(
-                          I18n.of(context)!.getDic(
-                              i18n_full_dic_kusama, 'staking')!['stake.warn'],
-                          color: PluginColorsDark.primary,
-                          textColor: PluginColorsDark.headline1,
-                          fontSize: UI.getTextSize(12, context),
-                          margin: EdgeInsets.all(0),
-                          padding: EdgeInsets.all(8),
-                        ))
+                        PluginInputBalance(
+                          titleTag: dic['amount'],
+                          balance: TokenBalanceData(
+                              symbol: symbol,
+                              decimals: decimals,
+                              amount: freeBalance.toString()),
+                          tokenIconsMap: widget.plugin.tokenIcons,
+                          inputCtrl: _amountCtrl,
+                          onInputChange: (value) {
+                            var error = Fmt.validatePrice(value, context);
+                            if (error == null) {
+                              final amount = double.parse(value.trim());
+                              if (amount >=
+                                  Fmt.bigIntToDouble(freeBalance, decimals)) {
+                                error = dic['amount.low'];
+                              }
+                              final minBond = Fmt.balanceInt(widget.plugin.store
+                                  .staking.overview['minNominatorBond']);
+                              if (amount <
+                                  Fmt.bigIntToDouble(minBond, decimals)) {
+                                error =
+                                    '${dicStaking['stake.bond.min']} ${Fmt.priceCeilBigInt(minBond, decimals)}';
+                              }
+                            }
+                            setState(() {
+                              _error = error;
+                            });
+                          },
+                        ),
+                        ErrorMessage(
+                          _error,
+                          margin: EdgeInsets.symmetric(vertical: 2),
+                        ),
                       ],
-                    ),
+                    )),
+                Container(
+                  margin: EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: PayeeSelector(
+                    widget.plugin,
+                    widget.keyring,
+                    initialValue: widget.plugin.store.staking.ownStashInfo,
+                    onChange: _onPayeeChanged,
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
-                    child: PluginAddressFormItem(
-                      account: widget.keyring.current,
-                      label: dicStaking['stash'],
-                    ),
-                  ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 16, right: 16),
-                  //   child: PluginAddressFormItem(
-                  //     account: _controller ?? widget.keyring.current,
-                  //     label: dicStaking['controller'],
-                  //     // do not allow change controller here.
-                  //     // onTap: () => _changeControllerId(context),
-                  //   ),
-                  // ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(16, 12, 16, 0),
-                    child: PluginTextFormField(
-                      label: dic['amount'],
-                      hintText:
-                          '${dic['amount']} (${dicStaking['available']}: ${Fmt.priceFloor(
-                        freeBalance,
-                        lengthMax: 4,
-                      )} $symbol)',
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      inputFormatters: [UI.decimalInputFormatter(decimals)!],
-                      controller: _amountCtrl,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      validator: (v) {
-                        final error = Fmt.validatePrice(v!, context);
-                        if (error != null) {
-                          return error;
-                        }
-                        final amount = double.parse(v.trim());
-                        if (amount >= freeBalance) {
-                          return dic['amount.low'];
-                        }
-                        final minBond = Fmt.balanceInt(widget
-                            .plugin.store.staking.overview['minNominatorBond']);
-                        if (amount < Fmt.bigIntToDouble(minBond, decimals)) {
-                          return '${dicStaking['stake.bond.min']} ${Fmt.priceCeilBigInt(minBond, decimals)}';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(16, 12, 16, 0),
-                    child: PayeeSelector(
-                      widget.plugin,
-                      widget.keyring,
-                      initialValue: widget.plugin.store.staking.ownStashInfo,
-                      onChange: _onPayeeChanged,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -172,7 +180,7 @@ class _BondPageState extends State<BondPage> {
           child: PluginButton(
             title: dicStaking['action.bond']!,
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
+              if (_amountCtrl.text.trim().isNotEmpty && _error == null) {
                 final inputAmount = _amountCtrl.text.trim();
                 String? controllerId = widget.keyring.current.address;
                 if (_controller != null) {
