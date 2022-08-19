@@ -9,9 +9,9 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
+import 'package:polkawallet_ui/components/v3/addressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
-import 'package:polkawallet_ui/components/v3/plugin/pluginAddressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
@@ -253,7 +253,7 @@ class _PayeeSelectorState extends State<PayeeSelector> {
             visible: (_rewardTo ?? widget.initialValue!.destinationId) == 3,
             child: Container(
               margin: EdgeInsets.only(top: 12),
-              child: PluginAddressTextFormField(
+              child: AddressTextFormField(
                 widget.plugin.sdk.api,
                 widget.keyring.allWithContacts,
                 initialValue: _rewardAccount ?? defaultAcc,
@@ -264,6 +264,7 @@ class _PayeeSelectorState extends State<PayeeSelector> {
                   widget.onChange!(_rewardTo, acc.address);
                 },
                 key: ValueKey<KeyPairData?>(_rewardAccount),
+                isHubTheme: true,
               ),
             ),
           ),
