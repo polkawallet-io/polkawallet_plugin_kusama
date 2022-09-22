@@ -331,9 +331,8 @@ class _StakingViewState extends State<StakingView> {
                                                             Container(
                                                                 decoration:
                                                                     BoxDecoration(
-                                                                  color:
-                                                                      PluginColorsDark
-                                                                          .green,
+                                                                  color: PluginColorsDark
+                                                                      .primary,
                                                                   borderRadius:
                                                                       BorderRadius.all(
                                                                           Radius.circular(
@@ -351,7 +350,7 @@ class _StakingViewState extends State<StakingView> {
                                                                             9,
                                                                             2),
                                                                 child: Text(
-                                                                    "${Fmt.priceFloorBigIntFormatter(unlocking, decimals, lengthMax: 4)} $symbol ${unlockDetail.length > 0 ? "(${unlockDetail.length})" : ""}",
+                                                                    "${Fmt.priceFloorBigIntFormatter(unlocking, decimals, lengthMax: 4)} $symbol${unlockDetail.length > 0 ? " (${unlockDetail.length})" : ""}",
                                                                     style: labelStyle?.copyWith(
                                                                         fontWeight:
                                                                             FontWeight
@@ -377,12 +376,71 @@ class _StakingViewState extends State<StakingView> {
                                                     ],
                                                   ),
                                                 )),
-                                            InfoItemRow(
-                                              dic['bond.redeemable']!,
-                                              "${Fmt.priceFloorBigIntFormatter(redeemable, decimals, lengthMax: 4)} $symbol",
-                                              labelStyle: labelStyle,
-                                              contentStyle: labelStyle,
-                                            ),
+                                            GestureDetector(
+                                                onTap: () async {
+                                                  if (redeemable >
+                                                          BigInt.zero &&
+                                                      isController == true) {
+                                                    _onAction(() =>
+                                                        Navigator.of(context)
+                                                            .pushNamed(
+                                                                RedeemPage
+                                                                    .route));
+                                                  }
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 2),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Text(
+                                                          dic['bond.redeemable']!,
+                                                          style: labelStyle),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      PluginColorsDark
+                                                                          .green,
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              4.0)),
+                                                                ),
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            3),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .fromLTRB(
+                                                                            14,
+                                                                            2,
+                                                                            9,
+                                                                            2),
+                                                                child: Text(
+                                                                    "${Fmt.priceFloorBigIntFormatter(redeemable, decimals, lengthMax: 4)} $symbol",
+                                                                    style: labelStyle?.copyWith(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .black))),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
                                             InfoItemRow(
                                               dic['v3.nominations']!,
                                               "${widget.plugin.store.staking.ownStashInfo!.nominating!.length.toString()} ${dic['validators']}",
