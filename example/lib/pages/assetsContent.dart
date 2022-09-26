@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:polkawallet_ui/components/borderedTitle.dart';
-import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/plugin/store/balances.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
+import 'package:polkawallet_ui/components/borderedTitle.dart';
+import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/textTag.dart';
+import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
 class AssetsContent extends StatefulWidget {
@@ -63,7 +64,7 @@ class _AssetsContentState extends State<AssetsContent> {
                         child: TextTag(
                           'TestToken',
                           fontSize: 16,
-                          color: Colors.red,
+                          color: PluginColorsDark.primary,
                           margin: EdgeInsets.only(left: 12),
                           padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
                         ))
