@@ -228,14 +228,6 @@ class _OverViewWidgetState extends State<OverViewWidget>
                         Padding(
                             padding: EdgeInsets.only(bottom: 8),
                             child: InfoItemRow(
-                              dicStaking['v3.lastReward']!,
-                              "${Fmt.balance((overview['lastReward'] ?? 0).toString(), decimals)} $symbol",
-                              labelStyle: labelStyle,
-                              contentStyle: labelStyle,
-                            )),
-                        Padding(
-                            padding: EdgeInsets.only(bottom: 8),
-                            child: InfoItemRow(
                               dicStaking['v3.minThreshold']!,
                               "${Fmt.balance(overview['minNominatorBond'], decimals)} $symbol",
                               labelStyle: labelStyle,
