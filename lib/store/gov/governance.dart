@@ -3,6 +3,7 @@ import 'package:polkawallet_plugin_kusama/store/cache/storeCache.dart';
 import 'package:polkawallet_sdk/api/types/gov/councilInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
+import 'package:polkawallet_sdk/api/types/gov/referendumV2Data.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryOverviewData.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryTipData.dart';
 
@@ -55,6 +56,9 @@ abstract class _GovernanceStore with Store {
 
   @observable
   ProposalInfoData? external;
+
+  @observable
+  List<ReferendumGroup>? referendumsV2;
 
   @action
   void setExternal(ProposalInfoData? data) {
@@ -142,5 +146,10 @@ abstract class _GovernanceStore with Store {
     councilMotions = [];
     treasuryOverview = TreasuryOverviewData();
     treasuryTips = [];
+  }
+
+  @action
+  void setReferendumsV2(List<ReferendumGroup> ls) {
+    referendumsV2 = ls;
   }
 }

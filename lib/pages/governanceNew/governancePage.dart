@@ -36,7 +36,7 @@ class GovernancePage extends StatefulWidget {
   final PluginKusama plugin;
   final Keyring keyring;
 
-  static const String route = '/governance/index';
+  static const String route = '/gov/index';
 
   @override
   State<GovernancePage> createState() => _GovernancePageState();

@@ -177,4 +177,9 @@ class ApiGov {
 
     return data;
   }
+
+  Future<void> updateReferendumV2() async {
+    final data = await api.gov2.queryReferendums();
+    store!.gov.setReferendumsV2(data);
+  }
 }
