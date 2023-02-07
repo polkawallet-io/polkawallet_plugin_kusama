@@ -4,6 +4,7 @@ import 'package:polkawallet_plugin_kusama/store/index.dart';
 import 'package:polkawallet_sdk/api/api.dart';
 import 'package:polkawallet_sdk/api/types/gov/proposalInfoData.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
+import 'package:polkawallet_sdk/api/types/gov/referendumV2Data.dart';
 import 'package:polkawallet_sdk/api/types/gov/treasuryOverviewData.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 
@@ -46,7 +47,7 @@ class ApiGov {
   }
 
   Future<List?> getReferendumVoteConvictions() async {
-    final List? res = await api.gov.getReferendumVoteConvictions();
+    final List? res = await api.gov2.getReferendumVoteConvictions();
     store!.gov.setReferendumVoteConvictions(res);
     return res;
   }
@@ -178,8 +179,9 @@ class ApiGov {
     return data;
   }
 
-  Future<void> updateReferendumV2() async {
+  Future<List<ReferendumGroup>> updateReferendumV2() async {
     final data = await api.gov2.queryReferendums();
     store!.gov.setReferendumsV2(data);
+    return data;
   }
 }

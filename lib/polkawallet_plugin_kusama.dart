@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
+import 'package:polkawallet_plugin_kusama/pages/gov2/VotePage.dart';
 import 'package:polkawallet_plugin_kusama/pages/gov2/gov2Page.dart';
 import 'package:polkawallet_plugin_kusama/pages/gov2/govEntryPage.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/candidateDetailPage.dart';
@@ -152,6 +153,7 @@ class PluginKusama extends PolkawalletPlugin {
       // gov2 pages
       GovEntryPage.route: (_) => GovEntryPage(this, keyring),
       Gov2Page.route: (_) => Gov2Page(this, keyring),
+      VotePage.route: (_) => VotePage(this, keyring),
 
       DAppWrapperPage.route: (_) => DAppWrapperPage(this, keyring),
       WalletExtensionSignPage.route: (_) => WalletExtensionSignPage(

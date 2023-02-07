@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_kusama/pages/gov2/referendumPanelV2.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
+import 'package:polkawallet_sdk/api/types/gov/genExternalLinksParams.dart';
+import 'package:polkawallet_sdk/api/types/gov/referendumV2Data.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
+import 'package:polkawallet_ui/components/v3/plugin/govExternalLinks.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginPopLoadingWidget.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTabCard.dart';
@@ -19,8 +22,30 @@ class Gov2Page extends StatefulWidget {
 }
 
 class _Gov2PageState extends State<Gov2Page> {
+  final Map<String, List> _links = {};
+
   Future<void> _loadData() async {
-    widget.plugin.service.gov.updateReferendumV2();
+    final list = await widget.plugin.service.gov.updateReferendumV2();
+    _getExternalLinks(list);
+    widget.plugin.service.gov.getReferendumVoteConvictions();
+  }
+
+  Future<List?> _getExternalLinks(List<ReferendumGroup> groups) async {
+    final allIds = [];
+    groups.forEach((g) {
+      allIds.addAll(g.referenda.map((e) => e.key));
+    });
+
+    final List? res = await Future.wait(allIds.map((id) => widget
+        .plugin.sdk.api.gov
+        .getExternalLinks(GenExternalLinksParams.fromJson(
+            {'data': id, 'type': 'referenda'}))));
+    if (res != null) {
+      setState(() {
+        _links.addAll(res.asMap().map((k, v) => MapEntry(allIds[k], v)));
+      });
+    }
+    return res;
   }
 
   @override
@@ -63,7 +88,7 @@ class _Gov2PageState extends State<Gov2Page> {
                       children: [
                         PluginTabCard(
                           [
-                            groups[i].trackName,
+                            'Track ${groups[i].trackName}',
                           ],
                           (_) => null,
                           0,
@@ -78,6 +103,11 @@ class _Gov2PageState extends State<Gov2Page> {
                                   blockDuration: int.parse(widget.plugin
                                       .networkConst['babe']['expectedBlockTime']
                                       .toString()),
+                                  links: Visibility(
+                                    visible: _links[e.key] != null,
+                                    child:
+                                        GovExternalLinks(_links[e.key] ?? []),
+                                  ),
                                 ))
                             .toList()
                       ],
