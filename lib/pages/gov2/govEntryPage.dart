@@ -58,7 +58,6 @@ class _GovEntryPageState extends State<GovEntryPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
-    final dicCommon = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'common')!;
     final showEntry = _isV1Exist == true && _isV2Exist == true;
     return PluginScaffold(
       appBar: PluginAppBar(

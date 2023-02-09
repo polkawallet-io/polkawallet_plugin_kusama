@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:polkawallet_plugin_kusama/pages/gov2/VotePage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governanceNew/referendumVotePage.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumV2Data.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -17,22 +16,18 @@ class ReferendumPanelV2 extends StatefulWidget {
     required this.decimals,
     required this.data,
     required this.bestNumber,
-    this.onCancelVote,
     this.blockDuration,
     this.links,
     this.onRefresh,
-    this.isLock,
   }) : super(key: key);
 
   final String symbol;
   final int decimals;
   final ReferendumItem data;
   final BigInt bestNumber;
-  final Function(int)? onCancelVote;
   final int? blockDuration;
   final Widget? links;
   final Function? onRefresh;
-  final bool? isLock;
 
   @override
   State<ReferendumPanelV2> createState() => _ReferendumPanelV2State();
@@ -41,13 +36,9 @@ class ReferendumPanelV2 extends StatefulWidget {
 class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
   bool _isExpansion = false;
 
-  Future<void> _referendumAction(bool voteYes) async {
-    final res = await Navigator.of(context).pushNamed(ReferendumVotePage.route,
-        arguments: {
-          'referenda': widget.data,
-          'voteYes': voteYes,
-          'isLock': widget.isLock
-        });
+  Future<void> _referendumAction() async {
+    final res = await Navigator.of(context)
+        .pushNamed(VotePage.route, arguments: {'referenda': widget.data});
     if (res != null) {
       widget.onRefresh!();
     }
@@ -59,8 +50,9 @@ class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
         BigInt.parse(widget.data.periodEnd ?? '') - widget.bestNumber;
     final dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
 
-    final isPassing =
-        BigInt.parse(widget.data.ayes) > BigInt.parse(widget.data.nays);
+    final ayesPercent = BigInt.parse(widget.data.ayes) /
+        (BigInt.parse(widget.data.ayes) + BigInt.parse(widget.data.nays));
+    final progressWidth = (MediaQuery.of(context).size.width - 80) / 2;
 
     return GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -115,40 +107,15 @@ class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
                     Container(
                       padding: EdgeInsets.all(0),
                       margin: EdgeInsets.fromLTRB(0, 8, 8, 0),
-                      width: 100,
+                      width: 88,
                       child: PluginButton(
-                        height: 36,
+                        height: 32,
                         title: 'Vote',
-                        onPressed: () => Navigator.of(context)
-                            .pushNamed(VotePage.route, arguments: {
-                          'referenda': widget.data,
-                          'isLock': false,
-                        }),
+                        onPressed: _referendumAction,
                       ),
                     ),
                   ],
                 ),
-                // Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: <Widget>[
-                //       Expanded(
-                //           child: Container(
-                //               margin: EdgeInsets.only(left: 16, top: 8),
-                //               child: )),
-                //       Container(
-                //         padding:
-                //             EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                //         child: PluginButton(
-                //           title: 'Vote',
-                //           onPressed: () => Navigator.of(context)
-                //               .pushNamed(VotePage.route, arguments: {
-                //             'referenda': widget.data,
-                //             'isLock': false,
-                //           }),
-                //         ),
-                //       )
-                //     ]),
                 Padding(
                   padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
                   child: Column(
@@ -167,50 +134,7 @@ class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
                           child: Row(
                             children: [
                               Expanded(
-                                  child: GestureDetector(
-                                      // onTap: () async {
-                                      //   if ('Nay' ==
-                                      //       (widget.data!.userVoted?['vote']['vote'] ?? '')) {
-                                      //     showCupertinoModalPopup(
-                                      //       context: context,
-                                      //       barrierDismissible: true,
-                                      //       builder: (BuildContext context) {
-                                      //         return PolkawalletActionSheet(
-                                      //           title: Text(dic['vote']!),
-                                      //           message: Text(dic['v3.voteMessage.nay']!),
-                                      //           actions: [
-                                      //             PolkawalletActionSheetAction(
-                                      //               child: Text(dic['v3.continueVote']!),
-                                      //               onPressed: () {
-                                      //                 Navigator.of(context).pop();
-                                      //                 _referendumAction(false);
-                                      //               },
-                                      //             ),
-                                      //             PolkawalletActionSheetAction(
-                                      //               child: Text(dic['v3.cancelMyVote']!),
-                                      //               onPressed: () {
-                                      //                 Navigator.of(context).pop();
-                                      //                 widget.onCancelVote!(
-                                      //                     widget.data!.index!.toInt());
-                                      //               },
-                                      //             )
-                                      //           ],
-                                      //           cancelButton: PolkawalletActionSheetAction(
-                                      //             onPressed: () {
-                                      //               Navigator.pop(context);
-                                      //             },
-                                      //             child: Text(I18n.of(context)!.getDic(
-                                      //                 i18n_full_dic_kusama,
-                                      //                 'common')!['cancel']!),
-                                      //           ),
-                                      //         );
-                                      //       },
-                                      //     );
-                                      //   } else {
-                                      //     _referendumAction(false);
-                                      //   }
-                                      // },
-                                      child: Container(
+                                  child: Container(
                                 width: double.infinity,
                                 height: 28,
                                 decoration: BoxDecoration(
@@ -222,15 +146,7 @@ class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
                                   alignment: Alignment.centerLeft,
                                   children: [
                                     Container(
-                                      width: 7,
-                                      // width: 'Nay' ==
-                                      //         (widget.data!.userVoted?['vote']
-                                      //                 ['vote'] ??
-                                      //             '')
-                                      //     ? double.infinity
-                                      //     : widget.data!.userVoted == null
-                                      //         ? 7
-                                      //         : 0,
+                                      width: progressWidth * (1 - ayesPercent),
                                       height: double.infinity,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
@@ -253,7 +169,7 @@ class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
                                         ))
                                   ],
                                 ),
-                              ))),
+                              )),
                               Container(width: 16),
                               Expanded(
                                 child: Text(
@@ -277,50 +193,7 @@ class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
                           child: Row(
                             children: [
                               Expanded(
-                                  child: GestureDetector(
-                                      // onTap: () async {
-                                      //   if ('Aye' ==
-                                      //       (widget.data!.userVoted?['vote']['vote'] ?? '')) {
-                                      //     showCupertinoModalPopup(
-                                      //       context: context,
-                                      //       barrierDismissible: true,
-                                      //       builder: (BuildContext context) {
-                                      //         return PolkawalletActionSheet(
-                                      //           title: Text(dic['vote']!),
-                                      //           message: Text(dic['v3.voteMessage.aye']!),
-                                      //           actions: [
-                                      //             PolkawalletActionSheetAction(
-                                      //               child: Text(dic['v3.continueVote']!),
-                                      //               onPressed: () {
-                                      //                 Navigator.of(context).pop();
-                                      //                 _referendumAction(true);
-                                      //               },
-                                      //             ),
-                                      //             PolkawalletActionSheetAction(
-                                      //               child: Text(dic['v3.cancelMyVote']!),
-                                      //               onPressed: () {
-                                      //                 Navigator.of(context).pop();
-                                      //                 widget.onCancelVote!(
-                                      //                     widget.data!.index!.toInt());
-                                      //               },
-                                      //             )
-                                      //           ],
-                                      //           cancelButton: PolkawalletActionSheetAction(
-                                      //             onPressed: () {
-                                      //               Navigator.pop(context);
-                                      //             },
-                                      //             child: Text(I18n.of(context)!.getDic(
-                                      //                 i18n_full_dic_kusama,
-                                      //                 'common')!['cancel']!),
-                                      //           ),
-                                      //         );
-                                      //       },
-                                      //     );
-                                      //   } else {
-                                      //     _referendumAction(true);
-                                      //   }
-                                      // },
-                                      child: Container(
+                                  child: Container(
                                 width: double.infinity,
                                 height: 28,
                                 decoration: BoxDecoration(
@@ -332,15 +205,7 @@ class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
                                   alignment: Alignment.centerLeft,
                                   children: [
                                     Container(
-                                        width: 7,
-                                        // width: 'Aye' ==
-                                        //         (widget.data!.userVoted?['vote']
-                                        //                 ['vote'] ??
-                                        //             '')
-                                        //     ? double.infinity
-                                        //     : widget.data!.userVoted == null
-                                        //         ? 7
-                                        //         : 0,
+                                        width: progressWidth * ayesPercent,
                                         height: double.infinity,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
@@ -362,7 +227,7 @@ class _ReferendumPanelV2State extends State<ReferendumPanelV2> {
                                         ))
                                   ],
                                 ),
-                              ))),
+                              )),
                               Container(width: 16),
                               Expanded(
                                 child: Text(

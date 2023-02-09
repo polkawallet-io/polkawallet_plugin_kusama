@@ -212,13 +212,13 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   final _$referendumsV2Atom = Atom(name: '_GovernanceStore.referendumsV2');
 
   @override
-  List<ReferendumGroup>? get referendumsV2 {
+  ReferendumData? get referendumsV2 {
     _$referendumsV2Atom.reportRead();
     return super.referendumsV2;
   }
 
   @override
-  set referendumsV2(List<ReferendumGroup>? value) {
+  set referendumsV2(ReferendumData? value) {
     _$referendumsV2Atom.reportWrite(value, super.referendumsV2, () {
       super.referendumsV2 = value;
     });
@@ -378,7 +378,7 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setReferendumsV2(List<ReferendumGroup> data) {
+  void setReferendumsV2(ReferendumData data) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setReferendumsV2');
     try {

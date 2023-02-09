@@ -38,7 +38,6 @@ class _ReferendumVoteState extends State<VotePage> {
   final List<int> _voteConvictionOptions = [0, 1, 2, 3, 4, 5, 6];
   int _voteConviction = 0;
 
-  final _options = [0, 1, 2, 3];
   int _tab = 0;
 
   Future<TxConfirmParams?> _getTxParams() async {
@@ -51,7 +50,6 @@ class _ReferendumVoteState extends State<VotePage> {
       final Map args =
           ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
       final ReferendumItem info = args['referenda'];
-      final bool? isLock = args['isLock'];
       final amtAye = _amountAyeCtrl.text.trim();
       final amtNay = _amountNayCtrl.text.trim();
       final amtAbs = _amountAbsCtrl.text.trim();
@@ -72,61 +70,37 @@ class _ReferendumVoteState extends State<VotePage> {
                 }
               : {
                   "Standard": {
-                    'aye': _tab == 0,
-                    'conviction': _voteConviction,
+                    'vote': {'aye': _tab == 0, 'conviction': _voteConviction},
                     'balance':
                         Fmt.tokenInt(_tab == 0 ? amtAye : amtNay, decimals)
                             .toString()
                   }
                 };
-      if (isLock!) {
-        // final txs = [
-        //   'api.tx.democracy.unlock("${widget.keyring.current.address}")'
-        // ];
-        // final standard = {"Standard": vote};
-        // txs.add(
-        //     'api.tx.democracy.vote(${info.index!.toInt()},${jsonEncode(standard)})');
-        // return TxConfirmParams(
-        //     txTitle: govDic['vote.proposal'],
-        //     module: 'utility',
-        //     call: 'batch',
-        //     txDisplay: {
-        //       govDic["referenda"]: '#${info.index!.toInt()}',
-        //       govDic["vote"]: voteYes ? govDic['yes'] : govDic['no'],
-        //       dic["amount"]:
-        //           '$amt ${widget.plugin.networkState.tokenSymbol![0]}',
-        //       '': _getConvictionLabel(_voteConviction),
-        //     },
-        //     params: [],
-        //     rawParams: '[[${txs.join(',')}]]',
-        //     isPlugin: true);
-      } else {
-        return TxConfirmParams(
-            module: 'convictionVoting',
-            call: 'vote',
-            txTitle: govDic['vote.proposal'],
-            txDisplay: {
-              govDic["referenda"]: '#${info.key}',
-              govDic["vote"]: voteName,
-              dic["amount"]: _tab == 0
-                  ? '$amtAye $symbol'
-                  : _tab == 1
-                      ? '$amtNay $symbol'
-                      : _tab == 2
-                          ? 'Aye: $amtAye $symbol\nNay: $amtNay $symbol'
-                          : 'Aye: $amtAye $symbol\nNay: $amtNay $symbol\nAbstain: $amtAbs $symbol',
-              '': _tab == 0 || _tab == 1
-                  ? _getConvictionLabel(_voteConviction)
-                  : '',
-            },
-            params: [
-              // "id"
-              info.key,
-              // "options"
-              votes,
-            ],
-            isPlugin: true);
-      }
+      return TxConfirmParams(
+          module: 'convictionVoting',
+          call: 'vote',
+          txTitle: govDic['vote.proposal'],
+          txDisplay: {
+            govDic["referenda"]: '#${info.key}',
+            govDic["vote"]: voteName,
+            dic["amount"]: _tab == 0
+                ? '$amtAye $symbol'
+                : _tab == 1
+                    ? '$amtNay $symbol'
+                    : _tab == 2
+                        ? 'Aye: $amtAye $symbol\nNay: $amtNay $symbol'
+                        : 'Aye: $amtAye $symbol\nNay: $amtNay $symbol\nAbstain: $amtAbs $symbol',
+            '': _tab == 0 || _tab == 1
+                ? _getConvictionLabel(_voteConviction)
+                : '',
+          },
+          params: [
+            // "id"
+            info.key,
+            // "options"
+            votes,
+          ],
+          isPlugin: true);
     }
     return null;
   }

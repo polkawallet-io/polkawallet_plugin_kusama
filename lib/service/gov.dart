@@ -47,6 +47,12 @@ class ApiGov {
   }
 
   Future<List?> getReferendumVoteConvictions() async {
+    final List? res = await api.gov.getReferendumVoteConvictions();
+    store!.gov.setReferendumVoteConvictions(res);
+    return res;
+  }
+
+  Future<List?> getReferendumVoteConvictionsV2() async {
     final List? res = await api.gov2.getReferendumVoteConvictions();
     store!.gov.setReferendumVoteConvictions(res);
     return res;
@@ -179,8 +185,8 @@ class ApiGov {
     return data;
   }
 
-  Future<List<ReferendumGroup>> updateReferendumV2() async {
-    final data = await api.gov2.queryReferendums();
+  Future<ReferendumData> updateReferendumV2() async {
+    final data = await api.gov2.queryReferendums(keyring.current.address!);
     store!.gov.setReferendumsV2(data);
     return data;
   }

@@ -58,7 +58,7 @@ abstract class _GovernanceStore with Store {
   ProposalInfoData? external;
 
   @observable
-  List<ReferendumGroup>? referendumsV2;
+  ReferendumData? referendumsV2;
 
   @action
   void setExternal(ProposalInfoData? data) {
@@ -149,7 +149,7 @@ abstract class _GovernanceStore with Store {
   }
 
   @action
-  void setReferendumsV2(List<ReferendumGroup> ls) {
-    referendumsV2 = ls;
+  void setReferendumsV2(ReferendumData data) {
+    referendumsV2 = data;
   }
 }
