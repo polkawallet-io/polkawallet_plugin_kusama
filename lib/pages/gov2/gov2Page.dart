@@ -59,19 +59,23 @@ class _Gov2PageState extends State<Gov2Page> {
     return res;
   }
 
-  void _onUnlock(List<String> trackIds, List<String> ids) {
-    _unlockTx('Clear Locks', trackIds, ids);
+  void _onUnlock(List<ReferendumVote> list) {
+    _unlockTx('Clear Locks', list);
   }
 
-  void _submitCancelVote(String trackId, String id) {
-    _unlockTx('Cancel Vote', [trackId], ["$id"]);
+  void _submitCancelVote(ReferendumVote vote) {
+    _unlockTx('Cancel Vote', [vote]);
   }
 
-  void _unlockTx(String? txTitle, List<String> tracks, List<String> ids) async {
-    final txs =
-        ids.map((e) => 'api.tx.convictionVoting.removeVote(null, $e)').toList();
-    txs.addAll(tracks.map((e) =>
-        'api.tx.convictionVoting.unlock("$e", {Id: "${widget.keyring.current.address}"})'));
+  void _unlockTx(String? txTitle, List<ReferendumVote> list) async {
+    final txs = [];
+    list.forEach((e) {
+      txs.addAll([
+        'api.tx.convictionVoting.removeVote("${e.trackId}", "${e.key}")',
+        'api.tx.convictionVoting.unlock("${e.key}", {Id: "${widget.keyring.current.address}"})'
+      ]);
+    });
+
     final params = TxConfirmParams(
       txTitle: txTitle,
       module: 'utility',
@@ -141,8 +145,7 @@ class _Gov2PageState extends State<Gov2Page> {
     final decimals = widget.plugin.networkState.tokenDecimals![0];
     final symbol = widget.plugin.networkState.tokenSymbol![0];
 
-    final List<String> redeemableIds = [];
-    final List<String> unlockedTrackIds = [];
+    final List<ReferendumVote> redeemableList = [];
     double maxLockAmount = 0, stillLockedAmount = 0;
     for (int index = 0; index < locks.length; index++) {
       final amount = locks[index]
@@ -165,8 +168,7 @@ class _Gov2PageState extends State<Gov2Page> {
         maxLockAmount = amount;
       }
       if (locks[index].isRedeemable) {
-        redeemableIds.add(locks[index].key);
-        unlockedTrackIds.add(locks[index].trackId);
+        redeemableList.add(locks[index]);
       } else {
         if (amount > stillLockedAmount) {
           stillLockedAmount = amount;
@@ -263,29 +265,39 @@ class _Gov2PageState extends State<Gov2Page> {
                                                             locks[index].vote,
                                                             decimals,
                                                             symbol)),
-                                                    actions: [
-                                                      CupertinoActionSheetAction(
-                                                          isDestructiveAction:
-                                                              true,
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                            _submitCancelVote(
-                                                                locks[index]
-                                                                    .trackId,
-                                                                locks[index]
-                                                                    .key);
-                                                          },
-                                                          child: Text(
-                                                              'Cancel Vote')),
-                                                      CupertinoActionSheetAction(
-                                                          onPressed: () =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(),
-                                                          child: Text('OK')),
-                                                    ],
+                                                    actions:
+                                                        locks[index].isEnded ==
+                                                                false
+                                                            ? [
+                                                                CupertinoActionSheetAction(
+                                                                    isDestructiveAction:
+                                                                        true,
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      _submitCancelVote(
+                                                                          locks[
+                                                                              index]);
+                                                                    },
+                                                                    child: Text(
+                                                                        'Cancel Vote')),
+                                                                CupertinoActionSheetAction(
+                                                                    onPressed: () =>
+                                                                        Navigator.of(context)
+                                                                            .pop(),
+                                                                    child: Text(
+                                                                        'OK')),
+                                                              ]
+                                                            : [
+                                                                CupertinoActionSheetAction(
+                                                                    onPressed: () =>
+                                                                        Navigator.of(context)
+                                                                            .pop(),
+                                                                    child: Text(
+                                                                        'OK'))
+                                                              ],
                                                   );
                                                 });
                                           },
@@ -298,7 +310,7 @@ class _Gov2PageState extends State<Gov2Page> {
                                       ],
                                     ),
                                     InfoItemRow(
-                                        'Locking end',
+                                        'Locking End',
                                         endLeft < BigInt.zero
                                             ? 'Ended'
                                             : locks[index].isEnded
@@ -322,22 +334,20 @@ class _Gov2PageState extends State<Gov2Page> {
                                 config.activeIndex, config.itemCount);
                           })),
                     )),
-                Visibility(
-                    visible: redeemable > 0,
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                            padding: EdgeInsets.only(
-                                left: 17, top: 16, right: 16, bottom: 12),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                    child: InfoItemRow('Redeemable',
-                                        '${Fmt.priceFloor(redeemable, lengthMax: 4)} $symbol',
-                                        labelStyle: style,
-                                        contentStyle: style)),
-                                Container(
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        padding: EdgeInsets.only(
+                            left: 17, top: 16, right: 16, bottom: 12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(
+                                child: InfoItemRow('Redeemable',
+                                    '${Fmt.priceFloor(redeemable, lengthMax: 4)} $symbol',
+                                    labelStyle: style, contentStyle: style)),
+                            redeemable > 0
+                                ? Container(
                                     width: 74,
                                     height: double.infinity,
                                     padding: EdgeInsets.only(left: 15),
@@ -348,17 +358,14 @@ class _Gov2PageState extends State<Gov2Page> {
                                           height: 30,
                                           title: 'Clear',
                                           onPressed: () {
-                                            _onUnlock(
-                                                unlockedTrackIds
-                                                    .toSet()
-                                                    .toList(),
-                                                redeemableIds);
+                                            _onUnlock(redeemableList);
                                           },
                                         )
                                       ],
                                     ))
-                              ],
-                            ))))
+                                : SizedBox(width: 74)
+                          ],
+                        )))
               ],
             ))
       ],
