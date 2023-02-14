@@ -48,7 +48,7 @@ class _Gov2PageState extends State<Gov2Page> {
     });
 
     final List? res = await Future.wait(allIds.map((id) => widget
-        .plugin.sdk.api.gov
+        .plugin.sdk.api.gov2
         .getExternalLinks(GenExternalLinksParams.fromJson(
             {'data': id, 'type': 'referenda'}))));
     if (res != null) {

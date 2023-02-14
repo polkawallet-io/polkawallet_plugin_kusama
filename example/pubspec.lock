@@ -622,22 +622,22 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.5.1"
+    version: "0.5.2"
   polkawallet_sdk:
     dependency: transitive
     description:
       name: polkawallet_sdk
-      sha256: f592f71c270c2fa94b0cea7b303c29c3c24e4ef8e74297f487a7022b7a1dc49c
+      sha256: d003028e952256b59643c2fa3cd6e4b10c353a328280038e3adb58b1fe713218
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1"
+    version: "0.5.2"
   polkawallet_ui:
     dependency: "direct main"
     description:
       path: "../../ui"
       relative: true
     source: path
-    version: "0.5.1"
+    version: "0.5.2"
   process:
     dependency: transitive
     description:
