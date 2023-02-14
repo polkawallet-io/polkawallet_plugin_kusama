@@ -5,10 +5,10 @@ import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/gov/referendumInfoData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/infoItemRow.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
-import 'package:polkawallet_ui/components/v3/dialog.dart';
 
 class ReferendumPanel extends StatefulWidget {
   ReferendumPanel({
@@ -61,13 +61,12 @@ class _ReferendumPanelState extends State<ReferendumPanel> {
         endLeft + BigInt.parse(widget.data!.status!['delay'].toString());
     var dic = I18n.of(context)!.getDic(i18n_full_dic_kusama, 'gov')!;
     List<Widget?> list = <Widget?>[
-      Visibility(
-        visible: widget.data!.detail!['content'].toString().isNotEmpty,
-        child: Text(
-          "${widget.data!.image != null && widget.data!.image!['proposal'] != null ? '${widget.data!.image!['proposal']['section']}.${widget.data!.image!['proposal']['method']}\n' : ''}${(widget.data!.detail!['content'] ?? "").toString().trim()}",
-          style: Theme.of(context).textTheme.headline5?.copyWith(
-              fontSize: UI.getTextSize(12, context), color: Colors.white),
-        ),
+      Text(
+        widget.data!.image != null && widget.data!.image!['proposal'] != null
+            ? "${widget.data!.image!['proposal']['section']}.${widget.data!.image!['proposal']['method']}\n${(widget.data!.detail!['content'] ?? "").toString().trim()}"
+            : Fmt.address(widget.data?.imageHash, pad: 12),
+        style: Theme.of(context).textTheme.headline5?.copyWith(
+            fontSize: UI.getTextSize(12, context), color: Colors.white),
       ),
       Padding(
           padding: EdgeInsets.only(top: 9),

@@ -209,6 +209,21 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
     });
   }
 
+  final _$referendumsV2Atom = Atom(name: '_GovernanceStore.referendumsV2');
+
+  @override
+  ReferendumData? get referendumsV2 {
+    _$referendumsV2Atom.reportRead();
+    return super.referendumsV2;
+  }
+
+  @override
+  set referendumsV2(ReferendumData? value) {
+    _$referendumsV2Atom.reportWrite(value, super.referendumsV2, () {
+      super.referendumsV2 = value;
+    });
+  }
+
   final _$loadCacheAsyncAction = AsyncAction('_GovernanceStore.loadCache');
 
   @override
@@ -357,6 +372,17 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
         name: '_GovernanceStore.clearState');
     try {
       return super.clearState();
+    } finally {
+      _$_GovernanceStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setReferendumsV2(ReferendumData data) {
+    final _$actionInfo = _$_GovernanceStoreActionController.startAction(
+        name: '_GovernanceStore.setReferendumsV2');
+    try {
+      return super.setReferendumsV2(data);
     } finally {
       _$_GovernanceStoreActionController.endAction(_$actionInfo);
     }

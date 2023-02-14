@@ -1,3 +1,8 @@
+## [0.5.2] - 20230214.
+
+* bump polkawallet_sdk: 0.5.2.
+* add gov2 referenda pages.
+
 ## [0.5.1] - 20221220.
 
 * bump polkawallet_sdk: 0.5.1.

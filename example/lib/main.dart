@@ -13,7 +13,6 @@ import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/passwordInputDialog.dart';
 import 'package:polkawallet_ui/pages/accountListPage.dart';
-import 'package:polkawallet_ui/pages/qrSenderPage.dart';
 import 'package:polkawallet_ui/pages/scanPage.dart';
 import 'package:polkawallet_ui/pages/txConfirmPage.dart';
 
@@ -144,7 +143,6 @@ class _MyAppState extends State<MyApp> {
       SelectListPage.route: (_) => SelectListPage(),
       TxConfirmPage.route: (_) =>
           TxConfirmPage(_network, _keyring, getPassword),
-      QrSenderPage.route: (_) => QrSenderPage(_network, _keyring),
       ScanPage.route: (_) => ScanPage(_network, _keyring),
       AccountListPage.route: (_) => AccountListPage(_network, _keyring),
       ...res,

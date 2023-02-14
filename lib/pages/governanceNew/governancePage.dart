@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:polkawallet_plugin_kusama/pages/gov2/gov2Page.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/councilPage.dart';
-import 'package:polkawallet_plugin_kusama/pages/governanceNew/govExternalLinks.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/proposalPanel.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/referendumPanel.dart';
 import 'package:polkawallet_plugin_kusama/pages/governanceNew/treasuryPage.dart';
@@ -16,6 +16,7 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItemRow.dart';
+import 'package:polkawallet_ui/components/v3/plugin/govExternalLinks.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAccountInfoAction.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInfoItem.dart';
@@ -36,7 +37,7 @@ class GovernancePage extends StatefulWidget {
   final PluginKusama plugin;
   final Keyring keyring;
 
-  static const String route = '/governance/index';
+  static const String route = '/gov/index';
 
   @override
   State<GovernancePage> createState() => _GovernancePageState();
@@ -743,38 +744,5 @@ class _GovernancePageState extends State<GovernancePage> {
             ));
       }),
     );
-  }
-}
-
-class CustomP extends StatelessWidget {
-  var _currentIndex;
-  var _count;
-  CustomP(this._currentIndex, this._count);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 8,
-        child: _count == 1
-            ? Container()
-            : ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, index) => Container(
-                  width: 6,
-                ),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 8,
-                    width: _currentIndex == index ? 15 : 8,
-                    decoration: BoxDecoration(
-                        color: _currentIndex == index
-                            ? PluginColorsDark.primary
-                            : PluginColorsDark.headline1,
-                        borderRadius: BorderRadius.circular(4)),
-                  );
-                },
-                itemCount: _count,
-              ));
   }
 }
