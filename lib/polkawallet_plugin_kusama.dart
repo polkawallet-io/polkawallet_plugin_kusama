@@ -208,6 +208,7 @@ class PluginKusama extends PolkawalletPlugin {
 
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
+    _store.gov.setReferendumsV2(null);
     _store.staking.loadAccountCache(acc.pubKey);
   }
 }

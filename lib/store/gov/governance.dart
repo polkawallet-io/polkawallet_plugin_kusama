@@ -149,7 +149,7 @@ abstract class _GovernanceStore with Store {
   }
 
   @action
-  void setReferendumsV2(ReferendumData data) {
+  void setReferendumsV2(ReferendumData? data) {
     referendumsV2 = data;
   }
 }

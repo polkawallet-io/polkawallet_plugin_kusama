@@ -378,7 +378,7 @@ mixin _$GovernanceStore on _GovernanceStore, Store {
   }
 
   @override
-  void setReferendumsV2(ReferendumData data) {
+  void setReferendumsV2(ReferendumData? data) {
     final _$actionInfo = _$_GovernanceStoreActionController.startAction(
         name: '_GovernanceStore.setReferendumsV2');
     try {
