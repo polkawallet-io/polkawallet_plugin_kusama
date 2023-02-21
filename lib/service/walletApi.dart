@@ -5,18 +5,16 @@ import 'package:http/http.dart';
 class WalletApi {
   static const String _endpoint = 'https://api.polkawallet.io';
   static const String _configEndpoint = 'https://acala.polkawallet-cloud.com';
-  static const String _cdnEndpoint = 'https://cdn.polkawallet-cloud.com';
 
-  static Future<Map?> getTokenPrice() async {
-    final url =
-        '$_cdnEndpoint/lastPrice.json?t=${DateTime.now().millisecondsSinceEpoch}';
+  static Future<Map?> getTokenPrice(List<String?> tokens) async {
+    final url = '$_endpoint/price-server?from=market&token=${tokens.join(',')}';
     try {
-      Response res = await get(Uri.parse(url));
-      if (res == null) {
-        return null;
-      } else {
-        return jsonDecode(utf8.decode(res.bodyBytes));
-      }
+      final res = await get(Uri.parse(url));
+      final data =
+          jsonDecode(utf8.decode(res.bodyBytes))['data']['price'] as List;
+      return data
+          .asMap()
+          .map((k, v) => MapEntry(tokens[k], double.parse(v.toString())));
     } catch (err) {
       print(err);
       return null;

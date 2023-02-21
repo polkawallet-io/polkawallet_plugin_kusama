@@ -170,9 +170,7 @@ class ApiStaking {
   }
 
   Future<void> queryMarketPrices() async {
-    final Map? res = await WalletApi.getTokenPrice();
-    final Map<String, double> prices = {...((res?['prices'] as Map?) ?? {})};
-
-    store!.staking.setMarketPrices(prices);
+    final res = await WalletApi.getTokenPrice(plugin.networkState.tokenSymbol!);
+    store!.staking.setMarketPrices(Map<String, double>.from(res ?? {}));
   }
 }
