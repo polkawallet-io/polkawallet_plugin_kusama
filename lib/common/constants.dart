@@ -5,9 +5,19 @@ const int SECONDS_OF_YEAR = 365 * 24 * 60 * 60; // seconds of one year
 
 const node_list_kusama = [
   {
-    'name': 'Kusama (via PatractLabs)',
+    'name': 'Kusama (via Automata 1RPC)',
     'ss58': 2,
-    'endpoint': 'wss://pub.elara.patract.io/kusama',
+    'endpoint': 'wss://1rpc.io/ksm',
+  },
+  {
+    'name': 'Kusama (via Dotters Net)',
+    'ss58': 2,
+    'endpoint': 'wss://rpc.dotters.network/kusama',
+  },
+  {
+    'name': 'Kusama (via IBP Network)',
+    'ss58': 2,
+    'endpoint': 'wss://rpc.ibp.network/kusama',
   },
   {
     'name': 'Kusama (via Parity)',
@@ -29,6 +39,11 @@ const node_list_kusama = [
     'ss58': 2,
     'endpoint': 'wss://kusama-rpc.dwellir.com',
   },
+  {
+    'name': 'Kusama (via Dwellir Tunisia)',
+    'ss58': 2,
+    'endpoint': 'wss://kusama-rpc-tn.dwellir.com',
+  },
   // {
   //   'name': 'Kusama (cross chain 9110 dev)',
   //   'ss58': 42,
@@ -42,9 +57,24 @@ const node_list_kusama = [
 ];
 const node_list_polkadot = [
   {
-    'name': 'Polkadot (via PatractLabs)',
+    'name': 'Polkadot (via Automata 1RPC)',
     'ss58': 0,
-    'endpoint': 'wss://pub.elara.patract.io/polkadot',
+    'endpoint': 'wss://1rpc.io/dot',
+  },
+  {
+    'name': 'Polkadot (via Dotters Net)',
+    'ss58': 0,
+    'endpoint': 'wss://rpc.dotters.network/polkadot',
+  },
+  {
+    'name': 'Polkadot (via IBP Network)',
+    'ss58': 0,
+    'endpoint': 'wss://rpc.ibp.network/polkadot',
+  },
+  {
+    'name': 'Polkadot (via RadiumBlock)',
+    'ss58': 0,
+    'endpoint': 'wss://polkadot.public.curie.radiumblock.co/ws',
   },
   {
     'name': 'Polkadot (via Parity)',
@@ -60,6 +90,11 @@ const node_list_polkadot = [
     'name': 'Polkadot (via Dwellir)',
     'ss58': 0,
     'endpoint': 'wss://polkadot-rpc.dwellir.com',
+  },
+  {
+    'name': 'Polkadot (via Dwellir Tunisia)',
+    'ss58': 0,
+    'endpoint': 'wss://polkadot-rpc-tn.dwellir.com',
   },
   // {
   //   'name': 'Polkadot (light client - experimental)',
