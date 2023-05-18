@@ -12,7 +12,6 @@ import 'package:polkawallet_ui/components/txButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginButton.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginInputBalance.dart';
-import 'package:polkawallet_ui/components/v3/plugin/pluginTextFormField.dart';
 import 'package:polkawallet_ui/utils/consts.dart';
 // import 'package:polkawallet_ui/pages/accountListPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
@@ -33,6 +32,7 @@ class _BondPageState extends State<BondPage> {
   final _rewardToOptions = ['Staked', 'Stash', 'Controller'];
 
   KeyPairData? _controller;
+  bool _needsController = true;
 
   int _rewardTo = 0;
   String? _rewardAccount;
@@ -57,6 +57,26 @@ class _BondPageState extends State<BondPage> {
     setState(() {
       _rewardTo = to!;
       _rewardAccount = address;
+    });
+  }
+
+  Future<void> _checkNeedsController() async {
+    final res = await widget.plugin.sdk.webView!.evalJavascript(
+        'api.tx.staking.setController.meta.args.length',
+        wrapPromise: false);
+    if (res.toString() != '1') {
+      setState(() {
+        _needsController = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkNeedsController();
     });
   }
 
@@ -204,14 +224,25 @@ class _BondPageState extends State<BondPage> {
                           .copyWith(color: PluginColorsDark.headline1),
                     ),
                   },
-                  params: [
-                    // "controllerId":
-                    controllerId,
-                    // "amount"
-                    Fmt.tokenInt(inputAmount, decimals).toString(),
-                    // "to"
-                    _rewardTo == 3 ? {'Account': _rewardAccount} : _rewardTo,
-                  ],
+                  params: _needsController
+                      ? [
+                          // "controllerId":
+                          controllerId,
+                          // "amount"
+                          Fmt.tokenInt(inputAmount, decimals).toString(),
+                          // "to"
+                          _rewardTo == 3
+                              ? {'Account': _rewardAccount}
+                              : _rewardTo,
+                        ]
+                      : [
+                          // "amount"
+                          Fmt.tokenInt(inputAmount, decimals).toString(),
+                          // "to"
+                          _rewardTo == 3
+                              ? {'Account': _rewardAccount}
+                              : _rewardTo,
+                        ],
                   isPlugin: true,
                 ));
               }

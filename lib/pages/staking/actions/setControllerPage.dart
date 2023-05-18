@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:polkawallet_plugin_kusama/pages/staking/actions/controllerSelectPage.dart';
 import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
 import 'package:polkawallet_plugin_kusama/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginAddressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginScaffold.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginTxButton.dart';
-import 'package:polkawallet_ui/components/v3/dialog.dart';
+import 'package:polkawallet_ui/utils/i18n.dart';
 
 class SetControllerPage extends StatefulWidget {
   SetControllerPage(this.plugin, this.keyring);
@@ -21,12 +21,51 @@ class SetControllerPage extends StatefulWidget {
 
 class _SetControllerPageState extends State<SetControllerPage> {
   KeyPairData? _controller;
+  bool _needsController = true;
 
-  Future<void> _changeControllerId(BuildContext context) async {
-    var acc = await Navigator.of(context).pushNamed(ControllerSelectPage.route);
-    if (acc != null) {
+  Future<void> _showControllerRemoveDialog() async {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (_) {
+          final dic = I18n.of(context)!.getDic(i18n_full_dic_ui, 'common')!;
+          return PolkawalletAlertDialog(
+            content: Text(I18n.of(context)!.getDic(
+                i18n_full_dic_kusama, 'staking')!['controller.remove']!),
+            actions: <Widget>[
+              PolkawalletActionSheetAction(
+                isDefaultAction: true,
+                child: Text(dic['cancel']!),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              PolkawalletActionSheetAction(
+                child: Text(dic['ok']!),
+                onPressed: () {
+                  setState(() {
+                    _controller = widget.keyring.current;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  bool _checkIsStash() {
+    return widget.plugin.store.staking.ownStashInfo!.isOwnStash! ||
+        (!widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
+            !widget.plugin.store.staking.ownStashInfo!.isOwnController!);
+  }
+
+  Future<void> _checkNeedsController() async {
+    final res = await widget.plugin.sdk.webView!.evalJavascript(
+        'api.tx.staking.setController.meta.args.length',
+        wrapPromise: false);
+    if (res.toString() != '1') {
       setState(() {
-        _controller = acc as KeyPairData?;
+        _needsController = false;
       });
     }
   }
@@ -42,7 +81,13 @@ class _SetControllerPageState extends State<SetControllerPage> {
         _controller = acc;
       });
 
+      if (_checkIsStash() && acc!.pubKey != widget.keyring.current.pubKey) {
+        _showControllerRemoveDialog();
+      }
+
       widget.plugin.service.staking.queryAccountBondedInfo();
+
+      _checkNeedsController();
     });
   }
 
@@ -58,9 +103,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
       body: Builder(builder: (BuildContext context) {
         final controller = _controller ?? widget.keyring.current;
 
-        final isStash = widget.plugin.store.staking.ownStashInfo!.isOwnStash! ||
-            (!widget.plugin.store.staking.ownStashInfo!.isOwnStash! &&
-                !widget.plugin.store.staking.ownStashInfo!.isOwnController!);
+        final isStash = _checkIsStash();
         return SafeArea(
           child: Column(
             children: <Widget>[
@@ -81,9 +124,7 @@ class _SetControllerPageState extends State<SetControllerPage> {
                           svg: widget.plugin.store.accounts
                               .addressIconsMap[controller.address],
                           isDisable: false,
-                          onTap: isStash
-                              ? () => _changeControllerId(context)
-                              : null,
+                          onTap: isStash ? _showControllerRemoveDialog : null,
                         )),
                   ],
                 ),
@@ -147,10 +188,12 @@ class _SetControllerPageState extends State<SetControllerPage> {
                           ),
                         )
                       },
-                      params: [
-                        // "address"
-                        controller.address,
-                      ],
+                      params: _needsController
+                          ? [
+                              // "address"
+                              controller.address,
+                            ]
+                          : [],
                       isPlugin: true,
                     );
                   },

@@ -87,6 +87,8 @@ const Map<String, String> enStaking = {
   'controller.stashOf': 'Unavailable, stash account of ',
   'controller.controllerOf': 'Unavailable, controller account of ',
   'controller.warn': 'Controller account is not changed',
+  'controller.remove':
+      'The independent controller function has been removed. Please set the controller to stash account.',
   'filter': 'Filter with Address/Name',
   'sort': 'Sort by',
   'nominate.active': 'Active',
