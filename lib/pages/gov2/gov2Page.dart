@@ -72,7 +72,7 @@ class _Gov2PageState extends State<Gov2Page> {
     list.forEach((e) {
       txs.addAll([
         'api.tx.convictionVoting.removeVote("${e.trackId}", "${e.key}")',
-        'api.tx.convictionVoting.unlock("${e.key}", {Id: "${widget.keyring.current.address}"})'
+        'api.tx.convictionVoting.unlock("${e.trackId}", {Id: "${widget.keyring.current.address}"})'
       ]);
     });
 
