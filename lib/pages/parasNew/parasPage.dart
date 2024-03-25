@@ -142,6 +142,14 @@ class _ParasPageState extends State<ParasPage> {
                   final contributions =
                       widget.plugin.store.paras.userContributions;
                   final funds = auction.funds.toList();
+                  final visibleFundIds = [];
+                  config.forEach((k, v) {
+                    if (v['visible'] ?? false) {
+                      visibleFundIds.add(k);
+                    }
+                  });
+                  funds.retainWhere(
+                      (e) => visibleFundIds.indexOf(e.paraId) > -1);
                   funds.sort(
                       (a, b) => int.parse(a.paraId) - int.parse(b.paraId));
                   funds.sort((a, b) => a.isWinner || a.isEnded ? 1 : -1);
