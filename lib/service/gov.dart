@@ -18,13 +18,31 @@ class ApiGov {
   final PolkawalletApi api;
   final PluginStore? store;
 
+  Future<List?> queryIndexInfo(List addresses) async {
+    final hasIdentityStorage = await plugin.sdk.webView!
+        .evalJavascript('!!api.query.identity', wrapPromise: false);
+    if (!hasIdentityStorage) {
+      final peopleChainName =
+          plugin.basic.name == 'kusama' ? 'kusamaPeople' : 'people';
+      final query = addresses
+          .map((e) =>
+              'multiChain.getParachainApi("$peopleChainName").derive.accounts.info("$e")')
+          .join(",");
+      final res = await api.service.webView!
+          .evalJavascript('Promise.all([$query])') as List?;
+      return res;
+    }
+
+    return api.account.queryIndexInfo(addresses);
+  }
+
   Future<void> updateIconsAndIndices(List addresses) async {
     final ls = addresses.toList();
     ls.removeWhere((e) => store!.accounts.addressIconsMap.keys.contains(e));
 
     final List<List?> res = await Future.wait([
       api.account.getAddressIcons(ls),
-      api.account.queryIndexInfo(ls),
+      queryIndexInfo(ls),
     ]);
     store!.accounts.setAddressIconsMap(res[0]!);
     store!.accounts.setAddressIndex(res[1]!);

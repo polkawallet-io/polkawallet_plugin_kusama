@@ -201,10 +201,16 @@ class PluginKusama extends PolkawalletPlugin {
     _service = PluginApi(this, keyring);
   }
 
-  // @override
-  // Future<void> onStarted(Keyring keyring) async {
-  //   _service.staking.queryElectedInfo();
-  // }
+  @override
+  Future<void> onStarted(Keyring keyring) async {
+    final hasIdentityStorage = await sdk.webView!
+        .evalJavascript('!!api.query.identity', wrapPromise: false);
+    if (!hasIdentityStorage) {
+      final peopleChainName =
+          basic.name == 'kusama' ? 'kusamaPeople' : 'people';
+      _service.plugin.sdk.api.parachain.connectParachain(peopleChainName);
+    }
+  }
 
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
