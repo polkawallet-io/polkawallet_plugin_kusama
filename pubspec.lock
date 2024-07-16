@@ -707,18 +707,19 @@ packages:
   polkawallet_sdk:
     dependency: "direct main"
     description:
-      path: "../sdk"
-      relative: true
-    source: path
-    version: "0.6.0+1"
+      name: polkawallet_sdk
+      sha256: fab475543adcd772977970ba857ad9adc426afec52f2900ca453d8f3f5122486
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.1"
   polkawallet_ui:
     dependency: "direct main"
     description:
       name: polkawallet_ui
-      sha256: "9cbe970586a5bf250c1153b61bac246d3d7dbf7e9ded8382f312a97fb9e3e847"
+      sha256: "5cee86ce34c9414ea3e1fbfff52c9a7d5607db928dd5d7ba86ed480d2a9d39f2"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.5+2"
+    version: "0.5.6"
   pool:
     dependency: transitive
     description:
