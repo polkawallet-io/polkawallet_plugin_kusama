@@ -148,7 +148,9 @@ class _StakingViewState extends State<StakingView> {
       var sumReward = 0.0;
       widget.plugin.store.staking.txsRewards.forEach((data) {
         sumReward += Fmt.balanceDouble(data.amount!, decimals) *
-            (data.eventId == 'Rewarded' ? 1.0 : -1.0);
+            ((data.eventId == 'Rewarded' || data.eventId == 'Reward')
+                ? 1.0
+                : -1.0);
       });
 
       final blockDuration =
